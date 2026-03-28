@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="StudFlow">
+    <meta name="description" content="Reussis ton bac sans stress. Diagnostic, fiches, quiz, focus, anti-stress.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://cdn.jsdelivr.net; img-src 'self' data: blob:;">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
+    <title>StudFlow — Ton coach pour reussir le bac</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <!-- pdf.min.js lazy-loaded on first PDF upload (see js/modules/pdf.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+</head>
+<body>
+    <a href="#main-content" class="skip-to-content">Aller au contenu principal</a>
+
+    <!-- Header / Navigation -->
+    <header style="display:none;">
+        <a href="#" class="logo" data-action="logo:home">
+            <div class="logo-icon"></div>
+            <span class="logo-text">Stud<span>Flow</span></span>
+        </a>
+        <nav class="main-nav" id="main-nav">
+            <button class="nav-item" data-screen="dashboard" data-action="screen:dashboard">
+                <span class="nav-icon" aria-hidden="true">🏠</span> Accueil
+            </button>
+            <button class="nav-item" data-screen="flashcard" data-action="screen:flashcard">
+                <span class="nav-icon" aria-hidden="true">🎴</span> Cards
+            </button>
+            <button class="nav-item" data-screen="quiz" data-action="screen:quiz">
+                <span class="nav-icon" aria-hidden="true">⚡</span> Quiz
+            </button>
+            <button class="nav-item" data-screen="coach" data-action="screen:coach">
+                <span class="nav-icon" aria-hidden="true">🧠</span> Coach
+            </button>
+            <button class="nav-item" data-screen="stress" data-action="screen:stress">
+                <span class="nav-icon" aria-hidden="true">💆</span> Zen
+            </button>
+            <button class="nav-item" data-screen="focus" data-action="screen:focus">
+                <span class="nav-icon" aria-hidden="true">🎯</span> Focus
+            </button>
+            <button class="nav-item" data-screen="bacfrancais" data-action="screen:bacfrancais">
+                <span class="nav-icon" aria-hidden="true">🇫🇷</span> Bac
+            </button>
+        </nav>
+        <div class="xp-bar-header">
+            <div class="xp-bar-mini" role="progressbar" aria-label="Progression XP" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><div class="xp-fill" style="width: 0%"></div></div>
+            <span class="xp-level" aria-label="Niveau actuel">Nv.1 🌱</span>
+        </div>
+        <span class="cloud-sync-indicator" id="cloud-sync-indicator"></span>
+        <button class="auth-header-btn" id="auth-header-btn" data-action="auth:login">Connexion</button>
+        <button class="theme-toggle-btn" id="theme-toggle-header" data-action="theme:toggle" aria-label="Changer de theme">☀️</button>
+        <div class="header-stats">
+            <div class="stat-badge" role="status" aria-label="Jours consecutifs">
+                <span class="icon" aria-hidden="true">🔥</span>
+                <span class="value" id="streak-count">0</span>
+            </div>
+            <div class="stat-badge" role="status" aria-label="Cartes maitrisees">
+                <span class="icon" aria-hidden="true">⭐</span>
+                <span class="value" id="mastered-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-container" id="main-content" role="main">
+
+        <!-- Beta Gate Screen -->
+        <div class="screen" id="screen-betagate">
+            <div id="betagate-content"></div>
+        </div>
+
+        <!-- Beta Welcome Screen (shown once after first unlock) -->
+        <div class="screen" id="screen-betawelcome">
+            <div id="betawelcome-content"></div>
+        </div>
+
+        <!-- Home / Landing Page -->
+        <div class="screen active" id="screen-home">
+            <div id="home-content"></div>
+        </div>
+
+        <!-- Onboarding Screen -->
+        <div class="screen" id="screen-onboarding">
+            <div id="onboarding-content"></div>
+        </div>
+
+        <!-- Diagnostic Screen -->
+        <div class="screen" id="screen-diagnostic">
+            <div class="diagnostic-screen">
+                <div id="diagnostic-content"></div>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div class="screen" id="screen-dashboard">
+            <!-- XP Card (kept for gamification display) -->
+            <div class="dash-xp-card">
+                <div class="dash-xp-level">1</div>
+                <div class="dash-xp-info">
+                    <div class="dash-xp-title">🌱 Debutant — Niveau 1</div>
+                    <div class="dash-xp-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progression XP"><div class="dash-xp-fill" style="width: 0%"></div></div>
+                    <div class="dash-xp-text">0 / 50 XP — encore 50 XP pour Curieux</div>
+                </div>
+            </div>
+
+            <!-- Smart Dashboard (rendered dynamically by dashboard.js) -->
+            <div id="smart-dashboard">
+                <div class="skeleton-block" style="height:80px;margin-bottom:1rem;padding:1rem;">
+                    <div class="skeleton-line" style="width:40%"></div>
+                    <div class="skeleton-line" style="width:70%"></div>
+                    <div class="skeleton-line" style="width:55%"></div>
+                </div>
+                <div class="skeleton-block" style="height:120px;margin-bottom:1rem"></div>
+                <div class="skeleton-block" style="height:60px"></div>
+            </div>
+
+            <!-- Hidden counters for flashcards/quiz modules -->
+            <span id="flashcard-count" style="display:none;">0 cartes</span>
+            <span id="quiz-count" style="display:none;">0 questions</span>
+            <p id="dashboard-message" style="display:none;"></p>
+
+            <!-- Bottom actions -->
+            <div class="dash-bottom-actions">
+                <button class="new-course-btn" data-action="screen:upload">
+                    + Importer un PDF
+                </button>
+                <button class="new-course-btn secondary" data-action="screen:settings">
+                    ⚙ Parametres
+                </button>
+            </div>
+        </div>
+
+        <!-- Flashcard Screen -->
+        <div class="screen" id="screen-flashcard">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+
+            <button class="toggle-create-btn" data-action="fc:create-form">
+                + Creer une flashcard
+            </button>
+
+            <div class="create-form" id="flashcard-create-form">
+                <h3>Nouvelle flashcard</h3>
+                <input type="text" id="new-fc-question" placeholder="Question...">
+                <input type="text" id="new-fc-answer" placeholder="Reponse...">
+                <input type="text" id="new-fc-deck" placeholder="Deck (optionnel)" value="Mes cartes">
+                <button class="create-btn" id="create-fc-btn" data-action="fc:create">Ajouter</button>
+            </div>
+
+            <div class="flashcard-progress">
+                <span class="progress-text" id="fc-progress">1/10</span>
+                <button data-action="fc:shuffle" title="Melanger" style="background:var(--bg-glass);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:4px 10px;color:var(--text-muted);font-size:0.8rem;cursor:pointer;">🔀</button>
+                <div class="progress-bar-small" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Progression flashcards">
+                    <div class="fill" id="fc-progress-bar" style="width: 10%"></div>
+                </div>
+                <span class="progress-text" id="fc-score">0 ✓</span>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" data-action="fc:flip" role="button" tabindex="0" aria-label="Retourner la flashcard">
+                    <div class="flashcard-face flashcard-front">
+                        <span class="flashcard-label">Question</span>
+                        <div class="flashcard-content" id="fc-question">Chargement...</div>
+                        <span class="flashcard-hint">Clique ou appuie sur Entree pour voir la reponse</span>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <span class="flashcard-label">Reponse</span>
+                        <div class="flashcard-content" id="fc-answer">Chargement...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flashcard-actions">
+                <button class="flashcard-btn dont-know" data-action="fc:dont-know">
+                    🔄 A revoir
+                </button>
+                <button class="flashcard-btn easy" id="fc-btn-easy" style="display:none"
+                        data-action="fc:easy">⚡ Facile</button>
+                <button class="flashcard-btn know" data-action="fc:know">
+                    ✓ Je sais
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div class="screen" id="screen-quiz">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+
+            <button class="toggle-create-btn" data-action="quiz:create-form">
+                + Creer un quiz
+            </button>
+
+            <div class="create-form" id="quiz-create-form">
+                <h3>Nouvelle question</h3>
+                <input type="text" id="new-quiz-question" placeholder="Question...">
+                <input type="text" id="new-quiz-a" placeholder="Option A">
+                <input type="text" id="new-quiz-b" placeholder="Option B">
+                <input type="text" id="new-quiz-c" placeholder="Option C">
+                <input type="text" id="new-quiz-d" placeholder="Option D">
+                <select id="new-quiz-correct">
+                    <option value="0">Bonne reponse : A</option>
+                    <option value="1">Bonne reponse : B</option>
+                    <option value="2">Bonne reponse : C</option>
+                    <option value="3">Bonne reponse : D</option>
+                </select>
+                <button class="create-btn" id="create-quiz-btn" data-action="quiz:create">Ajouter</button>
+            </div>
+
+            <div class="flashcard-progress">
+                <span class="progress-text" id="quiz-progress">1/10</span>
+                <div class="progress-bar-small" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Progression quiz">
+                    <div class="fill" id="quiz-progress-bar" style="width: 10%"></div>
+                </div>
+                <span class="progress-text" id="quiz-score">0 pts</span>
+            </div>
+
+            <div class="quiz-question-container">
+                <div class="quiz-question-number" id="quiz-number">Question 1</div>
+                <div class="quiz-question" id="quiz-question">Chargement...</div>
+                <div class="quiz-options" id="quiz-options"></div>
+                <div class="quiz-feedback" id="quiz-feedback"></div>
+            </div>
+
+            <button class="quiz-submit" id="quiz-submit" data-action="quiz:submit" disabled>
+                Valider
+            </button>
+        </div>
+
+        <!-- Coach Screen -->
+        <div class="screen" id="screen-coach">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="coach-content"></div>
+        </div>
+
+        <!-- Professor AI Screen -->
+        <div class="screen" id="screen-professor">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="prof-content"></div>
+        </div>
+
+        <!-- Anti-stress Screen -->
+        <div class="screen" id="screen-stress">
+            <div id="stress-content"></div>
+        </div>
+
+        <!-- Focus Screen -->
+        <div class="screen" id="screen-focus">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="focus-content"></div>
+        </div>
+
+        <!-- Bac Francais Screen -->
+        <div class="screen" id="screen-bacfrancais">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="bacfrancais-content"></div>
+        </div>
+
+        <!-- Subject Picker Screen -->
+        <div class="screen" id="screen-subject-picker">
+            <div id="subject-picker-content"></div>
+        </div>
+
+        <!-- Matieres Hub Screen -->
+        <div class="screen" id="screen-matieres">
+            <div id="matieres-content"></div>
+        </div>
+
+        <!-- Upload Screen -->
+        <div class="screen" id="screen-upload">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div class="upload-screen">
+                <h1>Importe ton <span>cours</span></h1>
+                <p class="subtitle">Extrait le texte de tes PDF pour reviser</p>
+
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-icon">📄</div>
+                    <h3>Glisse ton PDF ici</h3>
+                    <p>ou clique pour selectionner</p>
+                </div>
+                <input type="file" id="file-input" accept=".pdf">
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div class="screen" id="screen-loading">
+            <div class="loading-screen">
+                <div class="loader-container">
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                    <div class="loader-icon">📄</div>
+                </div>
+                <h2 id="loading-title">Import en cours...</h2>
+                <p id="loading-status">Extraction du texte</p>
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progression import">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Breathing Screen -->
+        <div class="screen" id="screen-breathing">
+            <button class="back-btn" aria-label="Arreter la respiration et retourner au tableau de bord" data-action="breathing:stop">← Retour</button>
+
+            <div class="breathing-screen">
+                <p class="breathing-vibe">Ferme les yeux, concentre-toi sur la bulle</p>
+
+                <div class="breathing-circle-container">
+                    <div class="breathing-circle paused" id="breathing-circle">
+                        <span class="breathing-text" id="breathing-phase">Pret ?</span>
+                    </div>
+                </div>
+
+                <h2 class="breathing-instruction" id="breathing-instruction">Technique 4-7-8</h2>
+                <p class="breathing-subtitle">Inspire 4s — Retiens 7s — Expire 8s</p>
+
+                <div class="breathing-timer" id="breathing-timer">0:00</div>
+
+                <div class="breathing-controls">
+                    <button class="breathing-btn primary" id="breathing-start" data-action="breathing:toggle">
+                        Commencer
+                    </button>
+                    <button class="breathing-btn secondary" data-action="breathing:stop">
+                        Terminer
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="screen-results">
+            <div class="results-screen">
+                <div class="results-icon" id="results-icon">🎉</div>
+                <h1 id="results-title">Bien joue !</h1>
+                <div class="results-score" id="results-score">80%</div>
+
+                <div class="results-stats">
+                    <div class="result-stat">
+                        <div class="value" id="results-correct">8</div>
+                        <div class="label">Correct</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="value" id="results-wrong">2</div>
+                        <div class="label">A revoir</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="value" id="results-time">2:30</div>
+                        <div class="label">Temps</div>
+                    </div>
+                </div>
+                <div class="results-stats-sr" id="results-sr-extra" style="display:none"></div>
+
+                <div class="results-actions">
+                    <button class="result-btn secondary" data-action="screen:dashboard">
+                        Tableau de bord
+                    </button>
+                    <button class="result-btn primary" id="results-retry">
+                        Recommencer
+                    </button>
+                </div>
+                <div style="text-align:center;margin-top:16px;">
+                    <button data-action="report-error" style="background:none;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 16px;color:var(--text-muted);font-size:0.8rem;cursor:pointer;">
+                        Signaler une erreur dans le contenu
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plan Bac Screen -->
+        <div class="screen" id="screen-planbac">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="planbac-content"></div>
+        </div>
+
+        <!-- Urgence Examen Screen -->
+        <div class="screen" id="screen-urgence">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="urgence-content"></div>
+        </div>
+
+        <!-- Confiance Screen -->
+        <div class="screen" id="screen-confiance">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="confiance-content"></div>
+        </div>
+
+        <!-- Conseils Screen -->
+        <div class="screen" id="screen-conseils">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="conseils-content"></div>
+        </div>
+
+        <!-- Generators Hub Screen -->
+        <div class="screen" id="screen-generators">
+            <div id="generators-content"></div>
+        </div>
+
+        <!-- Badges Screen -->
+        <div class="screen" id="screen-badges">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="badges-content"></div>
+        </div>
+
+        <!-- Missions Screen -->
+        <div class="screen" id="screen-missions">
+            <button class="back-btn" aria-label="Retour au tableau de bord"
+                    data-action="screen:dashboard">← Retour</button>
+            <div id="missions-content"></div>
+        </div>
+
+        <!-- Timeline Screen -->
+        <div class="screen" id="screen-timeline">
+            <button class="back-btn" aria-label="Retour au tableau de bord"
+                    data-action="screen:dashboard">← Retour</button>
+            <div id="timeline-content"></div>
+        </div>
+
+        <!-- Annales Screen -->
+        <div class="screen" id="screen-annales">
+            <button class="back-btn" aria-label="Retour" data-action="screen:dashboard">← Retour</button>
+            <div id="annales-content"></div>
+        </div>
+
+        <!-- Challenges Screen -->
+        <div class="screen" id="screen-challenges">
+            <button class="back-btn" data-action="screen:dashboard">← Retour</button>
+            <div id="challenges-content"></div>
+        </div>
+
+        <!-- Stats / Progression Screen -->
+        <div class="screen" id="screen-stats">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="stats-content"></div>
+        </div>
+
+        <!-- Premium Screen -->
+        <div class="screen" id="screen-premium">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="premium-content"></div>
+        </div>
+
+        <!-- Aide Screen -->
+        <div class="screen" id="screen-aide">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="aide-content"></div>
+        </div>
+
+        <!-- Stories Mode Screen -->
+        <div class="screen" id="screen-stories">
+            <div id="stories-container"></div>
+        </div>
+
+        <!-- Error Notebook Screen -->
+        <div class="screen" id="screen-errors">
+            <button class="back-btn" data-action="screen:dashboard">&larr; Retour</button>
+            <div id="error-notebook-content"></div>
+        </div>
+
+        <!-- Daily Session Screen -->
+        <div class="screen" id="screen-daily-session">
+            <div id="daily-session-content"></div>
+        </div>
+
+        <!-- DS Demain Screen -->
+        <div class="screen" id="screen-ds-demain">
+            <div id="ds-demain-content"></div>
+        </div>
+
+        <!-- Weekly Report Screen -->
+        <div class="screen" id="screen-weekly-report">
+            <div id="weekly-report-content"></div>
+        </div>
+
+        <!-- Chrono Mode Screen -->
+        <div class="screen" id="screen-chrono">
+            <div id="chrono-content"></div>
+        </div>
+
+        <!-- Feedback Screen -->
+        <div class="screen" id="screen-feedback">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">&#8592; Retour</button>
+            <div id="feedback-content"></div>
+        </div>
+
+        <!-- Admin Dashboard Screen -->
+        <div class="screen" id="screen-admin">
+            <button class="back-btn" aria-label="Retour" data-action="screen:dashboard">← Retour</button>
+            <div id="admin-dashboard-content"></div>
+            <div id="admin-content" style="display:none;">
+                <button class="back-btn" style="margin-bottom:1rem;" data-action="admin:back-dashboard">← Retour au dashboard admin</button>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div class="screen" id="screen-settings">
+            <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+
+            <h2 style="font-family: 'Fraunces', serif; margin-bottom: 1.5rem;">Parametres</h2>
+
+            <!-- Specialties section -->
+            <div class="settings-section">
+                <h3>Mes specialites</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem;">
+                    Configure tes 2 specialites de Terminale pour ne voir que tes matieres.
+                </p>
+                <button class="breathing-btn secondary" data-action="screen:subject-picker">
+                    🎓 Modifier mes specialites
+                </button>
+            </div>
+
+            <!-- Theme toggle -->
+            <div class="settings-section">
+                <h3>Apparence</h3>
+                <button class="breathing-btn secondary" id="theme-toggle-settings" data-action="theme:toggle">
+                    ☀️ Mode clair
+                </button>
+            </div>
+
+            <!-- Account / Auth section -->
+            <div class="settings-section">
+                <h3>Compte</h3>
+                <div id="auth-settings-content">
+                    <div class="auth-status-card">
+                        <span class="auth-status-dot offline"></span>
+                        <div class="auth-status-info">
+                            <strong>Non connecte</strong>
+                            <p>Cree un compte pour synchroniser tes donnees entre appareils.</p>
+                        </div>
+                    </div>
+                    <button class="breathing-btn primary" data-action="auth:login" style="margin-top:8px;">Se connecter</button>
+                </div>
+            </div>
+
+            <!-- Subscription section -->
+            <div class="settings-section">
+                <h3>Abonnement</h3>
+                <div id="subscription-content"></div>
+            </div>
+
+            <!-- Groq API (hidden/advanced) -->
+            <div class="settings-section">
+                <h3>🔧 Assistant IA</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">
+                    L'assistant IA sera disponible dans une prochaine version de StudFlow.
+                    Pendant la beta, toutes les fonctionnalites de revision fonctionnent en mode local.
+                </p>
+                <!-- Groq key input hidden during beta -->
+                <input type="hidden" id="groq-api-input">
+                <div class="api-status" id="groq-status"></div>
+            </div>
+
+            <!-- Data management (RGPD) -->
+            <div class="settings-section">
+                <h3>Mes donnees (RGPD)</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                    Tes donnees sont stockees localement dans ton navigateur. Si tu as un compte, elles sont aussi synchronisees sur nos serveurs (Supabase, UE).
+                </p>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <button class="breathing-btn secondary" data-action="auth:export">
+                        📥 Exporter mes donnees (JSON)
+                    </button>
+                    <button class="breathing-btn secondary" data-action="auth:delete-local" style="color:#ef4444;border-color:#ef4444;">
+                        🗑️ Effacer mes donnees locales
+                    </button>
+                </div>
+                <p style="color:var(--text-dim);font-size:0.75rem;margin-top:0.5rem;">
+                    <a href="#" data-action="privacy-policy" style="color:var(--accent-light);">Politique de confidentialite</a>
+                    · Donnees coach supprimees apres 90 jours · Facturation conservee 3 ans (obligation legale)
+                </p>
+            </div>
+
+            <!-- Backup -->
+            <div class="settings-section">
+                <h3>Sauvegarde</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem;">
+                    Sauvegarde toute ta progression pour la restaurer sur un autre appareil ou apres une reinstallation.
+                </p>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <button class="breathing-btn secondary" data-action="backup:export">
+                        💾 Exporter ma sauvegarde
+                    </button>
+                    <button class="breathing-btn secondary" data-action="backup:import">
+                        📂 Importer une sauvegarde
+                    </button>
+                </div>
+            </div>
+
+            <!-- Son & Vibrations -->
+            <div class="settings-section">
+                <h3>Son & Vibrations</h3>
+                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;min-height:44px;">
+                    <input type="checkbox" id="sounds-toggle"
+                        checked
+                        style="width:20px;height:20px;accent-color:var(--accent);">
+                    <span style="font-size:0.88rem;color:var(--text);">Effets sonores</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;min-height:44px;margin-top:4px;">
+                    <input type="checkbox" id="haptic-toggle"
+                        checked
+                        style="width:20px;height:20px;accent-color:var(--accent);">
+                    <span style="font-size:0.88rem;color:var(--text);">Vibrations haptiques</span>
+                </label>
+                <p style="color:var(--text-dim);font-size:0.75rem;margin-top:0.4rem;">
+                    Sons de feedback pour les bonnes reponses, niveaux et combos.
+                </p>
+            </div>
+
+            <!-- Analytics consent -->
+            <div class="settings-section">
+                <h3>Vie privee</h3>
+                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;min-height:44px;">
+                    <input type="checkbox" id="analytics-consent-toggle"
+                        data-action="analytics:consent"
+                        style="width:20px;height:20px;accent-color:var(--accent);">
+                    <span style="font-size:0.88rem;color:var(--text);">Autoriser les analytics anonymes</span>
+                </label>
+                <p style="color:var(--text-dim);font-size:0.75rem;margin-top:0.4rem;">
+                    Donnees anonymisees pour ameliorer l'app. Aucun profilage publicitaire.
+                </p>
+            </div>
+
+            <!-- Diagnostic redo -->
+            <div class="settings-section">
+                <h3>Profil</h3>
+                <button class="breathing-btn secondary" data-action="diagnostic:start">
+                    Refaire le diagnostic
+                </button>
+            </div>
+
+            <!-- Carnet d'erreurs -->
+            <div class="settings-section">
+                <h3>Carnet d'erreurs</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem;">
+                    Retrouve toutes tes erreurs et revise-les pour progresser.
+                </p>
+                <button class="breathing-btn secondary" data-action="screen:errors">
+                    📕 Voir mon carnet d'erreurs
+                </button>
+            </div>
+
+            <!-- Aide -->
+            <div class="settings-section">
+                <h3>Besoin d'aide ?</h3>
+                <button class="breathing-btn secondary" data-action="screen:aide">
+                    ❓ Guide & FAQ
+                </button>
+            </div>
+
+            <!-- Beta analytics panel (rendered by analytics.js if unlocked) -->
+            <div id="beta-analytics-panel" class="settings-section" style="display:none;"></div>
+
+            <!-- Beta invite section (rendered by betaGate.js if unlocked) -->
+            <div id="beta-invite-settings" class="settings-section" style="display:none;"></div>
+
+            <!-- Admin Panel (visible only for admin role) -->
+            <div id="admin-panel" class="admin-only">
+                <div class="settings-section" style="border:1px solid var(--accent);border-radius:12px;">
+                    <h3>Admin — Qualite contenu</h3>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:8px;">Audit flashcards et quiz : doublons, contenu court, incoherences.</p>
+                    <button class="breathing-btn primary" data-action="screen:admin">
+                        Ouvrir le panneau contenu
+                    </button>
+                </div>
+                <div class="settings-section" style="border:1px solid var(--accent);border-radius:12px;">
+                    <h3>Admin — Analytics &amp; Feedback</h3>
+                    <div id="admin-queue-status" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;line-height:1.6;"></div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="breathing-btn secondary" data-action="admin:analytics" style="font-size:0.85rem;">
+                            Voir Analytics (50)
+                        </button>
+                        <button class="breathing-btn secondary" data-action="admin:feedback" style="font-size:0.85rem;">
+                            Voir Feedback (50)
+                        </button>
+                        <button class="breathing-btn secondary" data-action="admin:flush" style="font-size:0.85rem;">
+                            Flush queues
+                        </button>
+                        <button class="breathing-btn secondary" data-action="admin:refresh" style="font-size:0.85rem;">
+                            Rafraichir
+                        </button>
+                        <button class="breathing-btn secondary" data-action="errorlog:export" style="font-size:0.85rem;">
+                            Exporter diagnostic
+                        </button>
+                    </div>
+                    <div style="margin-top:10px;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px;font-size:0.75rem;color:var(--text-dim);">
+                        <strong>Config:</strong> Analytics — MAX_QUEUE=500, BATCH=10, debounce=3s, flush=30s | Feedback — MAX_QUEUE=100, BATCH=10
+                    </div>
+                    <div id="admin-data-view" style="margin-top:12px;"></div>
+                </div>
+                <div class="settings-section">
+                    <h3>Premium</h3>
+                    <div id="admin-status" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;">Beta privee — Premium desactive</div>
+                </div>
+            </div>
+
+            <!-- Feedback -->
+            <div class="settings-section">
+                <h3>Ton avis</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem;">
+                    Ton avis aide a ameliorer StudFlow.
+                </p>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <button class="breathing-btn primary" data-action="feedback:show">
+                        Donner mon avis
+                    </button>
+                    <div style="display:flex;gap:8px;">
+                        <button class="breathing-btn secondary" data-action="feedback:bug" style="flex:1;font-size:0.82rem;">
+                            &#9888;&#65039; Signaler une erreur
+                        </button>
+                        <button class="breathing-btn secondary" data-action="feedback:idea" style="flex:1;font-size:0.82rem;">
+                            &#128161; Suggestion
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Tab Bar -->
+    <nav id="tab-bar" class="tab-bar" style="display:none;" role="navigation" aria-label="Navigation principale">
+        <button class="tab-item active" data-tab="dashboard" data-action="screen:dashboard">
+            <span class="tab-icon" aria-hidden="true">🏠</span>
+            <span class="tab-label">Dashboard</span>
+        </button>
+        <button class="tab-item" data-tab="reviser" data-action="screen:flashcard">
+            <span class="tab-icon" aria-hidden="true">🎴</span>
+            <span class="tab-label">Reviser</span>
+        </button>
+        <button class="tab-item" data-tab="focus" data-action="screen:focus">
+            <span class="tab-icon" aria-hidden="true">🎯</span>
+            <span class="tab-label">Focus</span>
+        </button>
+        <button class="tab-item" data-tab="coach" data-action="screen:coach">
+            <span class="tab-icon" aria-hidden="true">🧠</span>
+            <span class="tab-label">Coach</span>
+        </button>
+        <button class="tab-item" data-tab="plus" data-action="toggle-more-menu">
+            <span class="tab-icon" aria-hidden="true">☰</span>
+            <span class="tab-label">Plus</span>
+        </button>
+    </nav>
+
+    <!-- More Menu Overlay (triggered by Plus tab) -->
+    <div id="tab-more-menu" class="tab-more-menu" style="display:none;" role="dialog" aria-modal="true" aria-label="Autres modules">
+        <div class="tab-more-backdrop" data-action="toggle-more-menu"></div>
+        <div class="tab-more-sheet">
+            <div class="tab-more-header">
+                <span>Autres modules</span>
+                <button class="tab-more-close" data-action="toggle-more-menu" aria-label="Fermer">&times;</button>
+            </div>
+            <div class="tab-more-grid">
+                <button data-action="sr:start">
+                    <span>🧠</span><span>Revision SR</span>
+                </button>
+                <button data-action="screen:stress">
+                    <span>💆</span><span>Anti-stress</span>
+                </button>
+                <button data-action="screen:bacfrancais">
+                    <span>🇫🇷</span><span>Bac Francais</span>
+                </button>
+                <button data-action="screen:planbac">
+                    <span>📅</span><span>Plan Bac</span>
+                </button>
+                <button data-action="screen:urgence">
+                    <span>🚨</span><span>Urgence</span>
+                </button>
+                <button data-action="screen:quiz">
+                    <span>⚡</span><span>Quiz</span>
+                </button>
+                <button data-action="screen:generators">
+                    <span>⚙️</span><span>Generateurs</span>
+                </button>
+                <button data-action="screen:badges">
+                    <span>🏅</span><span>Badges</span>
+                </button>
+                <button data-action="screen:stats">
+                    <span>📊</span><span>Stats</span>
+                </button>
+                <button data-action="screen:missions">
+                    <span>🎯</span><span>Missions</span>
+                </button>
+                <button data-action="screen:matieres">
+                    <span>📚</span><span>Matieres</span>
+                </button>
+                <button data-action="screen:timeline">
+                    <span>📋</span><span>Historique</span>
+                </button>
+                <button data-action="screen:annales">
+                    <span>📜</span><span>Annales Bac</span>
+                </button>
+                <button data-action="screen:dissertation">
+                    <span>✍️</span><span>Corriger dissert</span>
+                </button>
+                <button data-action="screen:orientation">
+                    <span>🧭</span><span>Orientation</span>
+                </button>
+                <button data-action="screen:ds-demain">
+                    <span>📝</span><span>DS demain</span>
+                </button>
+                <button data-action="screen:chrono">
+                    <span>⏱️</span><span>Mode Chrono</span>
+                </button>
+                <button data-action="screen:challenges">
+                    <span>⚔️</span><span>Defis amis</span>
+                </button>
+                <button class="admin-only" data-action="screen:admin">
+                    <span>🔐</span><span>Admin</span>
+                </button>
+                <button data-action="screen:errors">
+                    <span>📕</span><span>Carnet erreurs</span>
+                </button>
+                <button data-action="screen:aide">
+                    <span>❓</span><span>Aide</span>
+                </button>
+                <button data-action="screen:settings">
+                    <span>⚙️</span><span>Parametres</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- App bundle (62 modules bundled by Vite) -->
+    <script type="module" src="/js/main.js"></script>
+    <script src="/js/inline-boot.js" defer></script>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="auth-modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+        <div class="auth-modal">
+            <button class="auth-modal-close" data-action="auth:close" aria-label="Fermer">&times;</button>
+            <h2 id="auth-modal-title">Se connecter</h2>
+            <p class="auth-modal-subtitle">Synchronise tes donnees entre tous tes appareils.</p>
+            <div id="auth-message" class="auth-message" style="display:none;"></div>
+            <input type="email" id="auth-email" class="auth-input" placeholder="Email" autocomplete="email">
+            <div class="auth-password-wrap">
+                <input type="password" id="auth-password" class="auth-input" placeholder="Mot de passe (6 car. min)" autocomplete="current-password">
+                <button type="button" class="auth-eye-btn" id="auth-eye-btn" aria-label="Afficher le mot de passe">&#128065;</button>
+            </div>
+            <label id="auth-age-row" class="auth-age-row" style="display:none;">
+                <input type="checkbox" id="auth-age-check">
+                <span>J'ai 15 ans ou plus, ou j'ai l'accord de mes parents (<a href="#" data-action="privacy-policy" style="color:var(--accent-light);">politique de confidentialite</a>)</span>
+            </label>
+            <button id="auth-submit-btn" class="auth-submit-btn" data-mode="login" data-action="auth:submit">Connexion</button>
+            <p class="auth-toggle-line">
+                <span id="auth-toggle-text">Pas encore de compte ? </span>
+                <a href="#" id="auth-toggle-link" data-mode="signup" data-action="auth:toggle">Creer un compte</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- PWA: Offline banner -->
+    <div id="pwa-offline-banner" class="pwa-offline-banner" style="display:none;">
+        StudFlow fonctionne hors ligne.
+    </div>
+
+    <!-- PWA: Install prompt -->
+    <div id="pwa-install-prompt" class="pwa-install-prompt" style="display:none;">
+        <span class="pwa-install-text">Installer StudFlow sur ton telephone</span>
+        <button id="pwa-install-btn" class="pwa-install-btn">Installer</button>
+        <button id="pwa-install-close" class="pwa-install-close" aria-label="Fermer">&times;</button>
+    </div>
+
+    <!-- PWA: Service Worker + Install logic -->
+    <script src="/js/pwa.js" defer></script>
+</body>
+</html>

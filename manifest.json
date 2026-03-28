@@ -1,0 +1,33 @@
+{
+    "name": "StudFlow — Ton coach pour reussir le bac",
+    "short_name": "StudFlow",
+    "description": "Reussis ton bac sans stress. Diagnostic, fiches, quiz, focus, anti-stress — 100% local.",
+    "start_url": "/index.html",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#1a1a2e",
+    "background_color": "#1a1a2e",
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ],
+    "categories": ["education"],
+    "lang": "fr"
+}
