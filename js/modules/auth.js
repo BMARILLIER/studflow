@@ -95,30 +95,10 @@
         if (e.target.id === 'privacy-modal') e.target.style.display = 'none';
     });
 
-    // ==================== BETA WHITELIST ====================
-    // Only these emails can sign up / sign in during closed beta.
-    // Set to null to disable the whitelist and allow everyone.
-    var BETA_WHITELIST = [
-        'bm.myreseau@gmail.com'
-        // Add beta tester emails here, e.g.:
-        // 'eleve1@example.com',
-        // 'eleve2@example.com',
-    ];
-
-    function isBetaAllowed(email) {
-        if (!BETA_WHITELIST) return true; // whitelist disabled
-        if (!email) return false;
-        return BETA_WHITELIST.indexOf(email.toLowerCase().trim()) !== -1;
-    }
-
     // ==================== SIGN UP / IN / OUT ====================
 
     function signUp(email, password) {
         var sb = getSb(); if (!sb) return showMsg('Service indisponible.', 'error');
-        if (!isBetaAllowed(email)) {
-            showMsg('Inscription fermee. Ton email n\'est pas dans la liste beta.', 'error');
-            return;
-        }
         setLoading(true);
         sb.auth.signUp({ email: email, password: password }).then(function(r) {
             if (r.error) { setLoading(false); showMsg(tr(r.error.message), 'error'); return; }
@@ -142,10 +122,6 @@
 
     function signIn(email, password) {
         var sb = getSb(); if (!sb) return showMsg('Service indisponible.', 'error');
-        if (!isBetaAllowed(email)) {
-            showMsg('Connexion fermee. Ton email n\'est pas dans la liste beta.', 'error');
-            return;
-        }
         setLoading(true);
         sb.auth.signInWithPassword({ email: email, password: password }).then(function(r) {
             setLoading(false);
