@@ -199,7 +199,10 @@
     var MAX_PDF_SIZE = 50 * 1024 * 1024; // 50 MB
 
     async function handleFile(file) {
-        if (file.type !== 'application/pdf') {
+        var isPdf = file.type === 'application/pdf' ||
+                    file.type === 'application/x-pdf' ||
+                    (file.name && file.name.toLowerCase().endsWith('.pdf'));
+        if (!isPdf) {
             if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
                 window.StudFlow.gamification.showToast('Veuillez selectionner un fichier PDF', 'xp', '⚠️');
             }
@@ -426,6 +429,9 @@
             }
         });
 
+        // Always init upload listeners (so they're ready when user reaches upload screen)
+        initUpload();
+
         // Beta gate — require invite token validation (network once)
         if (window.StudFlow.betaGate && !window.StudFlow.betaGate.isUnlocked()) {
             showScreen('betagate');
@@ -458,7 +464,6 @@
         }
 
         updateStats();
-        initUpload();
 
         // Groq API key — only load if AI is enabled
         if (window.StudFlow.features && window.StudFlow.features.AI_ENABLED) {

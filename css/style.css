@@ -7514,6 +7514,10 @@ body.has-tab-bar .app-container {
     color: var(--text); font-size: 0.95rem;
     box-sizing: border-box;
 }
+.auth-input {
+    -webkit-user-select: text;
+    user-select: text;
+}
 .auth-input:focus {
     outline: none; border-color: var(--accent);
 }
