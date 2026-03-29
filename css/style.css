@@ -2465,7 +2465,7 @@ body.theme-light .math-fallback {
    DASHBOARD LOGO
    ============================================ */
 .dash-logo { text-align: center; padding: 8px 0 0; }
-.dash-logo-img { width: 48px; height: 48px; object-fit: contain; }
+.dash-logo-img { width: 80px; height: 80px; object-fit: contain; }
 
 /* ============================================
    HERO BAC — countdown + CTA + engagement
