@@ -94,9 +94,7 @@
         var submitBtn = document.getElementById('quiz-submit');
         submitBtn.disabled = true;
         submitBtn.textContent = 'Valider';
-        // Don't set data-action yet — wait for selectAnswer to enable it
-        submitBtn.removeAttribute('data-action');
-        submitBtn.onclick = null;
+        submitBtn.onclick = function() { submitAnswer(); };
         selectedAnswer = null;
     }
 
@@ -104,9 +102,7 @@
         document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
         selectedAnswer = index;
-        var submitBtn = document.getElementById('quiz-submit');
-        submitBtn.disabled = false;
-        submitBtn.setAttribute('data-action', 'quiz:submit');
+        document.getElementById('quiz-submit').disabled = false;
     }
 
     function submitAnswer() {
@@ -154,8 +150,6 @@
         var submitBtn = document.getElementById('quiz-submit');
         submitBtn.disabled = false;
         submitBtn.textContent = 'Question suivante \u2192';
-        // Remove data-action to prevent double-fire via inline-boot
-        submitBtn.removeAttribute('data-action');
         submitBtn.onclick = function() {
             currentIndex++;
             displayQuestion();

@@ -56,7 +56,6 @@
         'flashcards.showModePicker': function(p) { StudFlow.flashcards.showModePicker(p || 'all'); },
         'quiz:create-form':     function() { StudFlow.quiz.showCreateForm(); },
         'quiz:create':          function() { StudFlow.quiz.createQuestion(); },
-        'quiz:submit':          function() { StudFlow.quiz.submitAnswer(); },
         'breathing:toggle':     function() { StudFlow.breathing.toggle(); },
         'breathing:stop':       function() { StudFlow.breathing.stop(); StudFlow.app.showScreen('dashboard'); },
         'diagnostic:start':     function() { StudFlow.diagnostic.start(); },
