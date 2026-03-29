@@ -1344,6 +1344,42 @@ body.theme-light .math-fallback {
 }
 .br-btn-stop:hover { border-color: #60a5fa; color: #94a3b8; }
 
+/* Particles */
+.br-particle {
+    position: absolute; width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(96,165,250,0.5); filter: blur(1px);
+    animation: brFloat 6s ease-in-out infinite;
+    pointer-events: none;
+}
+.br-p0 { top: 10%; left: 20%; animation-delay: 0s; animation-duration: 7s; }
+.br-p1 { top: 25%; right: 15%; animation-delay: 1s; animation-duration: 8s; background: rgba(34,211,238,0.4); }
+.br-p2 { bottom: 20%; left: 10%; animation-delay: 2s; animation-duration: 6s; background: rgba(167,139,250,0.4); }
+.br-p3 { bottom: 30%; right: 20%; animation-delay: 0.5s; animation-duration: 9s; }
+.br-p4 { top: 50%; left: 5%; animation-delay: 3s; animation-duration: 7s; background: rgba(34,211,238,0.3); }
+.br-p5 { top: 15%; right: 30%; animation-delay: 1.5s; animation-duration: 8s; background: rgba(167,139,250,0.3); }
+@keyframes brFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+    25% { transform: translate(8px, -12px) scale(1.3); opacity: 0.7; }
+    50% { transform: translate(-6px, 6px) scale(0.8); opacity: 0.5; }
+    75% { transform: translate(10px, 4px) scale(1.1); opacity: 0.6; }
+}
+/* Particles react to breathing */
+.br-halo.active.expand ~ .br-particle { animation-duration: 4s; }
+.br-halo.active.contract ~ .br-particle { animation-duration: 8s; }
+
+/* Duration selector */
+.br-duration {
+    display: flex; justify-content: center; gap: 8px; margin-bottom: 12px;
+    animation: brFade 0.8s ease 0.15s both;
+}
+.br-dur-chip {
+    padding: 5px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    color: #475569; cursor: pointer; transition: all 0.2s ease;
+}
+.br-dur-chip:hover { border-color: #60a5fa; color: #94a3b8; }
+.br-dur-chip.selected { background: rgba(96,165,250,0.1); border-color: #60a5fa; color: #e2e8f0; }
+
 @keyframes brFade {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }

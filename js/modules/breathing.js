@@ -6,6 +6,7 @@
     var _totalSeconds = 0;
     var _cyclePhase = 0;
     var _phaseElapsed = 0;
+    var _targetDuration = 60; // seconds
 
     // ==================== MODES ====================
     var MODES = {
@@ -62,17 +63,29 @@
             return '<button class="' + cls + '" data-action="breathing.selectMode" data-param="' + key + '">' + m.name + '</button>';
         }).join('');
 
+        // Particles HTML
+        var particles = '';
+        for (var p = 0; p < 6; p++) {
+            particles += '<div class="br-particle br-p' + p + '"></div>';
+        }
+
         container.innerHTML = ''
-            + '<p class="br-intro">Relache les epaules. Concentre-toi sur le halo.</p>'
+            + '<p class="br-intro">Relache les epaules. Concentre-toi sur la forme.</p>'
             + '<div class="br-modes">' + modesHTML + '</div>'
             + '<p class="br-desc">' + MODES[_currentMode].desc + '</p>'
             + '<div class="br-halo-container">'
+            + particles
             + '<div class="br-halo" id="br-halo">'
             + '<div class="br-halo-ring"></div>'
             + '<div class="br-halo-core">'
             + '<span class="br-phase-text" id="br-phase">Pret ?</span>'
             + '</div>'
             + '</div>'
+            + '</div>'
+            + '<div class="br-duration">'
+            + '<button class="br-dur-chip' + (_targetDuration === 30 ? ' selected' : '') + '" data-action="breathing.setDuration" data-param="30">30s</button>'
+            + '<button class="br-dur-chip' + (_targetDuration === 60 ? ' selected' : '') + '" data-action="breathing.setDuration" data-param="60">1 min</button>'
+            + '<button class="br-dur-chip' + (_targetDuration === 180 ? ' selected' : '') + '" data-action="breathing.setDuration" data-param="180">3 min</button>'
             + '</div>'
             + '<div class="br-timer" id="br-timer">0:00</div>'
             + '<div class="br-controls">'
@@ -84,6 +97,11 @@
     function selectMode(key) {
         if (_running) stopBreathing();
         _currentMode = key;
+        render();
+    }
+
+    function setDuration(secs) {
+        _targetDuration = parseInt(secs, 10) || 60;
         render();
     }
 
@@ -140,6 +158,11 @@
             _phaseElapsed = 0;
             _cyclePhase = (_cyclePhase + 1) % phases.length;
         }
+
+        // Auto-stop at target duration
+        if (_targetDuration > 0 && _totalSeconds >= _targetDuration) {
+            finishBreathing();
+        }
     }
 
     function pauseBreathing() {
@@ -164,9 +187,46 @@
         _phaseElapsed = 0;
     }
 
+    function finishBreathing() {
+        _running = false;
+        clearInterval(_timer);
+        _timer = null;
+
+        // Show end message
+        var phaseEl = document.getElementById('br-phase');
+        if (phaseEl) phaseEl.textContent = 'C\'est bien. Tu peux reprendre.';
+
+        var halo = document.getElementById('br-halo');
+        if (halo) { halo.classList.remove('expand', 'hold', 'contract'); }
+
+        var btn = document.getElementById('br-start');
+        if (btn) btn.textContent = 'Recommencer';
+
+        if (_totalSeconds > 10 && window.StudFlow.gamification) {
+            window.StudFlow.gamification.addXP('breathing_session');
+            setTimeout(function() {
+                window.StudFlow.gamification.showToast('Parfait. On reprend doucement.', 'xp', '\uD83D\uDE0C');
+            }, 800);
+        }
+
+        _totalSeconds = 0;
+        _cyclePhase = 0;
+        _phaseElapsed = 0;
+    }
+
     function stop() {
         stopBreathing();
         window.StudFlow.app.showScreen('dashboard');
+    }
+
+    // ==================== SMART SUGGEST ====================
+    // Called after difficult sessions or when stress is detected
+    function suggest(reason) {
+        if (!window.StudFlow.gamification) return;
+        var msg = reason === 'post_session'
+            ? 'Session intense. 30 secondes de respiration ?'
+            : 'On prend 30 secondes pour se recentrer.';
+        window.StudFlow.gamification.showToast(msg, 'xp', '\uD83D\uDCA8');
     }
 
     // ==================== EXPOSE ====================
@@ -175,6 +235,8 @@
         start: start,
         toggle: toggle,
         stop: stop,
-        selectMode: selectMode
+        selectMode: selectMode,
+        setDuration: setDuration,
+        suggest: suggest
     };
 })();

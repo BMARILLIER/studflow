@@ -462,6 +462,15 @@
         if (window.StudFlow.events) {
             window.StudFlow.events.emit('flashcard:completed', { score: score, total: total, percent: percent, deck: currentDeck, srMode: srMode, mode: currentMode });
         }
+
+        // Suggest breathing after difficult session (score < 40% and stressed profile)
+        if (percent < 40 && window.StudFlow.breathing) {
+            var prof = window.StudFlow.storage.getUserProfile();
+            if (prof && prof.behavior && prof.behavior.stressLevel === 'high') {
+                setTimeout(function() { window.StudFlow.breathing.suggest('post_session'); }, 1500);
+            }
+        }
+
         window.StudFlow.app.showScreen('results');
     }
 
