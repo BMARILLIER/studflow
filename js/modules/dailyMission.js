@@ -126,14 +126,33 @@
                 + '</div>';
         }).join('');
 
+        // Determine next incomplete task for CTA
+        var nextAction = '';
+        var nextLabel = '';
+        var nextTime = '~3 min';
+        for (var i = 0; i < TASKS.length; i++) {
+            if (state[TASKS[i].id] < TASKS[i].target) {
+                if (TASKS[i].id === 'focus') { nextAction = 'focus'; nextLabel = 'Lancer le Focus'; }
+                else if (TASKS[i].id === 'flashcards') { nextAction = 'flashcard'; nextLabel = 'Reviser les cartes'; }
+                else { nextAction = 'quiz'; nextLabel = 'Lancer le quiz'; }
+                break;
+            }
+        }
+
+        var ctaHTML = nextAction
+            ? '<button class="dm-cta" data-action="dashboard.goTo" data-param="' + nextAction + '">' + nextLabel + ' \u2192</button>'
+            : '';
+
         return '<div id="dm-card" class="dm-card">'
             + '<div class="dm-header">'
-            + '<span class="dm-icon">🎯</span>'
+            + '<span class="dm-icon">\uD83C\uDFAF</span>'
             + '<span class="dm-title">Mission du jour</span>'
             + '<span class="dm-badge">' + done + '/' + total + '</span>'
+            + '<span class="dm-time">' + nextTime + '</span>'
             + '</div>'
             + '<div class="dm-bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100" aria-label="Mission du jour"><div class="dm-fill" style="width:' + pct + '%"></div></div>'
             + tasksHTML
+            + ctaHTML
             + '</div>';
     }
 
