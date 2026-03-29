@@ -169,23 +169,7 @@ header {
     background: rgba(11, 16, 32, 0.92);
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center;
-    padding: 0 16px; height: 56px;
-    gap: 14px;
-}
-
-.logo {
-    display: flex; align-items: center;
-    text-decoration: none;
-    flex-shrink: 0;
-}
-
-.logo-icon {
-    display: block;
-    width: 44px; height: 44px;
-    background-image: url('/icons/logo-icon.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+    padding: 0; height: 56px;
 }
 
 @keyframes logoPulse {
