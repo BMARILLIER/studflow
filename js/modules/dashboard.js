@@ -373,6 +373,7 @@
 
         // ===== ZONE 2: ENGAGEMENT (streak + mission) =====
         var engagementHTML = ''
+            + renderStreakAlert(gamStats)
             + renderStreakCard(gamStats)
             + dailyMissionHTML
             + dailyGoalHTML;
@@ -547,6 +548,34 @@
             + next.btnLabel + ' →'
             + '</button>'
             + '<p class="dash-next-coach">' + coachMsg + '</p>'
+            + '</div>';
+    }
+
+    // ==================== STREAK ALERT ====================
+    function renderStreakAlert(gamStats) {
+        var streak = gamStats.streak || 0;
+        if (streak < 2) return ''; // No streak to lose
+
+        // Only show alert after 18h if daily mission not completed
+        var hour = new Date().getHours();
+        if (hour < 18) return '';
+
+        var dm = window.StudFlow.dailyMission;
+        if (!dm) return '';
+        var dmState = window.StudFlow.storage.loadData('studflow_daily_mission', null);
+        if (dmState && dmState.completed) return ''; // Mission done, streak safe
+
+        return '<div class="dash-section streak-alert">'
+            + '<div class="streak-alert-content">'
+            + '<span class="streak-alert-icon">\u26A0\uFE0F</span>'
+            + '<div class="streak-alert-text">'
+            + '<strong>Tu vas perdre ton streak de ' + streak + ' jours !</strong>'
+            + '<span>Complete ta mission avant minuit.</span>'
+            + '</div>'
+            + '</div>'
+            + '<button class="streak-alert-btn" data-action="dashboard.goTo" data-param="flashcard">'
+            + 'Sauver mon streak \u2192'
+            + '</button>'
             + '</div>';
     }
 
