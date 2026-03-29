@@ -191,7 +191,8 @@
         timeline: function() { if (window.StudFlow.timeline) window.StudFlow.timeline.show(); },
         annales: function() { if (window.StudFlow.annales) window.StudFlow.annales.show(); },
         challenges: function() { if (window.StudFlow.challenges) window.StudFlow.challenges.show(); },
-        chrono: function() { if (window.StudFlow.chronoMode) window.StudFlow.chronoMode.show(); }
+        chrono: function() { if (window.StudFlow.chronoMode) window.StudFlow.chronoMode.show(); },
+        sr: function() { window.StudFlow.flashcards.start('sr'); }
     };
 
     function goTo(moduleId) {
@@ -361,36 +362,36 @@
             weeklyReportBannerHTML = window.StudFlow.weeklyReport.renderDashboardBanner();
         }
 
-        // ===== ZONE 1: L'ESSENTIEL (ce que l'eleve voit en premier) =====
-        // Principe: question + 3 actions + matieres visibles
+        // ===== ZONE 1: HERO + CONTINUER =====
         var essentialHTML = ''
             + renderBetaBanner()
             + weeklyReportBannerHTML
             + subjectPickerCTA
             + renderGreetingBar(greeting, gamStats)
+            + renderContinueButton()
             + renderHeroActions()
-            + renderSubjectStrip()
-            + dailySessionHTML
-            + dsDemainHTML;
+            + renderSubjectStrip();
 
-        // ===== ZONE 2: PROGRESSION (visible sans scroller beaucoup) =====
-        var progressHTML = ''
-            + renderCountdown()
-            + renderGamificationBar(gamStats);
+        // ===== ZONE 2: ENGAGEMENT (streak + mission + countdown) =====
+        var engagementHTML = ''
+            + renderStreakCard(gamStats)
+            + dailyMissionHTML
+            + dailyGoalHTML
+            + renderCountdown();
 
-        // ===== ZONE 3: ACTIONS RAPIDES (3 boutons max) =====
+        // ===== ZONE 3: ACTIONS RAPIDES =====
         var actionsHTML = '<div class="dash-quick-actions">'
             + renderChallengeCard()
             + renderChronoCard()
             + '</div>';
 
-        // ===== ZONE 4: INSIGHTS (collapsible) =====
+        // ===== ZONE 4: INSIGHTS =====
         var insightsHTML = ''
             + renderDailyTip()
             + adaptiveHTML
             + errorNbHTML;
 
-        var primaryHTML = essentialHTML + progressHTML + actionsHTML + insightsHTML;
+        var primaryHTML = essentialHTML + engagementHTML + actionsHTML + insightsHTML;
 
         // ===== COLLAPSIBLE ZONE — "Outils avances" =====
         var moreExpanded = localStorage.getItem('studflow_dash_more_open') === '1';
@@ -424,7 +425,6 @@
             + '<div id="dash-more-content" class="' + moreClass + '">'
             + renderNextAction()
             + renderProfCard(state)
-            + dailyMissionHTML
             + renderProgressSection(focusStats, gamStats, totalCards, masteredCards, totalQuiz)
             + renderProfileSection(profileData, profileKey, greeting)
             + renderRecommendationsSection(recs, profileKey)
@@ -549,6 +549,76 @@
             + next.btnLabel + ' →'
             + '</button>'
             + '<p class="dash-next-coach">' + coachMsg + '</p>'
+            + '</div>';
+    }
+
+    // ==================== CONTINUE BUTTON ====================
+    function renderContinueButton() {
+        // Determine last activity to resume
+        var sr = window.StudFlow.spacedRepetition;
+        var dueCount = sr ? sr.getDueCount() : 0;
+        var state = getAppState();
+        var hasPdf = !!(state.pdfText && state.pdfText.length > 50);
+        var hasCards = (state.flashcards && state.flashcards.length > 0)
+            || (state.customFlashcards && state.customFlashcards.length > 0);
+
+        // Pick the best "continue" action
+        var action = '';
+        var label = '';
+        var icon = '';
+
+        if (dueCount > 0) {
+            action = 'sr';
+            label = dueCount + ' carte' + (dueCount > 1 ? 's' : '') + ' a reviser';
+            icon = '🔄';
+        } else if (hasCards) {
+            action = 'flashcard';
+            label = 'Continuer les flashcards';
+            icon = '🎴';
+        } else if (hasPdf) {
+            action = 'flashcard';
+            label = 'Reviser ton cours';
+            icon = '📄';
+        } else {
+            return ''; // Nothing to continue
+        }
+
+        return '<div class="dash-section dash-continue">'
+            + '<button class="dash-continue-btn" data-action="dashboard.goTo" data-param="' + action + '">'
+            + '<span class="dash-continue-icon">' + icon + '</span>'
+            + '<span class="dash-continue-text">'
+            + '<strong>Continuer</strong>'
+            + '<span>' + label + '</span>'
+            + '</span>'
+            + '<span class="dash-continue-arrow">\u2192</span>'
+            + '</button>'
+            + '</div>';
+    }
+
+    // ==================== STREAK + XP CARD ====================
+    function renderStreakCard(gamStats) {
+        var streak = gamStats.streak || 0;
+        var xp = gamStats.xp || 0;
+        var level = gamStats.level || 1;
+        var nextXp = gamStats.nextLevelXp || 100;
+        var pct = gamStats.progressPct || 0;
+
+        if (streak === 0 && xp === 0) return '';
+
+        var streakHTML = streak > 0
+            ? '<div class="dash-streak-pill">'
+            + '<span class="dash-streak-fire">\uD83D\uDD25</span>'
+            + '<span class="dash-streak-count">' + streak + ' jour' + (streak > 1 ? 's' : '') + '</span>'
+            + '</div>'
+            : '';
+
+        var xpHTML = '<div class="dash-xp-mini">'
+            + '<div class="dash-xp-mini-bar"><div class="dash-xp-mini-fill" style="width:' + pct + '%"></div></div>'
+            + '<span class="dash-xp-mini-label">Niv. ' + level + ' \u00B7 ' + xp + '/' + nextXp + ' XP</span>'
+            + '</div>';
+
+        return '<div class="dash-section dash-engagement-row">'
+            + streakHTML + xpHTML
             + '</div>';
     }
 

@@ -91,9 +91,11 @@
 
         document.getElementById('quiz-feedback').className = 'quiz-feedback';
         document.getElementById('quiz-feedback').textContent = '';
-        document.getElementById('quiz-submit').disabled = true;
-        document.getElementById('quiz-submit').textContent = 'Valider';
-        document.getElementById('quiz-submit').onclick = submitAnswer;
+        var submitBtn = document.getElementById('quiz-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Valider';
+        submitBtn.setAttribute('data-action', 'quiz:submit');
+        submitBtn.onclick = null;
         selectedAnswer = null;
     }
 
@@ -142,9 +144,12 @@
         window.StudFlow.app.updateStats();
         window.StudFlow.storage.saveAppState(state);
 
-        document.getElementById('quiz-submit').disabled = false;
-        document.getElementById('quiz-submit').textContent = 'Question suivante →';
-        document.getElementById('quiz-submit').onclick = () => {
+        var submitBtn = document.getElementById('quiz-submit');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Question suivante \u2192';
+        // Remove data-action to prevent double-fire via inline-boot
+        submitBtn.removeAttribute('data-action');
+        submitBtn.onclick = function() {
             currentIndex++;
             displayQuestion();
         };

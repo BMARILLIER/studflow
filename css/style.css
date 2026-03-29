@@ -2210,6 +2210,50 @@ body.theme-light .math-fallback {
 }
 
 /* --- Session Card (3 core actions) --- */
+/* Continue button — resume last activity */
+.dash-continue { padding: 0; }
+.dash-continue-btn {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    padding: 14px 18px; border-radius: 16px; cursor: pointer;
+    background: linear-gradient(135deg, rgba(52,211,153,0.12), rgba(52,211,153,0.04));
+    border: 1.5px solid rgba(52,211,153,0.3);
+    color: var(--text); transition: all 0.2s ease;
+}
+.dash-continue-btn:hover {
+    border-color: rgba(52,211,153,0.5);
+    box-shadow: 0 6px 20px rgba(52,211,153,0.12);
+    transform: translateY(-2px);
+}
+.dash-continue-icon { font-size: 1.6rem; }
+.dash-continue-text { flex: 1; text-align: left; }
+.dash-continue-text strong { display: block; font-size: 0.95rem; margin-bottom: 2px; }
+.dash-continue-text span { font-size: 0.78rem; color: var(--text-muted); }
+.dash-continue-arrow { font-size: 1.2rem; color: var(--text-muted); }
+
+/* Streak + XP engagement row */
+.dash-engagement-row {
+    display: flex; align-items: center; gap: 12px; padding: 0;
+}
+.dash-streak-pill {
+    display: flex; align-items: center; gap: 4px;
+    padding: 6px 14px; border-radius: 50px;
+    background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.25);
+    font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+    animation: heroFadeIn 0.4s ease 0.2s both;
+}
+.dash-streak-fire { font-size: 1.1rem; }
+.dash-xp-mini { flex: 1; min-width: 0; animation: heroFadeIn 0.4s ease 0.3s both; }
+.dash-xp-mini-bar {
+    height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08);
+    overflow: hidden; margin-bottom: 4px;
+}
+.dash-xp-mini-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    transition: width 0.5s ease;
+}
+.dash-xp-mini-label { font-size: 0.7rem; color: var(--text-muted); }
+
 /* Hero: "Que veux-tu faire ?" — DOMINANT, above the fold */
 .dash-hero-question {
     text-align: center; padding: 1.5rem 0 0.5rem;
