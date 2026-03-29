@@ -180,7 +180,7 @@ header {
 }
 
 .logo-icon {
-    width: 52px; height: 52px; min-width: 52px; min-height: 52px;
+    width: 104px; height: 104px; min-width: 104px; min-height: 104px;
     border-radius: 10px;
     overflow: hidden;
     background-image: url('/icons/Studflow.png');
