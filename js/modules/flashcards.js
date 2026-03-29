@@ -194,15 +194,23 @@
             srCards = [];
         }
 
-        // Build mode-aware deck if not SR
-        if (!srMode && currentMode !== 'auto' && deck !== 'custom') {
+        // Build adaptive session from profile + stats
+        if (!srMode && window.StudFlow.sessionSettings) {
+            var profile = window.StudFlow.storage.getUserProfile();
+            var allPool = currentMode !== 'auto' && deck !== 'custom' ? buildModeDeck(currentDeck) : getAllCards();
+            shuffledCards = window.StudFlow.sessionSettings.buildAdaptiveSession(profile, {}, allPool, null);
+            if (!shuffledCards || shuffledCards.length === 0) {
+                // Fallback to mode-aware deck
+                shuffledCards = (currentMode !== 'auto' && deck !== 'custom') ? buildModeDeck(currentDeck) : null;
+            }
+        } else if (!srMode && currentMode !== 'auto' && deck !== 'custom') {
             shuffledCards = buildModeDeck(currentDeck);
         }
 
         // Coach message at session start
         if (window.StudFlow.coachEngine && window.StudFlow.gamification) {
-            var profile = window.StudFlow.storage.getUserProfile();
-            var msg = window.StudFlow.coachEngine.getCoachMessage(profile, { moment: 'start' });
+            var p = window.StudFlow.storage.getUserProfile();
+            var msg = window.StudFlow.coachEngine.getCoachMessage(p, { moment: 'start' });
             if (msg) window.StudFlow.gamification.showToast(msg, 'xp', '\uD83E\uDDE0');
         }
 
