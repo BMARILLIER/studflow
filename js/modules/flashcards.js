@@ -332,6 +332,26 @@
         window.StudFlow.storage.saveAppState(state);
         currentIndex++;
 
+        // Mid-session coach feedback (at key moments, not every card)
+        if (window.StudFlow.coachEngine && window.StudFlow.gamification && currentIndex < cards.length) {
+            var pct = Math.round((currentIndex / cards.length) * 100);
+            var rate = cards.length > 0 ? Math.round((score / currentIndex) * 100) : 0;
+            var shouldSpeak = false;
+            // Speak at 25%, 50%, 75% progress, or after 3 wrong in a row
+            if (pct >= 25 && pct < 30) shouldSpeak = true;
+            if (pct >= 50 && pct < 55) shouldSpeak = true;
+            if (pct >= 75 && pct < 80) shouldSpeak = true;
+            if (!knew && state.streak === 0 && currentIndex >= 3) shouldSpeak = true;
+
+            if (shouldSpeak) {
+                var profile = window.StudFlow.storage.getUserProfile();
+                var midMsg = window.StudFlow.coachEngine.getCoachMessage(profile, {
+                    moment: 'during', progress: pct, successRate: rate
+                });
+                if (midMsg) window.StudFlow.gamification.showToast(midMsg, 'xp', '\uD83D\uDCAC');
+            }
+        }
+
         if (currentIndex >= cards.length) {
             showResults();
         } else {
