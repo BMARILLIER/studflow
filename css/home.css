@@ -21,20 +21,12 @@
     display: flex; align-items: center; gap: 0.5rem;
     text-decoration: none; color: var(--text);
 }
-/* Logo icon (S gradient) */
+/* Logo icon */
 .home-logo-icon {
     width: 32px; height: 32px;
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px; overflow: hidden;
+    background: url('/icons/Studflow.png') center/cover no-repeat;
     box-shadow: 0 2px 8px rgba(168,85,247,0.2);
-}
-.home-logo-icon::before {
-    content: 'S'; font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.25rem; font-weight: 800;
-    background: linear-gradient(135deg, #A855F7, #FF4D8D);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 .home-logo-text {
     font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; color: var(--text);
