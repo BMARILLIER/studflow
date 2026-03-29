@@ -2301,6 +2301,64 @@ body.theme-light .math-fallback {
 }
 .streak-alert-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,0.3); }
 
+/* Explore button + drawer */
+.dash-explore-row { padding: 0; }
+.dash-explore-btn {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 14px 18px; border-radius: 14px; cursor: pointer;
+    background: var(--bg-glass, rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-muted); font-size: 0.88rem; font-weight: 600;
+    transition: all 0.2s ease;
+}
+.dash-explore-btn:hover {
+    border-color: var(--accent); color: var(--text);
+    background: rgba(168,85,247,0.06);
+}
+.dash-explore-arrow { font-size: 1.1rem; }
+
+.explore-drawer-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+    z-index: 9999; display: flex; align-items: flex-end; justify-content: center;
+    animation: drawerFadeIn 0.2s ease;
+}
+@keyframes drawerFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes drawerSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.explore-drawer {
+    background: var(--bg-card, #1a1a2e); border-radius: 24px 24px 0 0;
+    width: 100%; max-width: 480px; max-height: 75vh; overflow-y: auto;
+    padding: 20px 20px 32px; animation: drawerSlideUp 0.3s ease;
+}
+.explore-drawer-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+}
+.explore-drawer-header h3 {
+    font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; margin: 0;
+}
+.explore-drawer-close {
+    background: none; border: none; color: var(--text-muted); font-size: 1.2rem;
+    cursor: pointer; padding: 4px 8px;
+}
+.explore-drawer-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.explore-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 14px 8px; border-radius: 14px; cursor: pointer;
+    background: var(--bg-glass, rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--text); transition: all 0.2s ease;
+}
+.explore-item:hover {
+    border-color: var(--accent); background: rgba(168,85,247,0.08);
+    transform: translateY(-2px);
+}
+.explore-item-icon { font-size: 1.5rem; }
+.explore-item-label { font-size: 0.72rem; font-weight: 600; text-align: center; color: var(--text-muted); }
+
 /* Continue button — resume last activity */
 .dash-continue { padding: 0; }
 .dash-continue-btn {

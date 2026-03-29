@@ -392,50 +392,15 @@
 
         var primaryHTML = essentialHTML + engagementHTML + actionsHTML + insightsHTML;
 
-        // ===== COLLAPSIBLE ZONE — "Outils avances" =====
-        var moreExpanded = localStorage.getItem('studflow_dash_more_open') === '1';
-        var moreClass = moreExpanded ? 'dash-more-zone open' : 'dash-more-zone';
-        var moreBtnLabel = moreExpanded ? 'Moins d\'outils' : 'Outils avances';
-        var moreBtnIcon = moreExpanded ? '▲' : '▼';
-
-        var quickRevHTML = '';
-        if (window.StudFlow.quickRevision) {
-            quickRevHTML = window.StudFlow.quickRevision.renderCard();
-        }
-
-        var weeklyProgressHTML = '';
-        if (window.StudFlow.weeklyProgress) {
-            weeklyProgressHTML = window.StudFlow.weeklyProgress.renderCard();
-        }
-
-        var weeklyReportWidgetHTML = '';
-        if (window.StudFlow.weeklyReport) {
-            weeklyReportWidgetHTML = window.StudFlow.weeklyReport.renderDashboardWidget();
-        }
-
-        var moreExpanded = moreClass.indexOf('open') !== -1 ? 'true' : 'false';
-        var secondaryHTML = ''
-            + '<div class="dash-more-toggle">'
-            + '<button class="dash-more-btn" data-action="dashboard.toggleMore" aria-expanded="' + moreExpanded + '" aria-controls="dash-more-content">'
-            + '<span>' + moreBtnLabel + '</span>'
-            + '<span class="dash-more-icon">' + moreBtnIcon + '</span>'
+        // ===== EXPLORE BUTTON (replaces cluttered collapsible) =====
+        var exploreHTML = '<div class="dash-section dash-explore-row">'
+            + '<button class="dash-explore-btn" data-action="dashboard.openExplore">'
+            + '<span>\uD83D\uDD0D Explorer tous les outils</span>'
+            + '<span class="dash-explore-arrow">\u2192</span>'
             + '</button>'
-            + '</div>'
-            + '<div id="dash-more-content" class="' + moreClass + '">'
-            + renderNextAction()
-            + renderProfCard(state)
-            + renderProgressSection(focusStats, gamStats, totalCards, masteredCards, totalQuiz)
-            + renderProfileSection(profileData, profileKey, greeting)
-            + renderRecommendationsSection(recs, profileKey)
-            + renderHeroCTA()
-            + renderAdvancedTools()
-            + renderSecondaryActions()
-            + srBlockHTML
-            + missionsWidgetHTML
-            + premiumBadgeHTML
             + '</div>';
 
-        container.innerHTML = primaryHTML + secondaryHTML;
+        container.innerHTML = primaryHTML + exploreHTML;
     }
 
     // ==================== HERO CTA (import PDF) ====================
@@ -916,16 +881,61 @@
 
     // ==================== TOGGLE MORE ====================
     function toggleMore() {
-        var zone = document.querySelector('.dash-more-zone');
-        var btn = document.querySelector('.dash-more-btn');
-        if (!zone || !btn) return;
+        // Legacy — kept for compatibility
+        openExplore();
+    }
 
-        var isOpen = zone.classList.contains('open');
-        zone.classList.toggle('open');
-        btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-        localStorage.setItem('studflow_dash_more_open', isOpen ? '0' : '1');
-        btn.querySelector('span:first-child').textContent = isOpen ? 'Outils avances' : 'Moins d\'outils';
-        btn.querySelector('.dash-more-icon').textContent = isOpen ? '▼' : '▲';
+    function openExplore() {
+        // Remove existing drawer if any
+        var existing = document.getElementById('explore-drawer');
+        if (existing) { existing.remove(); return; }
+
+        var items = [
+            { icon: '\uD83D\uDCDA', label: 'Matieres', action: 'matieres' },
+            { icon: '\uD83D\uDCDC', label: 'Annales Bac', action: 'annales' },
+            { icon: '\uD83E\uDDE0', label: 'Coach IA', action: 'coach' },
+            { icon: '\uD83C\uDFAF', label: 'Session Focus', action: 'focus' },
+            { icon: '\uD83D\uDCA6', label: 'Anti-stress', action: 'stress' },
+            { icon: '\uD83D\uDCC5', label: 'Plan Bac', action: 'planbac' },
+            { icon: '\uD83D\uDCCA', label: 'Progression', action: 'stats' },
+            { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' },
+            { icon: '\uD83C\uDFAF', label: 'Missions', action: 'missions' },
+            { icon: '\u2699\uFE0F', label: 'Generateurs', action: 'generators' },
+            { icon: '\uD83D\uDCD5', label: 'Carnet erreurs', action: 'screen:errors' },
+            { icon: '\u2753', label: 'Aide', action: 'screen:aide' }
+        ];
+
+        var grid = items.map(function(item) {
+            var da = item.action.indexOf('screen:') === 0 ? item.action : 'dashboard.goTo';
+            var dp = item.action.indexOf('screen:') === 0 ? '' : item.action;
+            return '<button class="explore-item" data-action="' + da + '"' + (dp ? ' data-param="' + dp + '"' : '') + '>'
+                + '<span class="explore-item-icon">' + item.icon + '</span>'
+                + '<span class="explore-item-label">' + item.label + '</span>'
+                + '</button>';
+        }).join('');
+
+        var drawer = document.createElement('div');
+        drawer.id = 'explore-drawer';
+        drawer.className = 'explore-drawer-overlay';
+        drawer.innerHTML = '<div class="explore-drawer">'
+            + '<div class="explore-drawer-header">'
+            + '<h3>Explorer</h3>'
+            + '<button class="explore-drawer-close" data-action="dashboard.closeExplore">\u2715</button>'
+            + '</div>'
+            + '<div class="explore-drawer-grid">' + grid + '</div>'
+            + '</div>';
+
+        // Close on overlay click
+        drawer.addEventListener('click', function(e) {
+            if (e.target === drawer) closeExplore();
+        });
+
+        document.body.appendChild(drawer);
+    }
+
+    function closeExplore() {
+        var el = document.getElementById('explore-drawer');
+        if (el) el.remove();
     }
 
     // ==================== BETA BANNER ====================
@@ -1385,6 +1395,8 @@
         render: render,
         goTo: goTo,
         toggleMore: toggleMore,
+        openExplore: openExplore,
+        closeExplore: closeExplore,
         toggleObjective: toggleObjective,
         showTourIfNeeded: showTourIfNeeded,
         tourNext: tourNext,
