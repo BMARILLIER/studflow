@@ -59,7 +59,12 @@
         }
 
         document.getElementById('quiz-number').textContent = `Question ${currentIndex + 1}`;
-        document.getElementById('quiz-question').textContent = q.question;
+        var math = window.StudFlow.mathRender;
+        if (math) {
+            math.setContent(document.getElementById('quiz-question'), q.question);
+        } else {
+            document.getElementById('quiz-question').textContent = q.question;
+        }
         document.getElementById('quiz-progress').textContent =
             `${currentIndex + 1}/${questions.length}`;
         var qzPct = Math.round(((currentIndex + 1) / questions.length) * 100);
@@ -74,7 +79,12 @@
         q.options.forEach((option, index) => {
             const btn = document.createElement('button');
             btn.className = 'quiz-option';
-            btn.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+            var optText = `${String.fromCharCode(65 + index)}. ${option}`;
+            if (window.StudFlow.mathRender) {
+                window.StudFlow.mathRender.setContent(btn, optText);
+            } else {
+                btn.textContent = optText;
+            }
             btn.onclick = () => selectAnswer(index, btn);
             optionsContainer.appendChild(btn);
         });
@@ -115,13 +125,17 @@
             score++;
             state.streak = (state.streak || 0) + 1;
             feedback.className = 'quiz-feedback correct';
-            feedback.textContent = '✓ Correct ! ' + (q.explanation || '');
+            var correctMsg = '\u2713 Correct ! ' + (q.explanation || '');
+            if (window.StudFlow.mathRender) { window.StudFlow.mathRender.setContent(feedback, correctMsg); }
+            else { feedback.textContent = correctMsg; }
             if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('quiz_correct');
             if (window.StudFlow.sounds) window.StudFlow.sounds.correct();
         } else {
             state.streak = 0;
             feedback.className = 'quiz-feedback wrong';
-            feedback.textContent = `✗ ${q.explanation || 'La bonne reponse etait ' + q.options[q.correctIndex]}`;
+            var wrongMsg = '\u2717 ' + (q.explanation || 'La bonne reponse etait ' + q.options[q.correctIndex]);
+            if (window.StudFlow.mathRender) { window.StudFlow.mathRender.setContent(feedback, wrongMsg); }
+            else { feedback.textContent = wrongMsg; }
             if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
         }
 

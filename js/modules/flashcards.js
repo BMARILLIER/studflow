@@ -237,8 +237,14 @@
         var elBar = document.getElementById('fc-progress-bar');
         var elScore = document.getElementById('fc-score');
         var elCard = document.getElementById('flashcard');
-        if (elQ) elQ.textContent = card.question;
-        if (elA) elA.textContent = card.answer;
+        var math = window.StudFlow.mathRender;
+        if (math) {
+            math.setContent(elQ, card.question);
+            math.setContent(elA, card.answer);
+        } else {
+            if (elQ) elQ.textContent = card.question;
+            if (elA) elA.textContent = card.answer;
+        }
         if (elP) elP.textContent = `${currentIndex + 1}/${cards.length}`;
         var fcPct = Math.round(((currentIndex + 1) / cards.length) * 100);
         if (elBar) {
