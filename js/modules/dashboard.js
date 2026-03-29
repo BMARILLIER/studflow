@@ -194,6 +194,23 @@
         chrono: function() { if (window.StudFlow.chronoMode) window.StudFlow.chronoMode.show(); }
     };
 
+    function goTo(moduleId) {
+        // Handle subject chips: subj_maths, subj_philo, etc.
+        if (moduleId && moduleId.indexOf('subj_') === 0) {
+            var subjId = moduleId.replace('subj_', '');
+            if (window.StudFlow.subjects) {
+                window.StudFlow.subjects.showSubject(subjId);
+            }
+            return;
+        }
+        var fn = MODULE_MAP[moduleId];
+        if (fn) {
+            fn();
+        } else {
+            window.StudFlow.app.showScreen(moduleId);
+        }
+    }
+
     // ==================== HELPERS ====================
     function getProfile() {
         return window.StudFlow.storage.getUserProfile();
@@ -345,12 +362,14 @@
         }
 
         // ===== ZONE 1: L'ESSENTIEL (ce que l'eleve voit en premier) =====
-        // Principe: 1 action principale + contexte minimal
+        // Principe: question + 3 actions + matieres visibles
         var essentialHTML = ''
             + renderBetaBanner()
             + weeklyReportBannerHTML
             + subjectPickerCTA
             + renderGreetingBar(greeting, gamStats)
+            + renderHeroActions()
+            + renderSubjectStrip()
             + dailySessionHTML
             + dsDemainHTML;
 
@@ -533,26 +552,78 @@
             + '</div>';
     }
 
-    // ==================== SESSION CARD (3 core actions) ====================
+    // ==================== HERO: "QUE VEUX-TU FAIRE ?" ====================
+    function renderHeroActions() {
+        var subtexts = [
+            'Chaque minute compte. Lance-toi.',
+            '10 min et t\'as deja progresse.',
+            'Ton futur toi va kiffer.',
+            'Un pas de plus vers le Bac.',
+            'Meme 5 min, ca change tout.'
+        ];
+        var sub = subtexts[Math.floor(Math.random() * subtexts.length)];
+
+        return '<div class="dash-section dash-hero-question">'
+            + '<h2 class="dash-hero-title">Que veux-tu faire aujourd\'hui ?</h2>'
+            + '<p class="dash-hero-sub">' + sub + '</p>'
+            + '<div class="dash-hero-grid">'
+            + '<button class="dash-hero-btn" data-action="dashboard.goTo" data-param="upload">'
+            + '<span class="dash-hero-icon">📄</span>'
+            + '<span class="dash-hero-label">Importer un cours</span>'
+            + '</button>'
+            + '<button class="dash-hero-btn" data-action="dashboard.goTo" data-param="flashcard">'
+            + '<span class="dash-hero-icon">🎴</span>'
+            + '<span class="dash-hero-label">Reviser</span>'
+            + '</button>'
+            + '<button class="dash-hero-btn" data-action="dashboard.goTo" data-param="quiz">'
+            + '<span class="dash-hero-icon">⚡</span>'
+            + '<span class="dash-hero-label">S\'entrainer</span>'
+            + '</button>'
+            + '</div>'
+            + '</div>';
+    }
+
+    // ==================== MATIERES SCROLLABLES ====================
+    function renderSubjectStrip() {
+        var subjects = window.StudFlow.subjects ? window.StudFlow.subjects.getAll() : [];
+        if (subjects.length === 0) return '';
+
+        var cardsHTML = '';
+        for (var i = 0; i < subjects.length; i++) {
+            var s = subjects[i];
+            cardsHTML += '<button class="dash-subj-chip" data-action="dashboard.goTo" data-param="subj_' + s.id + '">'
+                + '<span class="dash-subj-chip-icon">' + (s.icon || '📘') + '</span>'
+                + '<span class="dash-subj-chip-name">' + (s.name || s.id) + '</span>'
+                + '</button>';
+        }
+
+        return '<div class="dash-section dash-subjects-strip">'
+            + '<div class="dash-subjects-scroll">'
+            + cardsHTML
+            + '</div>'
+            + '</div>';
+    }
+
+    // ==================== SESSION CARD (focus + extras) ====================
     function renderSessionCard() {
         return '<div class="dash-section dash-session-card">'
-            + '<h3 class="dash-session-title">Commencer ma session de revision</h3>'
+            + '<h3 class="dash-session-title">Outils</h3>'
             + '<div class="dash-session-grid">'
+            + '<button class="dash-session-btn focus" data-action="dashboard.goTo" data-param="focus">'
+            + '<span class="dash-session-icon">🎯</span>'
+            + '<span class="dash-session-label">Focus</span>'
+            + '</button>'
             + '<button class="dash-session-btn matieres" data-action="dashboard.goTo" data-param="matieres">'
             + '<span class="dash-session-icon">📚</span>'
             + '<span class="dash-session-label">Matieres</span>'
             + '</button>'
-            + '<button class="dash-session-btn focus" data-action="dashboard.goTo" data-param="focus">'
-            + '<span class="dash-session-icon">🎯</span>'
-            + '<span class="dash-session-label">Session focus</span>'
+            + '<button class="dash-session-btn flashcard" data-action="dashboard.goTo" data-param="coach">'
+            + '<span class="dash-session-icon">🧠</span>'
+            + '<span class="dash-session-label">Coach</span>'
             + '</button>'
-            + '<button class="dash-session-btn flashcard" data-action="dashboard.goTo" data-param="flashcard">'
-            + '<span class="dash-session-icon">🎴</span>'
-            + '<span class="dash-session-label">Flashcards</span>'
-            + '</button>'
-            + '<button class="dash-session-btn quiz" data-action="dashboard.goTo" data-param="quiz">'
-            + '<span class="dash-session-icon">⚡</span>'
-            + '<span class="dash-session-label">Quiz</span>'
+            + '<button class="dash-session-btn quiz" data-action="dashboard.goTo" data-param="stress">'
+            + '<span class="dash-session-icon">💆</span>'
+            + '<span class="dash-session-label">Zen</span>'
             + '</button>'
             + '</div>'
             + '</div>';
@@ -1070,15 +1141,6 @@
     }
 
     // ==================== ACTIONS ====================
-    function goTo(moduleId) {
-        var fn = MODULE_MAP[moduleId];
-        if (fn) {
-            fn();
-        } else {
-            window.StudFlow.app.showScreen(moduleId);
-        }
-    }
-
     function toggleObjective(index) {
         var daily = getDailyData();
         var pos = daily.objectivesCompleted.indexOf(index);

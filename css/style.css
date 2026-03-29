@@ -2210,41 +2210,107 @@ body.theme-light .math-fallback {
 }
 
 /* --- Session Card (3 core actions) --- */
+/* Hero: "Que veux-tu faire ?" — DOMINANT, above the fold */
+.dash-hero-question {
+    text-align: center; padding: 1.5rem 0 0.5rem;
+}
+.dash-hero-title {
+    font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 800;
+    margin: 0 0 0.3rem; color: var(--text); letter-spacing: -0.03em;
+    line-height: 1.2;
+    animation: heroFadeIn 0.5s ease both;
+}
+.dash-hero-sub {
+    font-size: 0.85rem; color: var(--text-muted); margin: 0 0 1.25rem;
+    animation: heroFadeIn 0.6s ease 0.1s both;
+}
+@keyframes heroFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.dash-hero-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    max-width: 420px; margin: 0 auto;
+    animation: heroFadeIn 0.5s ease 0.15s both;
+}
+.dash-hero-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.6rem; padding: 1.5rem 0.75rem;
+    background: linear-gradient(145deg, rgba(168,85,247,0.12), rgba(255,77,141,0.06));
+    border: 1.5px solid rgba(168,85,247,0.25);
+    border-radius: 20px; cursor: pointer; color: var(--text);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 16px rgba(168,85,247,0.08);
+}
+.dash-hero-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--accent);
+    box-shadow: 0 12px 32px rgba(168,85,247,0.2);
+    background: linear-gradient(145deg, rgba(168,85,247,0.18), rgba(255,77,141,0.1));
+}
+.dash-hero-btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+.dash-hero-icon { font-size: 2.4rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+.dash-hero-label { font-size: 0.88rem; font-weight: 700; line-height: 1.2; }
+
+/* Matieres strip — secondary, below hero */
+.dash-subjects-strip { padding: 0.25rem 0 0; }
+.dash-subjects-scroll {
+    display: flex; gap: 0.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 8px; scrollbar-width: none;
+}
+.dash-subjects-scroll::-webkit-scrollbar { display: none; }
+.dash-subj-chip {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border-radius: 50px; white-space: nowrap;
+    background: var(--bg-glass, rgba(255,255,255,0.06));
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-muted); font-size: 0.8rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;
+}
+.dash-subj-chip:hover, .dash-subj-chip:active {
+    border-color: var(--accent); background: rgba(168,85,247,0.1);
+    color: var(--text);
+}
+.dash-subj-chip-icon { font-size: 1rem; }
+
+/* Session card (outils — secondary) */
 .dash-session-card {
-    background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(255,77,141,0.04));
+    background: var(--bg-glass, rgba(255,255,255,0.03));
     border-radius: var(--radius);
-    border: 1px solid var(--accent-soft); padding: 1.5rem;
-    box-shadow: 0 0 24px rgba(168,85,247,0.06);
+    border: 1px solid rgba(255,255,255,0.06); padding: 1rem;
 }
 .dash-session-title {
-    font-family: 'Fraunces', serif; font-size: 1.15rem;
-    margin: 0 0 1rem; text-align: center; color: var(--text);
-    letter-spacing: -0.01em;
+    font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.6rem; text-align: center; color: var(--text-muted);
+    opacity: 0.6;
 }
 .dash-session-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
 }
 .dash-session-btn {
     display: flex; flex-direction: column; align-items: center;
-    gap: 0.5rem; padding: 1.25rem 0.75rem;
-    min-height: 80px;
-    background: var(--bg-glass-hover); border: 1px solid var(--border);
-    border-radius: var(--radius); cursor: pointer;
+    gap: 0.3rem; padding: 0.75rem 0.5rem;
+    min-height: 56px;
+    background: var(--bg-glass, rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; cursor: pointer;
     font-family: 'DM Sans', sans-serif;
-    transition: all 0.3s var(--ease-bounce);
+    transition: all 0.2s ease;
 }
 .dash-session-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-card);
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.15);
 }
 .dash-session-btn.matieres:hover { border-color: var(--peach); }
 .dash-session-btn.focus:hover { border-color: var(--sun); }
 .dash-session-btn.flashcard:hover { border-color: var(--mint); }
 .dash-session-btn.quiz:hover { border-color: var(--accent); }
-.dash-session-icon { font-size: 2rem; }
+.dash-session-icon { font-size: 1.4rem; }
 .dash-session-label {
-    font-size: 0.88rem; font-weight: 700; color: var(--text);
+    font-size: 0.72rem; font-weight: 600; color: var(--text-muted);
 }
 
 /* --- Next Action Card --- */
@@ -3057,6 +3123,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
         min-width: 58px; min-height: 44px;
         padding: 0.5rem 0.75rem;
     }
+
+    /* Hero + session responsive */
+    .dash-hero-title { font-size: 1.35rem; }
+    .dash-hero-grid { gap: 0.6rem; max-width: 100%; }
+    .dash-hero-btn { padding: 1.2rem 0.5rem; border-radius: 16px; }
+    .dash-hero-icon { font-size: 2rem; }
+    .dash-hero-label { font-size: 0.8rem; }
+    .dash-session-grid { grid-template-columns: repeat(4, 1fr); gap: 0.3rem; }
+    .dash-session-btn { padding: 0.6rem 0.25rem; min-height: 48px; }
+    .dash-session-icon { font-size: 1.2rem; }
+    .dash-session-label { font-size: 0.68rem; }
 
     /* Stress & breathing */
     .stress-actions { flex-direction: column; }
