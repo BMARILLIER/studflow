@@ -140,9 +140,13 @@
             </div>
         </div>
 
+        <!-- Flashcard Mode Picker Overlay -->
+        <div id="fc-mode-picker" class="fc-mode-picker-overlay" style="display:none;"></div>
+
         <!-- Flashcard Screen -->
         <div class="screen" id="screen-flashcard">
             <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
+            <div id="fc-mode-indicator" class="fc-mode-indicator" style="display:none;"></div>
 
             <button class="toggle-create-btn" data-action="fc:create-form">
                 + Creer une flashcard
@@ -357,6 +361,7 @@
                     </div>
                 </div>
                 <div class="results-stats-sr" id="results-sr-extra" style="display:none"></div>
+                <div id="results-level" class="results-level" style="display:none;"></div>
 
                 <div class="results-actions">
                     <button class="result-btn secondary" data-action="screen:dashboard">

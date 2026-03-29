@@ -52,6 +52,8 @@
         'fc:shuffle':           function() { StudFlow.flashcards.shuffleDeck(); },
         'fc:create-form':       function() { StudFlow.flashcards.showCreateForm(); },
         'fc:create':            function() { StudFlow.flashcards.createCard(); },
+        'flashcards.startMode': function(p) { StudFlow.flashcards.startMode(p); },
+        'flashcards.showModePicker': function(p) { StudFlow.flashcards.showModePicker(p || 'all'); },
         'quiz:create-form':     function() { StudFlow.quiz.showCreateForm(); },
         'quiz:create':          function() { StudFlow.quiz.createQuestion(); },
         'quiz:submit':          function() { StudFlow.quiz.submitAnswer(); },

@@ -798,6 +798,60 @@ header {
     transform: scale(1.05);
 }
 
+/* Flashcard Mode Picker */
+.fc-mode-picker-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+}
+.fc-mode-picker-content {
+    background: var(--bg-card, #1e1e2e); border-radius: 20px;
+    padding: 28px 24px; width: 100%; max-width: 400px;
+    text-align: center;
+}
+.fc-mode-picker-content h3 {
+    font-family: 'Fraunces', serif; font-size: 1.3rem; margin-bottom: 8px;
+}
+.fc-mode-level {
+    font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;
+}
+.fc-mode-options {
+    display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;
+}
+.fc-mode-btn {
+    display: flex; flex-direction: column; align-items: flex-start;
+    padding: 14px 16px; border-radius: 14px;
+    background: var(--bg-glass, rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text); cursor: pointer; text-align: left;
+    transition: all 0.2s ease; position: relative;
+}
+.fc-mode-btn:hover, .fc-mode-btn.recommended {
+    border-color: var(--accent); background: rgba(168,85,247,0.08);
+}
+.fc-mode-icon { font-size: 1.3rem; margin-bottom: 4px; }
+.fc-mode-name { font-weight: 700; font-size: 0.95rem; }
+.fc-mode-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+.fc-mode-badge {
+    position: absolute; top: 10px; right: 12px;
+    background: var(--accent); color: #fff; font-size: 0.65rem;
+    padding: 2px 8px; border-radius: 20px; font-weight: 700;
+}
+.fc-mode-auto-btn {
+    background: none; border: none; color: var(--accent-light);
+    font-size: 0.85rem; cursor: pointer; padding: 8px;
+    text-decoration: underline;
+}
+.fc-mode-indicator {
+    text-align: center; font-size: 0.8rem; color: var(--text-muted);
+    padding: 6px 0; font-weight: 600;
+}
+.results-level {
+    text-align: center; font-size: 0.85rem; color: var(--text-muted);
+    padding: 8px 0; margin-top: 8px;
+}
+
 /* Manual creation forms */
 .create-form {
     background: var(--bg-glass);
@@ -2143,6 +2197,7 @@ header {
     transform: translateY(-3px);
     box-shadow: var(--shadow-card);
 }
+.dash-session-btn.matieres:hover { border-color: var(--peach); }
 .dash-session-btn.focus:hover { border-color: var(--sun); }
 .dash-session-btn.flashcard:hover { border-color: var(--mint); }
 .dash-session-btn.quiz:hover { border-color: var(--accent); }

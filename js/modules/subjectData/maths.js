@@ -31,14 +31,14 @@
                     + '<li><strong>Tableau de variations</strong> : resume le signe de f\' et les variations de f</li>'
                     + '</ul>',
                 flashcards: [
-                    { question: 'Quelle est la derivee de x^n ?', answer: 'La derivee de x^n est n*x^(n-1). Exemples : (x^3)\' = 3x^2 ; (x^2)\' = 2x ; (x)\' = 1.' },
-                    { question: 'Quelle est la derivee de e^x ?', answer: '(e^x)\' = e^x. La fonction exponentielle est sa propre derivee.' },
-                    { question: 'Quelle est la derivee de ln(x) ?', answer: '(ln x)\' = 1/x, pour x > 0.' },
-                    { question: 'Comment determiner le sens de variation d\'une fonction ?', answer: 'On calcule f\'(x). Si f\'(x) > 0, f est croissante. Si f\'(x) < 0, f est decroissante. Si f\'(x) = 0, f admet un extremum potentiel.' },
-                    { question: 'Quelle est la formule de la derivee d\'un produit ?', answer: '(uv)\' = u\'v + uv\'. Ex : si f(x) = x*e^x, alors f\'(x) = 1*e^x + x*e^x = (1+x)e^x.' },
-                    { question: 'Quelle est la formule de la derivee d\'un quotient ?', answer: '(u/v)\' = (u\'v - uv\') / v^2, avec v different de 0.' },
-                    { question: 'Qu\'est-ce qu\'un extremum local ?', answer: 'Un maximum ou minimum local en un point a. Condition necessaire : f\'(a) = 0. Condition suffisante : changement de signe de f\' autour de a.' },
-                    { question: 'Comment construire un tableau de variations ?', answer: '1) Calculer f\'(x). 2) Trouver les zeros de f\'. 3) Determiner le signe de f\' sur chaque intervalle. 4) En deduire les variations de f (croissante/decroissante).' }
+                    { question: 'Quelle est la derivee de x^n ?', answer: '(x^n)\' = n * x^(n-1). Astuce : l\'exposant descend devant, et on retire 1 a l\'exposant. Ex : (x^3)\' = 3x^2, (x^5)\' = 5x^4. Piege : (x^1)\' = 1, pas x !' },
+                    { question: 'Quelle est la derivee de e^x ?', answer: '(e^x)\' = e^x. C\'est la seule fonction qui est sa propre derivee ! Astuce : e^x ne change jamais quand on derive.' },
+                    { question: 'Quelle est la derivee de ln(x) ?', answer: '(ln x)\' = 1/x (pour x > 0). Piege : ne pas oublier que ln n\'existe que pour x strictement positif.' },
+                    { question: 'Comment trouver si f monte ou descend ?', answer: 'On calcule f\'(x) : si f\'(x) > 0 alors f monte (croissante), si f\'(x) < 0 alors f descend (decroissante). Astuce : pense a f\' comme la pente de la courbe.' },
+                    { question: 'Derivee d\'un produit u * v ?', answer: '(u*v)\' = u\'*v + u*v\'. Moyen mnemotechnique : "derivee du 1er fois le 2e + le 1er fois derivee du 2e". Ex : (x*e^x)\' = 1*e^x + x*e^x = (1+x)*e^x.' },
+                    { question: 'Derivee d\'un quotient u/v ?', answer: '(u/v)\' = (u\'*v - u*v\') / v^2. Moyen mnemotechnique : "du haut prime fois le bas, moins le haut fois du bas prime, le tout sur le bas au carre". Piege : c\'est MOINS au numerateur, pas plus !' },
+                    { question: 'Comment reperer un maximum ou minimum ?', answer: 'f\'(a) = 0 ET f\' change de signe en a. Si f\' passe de + a - : maximum. Si f\' passe de - a + : minimum. Piege : f\'(a) = 0 ne suffit PAS, il faut le changement de signe !' },
+                    { question: 'Methode Bac : tableau de variations ?', answer: '4 etapes : 1) Calculer f\'(x). 2) Resoudre f\'(x) = 0. 3) Faire un tableau de signes de f\'. 4) Fleches : + = monte, - = descend. Astuce Bac : toujours calculer les valeurs aux extremites et aux points ou f\' = 0.' }
                 ],
                 quiz: [
                     { question: 'La derivee de 3x^4 est :', options: ['12x^3', '3x^3', '4x^3', '12x^4'], correctIndex: 0, explanation: '(3x^4)\' = 3 * 4 * x^(4-1) = 12x^3.' },
@@ -72,14 +72,14 @@
                     + '<li><strong>Suite bornee et monotone</strong> : toute suite croissante majoree (ou decroissante minoree) converge</li>'
                     + '</ul>',
                 flashcards: [
-                    { question: 'Quelle est la formule du terme general d\'une suite arithmetique ?', answer: 'u(n) = u(0) + n*r, ou r est la raison. Equivalent : u(n) = u(p) + (n-p)*r.' },
-                    { question: 'Quelle est la formule du terme general d\'une suite geometrique ?', answer: 'u(n) = u(0) * q^n, ou q est la raison. Equivalent : u(n) = u(p) * q^(n-p).' },
-                    { question: 'Comment calculer la somme des n+1 premiers termes d\'une suite arithmetique ?', answer: 'S = (n+1) * (u(0) + u(n)) / 2 = nombre de termes * (premier terme + dernier terme) / 2.' },
-                    { question: 'Comment calculer la somme des n+1 premiers termes d\'une suite geometrique ?', answer: 'S = u(0) * (1 - q^(n+1)) / (1 - q), a condition que q soit different de 1.' },
-                    { question: 'Quand une suite geometrique converge-t-elle ?', answer: 'Quand |q| < 1 (la raison est strictement entre -1 et 1). Elle converge alors vers 0.' },
-                    { question: 'Qu\'est-ce que le theoreme des gendarmes ?', answer: 'Si u(n) <= v(n) <= w(n) pour tout n assez grand, et si lim u(n) = lim w(n) = L, alors lim v(n) = L. Permet de prouver une convergence.' },
-                    { question: 'Comment montrer qu\'une suite est arithmetique ?', answer: 'Il faut montrer que u(n+1) - u(n) est une constante r (la raison) pour tout n.' },
-                    { question: 'Comment montrer qu\'une suite est geometrique ?', answer: 'Il faut montrer que u(n+1) / u(n) est une constante q (la raison) pour tout n, avec u(n) != 0.' }
+                    { question: 'Formule du terme general d\'une suite arithmetique ?', answer: 'u(n) = u(0) + n*r. Pense a : "premier terme + combien de pas * la raison". Ex : u(0) = 3, r = 2, alors u(5) = 3 + 5*2 = 13.' },
+                    { question: 'Formule du terme general d\'une suite geometrique ?', answer: 'u(n) = u(0) * q^n. Pense a : "premier terme multiplie par la raison, n fois". Ex : u(0) = 4, q = 1/2, alors u(3) = 4 * (1/2)^3 = 0.5.' },
+                    { question: 'Somme des termes d\'une suite arithmetique ?', answer: 'S = nombre de termes * (premier + dernier) / 2. Ex classique : 1+2+3+...+100 = 100*(1+100)/2 = 5050. Astuce Bac : attention au "nombre de termes" (de 0 a n = n+1 termes !).' },
+                    { question: 'Somme des termes d\'une suite geometrique ?', answer: 'S = premier terme * (1 - q^(nombre de termes)) / (1 - q). Piege : ne marche que si q est different de 1 ! Si q = 1, la somme = nombre de termes * u(0).' },
+                    { question: 'Quand une suite geometrique converge ?', answer: 'Si |q| < 1 (raison strictement entre -1 et 1), elle converge vers 0. Ex : q = 0.5 donne 1, 0.5, 0.25, 0.125... tend vers 0. Si |q| > 1, elle diverge. Si q = 1, suite constante.' },
+                    { question: 'Theoreme des gendarmes ?', answer: 'Si v(n) est "coincee" entre u(n) et w(n), et que u(n) et w(n) tendent vers L, alors v(n) tend aussi vers L. Astuce : imagine que v est escortee par deux gendarmes qui vont au meme endroit.' },
+                    { question: 'Comment prouver qu\'une suite est arithmetique ?', answer: 'Calcule u(n+1) - u(n). Si tu trouves une constante (toujours le meme nombre), c\'est arithmetique. Cette constante est la raison r.' },
+                    { question: 'Comment prouver qu\'une suite est geometrique ?', answer: 'Calcule u(n+1) / u(n). Si tu trouves une constante (toujours le meme nombre), c\'est geometrique. Cette constante est la raison q. Piege : verifie que u(n) n\'est jamais nul !' }
                 ],
                 quiz: [
                     { question: 'Le terme general d\'une suite arithmetique de premier terme 3 et de raison 2 est :', options: ['u(n) = 2n + 3', 'u(n) = 3n + 2', 'u(n) = 3 * 2^n', 'u(n) = 2^n + 3'], correctIndex: 0, explanation: 'u(n) = u(0) + n*r = 3 + 2n.' },
@@ -115,14 +115,14 @@
                     + '<li><strong>Loi normale</strong> : loi en cloche, modelise les phenomenes naturels. Moyenne mu, ecart-type sigma</li>'
                     + '</ul>',
                 flashcards: [
-                    { question: 'Quelle est la formule de P(A union B) ?', answer: 'P(A union B) = P(A) + P(B) - P(A inter B). Si A et B sont incompatibles : P(A union B) = P(A) + P(B).' },
-                    { question: 'Quelle est la formule des probabilites conditionnelles ?', answer: 'P(A|B) = P(A inter B) / P(B), avec P(B) > 0. C\'est la probabilite de A sachant que B est realise.' },
-                    { question: 'Quelle est la formule de la loi binomiale ?', answer: 'P(X=k) = C(n,k) * p^k * (1-p)^(n-k), ou n est le nombre d\'epreuves, p la probabilite de succes, k le nombre de succes.' },
-                    { question: 'Quelle est l\'esperance d\'une loi binomiale B(n,p) ?', answer: 'E(X) = n * p. C\'est le nombre moyen de succes attendu sur n epreuves.' },
-                    { question: 'Quelle est la variance d\'une loi binomiale B(n,p) ?', answer: 'V(X) = n * p * (1-p). L\'ecart-type est sigma = racine(n*p*(1-p)).' },
-                    { question: 'Qu\'est-ce que la formule des probabilites totales ?', answer: 'Si B1, B2, ..., Bn forment une partition de omega : P(A) = somme de P(A|Bi) * P(Bi). Cas simple : P(A) = P(A|B)*P(B) + P(A|non B)*P(non B).' },
-                    { question: 'Que signifie P(contraire de A) = 1 - P(A) ?', answer: 'La probabilite que A ne se realise pas est egale a 1 moins la probabilite que A se realise. Utile quand P(contraire) est plus facile a calculer.' },
-                    { question: 'Qu\'est-ce que l\'equiprobabilite ?', answer: 'Situation ou tous les resultats possibles ont la meme probabilite. P(A) = nombre de cas favorables / nombre de cas possibles. Ex : lancer un de equitable.' }
+                    { question: 'Formule de P(A ou B) ?', answer: 'P(A ou B) = P(A) + P(B) - P(A et B). Astuce : on soustrait l\'intersection pour ne pas la compter 2 fois. Si A et B ne peuvent pas arriver en meme temps : P(A ou B) = P(A) + P(B).' },
+                    { question: 'Probabilite conditionnelle P(A sachant B) ?', answer: 'P(A|B) = P(A et B) / P(B). En francais : "quelle est la chance que A arrive, si on sait deja que B est arrive ?". Piege : P(B) doit etre > 0.' },
+                    { question: 'Formule de la loi binomiale ?', answer: 'P(X=k) = C(n,k) * p^k * (1-p)^(n-k). Quand l\'utiliser : n repetitions independantes, 2 issues (succes/echec), meme proba p. Ex : 10 lancers de piece, proba de 3 faces.' },
+                    { question: 'Esperance de la loi binomiale ?', answer: 'E(X) = n * p. C\'est le nombre moyen de succes. Ex : 100 lancers d\'un de, proba de 6 = 1/6, E(X) = 100/6 ≈ 16.7 six en moyenne.' },
+                    { question: 'Variance de la loi binomiale ?', answer: 'V(X) = n * p * (1-p). L\'ecart-type = racine de V(X). Ca mesure l\'ecart par rapport a la moyenne. Plus V est petit, plus les resultats sont concentres.' },
+                    { question: 'Formule des probabilites totales ?', answer: 'P(A) = P(A|B)*P(B) + P(A|non B)*P(non B). Astuce : on decoupe A en deux chemins dans l\'arbre. Methode Bac : toujours dessiner l\'arbre de probas !' },
+                    { question: 'Astuce Bac : "au moins un" ?', answer: 'P(au moins un) = 1 - P(aucun). Beaucoup plus simple a calculer ! Ex : proba d\'avoir au moins un 6 en 4 lancers = 1 - (5/6)^4 ≈ 0.52.' },
+                    { question: 'Quand utiliser l\'equiprobabilite ?', answer: 'Quand tous les resultats ont la meme chance. Alors P(A) = cas favorables / cas totaux. Ex : de equilibre, carte au hasard. Piege : un de pipe n\'est PAS en equiprobabilite !' }
                 ],
                 quiz: [
                     { question: 'P(contraire de A) est egal a :', options: ['P(A)', '1 - P(A)', '1/P(A)', 'P(A)^2'], correctIndex: 1, explanation: 'L\'evenement contraire a une probabilite complementaire a 1.' },
@@ -158,14 +158,14 @@
                     + '<li><strong>Distance d\'un point a un plan</strong> : d = |ax0 + by0 + cz0 + d| / racine(a^2 + b^2 + c^2)</li>'
                     + '</ul>',
                 flashcards: [
-                    { question: 'Comment calcule-t-on les coordonnees du vecteur AB ?', answer: 'AB = (xB - xA, yB - yA, zB - zA). On soustrait les coordonnees du point de depart a celles du point d\'arrivee.' },
-                    { question: 'Quelle est la formule de la norme d\'un vecteur (a, b, c) ?', answer: '||u|| = racine(a^2 + b^2 + c^2). C\'est la longueur du vecteur.' },
-                    { question: 'Quelle est la formule du produit scalaire dans l\'espace ?', answer: 'u.v = x1*x2 + y1*y2 + z1*z2. Si u.v = 0, les vecteurs sont orthogonaux.' },
-                    { question: 'Quelle est l\'equation generale d\'un plan ?', answer: 'ax + by + cz + d = 0, ou le vecteur n = (a, b, c) est un vecteur normal au plan.' },
-                    { question: 'Comment ecrire l\'equation parametrique d\'une droite ?', answer: 'x = x0 + at ; y = y0 + bt ; z = z0 + ct, ou (x0,y0,z0) est un point de la droite et (a,b,c) est le vecteur directeur.' },
-                    { question: 'Comment montrer que deux plans sont paralleles ?', answer: 'Deux plans sont paralleles si et seulement si leurs vecteurs normaux sont colineaires (proportionnels).' },
-                    { question: 'Comment calculer la distance d\'un point a un plan ?', answer: 'd(M, P) = |ax0 + by0 + cz0 + d| / racine(a^2 + b^2 + c^2), ou M(x0,y0,z0) et le plan a pour equation ax+by+cz+d=0.' },
-                    { question: 'Comment montrer qu\'une droite est perpendiculaire a un plan ?', answer: 'Le vecteur directeur de la droite doit etre colineaire au vecteur normal du plan. Autrement dit, la droite est dirigee par le vecteur normal.' }
+                    { question: 'Coordonnees du vecteur AB ?', answer: 'AB = (xB - xA, yB - yA, zB - zA). Astuce : "arrivee moins depart". Ex : A(1,2,3) et B(4,5,6), AB = (3,3,3).' },
+                    { question: 'Longueur (norme) d\'un vecteur ?', answer: '||u|| = racine(a^2 + b^2 + c^2). C\'est comme Pythagore mais en 3D. Ex : u = (3,4,0), ||u|| = racine(9+16) = 5.' },
+                    { question: 'Produit scalaire dans l\'espace ?', answer: 'u.v = x1*x2 + y1*y2 + z1*z2. Retenir : si u.v = 0, les vecteurs sont perpendiculaires ! Astuce Bac : c\'est le test #1 pour prouver que deux droites sont perpendiculaires.' },
+                    { question: 'Equation d\'un plan ?', answer: 'ax + by + cz + d = 0. Le vecteur (a, b, c) est perpendiculaire au plan (vecteur normal). Astuce : pour trouver l\'equation, il faut un point du plan + le vecteur normal.' },
+                    { question: 'Equation parametrique d\'une droite dans l\'espace ?', answer: 'x = x0 + a*t, y = y0 + b*t, z = z0 + c*t. On a besoin de : 1 point (x0,y0,z0) + 1 vecteur directeur (a,b,c). t varie dans R.' },
+                    { question: 'Comment prouver que 2 plans sont paralleles ?', answer: 'Leurs vecteurs normaux sont colineaires (proportionnels). Ex : plan 2x+4y-6z=1 et plan x+2y-3z=5 sont paralleles car (2,4,-6) = 2*(1,2,-3).' },
+                    { question: 'Distance d\'un point a un plan ?', answer: 'd = |a*x0 + b*y0 + c*z0 + d| / racine(a^2+b^2+c^2). Astuce : on remplace les coordonnees du point dans l\'equation du plan, on prend la valeur absolue, on divise par la norme du vecteur normal.' },
+                    { question: 'Comment prouver qu\'une droite est perpendiculaire a un plan ?', answer: 'Le vecteur directeur de la droite doit etre colineaire au vecteur normal du plan. En gros : la droite "pointe" dans la direction perpendiculaire au plan.' }
                 ],
                 quiz: [
                     { question: 'Le produit scalaire u.v = 0 signifie que :', options: ['u et v sont paralleles', 'u et v sont orthogonaux', 'u = v', 'u ou v est nul'], correctIndex: 1, explanation: 'Deux vecteurs non nuls dont le produit scalaire vaut zero sont perpendiculaires (orthogonaux).' },
@@ -208,21 +208,16 @@
                     + '<li><strong>Methode</strong> : choisir u\' et v de facon a simplifier le calcul. Typiquement v = polynome (qui se simplifie en derivant)</li>'
                     + '</ul>',
                 flashcards: [
-                    { question: 'Qu\'est-ce qu\'une primitive de f ?', answer: 'Une fonction F telle que F\'(x) = f(x) pour tout x de l\'intervalle. Par exemple, F(x) = x^3/3 est une primitive de f(x) = x^2.' },
-                    { question: 'Quelle est la primitive de x^n (n != -1) ?', answer: 'La primitive de x^n est x^(n+1)/(n+1) + C. Exemple : primitive de x^3 = x^4/4 + C.' },
-                    { question: 'Quelle est la primitive de 1/x ?', answer: 'La primitive de 1/x est ln|x| + C, pour x != 0.' },
-                    { question: 'Quelle est la primitive de e^x ?', answer: 'La primitive de e^x est e^x + C. La fonction exponentielle est egalement sa propre primitive.' },
-                    { question: 'Enoncer le theoreme fondamental de l\'analyse.', answer: 'Si f est continue sur [a, b] et F est une primitive de f, alors integrale de a a b de f(x)dx = F(b) - F(a).' },
-                    { question: 'Comment calculer l\'aire sous la courbe de f entre a et b ?', answer: 'Si f >= 0 sur [a, b], l\'aire = integrale de a a b de f(x)dx = F(b) - F(a). Si f change de signe, on decoupe en intervalles ou f garde un signe constant.' },
-                    { question: 'Quelle est la relation de Chasles pour les integrales ?', answer: 'Integrale de a a b de f(x)dx + integrale de b a c de f(x)dx = integrale de a a c de f(x)dx. On peut "recoller" des integrales bout a bout.' },
-                    { question: 'Quelle est la formule d\'integration par parties ?', answer: 'Integrale de a a b de u\'*v dx = [u*v] entre a et b - integrale de a a b de u*v\' dx. On choisit u\' et v judicieusement.' },
-                    { question: 'Quelle est la propriete de linearite de l\'integrale ?', answer: 'Integrale de (alpha*f + beta*g) = alpha * integrale de f + beta * integrale de g. L\'integrale est un operateur lineaire.' },
-                    { question: 'Que vaut integrale de a a a de f(x)dx ?', answer: 'Integrale de a a a de f(x)dx = 0. L\'integrale sur un intervalle de longueur nulle est nulle.' },
-                    { question: 'Comment calculer l\'aire entre deux courbes f et g ?', answer: 'Aire = integrale de a a b de |f(x) - g(x)|dx. On determine d\'abord les intervalles ou f >= g et ceux ou g >= f.' },
-                    { question: 'Calculer integrale de 0 a 1 de x^2 dx.', answer: 'Primitive de x^2 = x^3/3. Donc [x^3/3] entre 0 et 1 = 1/3 - 0 = 1/3.' },
-                    { question: 'Calculer integrale de 1 a e de (1/x) dx.', answer: 'Primitive de 1/x = ln(x). Donc [ln(x)] entre 1 et e = ln(e) - ln(1) = 1 - 0 = 1.' },
-                    { question: 'Quelle est la primitive de cos(x) ?', answer: 'La primitive de cos(x) est sin(x) + C.' },
-                    { question: 'Quelle est la primitive de sin(x) ?', answer: 'La primitive de sin(x) est -cos(x) + C. Attention au signe negatif.' }
+                    { question: 'C\'est quoi une primitive ?', answer: 'C\'est l\'operation inverse de la derivee. F est une primitive de f si F\'(x) = f(x). Ex : F(x) = x^3/3 est une primitive de f(x) = x^2 car (x^3/3)\' = x^2. Piege : il y a toujours une infinite de primitives (on ajoute +C).' },
+                    { question: 'Primitive de x^n ?', answer: 'x^(n+1) / (n+1) + C. Astuce inverse de la derivation : l\'exposant monte de 1, et on divise par le nouvel exposant. Ex : primitive de x^3 = x^4/4 + C. Piege : ne marche PAS pour n = -1 !' },
+                    { question: 'Primitive de 1/x ?', answer: 'ln|x| + C. C\'est le cas special ou la formule x^(n+1)/(n+1) ne marche pas (n = -1). Piege : ne pas oublier la valeur absolue |x|.' },
+                    { question: 'Comment calculer une integrale ?', answer: 'Integrale de a a b de f(x)dx = F(b) - F(a). Methode : 1) Trouver la primitive F. 2) Calculer F(b). 3) Calculer F(a). 4) Soustraire. Ex : integrale de 0 a 2 de x dx = [x^2/2] = 4/2 - 0 = 2.' },
+                    { question: 'L\'integrale, ca represente quoi ?', answer: 'L\'aire sous la courbe entre a et b (si f >= 0). Si f est negative, l\'integrale est negative. Piege Bac : pour calculer une AIRE, il faut prendre la valeur absolue si f change de signe !' },
+                    { question: 'Relation de Chasles pour les integrales ?', answer: 'On peut decouper : integrale de a a c = integrale de a a b + integrale de b a c. Utile quand f change de signe : on decoupe en morceaux positifs et negatifs.' },
+                    { question: 'Integration par parties (IPP) ?', answer: 'Integrale de u\'*v = [u*v] - integrale de u*v\'. Astuce : choisis v = le truc qui se simplifie en derivant (souvent le polynome). Ex : integrale de x*e^x : v = x, u\' = e^x.' },
+                    { question: 'Primitive de cos(x) et sin(x) ?', answer: 'Primitive de cos(x) = sin(x) + C. Primitive de sin(x) = -cos(x) + C. Piege : le signe MOINS devant cos ! Moyen mnemotechnique : "sin derive en cos, cos derive en -sin, la primitive fait l\'inverse".' },
+                    { question: 'Calculer integrale de 0 a 1 de x^2 dx ?', answer: 'Primitive de x^2 = x^3/3. On calcule : [x^3/3] de 0 a 1 = 1^3/3 - 0^3/3 = 1/3.' },
+                    { question: 'Astuce Bac : aire entre deux courbes ?', answer: 'Aire = integrale de a a b de |f(x) - g(x)| dx. Methode : 1) Trouver les intersections (f = g). 2) Determiner qui est au-dessus. 3) Integrer la difference. Piege : ne pas oublier la valeur absolue !' }
                 ],
                 quiz: [
                     { question: 'La primitive de x^3 est :', options: ['3x^2', 'x^4/4 + C', 'x^4 + C', 'x^3/3 + C'], correctIndex: 1, explanation: 'Primitive de x^n = x^(n+1)/(n+1) + C. Ici : x^4/4 + C.' },
@@ -277,21 +272,16 @@
                     + '<li><strong>Corollaire (bijection)</strong> : si f est continue et strictement monotone sur [a, b], alors l\'equation f(x) = k admet une unique solution dans [a, b]</li>'
                     + '</ul>',
                 flashcards: [
-                    { question: 'Quelle est la limite de e^x quand x tend vers +infini ?', answer: 'lim e^x = +infini quand x tend vers +infini. L\'exponentielle croit plus vite que tout polynome.' },
-                    { question: 'Quelle est la limite de e^x quand x tend vers -infini ?', answer: 'lim e^x = 0 quand x tend vers -infini. La courbe admet l\'axe des abscisses comme asymptote horizontale.' },
-                    { question: 'Quelle est la limite de ln(x) quand x tend vers 0+ ?', answer: 'lim ln(x) = -infini quand x tend vers 0+. La droite x = 0 est asymptote verticale.' },
-                    { question: 'Comment determiner la limite d\'un polynome en l\'infini ?', answer: 'La limite d\'un polynome en +/- infini est celle de son terme de plus haut degre. Ex : lim (3x^3 - 2x + 1) = lim 3x^3 = +infini.' },
-                    { question: 'Quelles sont les 7 formes indeterminees ?', answer: '+infini - infini ; 0 * infini ; infini/infini ; 0/0 ; 1^infini ; 0^0 ; infini^0. Il faut lever l\'indetermination par factorisation, conjuguee, ou croissances comparees.' },
-                    { question: 'Comment lever une forme indeterminee infini/infini pour une fraction rationnelle ?', answer: 'On factorise le numerateur et le denominateur par le terme de plus haut degre respectif, puis on simplifie.' },
-                    { question: 'Qu\'est-ce qu\'une asymptote horizontale ?', answer: 'Si lim f(x) = L quand x tend vers +infini (ou -infini), alors la droite y = L est asymptote horizontale a la courbe.' },
-                    { question: 'Qu\'est-ce qu\'une asymptote verticale ?', answer: 'Si lim f(x) = +/- infini quand x tend vers a, alors la droite x = a est asymptote verticale. Ex : x = 0 pour f(x) = 1/x.' },
-                    { question: 'Qu\'est-ce que la continuite en un point ?', answer: 'f est continue en a si : f(a) est definie, lim f(x) quand x tend vers a existe, et lim f(x) = f(a). Pas de "saut" dans la courbe.' },
-                    { question: 'Enoncer le theoreme des valeurs intermediaires (TVI).', answer: 'Si f est continue sur [a, b] et k est compris entre f(a) et f(b), alors il existe au moins un reel c dans [a, b] tel que f(c) = k.' },
-                    { question: 'Quel est le corollaire du TVI pour les fonctions strictement monotones ?', answer: 'Si f est continue et strictement monotone sur [a, b], et k est compris entre f(a) et f(b), alors l\'equation f(x) = k admet une unique solution dans [a, b].' },
-                    { question: 'Comment montrer qu\'une equation f(x) = 0 admet une solution sur [a, b] ?', answer: 'On verifie que f est continue sur [a, b], que f(a) et f(b) sont de signes contraires (f(a)*f(b) < 0). Par le TVI, il existe c dans [a, b] tel que f(c) = 0.' },
-                    { question: 'Quelle est la limite de (1 + 1/n)^n quand n tend vers +infini ?', answer: 'lim (1 + 1/n)^n = e (le nombre d\'Euler, environ 2.718). C\'est une definition classique de e.' },
-                    { question: 'Que vaut lim sin(x)/x quand x tend vers 0 ?', answer: 'lim sin(x)/x = 1 quand x tend vers 0. C\'est une limite classique fondamentale (forme 0/0 levee).' },
-                    { question: 'Comment determiner une asymptote oblique y = ax + b ?', answer: 'On calcule a = lim f(x)/x quand x tend vers l\'infini, puis b = lim [f(x) - ax] quand x tend vers l\'infini. Si a et b sont finis (a != 0), y = ax + b est asymptote oblique.' }
+                    { question: 'Limite de e^x en +infini et -infini ?', answer: 'En +infini : e^x tend vers +infini (ca explose). En -infini : e^x tend vers 0 (ca s\'ecrase vers l\'axe des x). Astuce : e^x est TOUJOURS positif, il ne passe jamais sous l\'axe.' },
+                    { question: 'Limite de ln(x) en 0+ et en +infini ?', answer: 'En 0+ : ln(x) tend vers -infini (la courbe plonge). En +infini : ln(x) tend vers +infini (mais lentement). Piege : ln(x) n\'existe PAS pour x <= 0.' },
+                    { question: 'Astuce : limite d\'un polynome en l\'infini ?', answer: 'On regarde UNIQUEMENT le terme de plus haut degre. Ex : lim(3x^3 - 1000x^2 + 5) = lim(3x^3) = +infini. Les petits termes deviennent negligeables.' },
+                    { question: 'Formes indeterminees a connaitre ?', answer: 'Les 4 principales au Bac : +infini - infini, 0 * infini, infini/infini, 0/0. Quand tu tombes dessus, il faut factoriser, simplifier, ou utiliser les croissances comparees.' },
+                    { question: 'Astuce Bac : fraction rationnelle en l\'infini ?', answer: 'On factorise en haut et en bas par le x de plus haut degre. Ex : (2x^2 + 3)/(5x^2 - 1) : on divise par x^2, on obtient (2 + 3/x^2)/(5 - 1/x^2) qui tend vers 2/5.' },
+                    { question: 'C\'est quoi une asymptote horizontale ?', answer: 'La courbe se rapproche d\'une droite horizontale y = L quand x part vers l\'infini. Ex : f(x) = 1/x a une asymptote horizontale y = 0.' },
+                    { question: 'C\'est quoi une asymptote verticale ?', answer: 'La courbe part vers l\'infini quand x se rapproche d\'une valeur a. Ex : f(x) = 1/x a une asymptote verticale x = 0. On les trouve en cherchant ou le denominateur s\'annule.' },
+                    { question: 'Theoreme des valeurs intermediaires (TVI) ?', answer: 'Si f est continue sur [a,b], f prend toutes les valeurs entre f(a) et f(b). Methode Bac pour prouver f(x) = 0 : montrer que f(a) < 0 et f(b) > 0 (ou l\'inverse). Donc f s\'annule quelque part entre a et b.' },
+                    { question: 'Corollaire du TVI (unicite) ?', answer: 'Si f est continue ET strictement monotone sur [a,b], alors f(x) = k a UNE SEULE solution. Astuce Bac : c\'est ce qu\'on utilise pour prouver qu\'une equation a exactement 1 solution.' },
+                    { question: 'Croissances comparees : qui gagne ?', answer: 'e^x bat tout polynome (e^x >> x^n). Tout polynome bat ln(x) (x^n >> ln(x)). Astuce : e^x est le champion, ln(x) est le plus lent. Formules : lim x^n/e^x = 0, lim ln(x)/x = 0.' }
                 ],
                 quiz: [
                     { question: 'lim (3x^2 - x + 1) quand x tend vers +infini vaut :', options: ['+infini', '-infini', '3', '0'], correctIndex: 0, explanation: 'Le terme dominant est 3x^2, qui tend vers +infini.' },
@@ -342,21 +332,16 @@
                     + '<li><strong>Limite classique</strong> : lim x*ln(x) = 0 quand x tend vers 0+</li>'
                     + '</ul>',
                 flashcards: [
-                    { question: 'Quelle est la derivee de ln(x) ?', answer: '(ln x)\' = 1/x pour x > 0. Plus generalement, (ln u)\' = u\'/u.' },
-                    { question: 'Simplifier ln(a*b).', answer: 'ln(a*b) = ln(a) + ln(b). Le logarithme transforme les produits en sommes.' },
-                    { question: 'Simplifier ln(a^n).', answer: 'ln(a^n) = n * ln(a). L\'exposant "descend" devant le logarithme.' },
-                    { question: 'Que vaut ln(1) et ln(e) ?', answer: 'ln(1) = 0 et ln(e) = 1. Ce sont les deux valeurs de reference a connaitre.' },
-                    { question: 'Quelle est la derivee de e^u ?', answer: '(e^u)\' = u\' * e^u. Exemple : (e^(2x))\' = 2 * e^(2x).' },
-                    { question: 'Simplifier e^(a+b).', answer: 'e^(a+b) = e^a * e^b. L\'exponentielle transforme les sommes en produits.' },
-                    { question: 'Que vaut e^0 ?', answer: 'e^0 = 1. C\'est une propriete fondamentale de l\'exponentielle.' },
-                    { question: 'L\'exponentielle peut-elle s\'annuler ?', answer: 'Non, e^x > 0 pour tout reel x. L\'exponentielle est toujours strictement positive.' },
-                    { question: 'Enoncer la croissance comparee de exp et d\'un polynome.', answer: 'lim x^n / e^x = 0 quand x tend vers +infini, pour tout entier n. L\'exponentielle l\'emporte toujours sur un polynome.' },
-                    { question: 'Enoncer la croissance comparee de ln et d\'un polynome.', answer: 'lim ln(x) / x^n = 0 quand x tend vers +infini, pour tout n > 0. Tout polynome l\'emporte sur le logarithme.' },
-                    { question: 'Que vaut lim x*ln(x) quand x tend vers 0+ ?', answer: 'lim x*ln(x) = 0 quand x tend vers 0+. C\'est une forme indeterminee 0 * (-infini) levee par croissances comparees.' },
-                    { question: 'Resoudre l\'equation e^(2x) = 5.', answer: 'On passe au ln : 2x = ln(5), donc x = ln(5)/2, soit environ 0.805.' },
-                    { question: 'Resoudre l\'equation ln(x) = 3.', answer: 'On passe a l\'exponentielle : x = e^3, soit environ 20.09.' },
-                    { question: 'Comment resoudre ln(f(x)) = ln(g(x)) ?', answer: 'Cela equivaut a f(x) = g(x), a condition que f(x) > 0 et g(x) > 0 (condition d\'existence du ln).' },
-                    { question: 'Quelle est la derivee de ln(2x + 1) ?', answer: '(ln(2x+1))\' = 2 / (2x+1). On applique (ln u)\' = u\'/u avec u = 2x + 1.' }
+                    { question: 'Les 3 regles d\'or du ln ?', answer: '1) ln(a*b) = ln(a) + ln(b) [produit en somme]. 2) ln(a/b) = ln(a) - ln(b) [quotient en difference]. 3) ln(a^n) = n*ln(a) [exposant descend devant]. Ce sont les regles les plus utilisees au Bac !' },
+                    { question: 'ln(1) et ln(e), ca vaut combien ?', answer: 'ln(1) = 0 et ln(e) = 1. A connaitre par coeur ! Astuce : ln est l\'inverse de e^x, donc ln(e^n) = n.' },
+                    { question: 'Les 3 regles d\'or de l\'exponentielle ?', answer: '1) e^(a+b) = e^a * e^b [somme en produit]. 2) e^(a-b) = e^a / e^b. 3) (e^a)^n = e^(n*a). Ce sont les inverses des regles du ln !' },
+                    { question: 'e^0 et e^x peut-il etre nul ?', answer: 'e^0 = 1 (toujours !). Et NON, e^x n\'est JAMAIS nul ni negatif : e^x > 0 pour tout x. Astuce Bac : si tu as e^(...) = 0 dans une equation, c\'est IMPOSSIBLE.' },
+                    { question: 'Derivee de ln(u) et de e^u ?', answer: '(ln u)\' = u\'/u. (e^u)\' = u\'*e^u. Ex : (ln(3x+1))\' = 3/(3x+1). (e^(2x))\' = 2*e^(2x). Piege : ne pas oublier de multiplier par u\' !' },
+                    { question: 'Methode Bac : resoudre e^(f(x)) = nombre ?', answer: 'On passe au ln des deux cotes. Ex : e^(2x) = 5 => 2x = ln(5) => x = ln(5)/2. Piege : le nombre doit etre POSITIF (on ne peut pas faire ln d\'un nombre negatif).' },
+                    { question: 'Methode Bac : resoudre ln(f(x)) = nombre ?', answer: 'On passe a l\'exponentielle. Ex : ln(x) = 3 => x = e^3. Piege : verifier que f(x) > 0 (condition d\'existence du ln).' },
+                    { question: 'Equation ln(A) = ln(B) ?', answer: 'Ca equivaut a A = B, MAIS il faut verifier que A > 0 et B > 0. Piege classique Bac : oublier les conditions d\'existence !' },
+                    { question: 'Croissances comparees (qui gagne) ?', answer: 'e^x ecrase tout polynome : lim x^n/e^x = 0. Tout polynome ecrase ln(x) : lim ln(x)/x = 0. Limite classique : lim x*ln(x) = 0 quand x tend vers 0+.' },
+                    { question: 'Derivee de ln(x^2+1) ?', answer: '(ln(x^2+1))\' = 2x/(x^2+1). On applique (ln u)\' = u\'/u avec u = x^2+1, u\' = 2x. Astuce : c\'est toujours "derivee du dedans sur le dedans".' }
                 ],
                 quiz: [
                     { question: 'ln(e^5) vaut :', options: ['5', 'e^5', '1/5', 'ln(5)'], correctIndex: 0, explanation: 'ln(e^5) = 5 * ln(e) = 5 * 1 = 5.' },

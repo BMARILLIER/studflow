@@ -220,17 +220,38 @@
         showScreen('loading');
 
         try {
+            updateProgress(20, 'Extraction du texte...');
+            console.log('[PDF] Extraction lancee pour:', file.name);
             const text = await window.StudFlow.pdf.extractText(file);
-            appState.pdfText = text;
+            console.log('[PDF] Extraction OK, longueur texte:', text.length);
 
-            // Check if Groq API is configured
+            if (!text || text.trim().length < 20) {
+                console.warn('[PDF] Texte trop court ou vide');
+                if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
+                    window.StudFlow.gamification.showToast('PDF vide ou illisible. Essaie un autre fichier (pas un scan).', 'xp', '⚠️');
+                }
+                showScreen('dashboard');
+                return;
+            }
+
+            appState.pdfText = text;
+            updateProgress(60, 'Texte extrait !');
+
+            // Check if AI is available
+            var aiEnabled = window.StudFlow.features && window.StudFlow.features.AI_ENABLED;
             const apiKey = window.StudFlow.storage.loadData('groq_api_key', '');
-            if (apiKey) {
+
+            if (aiEnabled && apiKey) {
+                console.log('[PDF] IA activee, lancement analyse...');
                 appState.apiKey = apiKey;
                 await generateWithAI(text);
+                console.log('[PDF] Analyse IA terminee');
             } else {
-                // Without API, just store the text for reading
-                updateProgress(100, 'PDF importe ! Texte extrait.');
+                console.log('[PDF] IA desactivee ou pas de cle API. Mode local uniquement.');
+                updateProgress(100, 'PDF importe ! Texte extrait avec succes.');
+                if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
+                    window.StudFlow.gamification.showToast('PDF importe ! Utilise les generateurs pour creer des fiches et quiz.', 'xp', '📄');
+                }
             }
 
             // Persist PDF text for generators
@@ -239,11 +260,11 @@
                 window.StudFlow.storage.saveData('pdfFileName', appState.fileName || '');
             }
             window.StudFlow.storage.saveAppState(appState);
-            if (window.StudFlow.analytics) window.StudFlow.analytics.track('pdf_import', { fileName: appState.fileName });
+            if (window.StudFlow.analytics) window.StudFlow.analytics.track('pdf_import', { fileName: appState.fileName, textLength: text.length });
             updateDashboard();
             showScreen('dashboard');
         } catch (error) {
-            console.error('Erreur:', error);
+            console.error('[PDF] Erreur extraction:', error);
             if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
                 window.StudFlow.gamification.showToast('Erreur lors de l\'extraction du PDF. Essaie un autre fichier.', 'xp', '⚠️');
             }
