@@ -192,7 +192,8 @@
         annales: function() { if (window.StudFlow.annales) window.StudFlow.annales.show(); },
         challenges: function() { if (window.StudFlow.challenges) window.StudFlow.challenges.show(); },
         chrono: function() { if (window.StudFlow.chronoMode) window.StudFlow.chronoMode.show(); },
-        sr: function() { window.StudFlow.flashcards.start('sr'); }
+        sr: function() { window.StudFlow.flashcards.start('sr'); },
+        jourbac: function() { if (window.StudFlow.jourBac) window.StudFlow.jourBac.show(); }
     };
 
     function goTo(moduleId) {
@@ -901,6 +902,7 @@
             { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' },
             { icon: '\uD83C\uDFAF', label: 'Missions', action: 'missions' },
             { icon: '\u2699\uFE0F', label: 'Generateurs', action: 'generators' },
+            { icon: '\uD83C\uDFAF', label: 'Jour du Bac', action: 'jourbac' },
             { icon: '\uD83D\uDCD5', label: 'Carnet erreurs', action: 'screen:errors' },
             { icon: '\u2753', label: 'Aide', action: 'screen:aide' }
         ];

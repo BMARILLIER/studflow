@@ -1385,6 +1385,65 @@ body.theme-light .math-fallback {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* ==================== JOUR DU BAC ==================== */
+.jb-screen {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 1.5rem 1rem; max-width: 420px; margin: 0 auto;
+    animation: brFade 0.4s ease both;
+}
+.jb-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.jb-title {
+    font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 700;
+    margin: 0 0 8px; color: var(--text);
+}
+.jb-msg { font-size: 0.9rem; color: var(--text-muted); margin: 0 0 20px; line-height: 1.5; }
+.jb-sub { font-size: 0.82rem; color: var(--text-muted); opacity: 0.6; margin: 8px 0 16px; }
+.jb-reassure { font-size: 0.82rem; color: var(--accent-light, #c084fc); margin: 12px 0; font-weight: 500; }
+
+.jb-checklist {
+    text-align: left; width: 100%; margin-bottom: 20px;
+}
+.jb-check {
+    padding: 8px 0; font-size: 0.88rem; color: var(--text);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.jb-method { text-align: left; width: 100%; margin-bottom: 20px; }
+.jb-step {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0; font-size: 0.88rem; color: var(--text);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.jb-step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(168,85,247,0.15); color: var(--accent-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+}
+
+.jb-btn-primary {
+    width: 100%; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 0.92rem;
+    background: linear-gradient(135deg, var(--accent), var(--hot, #ff4d8d));
+    color: #fff; border: none; cursor: pointer; margin-bottom: 10px;
+    transition: all 0.2s ease;
+}
+.jb-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(168,85,247,0.25); }
+.jb-btn-secondary {
+    background: none; border: none; color: var(--text-muted); font-size: 0.82rem;
+    cursor: pointer; padding: 8px; text-decoration: underline;
+}
+.jb-btn-alert {
+    width: 100%; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 0.88rem;
+    background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.25);
+    color: #fbbf24; cursor: pointer; margin-bottom: 10px;
+    transition: all 0.2s ease;
+}
+.jb-btn-alert:hover { border-color: #fbbf24; background: rgba(251,191,36,0.15); }
+.jb-timer {
+    font-family: 'Fraunces', serif; font-size: 3rem; font-weight: 800;
+    color: var(--accent-light); margin: 16px 0;
+}
+
 .breathing-text {
     color: white; font-family: 'Fraunces', serif; font-size: 1.6rem;
     text-shadow: 0 0 20px rgba(255,255,255,0.3);
