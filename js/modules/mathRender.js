@@ -1,8 +1,30 @@
 // mathRender.js — KaTeX rendering utility for StudFlow
-// Detects LaTeX in text, renders math, escapes the rest.
-// Usage: window.StudFlow.mathRender.render(text) → safe HTML string
+// Detects LaTeX in text (\( \) inline, \[ \] block), renders via KaTeX, escapes the rest.
+// API: render(text), setContent(el, text), processElement(el)
 (function() {
     'use strict';
+
+    // ==================== CACHE ====================
+    var _cache = {};
+    var _cacheSize = 0;
+    var CACHE_MAX = 500;
+
+    function getCached(key) {
+        return _cache[key] || null;
+    }
+
+    function setCache(key, value) {
+        if (_cacheSize >= CACHE_MAX) {
+            // Evict oldest half
+            var keys = Object.keys(_cache);
+            for (var i = 0; i < keys.length / 2; i++) {
+                delete _cache[keys[i]];
+            }
+            _cacheSize = Object.keys(_cache).length;
+        }
+        _cache[key] = value;
+        _cacheSize++;
+    }
 
     // ==================== ESCAPE ====================
     function escapeHtml(str) {
@@ -13,58 +35,74 @@
                   .replace(/"/g, '&quot;');
     }
 
-    // ==================== NORMALIZE COMMON PATTERNS ====================
-    // Light normalization — only safe, unambiguous transforms
+    // ==================== NORMALIZE (SAFE ONLY) ====================
+    // Whitelist of safe, unambiguous patterns. Never invents math.
+    var SAFE_PATTERNS = [
+        // x^2 → x^{2} (single or multi-digit bare exponent)
+        { from: /\^(\d+)(?!\})/g, to: '^{$1}' },
+        // x_n → x_{n} (single char bare subscript, not already braced)
+        { from: /_([a-zA-Z0-9])(?!\{)/g, to: '_{$1}' },
+        // sqrt(...) → \sqrt{...} only if not already prefixed by backslash
+        { from: /(?<!\\)sqrt\(([^)]+)\)/g, to: '\\sqrt{$1}' }
+    ];
+
     function normalizeLatex(tex) {
-        return tex
-            // x^2 → x^{2}, x^10 → x^{10} (bare exponents without braces)
-            .replace(/\^(\d+)/g, '^{$1}')
-            // x_n → x_{n}, x_0 → x_{0}
-            .replace(/_(\w)(?!\{)/g, '_{$1}')
-            // sqrt(...) → \sqrt{...} only if not already \sqrt
-            .replace(/(?<!\\)sqrt\(([^)]+)\)/g, '\\sqrt{$1}');
+        for (var i = 0; i < SAFE_PATTERNS.length; i++) {
+            tex = tex.replace(SAFE_PATTERNS[i].from, SAFE_PATTERNS[i].to);
+        }
+        return tex;
+    }
+
+    // ==================== QUICK CHECK ====================
+    function hasLatex(text) {
+        return text && (text.indexOf('\\(') !== -1 || text.indexOf('\\[') !== -1);
     }
 
     // ==================== RENDER ====================
-    // Takes a string that may contain \( ... \) and \[ ... \]
-    // Returns safe HTML with rendered KaTeX spans
     function render(text) {
         if (!text) return '';
+
+        // Cache hit
+        var cached = getCached(text);
+        if (cached) return cached;
+
+        // No KaTeX — escaped plain text
         if (typeof katex === 'undefined') {
-            // KaTeX not loaded — return escaped text as-is
             return escapeHtml(text);
         }
 
-        // Split text by LaTeX delimiters, process each segment
-        // Pattern: \( ... \) for inline, \[ ... \] for display
+        // No math delimiters — escaped plain text
+        if (!hasLatex(text)) {
+            var escaped = escapeHtml(text);
+            setCache(text, escaped);
+            return escaped;
+        }
+
         var result = '';
         var i = 0;
         var len = text.length;
 
         while (i < len) {
-            // Look for \( or \[
             var inlineStart = text.indexOf('\\(', i);
             var blockStart = text.indexOf('\\[', i);
 
-            // Find the nearest delimiter
             var nextStart = -1;
             var isBlock = false;
 
             if (inlineStart === -1 && blockStart === -1) {
-                // No more math — append rest as text
                 result += escapeHtml(text.substring(i));
                 break;
             } else if (inlineStart === -1) {
                 nextStart = blockStart; isBlock = true;
             } else if (blockStart === -1) {
                 nextStart = inlineStart; isBlock = false;
-            } else if (inlineStart < blockStart) {
+            } else if (inlineStart <= blockStart) {
                 nextStart = inlineStart; isBlock = false;
             } else {
                 nextStart = blockStart; isBlock = true;
             }
 
-            // Append text before the math
+            // Text before the math
             if (nextStart > i) {
                 result += escapeHtml(text.substring(i, nextStart));
             }
@@ -74,67 +112,59 @@
             var closePos = text.indexOf(closeDelim, nextStart + 2);
 
             if (closePos === -1) {
-                // No closing delimiter — treat as plain text
+                // No closing delimiter — plain text
                 result += escapeHtml(text.substring(nextStart));
                 break;
             }
 
-            // Extract and render the LaTeX
+            // Extract, normalize, render
             var tex = text.substring(nextStart + 2, closePos);
             tex = normalizeLatex(tex);
 
             try {
-                var html = katex.renderToString(tex, {
+                result += katex.renderToString(tex, {
                     displayMode: isBlock,
                     throwOnError: false,
                     errorColor: '#f43f5e',
                     trust: false,
                     strict: false
                 });
-                result += html;
             } catch (e) {
-                // Fallback: show the raw LaTeX in a styled span
-                console.warn('[mathRender] KaTeX error:', e.message, 'for:', tex);
-                var fallback = isBlock ? '\\[' + tex + '\\]' : '\\(' + tex + '\\)';
-                result += '<span class="math-error">' + escapeHtml(fallback) + '</span>';
+                console.warn('[mathRender] KaTeX error for "' + tex.substring(0, 40) + '":', e.message);
+                var fallbackTex = isBlock ? '\\[' + tex + '\\]' : '\\(' + tex + '\\)';
+                result += '<span class="math-fallback" title="Formule non reconnue">'
+                    + escapeHtml(fallbackTex)
+                    + '</span>';
             }
 
             i = closePos + 2;
         }
 
+        setCache(text, result);
         return result;
     }
 
     // ==================== SET ELEMENT CONTENT ====================
-    // Safe replacement for el.textContent = text when math may be present
     function setContent(el, text) {
         if (!el) return;
-        if (!text || (typeof katex === 'undefined' && !hasLatex(text))) {
-            el.textContent = text || '';
-            return;
-        }
-        if (hasLatex(text)) {
+        if (!text) { el.textContent = ''; return; }
+        if (hasLatex(text) && typeof katex !== 'undefined') {
             el.innerHTML = render(text);
         } else {
             el.textContent = text;
         }
     }
 
-    // Quick check: does this string contain LaTeX delimiters?
-    function hasLatex(text) {
-        return text && (text.indexOf('\\(') !== -1 || text.indexOf('\\[') !== -1);
-    }
-
     // ==================== PROCESS EXISTING DOM ====================
-    // Scan an element for text nodes with LaTeX and render them
-    function processElement(el) {
-        if (!el || typeof katex === 'undefined') return;
-        // Process all text-bearing children that might have math
-        var targets = el.querySelectorAll('.flashcard-content, .quiz-question-text, .gen-quiz-question, .bac-section-content, .cc-text, .prof-msg-content');
+    function processElement(root) {
+        if (!root || typeof katex === 'undefined') return;
+        var selectors = '.flashcard-content, .quiz-question-text, .quiz-option, .quiz-feedback, .gen-quiz-question, .bac-section-content, .cc-text, .prof-msg-content';
+        var targets = root.querySelectorAll(selectors);
         for (var i = 0; i < targets.length; i++) {
             var t = targets[i];
             var raw = t.getAttribute('data-raw') || t.textContent;
             if (hasLatex(raw)) {
+                t.setAttribute('data-raw', raw);
                 t.innerHTML = render(raw);
             }
         }
