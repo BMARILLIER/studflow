@@ -6382,6 +6382,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .ob-btn-primary:active {
     transform: scale(0.97);
 }
+/* Onboarding preferences chips */
+.ob-field { margin-bottom: 16px; text-align: left; }
+.ob-label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+.ob-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.ob-chip {
+    padding: 8px 14px; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+    background: var(--bg-glass, rgba(255,255,255,0.05));
+    border: 1.5px solid rgba(255,255,255,0.1);
+    color: var(--text-muted); cursor: pointer; transition: all 0.2s ease;
+}
+.ob-chip:hover { border-color: var(--accent); color: var(--text); }
+.ob-chip.selected {
+    background: rgba(168,85,247,0.15); border-color: var(--accent); color: var(--text);
+}
+.ob-prefs { max-width: 400px; margin: 0 auto; }
 .ob-btn-ghost {
     display: inline-block;
     padding: 0.6rem 1.5rem;

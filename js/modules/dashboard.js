@@ -975,15 +975,18 @@
         var streak = gamStats.streak || 0;
         var level = gamStats.level || 1;
 
-        // Contextual micro-message
-        var hour = new Date().getHours();
+        // Coach-powered greeting message
         var timeMsg = '';
-        if (hour < 8) timeMsg = 'Deja debout ? Respect.';
-        else if (hour < 12) timeMsg = 'Bonne session ce matin.';
-        else if (hour < 14) timeMsg = 'Session de midi, bien vu.';
-        else if (hour < 18) timeMsg = 'L\'apres-midi parfait pour reviser.';
-        else if (hour < 21) timeMsg = 'Session du soir, la plus efficace.';
-        else timeMsg = 'Session de nuit. Ton cerveau stocke en dormant.';
+        if (window.StudFlow.coachEngine) {
+            var profile = window.StudFlow.storage.getUserProfile();
+            timeMsg = window.StudFlow.coachEngine.getCoachMessage(profile, { moment: 'start' });
+        }
+        if (!timeMsg) {
+            var hour = new Date().getHours();
+            if (hour < 12) timeMsg = 'Bonne session ce matin.';
+            else if (hour < 18) timeMsg = 'L\'apres-midi parfait pour reviser.';
+            else timeMsg = 'Session du soir, la plus efficace.';
+        }
 
         var streakBadge = streak > 0
             ? '<span class="dash-greet-streak">🔥 ' + streak + 'j</span>'

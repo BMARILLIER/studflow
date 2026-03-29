@@ -120,6 +120,7 @@
             switch (step) {
                 case 1: renderStep1(container); break;
                 case 2: renderStep2(container); break;
+                case 25: renderStepPreferences(container); break;
                 case 3: renderStep3(container); break;
                 case 4: renderStep4(container); break;
                 default: renderStep1(container);
@@ -178,8 +179,99 @@
     // ==================== AFTER DIAGNOSTIC (called by diagnostic.js) ====================
     function afterDiagnostic() {
         var state = loadState();
-        state.lastStep = 3;
+        state.lastStep = 25;
         saveState(state);
+        showStep(25);
+    }
+
+    // ==================== STEP 2.5 — PREFERENCES RAPIDES ====================
+    function renderStepPreferences(container) {
+        container.innerHTML = ''
+            + '<div class="ob-step ob-prefs">'
+            + renderProgressDots(3, 5)
+            + '<h2 class="ob-heading">Dis-nous en plus</h2>'
+            + '<p class="ob-text">30 secondes pour personnaliser ton coaching.</p>'
+
+            + '<div class="ob-field">'
+            + '<label class="ob-label">Ta classe</label>'
+            + '<div class="ob-chips" id="ob-class">'
+            + '<button class="ob-chip" data-val="seconde">Seconde</button>'
+            + '<button class="ob-chip" data-val="premiere">Premiere</button>'
+            + '<button class="ob-chip selected" data-val="terminale">Terminale</button>'
+            + '</div>'
+            + '</div>'
+
+            + '<div class="ob-field">'
+            + '<label class="ob-label">Matieres ou tu galeres</label>'
+            + '<div class="ob-chips ob-multi" id="ob-weak">'
+            + '<button class="ob-chip" data-val="maths">Maths</button>'
+            + '<button class="ob-chip" data-val="francais">Francais</button>'
+            + '<button class="ob-chip" data-val="philo">Philo</button>'
+            + '<button class="ob-chip" data-val="histgeo">Hist-Geo</button>'
+            + '<button class="ob-chip" data-val="physique">Physique</button>'
+            + '<button class="ob-chip" data-val="svt">SVT</button>'
+            + '<button class="ob-chip" data-val="ses">SES</button>'
+            + '<button class="ob-chip" data-val="anglais">Anglais</button>'
+            + '</div>'
+            + '</div>'
+
+            + '<div class="ob-field">'
+            + '<label class="ob-label">Comment tu apprends le mieux ?</label>'
+            + '<div class="ob-chips" id="ob-style">'
+            + '<button class="ob-chip" data-val="quiz">Quiz / tests</button>'
+            + '<button class="ob-chip selected" data-val="mix">Un peu de tout</button>'
+            + '<button class="ob-chip" data-val="lecture">Relire / fiches</button>'
+            + '</div>'
+            + '</div>'
+
+            + '<div class="ob-field">'
+            + '<label class="ob-label">Ton rythme ideal</label>'
+            + '<div class="ob-chips" id="ob-pace">'
+            + '<button class="ob-chip" data-val="fast">Sessions courtes et intenses</button>'
+            + '<button class="ob-chip selected" data-val="calm">Sessions calmes et posees</button>'
+            + '</div>'
+            + '</div>'
+
+            + '<button class="ob-btn-primary" data-action="onboarding.savePrefs">Continuer</button>'
+            + '<button class="ob-btn-skip" data-action="onboarding.showStep" data-param="3">Passer</button>'
+            + '</div>';
+
+        // Chip selection logic
+        container.addEventListener('click', function(e) {
+            var chip = e.target.closest('.ob-chip');
+            if (!chip) return;
+            var parent = chip.closest('.ob-chips');
+            if (!parent) return;
+
+            if (parent.classList.contains('ob-multi')) {
+                chip.classList.toggle('selected');
+            } else {
+                parent.querySelectorAll('.ob-chip').forEach(function(c) { c.classList.remove('selected'); });
+                chip.classList.add('selected');
+            }
+        });
+    }
+
+    function savePrefs() {
+        var classChip = document.querySelector('#ob-class .ob-chip.selected');
+        var weakChips = document.querySelectorAll('#ob-weak .ob-chip.selected');
+        var styleChip = document.querySelector('#ob-style .ob-chip.selected');
+        var paceChip = document.querySelector('#ob-pace .ob-chip.selected');
+
+        var weakSubjects = [];
+        weakChips.forEach(function(c) { weakSubjects.push(c.getAttribute('data-val')); });
+
+        var profile = window.StudFlow.storage.getUserProfile() || {};
+        if (!profile.identity) profile.identity = {};
+        if (!profile.academic) profile.academic = {};
+        if (!profile.motivation) profile.motivation = {};
+
+        profile.identity.class = classChip ? classChip.getAttribute('data-val') : 'terminale';
+        profile.academic.weakSubjects = weakSubjects;
+        profile.academic.preferredMethod = styleChip ? styleChip.getAttribute('data-val') : 'mix';
+        profile.motivation.pace = paceChip ? paceChip.getAttribute('data-val') : 'calm';
+
+        window.StudFlow.storage.updateUserProfile(profile);
         showStep(3);
     }
 
@@ -300,6 +392,7 @@
         isActive: isActive,
         showStep: showStep,
         afterDiagnostic: afterDiagnostic,
+        savePrefs: savePrefs,
         launchAction: launchAction,
         checkPendingCelebration: checkPendingCelebration,
         complete: complete,
