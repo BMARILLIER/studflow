@@ -94,7 +94,8 @@
         var submitBtn = document.getElementById('quiz-submit');
         submitBtn.disabled = true;
         submitBtn.textContent = 'Valider';
-        submitBtn.setAttribute('data-action', 'quiz:submit');
+        // Don't set data-action yet — wait for selectAnswer to enable it
+        submitBtn.removeAttribute('data-action');
         submitBtn.onclick = null;
         selectedAnswer = null;
     }
@@ -103,12 +104,18 @@
         document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
         selectedAnswer = index;
-        document.getElementById('quiz-submit').disabled = false;
+        var submitBtn = document.getElementById('quiz-submit');
+        submitBtn.disabled = false;
+        submitBtn.setAttribute('data-action', 'quiz:submit');
     }
 
     function submitAnswer() {
+        // Guard: do nothing if no answer selected
+        if (selectedAnswer === null || selectedAnswer === undefined) return;
+
         const questions = getAllQuestions();
         const q = questions[currentIndex];
+        if (!q) return;
         const isCorrect = selectedAnswer === q.correctIndex;
         const options = document.querySelectorAll('.quiz-option');
         const state = window.StudFlow.app.getState();
