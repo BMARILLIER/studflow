@@ -391,12 +391,12 @@
             }
         }
 
-        // Fusion + deduplication
-        updateProgress(90, 'Fusion des resultats...');
-        appState.flashcards = deduplicateCards(allFlashcards).slice(0, 25).map(function(f) {
+        // Fusion + deduplication + validation pedagogique
+        updateProgress(90, 'Verification pedagogique...');
+        var dedupedCards = deduplicateCards(allFlashcards).slice(0, 25).map(function(f) {
             return { question: f.question || '', answer: f.answer || '', mastered: false };
         });
-        appState.quizQuestions = deduplicateQuiz(allQuiz).slice(0, 10).map(function(q) {
+        var dedupedQuiz = deduplicateQuiz(allQuiz).slice(0, 10).map(function(q) {
             return {
                 question: String(q.question || ''),
                 options: (q.options || []).map(String),
@@ -404,6 +404,21 @@
                 explanation: String(q.explanation || '')
             };
         });
+
+        // Filtre pedagogique : rejette les cartes vides, trop longues, hors programme
+        var guard = window.StudFlow.pedagogicalGuard;
+        if (guard) {
+            var fcResult = guard.filterFlashcards(dedupedCards, 'generated');
+            var qzResult = guard.filterQuiz(dedupedQuiz, 'generated');
+            appState.flashcards = fcResult.cards;
+            appState.quizQuestions = qzResult.questions;
+            if (fcResult.stats.rejected > 0 || fcResult.stats.outOfScope > 0) {
+                console.log('[guard] ' + fcResult.stats.rejected + ' flashcards rejetees, ' + fcResult.stats.outOfScope + ' hors programme');
+            }
+        } else {
+            appState.flashcards = dedupedCards;
+            appState.quizQuestions = dedupedQuiz;
+        }
 
         var fcCount = appState.flashcards.length;
         var qzCount = appState.quizQuestions.length;

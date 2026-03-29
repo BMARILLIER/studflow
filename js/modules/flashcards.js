@@ -255,6 +255,19 @@
         if (elScore) elScore.textContent = `${score} \u2713`;
         if (elCard) elCard.classList.remove('flipped');
 
+        // Confidence badge for AI-generated cards
+        var badgeEl = document.getElementById('fc-confidence-badge');
+        if (badgeEl) {
+            var guard = window.StudFlow.pedagogicalGuard;
+            if (guard && card._confidence === guard.STATUS.TO_VERIFY) {
+                badgeEl.innerHTML = guard.confidenceBadge(card._confidence);
+                badgeEl.style.display = '';
+            } else {
+                badgeEl.innerHTML = '';
+                badgeEl.style.display = 'none';
+            }
+        }
+
         // In exam mode, hide theme indicator
         var mode = currentMode === 'auto' ? getAutoMode() : currentMode;
         var themeEl = document.getElementById('fc-theme-label');

@@ -139,9 +139,12 @@ function buildPrompt(text, mode, totalChunks) {
     var fcCount = totalChunks > 1 ? 6 : 10;
     var qzCount = totalChunks > 1 ? 3 : 5;
 
-    var quality = 'Niveau lycee/Bac. Privilegier : definitions utiles, methodes, formules, pieges frequents. '
-        + 'Eviter : details secondaires, hors programme, repetitions. '
-        + 'Reponses courtes et claires. ';
+    var quality = 'STRICTEMENT niveau lycee francais (Seconde/Premiere/Terminale). '
+        + 'Programme officiel Education nationale uniquement. '
+        + 'Privilegier : definitions utiles, methodes Bac, formules, pieges frequents. '
+        + 'Eviter : contenu universitaire, hors programme, details secondaires, jargon complexe, repetitions. '
+        + 'Si une information du cours semble hors programme ou douteuse, NE PAS la transformer en flashcard. '
+        + 'Reponses courtes, claires, pedagogiques. ';
 
     if (mode === 'quiz') {
         return 'A partir de ce cours, cree ' + qzCount + ' questions QCM. ' + quality
