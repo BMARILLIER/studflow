@@ -23,9 +23,12 @@
 }
 /* Logo icon */
 .home-logo-icon {
-    width: 32px; height: 32px;
+    width: 32px; height: 32px; min-width: 32px; min-height: 32px;
     border-radius: 8px; overflow: hidden;
-    background: url('/icons/Studflow.png') center/cover no-repeat;
+    background-image: url('/icons/Studflow.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     box-shadow: 0 2px 8px rgba(168,85,247,0.2);
 }
 .home-logo-text {
