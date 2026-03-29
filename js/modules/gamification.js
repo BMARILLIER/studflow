@@ -45,7 +45,7 @@
         challenge_win: 30
     };
 
-    const CONFETTI_COLORS = ['#A855F7', '#FF4D8D', '#34D399', '#38BDF8', '#FBBF24', '#FB923C', '#E879F9'];
+    const CONFETTI_COLORS = ['#60a5fa', '#22d3ee', '#34D399', '#a78bfa', '#FBBF24', '#93c5fd', '#38BDF8'];
 
     function getStats() {
         return window.StudFlow.storage.loadData('gamification', {

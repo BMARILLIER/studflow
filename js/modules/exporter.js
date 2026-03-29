@@ -300,7 +300,7 @@
         var printStyles = [
             '* { margin: 0; padding: 0; box-sizing: border-box; }',
             'body { font-family: Georgia, "Times New Roman", serif; color: #1a1a2e; padding: 2cm; line-height: 1.6; }',
-            'h1 { font-size: 1.6em; margin-bottom: 0.8em; color: #1a1a2e; border-bottom: 2px solid #a855f7; padding-bottom: 0.3em; }',
+            'h1 { font-size: 1.6em; margin-bottom: 0.8em; color: #1a1a2e; border-bottom: 2px solid #60a5fa; padding-bottom: 0.3em; }',
             'h2 { font-size: 1.3em; margin: 1em 0 0.5em; color: #333; }',
             'h3 { font-size: 1.1em; margin: 1em 0 0.4em; color: #444; }',
             'p { margin: 0.4em 0; }',
