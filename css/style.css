@@ -177,13 +177,12 @@ header {
     display: flex; align-items: center;
     text-decoration: none;
     flex-shrink: 0;
-    /* Logo image has internal padding — use negative margin to compensate */
-    margin: -14px -10px -14px -10px;
+    margin: -50px -30px -50px -30px;
 }
 
 .logo-icon {
     display: block;
-    width: 86px; height: 86px;
+    width: 258px; height: 258px;
     background-image: url('/icons/Studflow.png');
     background-size: cover;
     background-position: center;
@@ -3534,8 +3533,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* ==================== RESPONSIVE — 768px (tablet / large phone) ==================== */
 @media (max-width: 768px) {
     header { height: auto; flex-wrap: wrap; }
-    .logo { margin: -10px -8px -10px -8px; }
-    .logo-icon { width: 72px; height: 72px; }
+    .logo { margin: -40px -24px -40px -24px; }
+    .logo-icon { width: 200px; height: 200px; }
     .main-nav {
         order: 3; width: 100%; padding: 0.4rem 0.5rem;
         border-top: 1px solid var(--border); gap: 2px;
