@@ -202,28 +202,50 @@
         var isPdf = file.type === 'application/pdf' ||
                     file.type === 'application/x-pdf' ||
                     (file.name && file.name.toLowerCase().endsWith('.pdf'));
-        if (!isPdf) {
+        var isImage = window.StudFlow.ocr && window.StudFlow.ocr.isImage(file);
+
+        if (!isPdf && !isImage) {
             if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
-                window.StudFlow.gamification.showToast('Veuillez selectionner un fichier PDF', 'xp', '⚠️');
+                window.StudFlow.gamification.showToast('Format accepte : PDF, JPG ou PNG', 'xp', '⚠️');
             }
             return;
         }
 
-        if (file.size > MAX_PDF_SIZE) {
+        if (isPdf && file.size > MAX_PDF_SIZE) {
             if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
-                window.StudFlow.gamification.showToast('Fichier trop volumineux (max 50 Mo). Essaie avec un PDF plus leger.', 'xp', '⚠️');
+                window.StudFlow.gamification.showToast('Fichier trop volumineux (max 50 Mo).', 'xp', '⚠️');
             }
             return;
         }
 
-        appState.fileName = file.name.replace('.pdf', '');
+        if (isImage) {
+            var imgErr = window.StudFlow.ocr.validateImage(file);
+            if (imgErr) {
+                if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
+                    window.StudFlow.gamification.showToast(imgErr, 'xp', '⚠️');
+                }
+                return;
+            }
+        }
+
+        appState.fileName = file.name.replace(/\.(pdf|jpg|jpeg|png|webp)$/i, '');
         showScreen('loading');
 
         try {
-            updateProgress(20, 'Extraction du texte...');
-            console.log('[PDF] Extraction lancee pour:', file.name);
-            const text = await window.StudFlow.pdf.extractText(file);
-            console.log('[PDF] Extraction OK, longueur texte:', text.length);
+            var text;
+            if (isImage) {
+                updateProgress(10, 'Chargement de l\'OCR...');
+                console.log('[OCR] Extraction lancee pour:', file.name);
+                text = await window.StudFlow.ocr.extractText(file, function(pct) {
+                    updateProgress(10 + Math.round(pct * 0.5), 'Lecture de l\'image... ' + pct + '%');
+                });
+                console.log('[OCR] Extraction OK, longueur texte:', text.length);
+            } else {
+                updateProgress(20, 'Extraction du texte...');
+                console.log('[PDF] Extraction lancee pour:', file.name);
+                text = await window.StudFlow.pdf.extractText(file);
+                console.log('[PDF] Extraction OK, longueur texte:', text.length);
+            }
 
             if (!text || text.trim().length < 20) {
                 console.warn('[PDF] Texte trop court ou vide');
