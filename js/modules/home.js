@@ -53,8 +53,8 @@
     function renderHero() {
         return '<section class="landing-hero">'
             + '<div class="landing-hero-inner">'
-            + '<h1 class="landing-h1">Reussis ton bac<br><span>sans stress.</span></h1>'
-            + '<p class="landing-sub">Importe ton cours PDF et genere instantanement quiz, flashcards et plan de revision.</p>'
+            + '<h1 class="landing-h1">Revise moins.<br><span>Retiens plus.</span></h1>'
+            + '<p class="landing-sub">10 min/jour. Flashcards, quiz et IA. Ton Bac, a ton rythme.</p>'
             + '<div class="landing-hero-actions">'
             + '<button class="landing-btn-primary" data-action="home.goToDiagnostic">Essayer gratuitement</button>'
             + '<button class="landing-btn-ghost" data-action="home.goToDashboard">J\'ai deja un compte</button>'

@@ -556,16 +556,16 @@
 
         // Urgency
         var urgencyClass = 'hero-calm';
-        var msg = 'Tu as le temps. Commence doucement aujourd\'hui.';
+        var msg = 'Tu as le temps. Pose les bases.';
         if (days <= 10) {
             urgencyClass = 'hero-critical';
-            msg = 'Derniere ligne droite — focus maximum.';
+            msg = 'Derniere ligne droite. Tu es pret(e).';
         } else if (days <= 30) {
             urgencyClass = 'hero-urgent';
-            msg = 'On accelere — 10 min maintenant font la difference.';
+            msg = '10 min maintenant = des points en plus en juin.';
         } else if (days <= 90) {
             urgencyClass = 'hero-soon';
-            msg = 'Le Bac approche. Reste regulier(e).';
+            msg = 'Le Bac approche. Chaque jour compte.';
         }
 
         // Stats
@@ -672,10 +672,10 @@
     // ==================== HERO: "QUE VEUX-TU FAIRE ?" ====================
     function renderHeroActions() {
         var subtexts = [
-            'Chaque minute compte. Lance-toi.',
-            '10 min et t\'as deja progresse.',
+            'Revise moins. Retiens plus.',
+            '10 min/jour. Bac dans la poche.',
+            'Chaque jour compte. Lance-toi.',
             'Ton futur toi va kiffer.',
-            'Un pas de plus vers le Bac.',
             'Meme 5 min, ca change tout.'
         ];
         var sub = subtexts[Math.floor(Math.random() * subtexts.length)];
