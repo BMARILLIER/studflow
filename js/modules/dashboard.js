@@ -975,10 +975,21 @@
         var streak = gamStats.streak || 0;
         var level = gamStats.level || 1;
 
-        // Coach-powered greeting message
+        // Coach-powered greeting message (profile-aware)
         var timeMsg = '';
-        if (window.StudFlow.coachEngine) {
-            var profile = window.StudFlow.storage.getUserProfile();
+        var profile = window.StudFlow.storage.getUserProfile();
+
+        // First visit after onboarding: reference their profile
+        if (profile && profile.behavior && !localStorage.getItem('studflow_first_coach_done')) {
+            localStorage.setItem('studflow_first_coach_done', '1');
+            var ws = profile.behavior.consistency;
+            var stress = profile.behavior.stressLevel;
+            if (ws === 'low') timeMsg = 'Tu m\'as dit que tu procrastines : on commence petit aujourd\'hui.';
+            else if (stress === 'high') timeMsg = 'Tu m\'as dit que tu stresses : on va y aller doucement.';
+            else if (profile.behavior.confidence === 'low') timeMsg = 'Tu doutes un peu ? Normal. On avance ensemble.';
+        }
+
+        if (!timeMsg && window.StudFlow.coachEngine) {
             timeMsg = window.StudFlow.coachEngine.getCoachMessage(profile, { moment: 'start' });
         }
         if (!timeMsg) {

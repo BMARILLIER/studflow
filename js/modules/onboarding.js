@@ -164,7 +164,42 @@
     // ==================== ONBOARDING DATA (temp, saved at end) ====================
     var _obData = {};
 
-    function initChipLogic(container) {
+    // ==================== EFFET MIROIR ====================
+    var MIRROR_MESSAGES = {
+        // Work style
+        fast_learner: 'Top. On va optimiser ta vitesse.',
+        needs_time: 'On prendra le temps, sans pression.',
+        forgets_fast: 'OK, on va renforcer ta memoire progressivement.',
+        needs_repetition: 'La repetition, c\'est la cle. On va t\'aider.',
+        procrastinator: 'OK, on va commencer simple avec toi.',
+        focus_issues: 'Pas de souci. Sessions courtes, zero distraction.',
+        regular: 'Parfait. On va capitaliser sur ta regularite.',
+        last_minute: 'On va t\'aider a demarrer plus tot, en douceur.',
+        // Stress
+        high: 'On va te simplifier les choses.',
+        medium: 'On s\'adapte a toi.',
+        low: 'On va optimiser ton niveau.',
+        // Self note
+        _selfnote: 'Parfait. On va adapter ton accompagnement a ca.'
+    };
+
+    function showMirror(container, val) {
+        var msg = MIRROR_MESSAGES[val];
+        if (!msg) return;
+        var el = container.querySelector('.ob-mirror');
+        if (!el) {
+            el = document.createElement('p');
+            el.className = 'ob-mirror';
+            var btn = container.querySelector('.ob-btn-primary');
+            if (btn) btn.parentNode.insertBefore(el, btn);
+            else container.querySelector('.ob-step').appendChild(el);
+        }
+        el.style.opacity = '0';
+        el.textContent = msg;
+        setTimeout(function() { el.style.opacity = '1'; }, 50);
+    }
+
+    function initChipLogic(container, mirrorEnabled) {
         container.addEventListener('click', function(e) {
             var chip = e.target.closest('.ob-chip');
             if (!chip) return;
@@ -175,6 +210,10 @@
             } else {
                 parent.querySelectorAll('.ob-chip').forEach(function(c) { c.classList.remove('selected'); });
                 chip.classList.add('selected');
+            }
+            // Trigger mirror effect
+            if (mirrorEnabled && chip.classList.contains('selected')) {
+                showMirror(container, chip.getAttribute('data-val'));
             }
         });
     }
@@ -279,7 +318,7 @@
             + '</div>'
             + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="5">Continuer</button>'
             + '</div>';
-        initChipLogic(container);
+        initChipLogic(container, true);
     }
 
     // ==================== ECRAN 6 — STRESS & CONFIANCE ====================
@@ -305,7 +344,7 @@
             + '</div>'
             + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="6">Continuer</button>'
             + '</div>';
-        initChipLogic(container);
+        initChipLogic(container, true);
     }
 
     // ==================== ECRAN 7 — PHRASE PERSO ====================
@@ -322,6 +361,17 @@
             + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="7">Continuer</button>'
             + '<button class="ob-btn-skip" data-action="onboarding.nextOB" data-param="7">Passer</button>'
             + '</div>';
+
+        // Mirror effect on textarea input
+        var ta = container.querySelector('#ob-selfnote');
+        if (ta) {
+            ta.focus();
+            ta.addEventListener('input', function() {
+                if (ta.value.trim().length > 10) {
+                    showMirror(container, '_selfnote');
+                }
+            });
+        }
     }
 
     // ==================== ECRAN 8 — PREFERENCES (optionnel) ====================
