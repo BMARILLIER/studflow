@@ -199,6 +199,13 @@
             shuffledCards = buildModeDeck(currentDeck);
         }
 
+        // Coach message at session start
+        if (window.StudFlow.coachEngine && window.StudFlow.gamification) {
+            var profile = window.StudFlow.storage.getUserProfile();
+            var msg = window.StudFlow.coachEngine.getCoachMessage(profile, { moment: 'start' });
+            if (msg) window.StudFlow.gamification.showToast(msg, 'xp', '\uD83E\uDDE0');
+        }
+
         // Show/hide Easy button
         var easyBtn = document.getElementById('fc-btn-easy');
         if (easyBtn) easyBtn.style.display = srMode ? '' : 'none';
@@ -346,8 +353,14 @@
         var rCorrect = document.getElementById('results-correct');
         var rWrong = document.getElementById('results-wrong');
         var rTime = document.getElementById('results-time');
+        // Coach end-of-session message
+        var endMsg = '';
+        if (window.StudFlow.coachEngine) {
+            var profile = window.StudFlow.storage.getUserProfile();
+            endMsg = window.StudFlow.coachEngine.getCoachMessage(profile, { moment: 'end', successRate: percent });
+        }
         if (rIcon) rIcon.textContent = percent >= 70 ? '\uD83C\uDF89' : '\uD83D\uDCAA';
-        if (rTitle) rTitle.textContent = percent >= 70 ? 'Excellent !' : 'Continue comme ca !';
+        if (rTitle) rTitle.textContent = endMsg || (percent >= 70 ? 'Excellent !' : 'Continue comme ca !');
         if (rScore) rScore.textContent = `${percent}%`;
         if (rCorrect) rCorrect.textContent = score;
         if (rWrong) rWrong.textContent = total - score;

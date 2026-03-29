@@ -110,6 +110,57 @@
         localStorage.removeItem(PREFIX + key);
     }
 
+    var PROFILE_VERSION = 2;
+
+    function getDefaultProfile() {
+        return {
+            version: PROFILE_VERSION,
+            identity: { name: '', class: '', track: '', exam: 'bac' },
+            academic: { strongSubjects: [], weakSubjects: [], preferredMethod: 'mix' },
+            behavior: { consistency: 'medium', stressLevel: 'medium', confidence: 'medium' },
+            motivation: { type: 'encouragement', pace: 'calm' },
+            optional: { selfDescription: '' },
+            computed: { realLevel: {}, drift: 0 },
+            // Legacy fields (diagnostic)
+            answers: null,
+            profiles: [],
+            mainProfile: 'equilibre',
+            completedAt: null
+        };
+    }
+
+    function migrateProfile(profile) {
+        if (!profile) return getDefaultProfile();
+        var v = profile.version || 0;
+
+        if (v < 1) {
+            // v0 → v1: wrap existing diagnostic data into new structure
+            profile.version = 1;
+            profile.identity = profile.identity || { name: '', class: '', track: '', exam: 'bac' };
+            profile.academic = profile.academic || { strongSubjects: [], weakSubjects: [], preferredMethod: 'mix' };
+            profile.behavior = profile.behavior || {};
+            profile.motivation = profile.motivation || { type: 'encouragement', pace: 'calm' };
+            profile.optional = profile.optional || { selfDescription: '' };
+            profile.computed = profile.computed || { realLevel: {}, drift: 0 };
+
+            // Map diagnostic answers to behavior if available
+            if (profile.answers) {
+                var a = profile.answers;
+                profile.behavior.stressLevel = a.stress >= 4 ? 'high' : a.stress >= 2 ? 'medium' : 'low';
+                profile.behavior.confidence = a.method >= 4 ? 'low' : a.method <= 2 ? 'high' : 'medium';
+                profile.behavior.consistency = a.procrastination >= 4 ? 'low' : a.procrastination <= 2 ? 'high' : 'medium';
+            }
+        }
+
+        if (v < 2) {
+            profile.version = 2;
+            if (!profile.motivation) profile.motivation = { type: 'encouragement', pace: 'calm' };
+            if (!profile.computed) profile.computed = { realLevel: {}, drift: 0 };
+        }
+
+        return profile;
+    }
+
     function updateUserProfile(data) {
         const existing = loadData('profile', {});
         const merged = Object.assign({}, existing, data);
@@ -118,7 +169,9 @@
     }
 
     function getUserProfile() {
-        return loadData('profile', null);
+        var raw = loadData('profile', null);
+        if (!raw) return getDefaultProfile();
+        return migrateProfile(raw);
     }
 
     // Auto-save appState periodically
