@@ -225,6 +225,15 @@
         if (!isAvailable()) {
             return Promise.reject(makeError('unavailable', 'LLM indisponible'));
         }
+        // Quota check
+        var quota = window.StudFlow.aiQuota;
+        if (quota) {
+            var check = quota.canCall('coach_chat');
+            if (!check.allowed) {
+                return Promise.reject(makeError('quota', check.reason));
+            }
+            quota.recordCall('coach_chat', 200);
+        }
 
         var ctx = context || gatherContext();
         var messages = buildMessages(userMsg, ctx);

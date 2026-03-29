@@ -319,10 +319,42 @@
         return chunks.filter(function(c) { return c.length > 30; });
     }
 
-    // ==================== ANALYSE IA (chunked) ====================
+    // ==================== ANALYSE IA (chunked, quota-controlled) ====================
     async function analyzeWithServer(text) {
         var loadingTitle = document.getElementById('loading-title');
         if (loadingTitle) loadingTitle.textContent = 'Analyse IA en cours...';
+
+        var quota = window.StudFlow.aiQuota;
+
+        // Check cache first — same PDF = no API call
+        if (quota) {
+            var cached = quota.getCached('pdf_analyze', text);
+            if (cached) {
+                console.log('[IA] Resultat en cache — aucun appel API');
+                updateProgress(90, 'Resultats deja disponibles...');
+                appState.flashcards = cached.flashcards || [];
+                appState.quizQuestions = cached.quiz || [];
+                var cMsg = appState.flashcards.length + ' flashcards (depuis le cache)';
+                updateProgress(100, cMsg);
+                if (window.StudFlow.gamification) {
+                    window.StudFlow.gamification.showToast(cMsg + ' — analyse deja faite !', 'xp', '⚡');
+                }
+                return;
+            }
+        }
+
+        // Check quota
+        if (quota) {
+            var check = quota.canCall('pdf_analyze');
+            if (!check.allowed) {
+                console.warn('[IA] Quota atteint:', check.reason);
+                updateProgress(100, 'Limite atteinte.');
+                if (window.StudFlow.gamification) {
+                    window.StudFlow.gamification.showToast(check.reason, 'xp', '⏳');
+                }
+                return;
+            }
+        }
 
         var chunks = chunkText(text);
         var totalChunks = chunks.length;
@@ -422,6 +454,17 @@
 
         var fcCount = appState.flashcards.length;
         var qzCount = appState.quizQuestions.length;
+
+        // Record API call + cache the result for next time
+        if (quota) {
+            quota.recordCall('pdf_analyze', text.length / 4);
+            if (fcCount > 0 || qzCount > 0) {
+                quota.setCache('pdf_analyze', text, {
+                    flashcards: appState.flashcards,
+                    quiz: appState.quizQuestions
+                });
+            }
+        }
 
         if (fcCount === 0 && qzCount === 0) {
             updateProgress(100, 'PDF importe (IA n\'a rien genere).');

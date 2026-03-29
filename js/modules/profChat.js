@@ -71,6 +71,15 @@
         if (window.StudFlow.features && !window.StudFlow.features.AI_ENABLED) {
             return Promise.reject(new Error('IA desactivee'));
         }
+        // Quota check
+        var quota = window.StudFlow.aiQuota;
+        if (quota) {
+            var check = quota.canCall('prof_chat');
+            if (!check.allowed) {
+                return Promise.reject(new Error(check.reason));
+            }
+            quota.recordCall('prof_chat', 200);
+        }
         var apiKey = window.StudFlow.storage.loadData('groq_api_key', '');
         var controller = new AbortController();
         var timer = setTimeout(function() { controller.abort(); }, TIMEOUT_MS);
