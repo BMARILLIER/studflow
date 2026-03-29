@@ -332,23 +332,39 @@
         window.StudFlow.storage.saveAppState(state);
         currentIndex++;
 
-        // Mid-session coach feedback (at key moments, not every card)
-        if (window.StudFlow.coachEngine && window.StudFlow.gamification && currentIndex < cards.length) {
+        // Micro-wins + mid-session coach (at key moments only)
+        if (window.StudFlow.gamification && currentIndex < cards.length) {
             var pct = Math.round((currentIndex / cards.length) * 100);
-            var rate = cards.length > 0 ? Math.round((score / currentIndex) * 100) : 0;
-            var shouldSpeak = false;
-            // Speak at 25%, 50%, 75% progress, or after 3 wrong in a row
-            if (pct >= 25 && pct < 30) shouldSpeak = true;
-            if (pct >= 50 && pct < 55) shouldSpeak = true;
-            if (pct >= 75 && pct < 80) shouldSpeak = true;
-            if (!knew && state.streak === 0 && currentIndex >= 3) shouldSpeak = true;
+            var rate = currentIndex > 0 ? Math.round((score / currentIndex) * 100) : 0;
+            var remaining = cards.length - currentIndex;
+            var toast = window.StudFlow.gamification.showToast;
+            var coach = window.StudFlow.coachEngine;
+            var profile = coach ? window.StudFlow.storage.getUserProfile() : null;
 
-            if (shouldSpeak) {
-                var profile = window.StudFlow.storage.getUserProfile();
-                var midMsg = window.StudFlow.coachEngine.getCoachMessage(profile, {
-                    moment: 'during', progress: pct, successRate: rate
-                });
-                if (midMsg) window.StudFlow.gamification.showToast(midMsg, 'xp', '\uD83D\uDCAC');
+            // Micro-win: first correct answer
+            if (knew && score === 1) {
+                toast('Bien. Tu es lance(e).', 'xp', '\u2713');
+            }
+            // Micro-win: 3 items done
+            else if (currentIndex === 3 && score >= 2) {
+                toast('Bon debut.', 'xp', '\uD83D\uDCAA');
+            }
+            // Tension positive: 2 items left
+            else if (remaining === 2) {
+                toast('Encore 2 et c\'est boucle.', 'xp', '\uD83C\uDFAF');
+            }
+            // Tension positive: last item
+            else if (remaining === 1) {
+                toast('Derniere carte. Finis fort.', 'xp', '\uD83D\uDD25');
+            }
+            // Coach at 50% or after difficulty
+            else if (coach && (pct >= 50 && pct < 55)) {
+                var midMsg = coach.getCoachMessage(profile, { moment: 'during', progress: pct, successRate: rate });
+                if (midMsg) toast(midMsg, 'xp', '\uD83D\uDCAC');
+            }
+            else if (coach && !knew && state.streak === 0 && currentIndex >= 3) {
+                var diffMsg = coach.getCoachMessage(profile, { moment: 'during', progress: pct, successRate: rate });
+                if (diffMsg) toast(diffMsg, 'xp', '\uD83D\uDCAC');
             }
         }
 
@@ -381,6 +397,15 @@
         }
         if (rIcon) rIcon.textContent = percent >= 70 ? '\uD83C\uDF89' : '\uD83D\uDCAA';
         if (rTitle) rTitle.textContent = endMsg || (percent >= 70 ? 'Excellent !' : 'Continue comme ca !');
+
+        // Contextual sub-message
+        var subMsg = '';
+        if (total <= 5) subMsg = 'Meme courte, cette session compte.';
+        else if (percent >= 80) subMsg = 'Tu construis quelque chose de solide.';
+        else if (elapsed < 120) subMsg = 'Rapide et efficace.';
+        else subMsg = 'Aujourd\'hui c\'est fait. Demain, on continue.';
+        var rSub = document.getElementById('results-sub');
+        if (rSub) rSub.textContent = subMsg;
         if (rScore) rScore.textContent = `${percent}%`;
         if (rCorrect) rCorrect.textContent = score;
         if (rWrong) rWrong.textContent = total - score;

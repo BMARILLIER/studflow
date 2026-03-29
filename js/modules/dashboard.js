@@ -989,6 +989,19 @@
             else if (profile.behavior.confidence === 'low') timeMsg = 'Tu doutes un peu ? Normal. On avance ensemble.';
         }
 
+        // Comeback after absence
+        if (!timeMsg && window.StudFlow.gamification) {
+            var gStats = window.StudFlow.gamification.getStats();
+            if (gStats && gStats.lastActiveDate) {
+                var lastDate = new Date(gStats.lastActiveDate);
+                var now = new Date();
+                var daysDiff = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
+                if (daysDiff === 1) { /* yesterday, normal */ }
+                else if (daysDiff >= 2 && daysDiff <= 3) timeMsg = 'On reprend simplement. Pas de pression.';
+                else if (daysDiff >= 4) timeMsg = 'Content de te revoir. On repart d\'ici, tranquillement.';
+            }
+        }
+
         if (!timeMsg && window.StudFlow.coachEngine) {
             timeMsg = window.StudFlow.coachEngine.getCoachMessage(profile, { moment: 'start' });
         }
