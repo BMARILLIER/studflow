@@ -283,7 +283,7 @@
         if (statusEl) statusEl.textContent = status;
     }
 
-    // AI generation (Groq — disabled for beta)
+    // AI generation (Groq)
     async function generateWithAI(text) {
         if (window.StudFlow.features && !window.StudFlow.features.AI_ENABLED) return;
         updateProgress(40, 'L\'IA analyse ton cours...');
@@ -376,7 +376,7 @@
 
     async function callAI(prompt, retries) {
         if (window.StudFlow.features && !window.StudFlow.features.AI_ENABLED) {
-            throw new Error('IA desactivee pendant la beta');
+            throw new Error('IA desactivee');
         }
         retries = retries || 3;
         for (let attempt = 1; attempt <= retries; attempt++) {

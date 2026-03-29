@@ -69,7 +69,7 @@
     // ==================== API CALL ====================
     function callAPI(messages, model, attempt) {
         if (window.StudFlow.features && !window.StudFlow.features.AI_ENABLED) {
-            return Promise.reject(new Error('IA desactivee pendant la beta'));
+            return Promise.reject(new Error('IA desactivee'));
         }
         var apiKey = window.StudFlow.storage.loadData('groq_api_key', '');
         var controller = new AbortController();

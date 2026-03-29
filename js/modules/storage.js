@@ -6,7 +6,7 @@
     // Central feature flags. Checked by all modules before calling external AI.
     // Set AI_ENABLED to true when ready to re-enable AI features.
     var FEATURES = {
-        AI_ENABLED: false
+        AI_ENABLED: true
     };
 
     // Expose early so every module loaded after storage.js can read it

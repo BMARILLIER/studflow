@@ -220,7 +220,7 @@
     // ==================== SEND MESSAGE (with retry) ====================
     function sendMessage(userMsg, context) {
         if (window.StudFlow.features && !window.StudFlow.features.AI_ENABLED) {
-            return Promise.reject(makeError('disabled', 'IA desactivee pendant la beta'));
+            return Promise.reject(makeError('disabled', 'IA desactivee'));
         }
         if (!isAvailable()) {
             return Promise.reject(makeError('unavailable', 'LLM indisponible'));

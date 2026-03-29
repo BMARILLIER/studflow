@@ -177,7 +177,7 @@
             var status = document.getElementById('groq-status');
             if (status) {
                 status.className = 'api-status';
-                status.textContent = 'IA desactivee pendant la beta.';
+                status.textContent = 'Configure ta cle API Groq pour activer l\'IA.';
             }
             return;
         }
