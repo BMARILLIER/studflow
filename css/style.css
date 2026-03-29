@@ -166,26 +166,28 @@ header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     backdrop-filter: blur(16px) saturate(1.4);
     -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    background: rgba(11, 16, 32, 0.88);
+    background: rgba(11, 16, 32, 0.92);
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center;
-    padding: 0 20px 0 16px; height: 56px;
-    gap: 16px;
+    padding: 0 16px; height: 60px;
+    gap: 12px;
 }
 
 .logo {
     display: flex; align-items: center;
     text-decoration: none;
     flex-shrink: 0;
+    /* Logo image has internal padding — use negative margin to compensate */
+    margin: -14px -10px -14px -10px;
 }
 
 .logo-icon {
-    width: 40px; height: 40px;
+    display: block;
+    width: 86px; height: 86px;
     background-image: url('/icons/Studflow.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: 10px;
 }
 
 @keyframes logoPulse {
@@ -286,7 +288,7 @@ header {
 }
 
 /* ==================== MAIN CONTAINER ==================== */
-.app-container { padding-top: 72px; min-height: 100vh; }
+.app-container { padding-top: 76px; min-height: 100vh; }
 
 /* ==================== SCREENS ==================== */
 .screen {
@@ -3532,7 +3534,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* ==================== RESPONSIVE — 768px (tablet / large phone) ==================== */
 @media (max-width: 768px) {
     header { height: auto; flex-wrap: wrap; }
-    .logo-icon { width: 36px; height: 36px; border-radius: 8px; }
+    .logo { margin: -10px -8px -10px -8px; }
+    .logo-icon { width: 72px; height: 72px; }
     .main-nav {
         order: 3; width: 100%; padding: 0.4rem 0.5rem;
         border-top: 1px solid var(--border); gap: 2px;
