@@ -77,6 +77,25 @@
         if (screenId === 'dashboard' && window.StudFlow.onboarding && window.StudFlow.onboarding.checkPendingCelebration()) {
             return; // onboarding took over
         }
+        // Show quota info on upload screen
+        if (screenId === 'upload') {
+            var quotaEl = document.getElementById('upload-quota-info');
+            var quota = window.StudFlow.aiQuota;
+            if (quotaEl && quota) {
+                var check = quota.canCall('pdf_analyze');
+                var stats = quota.getStats();
+                var used = stats.counts['pdf_analyze'] || 0;
+                var limit = stats.limits['pdf_analyze'] || 3;
+                var remaining = Math.max(0, limit - used);
+                if (remaining > 0) {
+                    quotaEl.textContent = '\u2728 ' + remaining + ' analyse' + (remaining > 1 ? 's' : '') + ' IA restante' + (remaining > 1 ? 's' : '') + ' aujourd\'hui';
+                    quotaEl.className = 'upload-quota-info';
+                } else {
+                    quotaEl.textContent = 'Limite d\'analyses IA atteinte pour aujourd\'hui. Le texte sera quand meme extrait.';
+                    quotaEl.className = 'upload-quota-info quota-exhausted';
+                }
+            }
+        }
         // Init analytics consent toggle when settings opens
         if (screenId === 'settings') {
             var toggle = document.getElementById('analytics-consent-toggle');

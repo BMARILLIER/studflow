@@ -8,10 +8,10 @@
 
     // ==================== QUOTAS (per day, per user) ====================
     var LIMITS = {
-        'pdf_analyze':  5,    // PDF analysis via /api/analyze
-        'prof_chat':    20,   // Prof IA messages
-        'coach_chat':   15,   // Coach IA messages
-        'total':        40    // Hard cap for all AI calls combined
+        'pdf_analyze':  3,    // PDF analysis via /api/analyze
+        'prof_chat':    15,   // Prof IA messages
+        'coach_chat':   10,   // Coach IA messages
+        'total':        28    // Hard cap for all AI calls combined
     };
 
     // ==================== STATE ====================
@@ -69,7 +69,7 @@
     // ==================== RESPONSE CACHE ====================
     // Cache AI responses keyed by content hash. Prevents paying twice for the same content.
     var CACHE_MAX_ENTRIES = 50;
-    var CACHE_TTL_HOURS = 24;
+    var CACHE_TTL_HOURS = 720; // 30 jours
 
     function hashText(text) {
         // Simple fast hash (djb2)
