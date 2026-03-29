@@ -2462,6 +2462,12 @@ body.theme-light .math-fallback {
 
 /* --- Session Card (3 core actions) --- */
 /* ============================================
+   DASHBOARD LOGO
+   ============================================ */
+.dash-logo { text-align: center; padding: 8px 0 0; }
+.dash-logo-img { width: 48px; height: 48px; object-fit: contain; }
+
+/* ============================================
    HERO BAC — countdown + CTA + engagement
    ============================================ */
 .hero-bac {

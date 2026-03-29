@@ -363,8 +363,11 @@
             weeklyReportBannerHTML = window.StudFlow.weeklyReport.renderDashboardBanner();
         }
 
-        // ===== ABOVE THE FOLD: hero + actions (nothing else) =====
+        // ===== ABOVE THE FOLD: logo + hero + actions =====
+        var logoHTML = '<div class="dash-logo"><img src="/icons/logo-icon.png" alt="StudFlow" class="dash-logo-img"></div>';
+
         var aboveFold = ''
+            + logoHTML
             + renderHeroBac(gamStats)
             + renderHeroActions()
             + renderSubjectStrip();
