@@ -363,35 +363,20 @@
             weeklyReportBannerHTML = window.StudFlow.weeklyReport.renderDashboardBanner();
         }
 
-        // ===== ZONE 1: HERO (countdown + CTA + actions — above the fold) =====
-        var essentialHTML = ''
-            + renderBetaBanner()
-            + weeklyReportBannerHTML
-            + subjectPickerCTA
+        // ===== ABOVE THE FOLD: hero + actions (nothing else) =====
+        var aboveFold = ''
             + renderHeroBac(gamStats)
             + renderHeroActions()
             + renderSubjectStrip();
 
-        // ===== ZONE 2: ENGAGEMENT (streak + mission) =====
-        var engagementHTML = ''
+        // ===== BELOW: engagement + extras =====
+        var belowFold = ''
             + renderStreakAlert(gamStats)
-            + renderStreakCard(gamStats)
             + dailyMissionHTML
-            + dailyGoalHTML;
-
-        // ===== ZONE 3: ACTIONS RAPIDES =====
-        var actionsHTML = '<div class="dash-quick-actions">'
-            + renderChallengeCard()
             + renderChronoCard()
-            + '</div>';
+            + renderDailyTip();
 
-        // ===== ZONE 4: INSIGHTS =====
-        var insightsHTML = ''
-            + renderDailyTip()
-            + adaptiveHTML
-            + errorNbHTML;
-
-        var primaryHTML = essentialHTML + engagementHTML + actionsHTML + insightsHTML;
+        var primaryHTML = aboveFold + belowFold;
 
         // ===== EXPLORE BUTTON (replaces cluttered collapsible) =====
         var exploreHTML = '<div class="dash-section dash-explore-row">'
@@ -749,14 +734,8 @@
 
     // ==================== CHALLENGE CARD ====================
     function renderChallengeCard() {
-        return '<div class="dash-section dash-challenge-cta" data-action="dashboard.goTo" data-param="challenges">'
-            + '<div class="dash-challenge-icon">⚔️</div>'
-            + '<div class="dash-challenge-content">'
-            + '<h3>Defier un ami</h3>'
-            + '<p>Cree un quiz et compare ton score avec tes amis !</p>'
-            + '</div>'
-            + '<span class="dash-challenge-arrow">→</span>'
-            + '</div>';
+        // Hidden until Supabase challenges table is configured
+        return '';
     }
 
     // ==================== CHRONO CARD ====================
@@ -893,17 +872,12 @@
 
         var items = [
             { icon: '\uD83D\uDCDA', label: 'Matieres', action: 'matieres' },
-            { icon: '\uD83D\uDCDC', label: 'Annales Bac', action: 'annales' },
-            { icon: '\uD83E\uDDE0', label: 'Coach IA', action: 'coach' },
-            { icon: '\uD83C\uDFAF', label: 'Session Focus', action: 'focus' },
-            { icon: '\uD83D\uDCA6', label: 'Anti-stress', action: 'stress' },
-            { icon: '\uD83D\uDCC5', label: 'Plan Bac', action: 'planbac' },
+            { icon: '\uD83D\uDCDC', label: 'Annales', action: 'annales' },
+            { icon: '\uD83C\uDFAF', label: 'Focus', action: 'focus' },
+            { icon: '\uD83D\uDCA8', label: 'Respiration', action: 'stress' },
+            { icon: '\uD83C\uDFAF', label: 'Jour du Bac', action: 'jourbac' },
             { icon: '\uD83D\uDCCA', label: 'Progression', action: 'stats' },
             { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' },
-            { icon: '\uD83C\uDFAF', label: 'Missions', action: 'missions' },
-            { icon: '\u2699\uFE0F', label: 'Generateurs', action: 'generators' },
-            { icon: '\uD83C\uDFAF', label: 'Jour du Bac', action: 'jourbac' },
-            { icon: '\uD83D\uDCD5', label: 'Carnet erreurs', action: 'screen:errors' },
             { icon: '\u2753', label: 'Aide', action: 'screen:aide' }
         ];
 

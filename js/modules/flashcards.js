@@ -194,11 +194,18 @@
             srCards = [];
         }
 
-        // Build adaptive session from profile + stats
+        // Build adaptive session from profile + real stats
         if (!srMode && window.StudFlow.sessionSettings) {
             var profile = window.StudFlow.storage.getUserProfile();
             var allPool = currentMode !== 'auto' && deck !== 'custom' ? buildModeDeck(currentDeck) : getAllCards();
-            shuffledCards = window.StudFlow.sessionSettings.buildAdaptiveSession(profile, {}, allPool, null);
+            // Gather real stats
+            var realStats = {};
+            var sr = window.StudFlow.spacedRepetition;
+            if (sr) {
+                realStats.recentAccuracy = sr.getRetentionRate();
+                realStats.streak = window.StudFlow.gamification ? window.StudFlow.gamification.getStats().streak : 0;
+            }
+            shuffledCards = window.StudFlow.sessionSettings.buildAdaptiveSession(profile, realStats, allPool, null);
             if (!shuffledCards || shuffledCards.length === 0) {
                 // Fallback to mode-aware deck
                 shuffledCards = (currentMode !== 'auto' && deck !== 'custom') ? buildModeDeck(currentDeck) : null;

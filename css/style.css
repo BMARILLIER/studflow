@@ -3759,6 +3759,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     .dash-stats-grid { grid-template-columns: repeat(2, 1fr); }
     .stats-cards-grid { grid-template-columns: repeat(2, 1fr); }
 
+    /* Hero bac — compact for small screens */
+    .hero-bac { padding: 1rem 0.75rem; }
+    .hero-bac-days { font-size: 1.4rem; }
+    .hero-bac-msg { font-size: 0.78rem; margin-bottom: 10px; }
+    .hero-bac-cta { padding: 10px 24px; font-size: 0.88rem; }
+    .hero-bac-stats { gap: 10px; margin-top: 8px; }
+    .hero-bac-stat { font-size: 0.7rem; }
+
+    /* Hero actions — compact */
+    .dash-hero-question { padding: 0.75rem 0 0; }
+    .dash-hero-title { font-size: 1.2rem; margin-bottom: 0.2rem; }
+    .dash-hero-sub { font-size: 0.75rem; margin-bottom: 0.75rem; }
+    .dash-hero-grid { gap: 0.5rem; }
+    .dash-hero-btn { padding: 1rem 0.4rem; border-radius: 14px; }
+    .dash-hero-icon { font-size: 1.6rem; }
+    .dash-hero-label { font-size: 0.75rem; }
+
     /* Diagnostic — compact */
     .diagnostic-question { padding: 1.25rem; }
     .scale-btn { min-width: 52px; }
