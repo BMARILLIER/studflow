@@ -362,22 +362,20 @@
             weeklyReportBannerHTML = window.StudFlow.weeklyReport.renderDashboardBanner();
         }
 
-        // ===== ZONE 1: HERO + CONTINUER =====
+        // ===== ZONE 1: HERO (countdown + CTA + actions — above the fold) =====
         var essentialHTML = ''
             + renderBetaBanner()
             + weeklyReportBannerHTML
             + subjectPickerCTA
-            + renderGreetingBar(greeting, gamStats)
-            + renderContinueButton()
+            + renderHeroBac(gamStats)
             + renderHeroActions()
             + renderSubjectStrip();
 
-        // ===== ZONE 2: ENGAGEMENT (streak + mission + countdown) =====
+        // ===== ZONE 2: ENGAGEMENT (streak + mission) =====
         var engagementHTML = ''
             + renderStreakCard(gamStats)
             + dailyMissionHTML
-            + dailyGoalHTML
-            + renderCountdown();
+            + dailyGoalHTML;
 
         // ===== ZONE 3: ACTIONS RAPIDES =====
         var actionsHTML = '<div class="dash-quick-actions">'
@@ -549,6 +547,61 @@
             + next.btnLabel + ' →'
             + '</button>'
             + '<p class="dash-next-coach">' + coachMsg + '</p>'
+            + '</div>';
+    }
+
+    // ==================== HERO BAC (countdown + CTA + stats) ====================
+    function renderHeroBac(gamStats) {
+        // Countdown
+        var now = new Date();
+        var bacDate = new Date(now.getFullYear(), 5, 18); // June 18
+        if (now > new Date(now.getFullYear(), 6, 5)) {
+            bacDate = new Date(now.getFullYear() + 1, 5, 18);
+        }
+        var days = Math.max(0, Math.ceil((bacDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
+
+        // Urgency
+        var urgencyClass = 'hero-calm';
+        var msg = 'Tu as le temps. Commence doucement aujourd\'hui.';
+        if (days <= 10) {
+            urgencyClass = 'hero-critical';
+            msg = 'Derniere ligne droite — focus maximum.';
+        } else if (days <= 30) {
+            urgencyClass = 'hero-urgent';
+            msg = 'On accelere — 10 min maintenant font la difference.';
+        } else if (days <= 90) {
+            urgencyClass = 'hero-soon';
+            msg = 'Le Bac approche. Reste regulier(e).';
+        }
+
+        // Stats
+        var streak = gamStats.streak || 0;
+        var xp = gamStats.xp || 0;
+        var pct = gamStats.progressPct || 0;
+        var level = gamStats.level || 1;
+
+        var statsHTML = '<div class="hero-bac-stats">';
+        if (streak > 0) statsHTML += '<span class="hero-bac-stat">\uD83D\uDD25 ' + streak + 'j</span>';
+        if (xp > 0) statsHTML += '<span class="hero-bac-stat">\u2728 ' + xp + ' XP</span>';
+        statsHTML += '</div>';
+
+        // Continue CTA
+        var sr = window.StudFlow.spacedRepetition;
+        var dueCount = sr ? sr.getDueCount() : 0;
+        var ctaAction = dueCount > 0 ? 'sr' : 'flashcard';
+        var ctaLabel = dueCount > 0 ? 'Reviser ' + dueCount + ' carte' + (dueCount > 1 ? 's' : '') : 'Commencer ma session';
+
+        return '<div class="dash-section hero-bac ' + urgencyClass + '">'
+            + '<div class="hero-bac-countdown">'
+            + '<span class="hero-bac-fire">\uD83D\uDD25</span>'
+            + '<span class="hero-bac-days">J-' + days + '</span>'
+            + '<span class="hero-bac-label">avant le Bac</span>'
+            + '</div>'
+            + '<p class="hero-bac-msg">' + msg + '</p>'
+            + '<button class="hero-bac-cta" data-action="dashboard.goTo" data-param="' + ctaAction + '">'
+            + ctaLabel + ' \u2192'
+            + '</button>'
+            + statsHTML
             + '</div>';
     }
 
