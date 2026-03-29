@@ -1,156 +1,180 @@
-// breathing.js — Respiration guidee multi-techniques
+// breathing.js — Immersive guided breathing with halo animation
 (function() {
-    var breathingInterval = null;
-    var breathingRunning = false;
-    var currentTechnique = '478';
+    var _running = false;
+    var _timer = null;
+    var _currentMode = 'calm';
+    var _totalSeconds = 0;
+    var _cyclePhase = 0;
+    var _phaseElapsed = 0;
 
-    var TECHNIQUES = {
+    // ==================== MODES ====================
+    var MODES = {
+        calm: {
+            name: 'Respiration calme',
+            desc: 'Simple et apaisante. Pour se recentrer.',
+            phases: [
+                { label: 'Inspire doucement\u2026', duration: 4, anim: 'expand' },
+                { label: 'Expire lentement\u2026', duration: 6, anim: 'contract' }
+            ]
+        },
         '478': {
             name: 'Relaxation 4-7-8',
-            description: 'Calme profond. Ideal avant de dormir ou en cas de stress.',
+            desc: 'Calme profond. Ideal avant de dormir.',
             phases: [
-                { name: 'Inspire...', duration: 4 },
-                { name: 'Retiens...', duration: 7 },
-                { name: 'Expire...', duration: 8 }
+                { label: 'Inspire doucement\u2026', duration: 4, anim: 'expand' },
+                { label: 'Garde l\'air\u2026', duration: 7, anim: 'hold' },
+                { label: 'Expire lentement\u2026', duration: 8, anim: 'contract' }
             ]
         },
-        'box': {
+        box: {
             name: 'Respiration carree',
-            description: 'Equilibre et concentration. Utilisee par les militaires.',
+            desc: 'Equilibre et focus. Utilisee par les pilotes.',
             phases: [
-                { name: 'Inspire...', duration: 4 },
-                { name: 'Retiens...', duration: 4 },
-                { name: 'Expire...', duration: 4 },
-                { name: 'Retiens...', duration: 4 }
+                { label: 'Inspire\u2026', duration: 4, anim: 'expand' },
+                { label: 'Garde\u2026', duration: 4, anim: 'hold' },
+                { label: 'Expire\u2026', duration: 4, anim: 'contract' },
+                { label: 'Garde\u2026', duration: 4, anim: 'hold' }
             ]
         },
-        'coherence': {
+        coherence: {
             name: 'Coherence cardiaque',
-            description: '5 min pour equilibrer ton systeme nerveux. Anti-stress puissant.',
+            desc: '5 min pour equilibrer ton systeme nerveux.',
             phases: [
-                { name: 'Inspire...', duration: 5 },
-                { name: 'Expire...', duration: 5 }
+                { label: 'Inspire\u2026', duration: 5, anim: 'expand' },
+                { label: 'Expire\u2026', duration: 5, anim: 'contract' }
             ]
         }
     };
 
+    // ==================== RENDER ====================
     function start() {
         window.StudFlow.app.showScreen('breathing');
-        renderSelector();
-        updateDisplay();
+        render();
     }
 
-    function renderSelector() {
-        var container = document.getElementById('breathing-techniques');
-        if (!container) {
-            // Create selector if not existing
-            var parent = document.getElementById('breathing-instruction');
-            if (!parent) return;
-            container = document.createElement('div');
-            container.id = 'breathing-techniques';
-            container.className = 'breathing-selector';
-            parent.parentNode.insertBefore(container, parent);
-        }
-        var html = '';
-        var keys = Object.keys(TECHNIQUES);
-        for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
-            var t = TECHNIQUES[key];
-            var activeClass = key === currentTechnique ? ' active' : '';
-            html += '<button class="' + activeClass + '" data-action="breathing.selectTechnique" data-param="' + key + '">'
-                + t.name + '</button>';
-        }
-        container.innerHTML = html;
+    function render() {
+        var container = document.querySelector('.breathing-screen');
+        if (!container) return;
 
-        // Show description
-        var descEl = document.getElementById('breathing-description');
-        if (!descEl) {
-            descEl = document.createElement('p');
-            descEl.id = 'breathing-description';
-            descEl.style.cssText = 'text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:12px;';
-            container.parentNode.insertBefore(descEl, container.nextSibling);
-        }
-        descEl.textContent = TECHNIQUES[currentTechnique].description;
+        var modesHTML = Object.keys(MODES).map(function(key) {
+            var m = MODES[key];
+            var cls = key === _currentMode ? 'br-mode-chip selected' : 'br-mode-chip';
+            return '<button class="' + cls + '" data-action="breathing.selectMode" data-param="' + key + '">' + m.name + '</button>';
+        }).join('');
+
+        container.innerHTML = ''
+            + '<p class="br-intro">Relache les epaules. Concentre-toi sur le halo.</p>'
+            + '<div class="br-modes">' + modesHTML + '</div>'
+            + '<p class="br-desc">' + MODES[_currentMode].desc + '</p>'
+            + '<div class="br-halo-container">'
+            + '<div class="br-halo" id="br-halo">'
+            + '<div class="br-halo-ring"></div>'
+            + '<div class="br-halo-core">'
+            + '<span class="br-phase-text" id="br-phase">Pret ?</span>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="br-timer" id="br-timer">0:00</div>'
+            + '<div class="br-controls">'
+            + '<button class="br-btn-start" id="br-start" data-action="breathing:toggle">Commencer</button>'
+            + '<button class="br-btn-stop" data-action="breathing:stop">Terminer</button>'
+            + '</div>';
     }
 
-    function selectTechnique(key) {
-        if (breathingRunning) stop();
-        currentTechnique = key;
-        renderSelector();
-        updateDisplay();
+    function selectMode(key) {
+        if (_running) stopBreathing();
+        _currentMode = key;
+        render();
     }
 
-    function updateDisplay() {
-        var t = TECHNIQUES[currentTechnique];
-        var instruction = document.getElementById('breathing-instruction');
-        if (instruction) instruction.textContent = t.name;
-        var phase = document.getElementById('breathing-phase');
-        if (phase) phase.textContent = 'Pret ?';
-    }
-
+    // ==================== BREATHING ENGINE ====================
     function toggle() {
-        if (breathingRunning) {
-            pause();
-        } else {
-            resume();
+        if (_running) pauseBreathing();
+        else startBreathing();
+    }
+
+    function startBreathing() {
+        _running = true;
+        _cyclePhase = 0;
+        _phaseElapsed = 0;
+        _totalSeconds = 0;
+
+        var btn = document.getElementById('br-start');
+        if (btn) btn.textContent = 'Pause';
+
+        var halo = document.getElementById('br-halo');
+        if (halo) halo.classList.add('active');
+
+        tick(); // Immediate first tick
+        _timer = setInterval(tick, 1000);
+    }
+
+    function tick() {
+        var mode = MODES[_currentMode];
+        var phases = mode.phases;
+        var phase = phases[_cyclePhase];
+
+        // Update phase text
+        var phaseEl = document.getElementById('br-phase');
+        if (phaseEl) phaseEl.textContent = phase.label;
+
+        // Update halo animation class
+        var halo = document.getElementById('br-halo');
+        if (halo) {
+            halo.classList.remove('expand', 'hold', 'contract');
+            halo.classList.add(phase.anim);
+            // Set animation duration to match phase
+            halo.style.setProperty('--phase-duration', phase.duration + 's');
+        }
+
+        // Update timer
+        _totalSeconds++;
+        var mins = Math.floor(_totalSeconds / 60);
+        var secs = _totalSeconds % 60;
+        var timerEl = document.getElementById('br-timer');
+        if (timerEl) timerEl.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+        // Advance phase
+        _phaseElapsed++;
+        if (_phaseElapsed >= phase.duration) {
+            _phaseElapsed = 0;
+            _cyclePhase = (_cyclePhase + 1) % phases.length;
         }
     }
 
-    function resume() {
-        breathingRunning = true;
-        document.getElementById('breathing-start').textContent = 'Pause';
-        var circle = document.getElementById('breathing-circle');
-        if (circle) circle.classList.remove('paused');
-
-        var totalSeconds = 0;
-        var technique = TECHNIQUES[currentTechnique];
-        var phases = technique.phases;
-        var phaseIndex = 0;
-        var phaseTime = 0;
-
-        breathingInterval = setInterval(function() {
-            totalSeconds++;
-            phaseTime++;
-
-            var phase = phases[phaseIndex];
-            document.getElementById('breathing-phase').textContent = phase.name;
-            document.getElementById('breathing-instruction').textContent = phase.name;
-
-            var mins = Math.floor(totalSeconds / 60);
-            var secs = totalSeconds % 60;
-            document.getElementById('breathing-timer').textContent =
-                mins + ':' + (secs < 10 ? '0' : '') + secs;
-
-            if (phaseTime >= phase.duration) {
-                phaseTime = 0;
-                phaseIndex = (phaseIndex + 1) % phases.length;
-            }
-        }, 1000);
+    function pauseBreathing() {
+        _running = false;
+        clearInterval(_timer);
+        var btn = document.getElementById('br-start');
+        if (btn) btn.textContent = 'Reprendre';
+        var halo = document.getElementById('br-halo');
+        if (halo) halo.classList.remove('expand', 'hold', 'contract');
     }
 
-    function pause() {
-        breathingRunning = false;
-        document.getElementById('breathing-start').textContent = 'Reprendre';
-        var circle = document.getElementById('breathing-circle');
-        if (circle) circle.classList.add('paused');
-        clearInterval(breathingInterval);
+    function stopBreathing() {
+        if (_running && _totalSeconds > 10 && window.StudFlow.gamification) {
+            window.StudFlow.gamification.addXP('breathing_session');
+            window.StudFlow.gamification.showToast('C\'est bien. Tu peux reprendre.', 'xp', '\uD83D\uDE0C');
+        }
+        _running = false;
+        clearInterval(_timer);
+        _timer = null;
+        _totalSeconds = 0;
+        _cyclePhase = 0;
+        _phaseElapsed = 0;
     }
 
     function stop() {
-        if (breathingRunning && window.StudFlow.gamification) {
-            window.StudFlow.gamification.addXP('breathing_session');
-        }
-        breathingRunning = false;
-        clearInterval(breathingInterval);
-        breathingInterval = null;
-        document.getElementById('breathing-timer').textContent = '0:00';
-        document.getElementById('breathing-phase').textContent = 'Pret ?';
-        updateDisplay();
-        document.getElementById('breathing-start').textContent = 'Commencer';
-        var circle = document.getElementById('breathing-circle');
-        if (circle) circle.classList.add('paused');
+        stopBreathing();
+        window.StudFlow.app.showScreen('dashboard');
     }
 
+    // ==================== EXPOSE ====================
     window.StudFlow = window.StudFlow || {};
-    window.StudFlow.breathing = { start: start, toggle: toggle, resume: resume, pause: pause, stop: stop, selectTechnique: selectTechnique };
+    window.StudFlow.breathing = {
+        start: start,
+        toggle: toggle,
+        stop: stop,
+        selectMode: selectMode
+    };
 })();

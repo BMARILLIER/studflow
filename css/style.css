@@ -1199,6 +1199,76 @@ body.theme-light .math-fallback {
     100% { transform: scale(0.8); opacity: 0.15; }
 }
 
+/* ==================== NEW BREATHING HALO UI ==================== */
+.br-intro { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; }
+.br-modes { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 8px; }
+.br-mode-chip {
+    padding: 6px 14px; border-radius: 50px; font-size: 0.78rem; font-weight: 600;
+    background: var(--bg-glass, rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-muted); cursor: pointer; transition: all 0.2s ease;
+}
+.br-mode-chip:hover { border-color: var(--accent); color: var(--text); }
+.br-mode-chip.selected { background: rgba(168,85,247,0.15); border-color: var(--accent); color: var(--text); }
+.br-desc { font-size: 0.78rem; color: var(--text-muted); opacity: 0.6; margin-bottom: 24px; }
+
+.br-halo-container {
+    position: relative; width: 220px; height: 220px; margin: 0 auto 20px;
+}
+.br-halo {
+    width: 100%; height: 100%; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform var(--phase-duration, 4s) ease-in-out;
+}
+.br-halo-ring {
+    position: absolute; inset: -12px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--sky), var(--hot));
+    opacity: 0.15; filter: blur(16px);
+    transition: all var(--phase-duration, 4s) ease-in-out;
+}
+.br-halo-core {
+    width: 180px; height: 180px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 40% 40%, rgba(168,85,247,0.35), rgba(56,189,248,0.2), transparent);
+    box-shadow: 0 0 40px var(--accent-glow, rgba(168,85,247,0.2));
+    transition: all var(--phase-duration, 4s) ease-in-out;
+    z-index: 1;
+}
+.br-phase-text {
+    font-size: 1rem; font-weight: 600; color: var(--text);
+    text-align: center; padding: 0 16px;
+    transition: opacity 0.3s ease;
+}
+
+/* Halo animation states */
+.br-halo.active.expand { transform: scale(1.15); }
+.br-halo.active.expand .br-halo-ring { opacity: 0.3; filter: blur(20px); transform: scale(1.2); }
+.br-halo.active.expand .br-halo-core { box-shadow: 0 0 60px var(--accent-glow, rgba(168,85,247,0.3)); }
+
+.br-halo.active.hold { transform: scale(1.12); }
+.br-halo.active.hold .br-halo-ring { opacity: 0.25; }
+
+.br-halo.active.contract { transform: scale(0.85); }
+.br-halo.active.contract .br-halo-ring { opacity: 0.1; filter: blur(12px); transform: scale(0.9); }
+.br-halo.active.contract .br-halo-core { box-shadow: 0 0 20px var(--accent-glow, rgba(168,85,247,0.1)); }
+
+.br-timer { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+.br-controls { display: flex; gap: 10px; justify-content: center; }
+.br-btn-start {
+    padding: 12px 32px; border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+    background: linear-gradient(135deg, var(--accent), var(--sky));
+    color: #fff; border: none; cursor: pointer;
+    transition: all 0.2s ease;
+}
+.br-btn-start:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(168,85,247,0.3); }
+.br-btn-stop {
+    padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 0.85rem;
+    background: transparent; color: var(--text-muted);
+    border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
+    transition: all 0.2s ease;
+}
+.br-btn-stop:hover { border-color: var(--accent); color: var(--text); }
+
 .breathing-text {
     color: white; font-family: 'Fraunces', serif; font-size: 1.6rem;
     text-shadow: 0 0 20px rgba(255,255,255,0.3);
