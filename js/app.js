@@ -237,17 +237,13 @@
             appState.pdfText = text;
             updateProgress(60, 'Texte extrait !');
 
-            // Check if AI is available
-            var aiEnabled = window.StudFlow.features && window.StudFlow.features.AI_ENABLED;
-            const apiKey = window.StudFlow.storage.loadData('groq_api_key', '');
-
-            if (aiEnabled && apiKey) {
-                console.log('[PDF] IA activee, lancement analyse...');
-                appState.apiKey = apiKey;
-                await generateWithAI(text);
+            // AI analysis via Vercel Function (server-side, secure)
+            if (window.StudFlow.features && window.StudFlow.features.AI_ENABLED) {
+                console.log('[PDF] Lancement analyse IA via serveur...');
+                await analyzeWithServer(text);
                 console.log('[PDF] Analyse IA terminee');
             } else {
-                console.log('[PDF] IA desactivee ou pas de cle API. Mode local uniquement.');
+                console.log('[PDF] IA desactivee. Mode local uniquement.');
                 updateProgress(100, 'PDF importe ! Texte extrait avec succes.');
                 if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
                     window.StudFlow.gamification.showToast('PDF importe ! Utilise les generateurs pour creer des fiches et quiz.', 'xp', '📄');
@@ -283,7 +279,176 @@
         if (statusEl) statusEl.textContent = status;
     }
 
-    // AI generation (Groq)
+    // ==================== CHUNKING ====================
+    var CHUNK_MAX_CHARS = 10000;  // ~2500 tokens, leaves room for prompt
+    var MAX_CHUNKS = 4;           // Max 4 appels API par PDF
+
+    function chunkText(text) {
+        if (text.length <= CHUNK_MAX_CHARS) return [text];
+
+        var chunks = [];
+        var remaining = text;
+
+        while (remaining.length > 0 && chunks.length < MAX_CHUNKS) {
+            if (remaining.length <= CHUNK_MAX_CHARS) {
+                chunks.push(remaining);
+                break;
+            }
+            // Find a clean break point: double newline > single newline > period+space
+            var slice = remaining.substring(0, CHUNK_MAX_CHARS);
+            var breakAt = -1;
+            // Try double newline (paragraph break)
+            breakAt = slice.lastIndexOf('\n\n');
+            // Try single newline if no paragraph found in last 30%
+            if (breakAt < CHUNK_MAX_CHARS * 0.7) {
+                var nlBreak = slice.lastIndexOf('\n');
+                if (nlBreak > breakAt) breakAt = nlBreak;
+            }
+            // Try period+space if still too early
+            if (breakAt < CHUNK_MAX_CHARS * 0.5) {
+                var dotBreak = slice.lastIndexOf('. ');
+                if (dotBreak > breakAt) breakAt = dotBreak + 1;
+            }
+            // Fallback: hard cut
+            if (breakAt < CHUNK_MAX_CHARS * 0.3) breakAt = CHUNK_MAX_CHARS;
+
+            chunks.push(remaining.substring(0, breakAt).trim());
+            remaining = remaining.substring(breakAt).trim();
+        }
+
+        return chunks.filter(function(c) { return c.length > 30; });
+    }
+
+    // ==================== ANALYSE IA (chunked) ====================
+    async function analyzeWithServer(text) {
+        var loadingTitle = document.getElementById('loading-title');
+        if (loadingTitle) loadingTitle.textContent = 'Analyse IA en cours...';
+
+        var chunks = chunkText(text);
+        var totalChunks = chunks.length;
+        console.log('[IA] Document decoupe en', totalChunks, 'partie(s)');
+
+        if (totalChunks === 1) {
+            updateProgress(40, 'Analyse du cours...');
+        } else {
+            updateProgress(30, 'Decoupage du document (' + totalChunks + ' parties)...');
+        }
+
+        var allFlashcards = [];
+        var allQuiz = [];
+        var errors = 0;
+
+        for (var i = 0; i < totalChunks; i++) {
+            var chunkLabel = totalChunks > 1 ? ' (partie ' + (i + 1) + '/' + totalChunks + ')' : '';
+            var pctBase = 30 + Math.round((i / totalChunks) * 55);
+            updateProgress(pctBase, 'Analyse en cours' + chunkLabel + '...');
+
+            try {
+                console.log('[IA] Envoi chunk', i + 1, '/', totalChunks, '- longueur:', chunks[i].length);
+                var response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: chunks[i],
+                        mode: 'both',
+                        chunkIndex: i,
+                        totalChunks: totalChunks
+                    })
+                });
+
+                if (response.status === 429) {
+                    console.warn('[IA] Rate limit atteint au chunk', i + 1);
+                    if (window.StudFlow.gamification) {
+                        window.StudFlow.gamification.showToast('Limite quotidienne atteinte.', 'xp', '⏳');
+                    }
+                    break;
+                }
+
+                if (!response.ok) {
+                    errors++;
+                    console.error('[IA] Erreur chunk', i + 1, ':', response.status);
+                    continue; // Skip this chunk, try the next
+                }
+
+                var result = await response.json();
+                if (result.success && result.data) {
+                    if (result.data.flashcards) {
+                        allFlashcards = allFlashcards.concat(result.data.flashcards);
+                    }
+                    if (result.data.quiz) {
+                        allQuiz = allQuiz.concat(result.data.quiz);
+                    }
+                    if (Array.isArray(result.data)) {
+                        allFlashcards = allFlashcards.concat(result.data);
+                    }
+                }
+                console.log('[IA] Chunk', i + 1, 'OK -', allFlashcards.length, 'flashcards,', allQuiz.length, 'quiz cumules');
+
+            } catch (err) {
+                errors++;
+                console.error('[IA] Erreur reseau chunk', i + 1, ':', err.message);
+                continue;
+            }
+        }
+
+        // Fusion + deduplication
+        updateProgress(90, 'Fusion des resultats...');
+        appState.flashcards = deduplicateCards(allFlashcards).slice(0, 25).map(function(f) {
+            return { question: f.question || '', answer: f.answer || '', mastered: false };
+        });
+        appState.quizQuestions = deduplicateQuiz(allQuiz).slice(0, 10).map(function(q) {
+            return {
+                question: String(q.question || ''),
+                options: (q.options || []).map(String),
+                correctIndex: typeof q.correctIndex === 'number' ? q.correctIndex : 0,
+                explanation: String(q.explanation || '')
+            };
+        });
+
+        var fcCount = appState.flashcards.length;
+        var qzCount = appState.quizQuestions.length;
+
+        if (fcCount === 0 && qzCount === 0) {
+            updateProgress(100, 'PDF importe (IA n\'a rien genere).');
+            if (errors > 0 && window.StudFlow.gamification) {
+                window.StudFlow.gamification.showToast('Erreur IA. PDF sauvegarde, utilise les generateurs locaux.', 'xp', '⚠️');
+            }
+        } else {
+            var msg = fcCount + ' flashcard' + (fcCount > 1 ? 's' : '');
+            if (qzCount > 0) msg += ' + ' + qzCount + ' quiz';
+            updateProgress(100, 'Termine ! ' + msg + ' generees.');
+            if (window.StudFlow.gamification) {
+                window.StudFlow.gamification.showToast(msg + ' generees par l\'IA !', 'xp', '🧠');
+            }
+            if (errors > 0) {
+                console.warn('[IA]', errors, 'chunk(s) ont echoue, resultats partiels');
+            }
+        }
+    }
+
+    function deduplicateCards(cards) {
+        var seen = {};
+        return cards.filter(function(c) {
+            if (!c || !c.question) return false;
+            var key = c.question.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 60);
+            if (seen[key]) return false;
+            seen[key] = true;
+            return true;
+        });
+    }
+
+    function deduplicateQuiz(questions) {
+        var seen = {};
+        return questions.filter(function(q) {
+            if (!q || !q.question) return false;
+            var key = q.question.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 60);
+            if (seen[key]) return false;
+            seen[key] = true;
+            return true;
+        });
+    }
+
+    // AI generation (Groq — legacy, kept for coach/profChat)
     async function generateWithAI(text) {
         if (window.StudFlow.features && !window.StudFlow.features.AI_ENABLED) return;
         updateProgress(40, 'L\'IA analyse ton cours...');
