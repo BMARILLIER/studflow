@@ -17,6 +17,7 @@
         container.innerHTML = ''
             + renderNavbar()
             + renderHero()
+            + renderProblem()
             + renderHowItWorks()
             + renderBenefits()
             + renderDemo()
@@ -53,46 +54,62 @@
     function renderHero() {
         return '<section class="landing-hero">'
             + '<div class="landing-hero-inner">'
-            + '<h1 class="landing-h1">Revise moins.<br><span>Retiens plus.</span></h1>'
-            + '<p class="landing-sub">10 min/jour. Flashcards, quiz et IA. Ton Bac, a ton rythme.</p>'
+            + '<h1 class="landing-h1">Reussis ton bac<br><span>sans stress.</span></h1>'
+            + '<p class="landing-sub">Un coach qui t\'aide a reviser, rester concentre et gerer la pression.</p>'
             + '<div class="landing-hero-actions">'
-            + '<button class="landing-btn-primary" data-action="home.goToDiagnostic">Essayer gratuitement</button>'
+            + '<button class="landing-btn-primary" data-action="home.goToDiagnostic">Commencer gratuitement</button>'
             + '<button class="landing-btn-ghost" data-action="home.goToDashboard">J\'ai deja un compte</button>'
             + '</div>'
-            + '<p class="landing-privacy-line">Gratuit &bull; Local &bull; Tes documents restent sur ton appareil</p>'
+            + '<p class="landing-privacy-line">Gratuit \u2022 100% local \u2022 Tes donnees restent sur ton appareil</p>'
             + '</div>'
             + '</section>';
     }
 
-    // ==================== HOW IT WORKS ====================
-    function renderHowItWorks() {
-        var steps = [
-            { num: '1', title: 'Importer PDF', desc: 'Glisse ton cours, ta fiche ou ton poly. Le texte est extrait instantanement sur ton appareil.', icon: '📄' },
-            { num: '2', title: 'StudFlow genere quiz + flashcards', desc: 'L\'app analyse ton contenu et cree des exercices adaptes automatiquement.', icon: '⚡' },
-            { num: '3', title: 'Reviser intelligemment', desc: 'Entraine-toi avec des methodes prouvees, suis ta progression, arrive confiant le jour J.', icon: '🚀' }
-        ];
-
-        var stepsHTML = steps.map(function(s) {
-            return '<div class="landing-step">'
-                + '<div class="landing-step-num">' + s.num + '</div>'
-                + '<div class="landing-step-icon">' + s.icon + '</div>'
-                + '<h3>' + s.title + '</h3>'
-                + '<p>' + s.desc + '</p>'
-                + '</div>';
-        }).join('');
-
-        return '<section class="landing-section home-animate" id="landing-how">'
-            + '<h2 class="landing-section-title">Comment ca marche</h2>'
-            + '<div class="landing-steps-grid">' + stepsHTML + '</div>'
+    // ==================== PROBLEME ====================
+    function renderProblem() {
+        return '<section class="landing-section home-animate">'
+            + '<div class="landing-problem">'
+            + '<h2 class="landing-section-title">Tu sais que tu dois reviser\u2026<br><span>mais tu ne sais pas par ou commencer.</span></h2>'
+            + '<div class="landing-problem-list">'
+            + '<div class="landing-problem-item">\uD83D\uDE29 Procrastination</div>'
+            + '<div class="landing-problem-item">\uD83D\uDE30 Stress avant les controles</div>'
+            + '<div class="landing-problem-item">\uD83E\uDD37 Pas de methode claire</div>'
+            + '<div class="landing-problem-item">\uD83D\uDE14 Perte de confiance</div>'
+            + '</div>'
+            + '</div>'
             + '</section>';
     }
 
-    // ==================== BENEFITS ====================
+    // ==================== SOLUTION ====================
+    function renderHowItWorks() {
+        return '<section class="landing-section home-animate" id="landing-how">'
+            + '<h2 class="landing-section-title">StudFlow t\'accompagne <span>chaque jour.</span></h2>'
+            + '<div class="landing-steps-grid">'
+            + '<div class="landing-step">'
+            + '<div class="landing-step-icon">\uD83C\uDFAF</div>'
+            + '<h3>Session guidee</h3>'
+            + '<p>Chaque jour, une session claire et adaptee a ton niveau. Tu sais quoi faire en 2 secondes.</p>'
+            + '</div>'
+            + '<div class="landing-step">'
+            + '<div class="landing-step-icon">\uD83E\uDDE0</div>'
+            + '<h3>Coach intelligent</h3>'
+            + '<p>Il s\'adapte a ton stress, ta confiance et tes matieres faibles. Comme un vrai coach.</p>'
+            + '</div>'
+            + '<div class="landing-step">'
+            + '<div class="landing-step-icon">\uD83D\uDCA8</div>'
+            + '<h3>Anti-stress integre</h3>'
+            + '<p>Respiration guidee, mode Jour du Bac, messages rassurants. Pour reviser sans pression.</p>'
+            + '</div>'
+            + '</div>'
+            + '</section>';
+    }
+
+    // ==================== FEATURES ====================
     function renderBenefits() {
         var items = [
-            { icon: '🧠', title: 'Comprendre', desc: 'Fiches de synthese, resume intelligent, coach qui t\'explique ce que tu n\'as pas compris.' },
-            { icon: '🔁', title: 'Memoriser', desc: 'Flashcards, quiz, repetition espacee — les techniques les plus efficaces pour ancrer les notions.' },
-            { icon: '⏱️', title: 'Gagner du temps', desc: 'Import PDF, generation auto, timer focus. Tu revises directement, sans perdre du temps a preparer.' }
+            { icon: '\uD83D\uDCDA', title: 'Import PDF + Photo', desc: 'Glisse ton cours. L\'app extrait le texte et genere flashcards et quiz automatiquement.' },
+            { icon: '\uD83D\uDD04', title: 'Revision espacee', desc: 'L\'app sait ce que tu oublies et te le repropose au bon moment. Science-backed.' },
+            { icon: '\uD83D\uDCC8', title: 'Progression visible', desc: 'XP, streak, niveau, badges. Tu vois tes progres chaque jour.' }
         ];
 
         var html = items.map(function(item) {
@@ -104,7 +121,7 @@
         }).join('');
 
         return '<section class="landing-section home-animate">'
-            + '<h2 class="landing-section-title">Pourquoi <span>ca marche</span></h2>'
+            + '<h2 class="landing-section-title">Tout ce qu\'il faut <span>pour reussir</span></h2>'
             + '<div class="landing-benefits-grid">' + html + '</div>'
             + '</section>';
     }
@@ -173,10 +190,10 @@
     function renderCTAFinal() {
         return '<section class="landing-section landing-cta-final home-animate">'
             + '<div class="landing-cta-box">'
-            + '<h2>Commence tes revisions aujourd\'hui</h2>'
-            + '<p>Importe ton premier PDF et genere tes fiches en 30 secondes.</p>'
-            + '<button class="landing-btn-primary large" data-action="home.goToDiagnostic">Essayer gratuitement</button>'
-            + '<p class="landing-cta-sub">Gratuit. Local. Sans inscription.</p>'
+            + '<h2>Commence aujourd\'hui.</h2>'
+            + '<p>10 min/jour. Flashcards, quiz, coach. Ton Bac, a ton rythme.</p>'
+            + '<button class="landing-btn-primary large" data-action="home.goToDiagnostic">Acceder gratuitement</button>'
+            + '<p class="landing-cta-sub">Gratuit \u2022 Sans inscription \u2022 100% local</p>'
             + '</div>'
             + '</section>';
     }
