@@ -119,10 +119,17 @@
         setTimeout(function() {
             switch (step) {
                 case 1: renderStep1(container); break;
-                case 2: renderStep2(container); break;
-                case 25: renderStepPreferences(container); break;
-                case 3: renderStep3(container); break;
-                case 4: renderStep4(container); break;
+                case 2: renderOB_Class(container); break;
+                case 3: renderOB_Strong(container); break;
+                case 4: renderOB_Weak(container); break;
+                case 5: renderOB_WorkStyle(container); break;
+                case 6: renderOB_Stress(container); break;
+                case 7: renderOB_SelfNote(container); break;
+                case 8: renderOB_Preferences(container); break;
+                case 9: renderOB_Summary(container); break;
+                case 10: renderStep4(container); break;
+                // Legacy compat
+                case 25: renderOB_Preferences(container); break;
                 default: renderStep1(container);
             }
             container.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
@@ -154,95 +161,15 @@
             + '</div>';
     }
 
-    // ==================== STEP 2 — DIAGNOSTIC ====================
-    function renderStep2(container) {
-        var profile = window.StudFlow.storage.getUserProfile();
+    // ==================== ONBOARDING DATA (temp, saved at end) ====================
+    var _obData = {};
 
-        // If already has diagnostic → skip to step 3
-        if (profile && profile.mainProfile) {
-            showStep(3);
-            return;
-        }
-
-        // Show brief transition then launch diagnostic
-        container.innerHTML = ''
-            + '<div class="ob-step ob-diagnostic-intro">'
-            + renderProgressDots(2, 4)
-            + '<div class="ob-big-icon">📋</div>'
-            + '<h2 class="ob-heading">Decouvrons ton profil</h2>'
-            + '<p class="ob-text">6 questions rapides pour comprendre comment tu fonctionnes.<br>Pas de bonne ou mauvaise reponse.</p>'
-            + '<button class="ob-btn-primary" data-action="diagnostic.start">C\'est parti !</button>'
-            + '<p class="ob-reassure">Ca prend moins d\'une minute.</p>'
-            + '</div>';
-    }
-
-    // ==================== AFTER DIAGNOSTIC (called by diagnostic.js) ====================
-    function afterDiagnostic() {
-        var state = loadState();
-        state.lastStep = 25;
-        saveState(state);
-        showStep(25);
-    }
-
-    // ==================== STEP 2.5 — PREFERENCES RAPIDES ====================
-    function renderStepPreferences(container) {
-        container.innerHTML = ''
-            + '<div class="ob-step ob-prefs">'
-            + renderProgressDots(3, 5)
-            + '<h2 class="ob-heading">Dis-nous en plus</h2>'
-            + '<p class="ob-text">30 secondes pour personnaliser ton coaching.</p>'
-
-            + '<div class="ob-field">'
-            + '<label class="ob-label">Ta classe</label>'
-            + '<div class="ob-chips" id="ob-class">'
-            + '<button class="ob-chip" data-val="seconde">Seconde</button>'
-            + '<button class="ob-chip" data-val="premiere">Premiere</button>'
-            + '<button class="ob-chip selected" data-val="terminale">Terminale</button>'
-            + '</div>'
-            + '</div>'
-
-            + '<div class="ob-field">'
-            + '<label class="ob-label">Matieres ou tu galeres</label>'
-            + '<div class="ob-chips ob-multi" id="ob-weak">'
-            + '<button class="ob-chip" data-val="maths">Maths</button>'
-            + '<button class="ob-chip" data-val="francais">Francais</button>'
-            + '<button class="ob-chip" data-val="philo">Philo</button>'
-            + '<button class="ob-chip" data-val="histgeo">Hist-Geo</button>'
-            + '<button class="ob-chip" data-val="physique">Physique</button>'
-            + '<button class="ob-chip" data-val="svt">SVT</button>'
-            + '<button class="ob-chip" data-val="ses">SES</button>'
-            + '<button class="ob-chip" data-val="anglais">Anglais</button>'
-            + '</div>'
-            + '</div>'
-
-            + '<div class="ob-field">'
-            + '<label class="ob-label">Comment tu apprends le mieux ?</label>'
-            + '<div class="ob-chips" id="ob-style">'
-            + '<button class="ob-chip" data-val="quiz">Quiz / tests</button>'
-            + '<button class="ob-chip selected" data-val="mix">Un peu de tout</button>'
-            + '<button class="ob-chip" data-val="lecture">Relire / fiches</button>'
-            + '</div>'
-            + '</div>'
-
-            + '<div class="ob-field">'
-            + '<label class="ob-label">Ton rythme ideal</label>'
-            + '<div class="ob-chips" id="ob-pace">'
-            + '<button class="ob-chip" data-val="fast">Sessions courtes et intenses</button>'
-            + '<button class="ob-chip selected" data-val="calm">Sessions calmes et posees</button>'
-            + '</div>'
-            + '</div>'
-
-            + '<button class="ob-btn-primary" data-action="onboarding.savePrefs">Continuer</button>'
-            + '<button class="ob-btn-skip" data-action="onboarding.showStep" data-param="3">Passer</button>'
-            + '</div>';
-
-        // Chip selection logic
+    function initChipLogic(container) {
         container.addEventListener('click', function(e) {
             var chip = e.target.closest('.ob-chip');
             if (!chip) return;
             var parent = chip.closest('.ob-chips');
             if (!parent) return;
-
             if (parent.classList.contains('ob-multi')) {
                 chip.classList.toggle('selected');
             } else {
@@ -252,68 +179,272 @@
         });
     }
 
-    function savePrefs() {
-        var classChip = document.querySelector('#ob-class .ob-chip.selected');
-        var weakChips = document.querySelectorAll('#ob-weak .ob-chip.selected');
-        var styleChip = document.querySelector('#ob-style .ob-chip.selected');
-        var paceChip = document.querySelector('#ob-pace .ob-chip.selected');
-
-        var weakSubjects = [];
-        weakChips.forEach(function(c) { weakSubjects.push(c.getAttribute('data-val')); });
-
-        var profile = window.StudFlow.storage.getUserProfile() || {};
-        if (!profile.identity) profile.identity = {};
-        if (!profile.academic) profile.academic = {};
-        if (!profile.motivation) profile.motivation = {};
-
-        profile.identity.class = classChip ? classChip.getAttribute('data-val') : 'terminale';
-        profile.academic.weakSubjects = weakSubjects;
-        profile.academic.preferredMethod = styleChip ? styleChip.getAttribute('data-val') : 'mix';
-        profile.motivation.pace = paceChip ? paceChip.getAttribute('data-val') : 'calm';
-
-        window.StudFlow.storage.updateUserProfile(profile);
-        showStep(3);
+    function getSelected(id) {
+        var el = document.getElementById(id);
+        if (!el) return [];
+        var selected = el.querySelectorAll('.ob-chip.selected');
+        var vals = [];
+        selected.forEach(function(c) { vals.push(c.getAttribute('data-val')); });
+        return vals;
     }
 
-    // ==================== STEP 3 — PROFIL + ACTION IMMEDIATE ====================
-    function renderStep3(container) {
-        var profile = window.StudFlow.storage.getUserProfile();
-        if (!profile || !profile.mainProfile) {
-            showStep(2);
-            return;
-        }
+    function getSelectedOne(id) {
+        var vals = getSelected(id);
+        return vals.length > 0 ? vals[0] : '';
+    }
 
-        var profileKey = profile.mainProfile;
-        var info = PROFILE_NAMES[profileKey] || PROFILE_NAMES.equilibre;
-        var action = QUICK_ACTIONS[profileKey] || QUICK_ACTIONS.equilibre;
+    var SUBJECTS_LIST = [
+        { id: 'maths', label: 'Maths' },
+        { id: 'francais', label: 'Francais' },
+        { id: 'philo', label: 'Philo' },
+        { id: 'histgeo', label: 'Hist-Geo' },
+        { id: 'physique', label: 'Physique' },
+        { id: 'svt', label: 'SVT' },
+        { id: 'ses', label: 'SES' },
+        { id: 'anglais', label: 'Anglais' }
+    ];
 
-        container.innerHTML = ''
-            + '<div class="ob-step ob-profile-action">'
-            + renderProgressDots(3, 4)
-
-            // Profile summary
-            + '<div class="ob-profile-card">'
-            + '<div class="ob-profile-emoji">' + info.emoji + '</div>'
-            + '<h2 class="ob-heading">Ton profil : ' + info.title + '</h2>'
-            + '<p class="ob-profile-msg">' + info.msg + '</p>'
-            + '</div>'
-
-            // Quick action
-            + '<div class="ob-action-card">'
-            + '<p class="ob-action-label">Ton plan de demarrage — 5 min</p>'
-            + '<div class="ob-action-row">'
-            + '<span class="ob-action-icon">' + action.icon + '</span>'
-            + '<div class="ob-action-info">'
-            + '<strong>' + action.label + '</strong>'
-            + '<p>' + action.desc + '</p>'
-            + '</div>'
-            + '</div>'
-            + '<button class="ob-btn-primary" data-action="onboarding.launchAction">Je le fais maintenant</button>'
-            + '</div>'
-
-            + '<button class="ob-btn-skip" data-action="onboarding.complete">Plus tard — aller au dashboard</button>'
+    function subjectChips(containerId, multi) {
+        return '<div class="ob-chips' + (multi ? ' ob-multi' : '') + '" id="' + containerId + '">'
+            + SUBJECTS_LIST.map(function(s) {
+                return '<button class="ob-chip" data-val="' + s.id + '">' + s.label + '</button>';
+            }).join('')
             + '</div>';
     }
+
+    // ==================== ECRAN 2 — CLASSE ====================
+    function renderOB_Class(container) {
+        container.innerHTML = '<div class="ob-step ob-prefs">'
+            + renderProgressDots(1, 7)
+            + '<h2 class="ob-heading">Tu es en quelle classe ?</h2>'
+            + '<p class="ob-text">Ca nous aide a adapter le niveau.</p>'
+            + '<div class="ob-chips" id="ob-class">'
+            + '<button class="ob-chip" data-val="3eme">3eme</button>'
+            + '<button class="ob-chip" data-val="seconde">Seconde</button>'
+            + '<button class="ob-chip" data-val="premiere">Premiere</button>'
+            + '<button class="ob-chip selected" data-val="terminale">Terminale</button>'
+            + '</div>'
+            + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="2">Continuer</button>'
+            + '</div>';
+        initChipLogic(container);
+    }
+
+    // ==================== ECRAN 3 — MATIERES FORTES ====================
+    function renderOB_Strong(container) {
+        _obData.class = getSelectedOne('ob-class') || 'terminale';
+
+        container.innerHTML = '<div class="ob-step ob-prefs">'
+            + renderProgressDots(2, 7)
+            + '<h2 class="ob-heading">Tes points forts</h2>'
+            + '<p class="ob-text">Dans quelles matieres tu te sens a l\'aise ?</p>'
+            + subjectChips('ob-strong', true)
+            + '<p class="ob-reassure">Choisis ce qui te semble le plus naturel.</p>'
+            + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="3">Continuer</button>'
+            + '</div>';
+        initChipLogic(container);
+    }
+
+    // ==================== ECRAN 4 — MATIERES FAIBLES ====================
+    function renderOB_Weak(container) {
+        _obData.strongSubjects = getSelected('ob-strong');
+
+        container.innerHTML = '<div class="ob-step ob-prefs">'
+            + renderProgressDots(3, 7)
+            + '<h2 class="ob-heading">Les matieres a renforcer</h2>'
+            + '<p class="ob-text">C\'est plus difficile en ce moment dans quelles matieres ?</p>'
+            + subjectChips('ob-weak', true)
+            + '<p class="ob-reassure">Pas de jugement : c\'est pour mieux t\'accompagner.</p>'
+            + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="4">Continuer</button>'
+            + '</div>';
+        initChipLogic(container);
+    }
+
+    // ==================== ECRAN 5 — STYLE DE TRAVAIL ====================
+    function renderOB_WorkStyle(container) {
+        _obData.weakSubjects = getSelected('ob-weak');
+
+        container.innerHTML = '<div class="ob-step ob-prefs">'
+            + renderProgressDots(4, 7)
+            + '<h2 class="ob-heading">Comment tu fonctionnes</h2>'
+            + '<p class="ob-text">Ce qui te ressemble le plus (1 a 3 choix) :</p>'
+            + '<div class="ob-chips ob-multi" id="ob-workstyle">'
+            + '<button class="ob-chip" data-val="fast_learner">Je comprends vite</button>'
+            + '<button class="ob-chip" data-val="needs_time">J\'ai besoin de temps</button>'
+            + '<button class="ob-chip" data-val="forgets_fast">J\'oublie vite</button>'
+            + '<button class="ob-chip" data-val="needs_repetition">Je dois repeter pour retenir</button>'
+            + '<button class="ob-chip" data-val="procrastinator">Je procrastine parfois</button>'
+            + '<button class="ob-chip" data-val="focus_issues">J\'ai du mal a me concentrer</button>'
+            + '<button class="ob-chip" data-val="regular">Je suis regulier(e)</button>'
+            + '<button class="ob-chip" data-val="last_minute">Je travaille dans l\'urgence</button>'
+            + '</div>'
+            + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="5">Continuer</button>'
+            + '</div>';
+        initChipLogic(container);
+    }
+
+    // ==================== ECRAN 6 — STRESS & CONFIANCE ====================
+    function renderOB_Stress(container) {
+        _obData.workStyle = getSelected('ob-workstyle');
+
+        container.innerHTML = '<div class="ob-step ob-prefs">'
+            + renderProgressDots(5, 7)
+            + '<h2 class="ob-heading">Ton ressenti</h2>'
+            + '<p class="ob-text">Face aux revisions, tu te sens plutot :</p>'
+            + '<div class="ob-chips" id="ob-stress">'
+            + '<button class="ob-chip" data-val="high">Stresse(e)</button>'
+            + '<button class="ob-chip selected" data-val="medium">Mitige(e)</button>'
+            + '<button class="ob-chip" data-val="low">Plutot confiant(e)</button>'
+            + '</div>'
+            + '<div class="ob-field" style="margin-top:16px">'
+            + '<label class="ob-label">Ton niveau de confiance</label>'
+            + '<div class="ob-chips" id="ob-confidence">'
+            + '<button class="ob-chip" data-val="low">Faible</button>'
+            + '<button class="ob-chip selected" data-val="medium">Moyen</button>'
+            + '<button class="ob-chip" data-val="high">Bon</button>'
+            + '</div>'
+            + '</div>'
+            + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="6">Continuer</button>'
+            + '</div>';
+        initChipLogic(container);
+    }
+
+    // ==================== ECRAN 7 — PHRASE PERSO ====================
+    function renderOB_SelfNote(container) {
+        _obData.stress = getSelectedOne('ob-stress') || 'medium';
+        _obData.confidence = getSelectedOne('ob-confidence') || 'medium';
+
+        container.innerHTML = '<div class="ob-step ob-prefs">'
+            + renderProgressDots(6, 7)
+            + '<h2 class="ob-heading">Une phrase honnete sur toi</h2>'
+            + '<p class="ob-text">Decris-toi en une phrase, sans te juger.</p>'
+            + '<textarea class="ob-textarea" id="ob-selfnote" rows="3" maxlength="200" placeholder="Ex : Je m\'y mets souvent au dernier moment mais quand je bosse, j\'y arrive."></textarea>'
+            + '<p class="ob-reassure">Cette phrase aide le coach a personnaliser tes messages.</p>'
+            + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="7">Continuer</button>'
+            + '<button class="ob-btn-skip" data-action="onboarding.nextOB" data-param="7">Passer</button>'
+            + '</div>';
+    }
+
+    // ==================== ECRAN 8 — PREFERENCES (optionnel) ====================
+    function renderOB_Preferences(container) {
+        var noteEl = document.getElementById('ob-selfnote');
+        _obData.selfNote = noteEl ? noteEl.value.trim() : '';
+
+        container.innerHTML = '<div class="ob-step ob-prefs">'
+            + renderProgressDots(7, 7)
+            + '<h2 class="ob-heading">Pour personnaliser ton experience</h2>'
+            + '<p class="ob-text" style="opacity:0.6">Optionnel</p>'
+
+            + '<div class="ob-field">'
+            + '<label class="ob-label">Ambiance de travail</label>'
+            + '<div class="ob-chips" id="ob-music">'
+            + '<button class="ob-chip" data-val="calm">Calme</button>'
+            + '<button class="ob-chip selected" data-val="">Peu importe</button>'
+            + '<button class="ob-chip" data-val="energetic">Energique</button>'
+            + '</div>'
+            + '</div>'
+
+            + '<div class="ob-field">'
+            + '<label class="ob-label">Type de sessions</label>'
+            + '<div class="ob-chips" id="ob-pace">'
+            + '<button class="ob-chip" data-val="fast">Courtes et rapides</button>'
+            + '<button class="ob-chip selected" data-val="calm">Plus posees</button>'
+            + '</div>'
+            + '</div>'
+
+            + '<button class="ob-btn-primary" data-action="onboarding.finishOB">Terminer</button>'
+            + '<button class="ob-btn-skip" data-action="onboarding.finishOB">Passer</button>'
+            + '</div>';
+        initChipLogic(container);
+    }
+
+    // ==================== ECRAN 9 — SUMMARY + GO ====================
+    function renderOB_Summary(container) {
+        var profile = window.StudFlow.storage.getUserProfile() || {};
+        var msg = 'On a mieux compris comment t\'accompagner.';
+        if (window.StudFlow.coachEngine) {
+            msg = window.StudFlow.coachEngine.getCoachMessage(profile, { moment: 'start' });
+        }
+
+        container.innerHTML = '<div class="ob-step ob-celebration">'
+            + '<div class="ob-celeb-icon">\u2728</div>'
+            + '<h2 class="ob-heading">Parfait.</h2>'
+            + '<p class="ob-celeb-msg">' + msg + '</p>'
+            + '<button class="ob-btn-primary" data-action="onboarding.complete">Commencer \u2192</button>'
+            + '</div>';
+
+        if (window.StudFlow.gamification) {
+            setTimeout(function() { window.StudFlow.gamification.spawnConfetti(); }, 300);
+        }
+    }
+
+    // ==================== NAVIGATION HELPERS ====================
+    function nextOB(param) {
+        var nextStep = parseInt(param, 10) + 2; // param is 0-indexed offset from step 2
+        showStep(nextStep);
+    }
+
+    function finishOB() {
+        _obData.music = getSelectedOne('ob-music') || '';
+        _obData.pace = getSelectedOne('ob-pace') || 'calm';
+
+        // Build profile from collected data
+        var profile = window.StudFlow.storage.getUserProfile() || {};
+        profile.identity = profile.identity || {};
+        profile.academic = profile.academic || {};
+        profile.behavior = profile.behavior || {};
+        profile.motivation = profile.motivation || {};
+        profile.optional = profile.optional || {};
+
+        profile.identity.class = _obData.class || 'terminale';
+        profile.academic.strongSubjects = _obData.strongSubjects || [];
+        profile.academic.weakSubjects = _obData.weakSubjects || [];
+        profile.behavior.stressLevel = _obData.stress || 'medium';
+        profile.behavior.confidence = _obData.confidence || 'medium';
+        profile.optional.selfDescription = _obData.selfNote || '';
+        profile.motivation.pace = _obData.pace || 'calm';
+
+        // Derive behavior from workStyle
+        var ws = _obData.workStyle || [];
+        if (ws.indexOf('procrastinator') !== -1 || ws.indexOf('last_minute') !== -1) {
+            profile.behavior.consistency = 'low';
+        } else if (ws.indexOf('regular') !== -1) {
+            profile.behavior.consistency = 'high';
+        } else {
+            profile.behavior.consistency = 'medium';
+        }
+
+        // Derive motivation type
+        if (ws.indexOf('fast_learner') !== -1) {
+            profile.motivation.type = 'challenge';
+        } else if (_obData.stress === 'high') {
+            profile.motivation.type = 'encouragement';
+        } else {
+            profile.motivation.type = 'structure';
+        }
+
+        // Derive mainProfile (compat with existing coach system)
+        if (_obData.stress === 'high') profile.mainProfile = 'anxieux';
+        else if (ws.indexOf('procrastinator') !== -1) profile.mainProfile = 'procrastinateur';
+        else if (ws.indexOf('focus_issues') !== -1) profile.mainProfile = 'desorganise';
+        else if (_obData.confidence === 'low') profile.mainProfile = 'confiance_faible';
+        else if (_obData.confidence === 'high' && ws.indexOf('fast_learner') !== -1) profile.mainProfile = 'confiant';
+        else profile.mainProfile = 'equilibre';
+
+        profile.profiles = [profile.mainProfile];
+        profile.completedAt = new Date().toISOString();
+
+        window.StudFlow.storage.updateUserProfile(profile);
+        console.log('[onboarding] Profile saved:', profile.mainProfile, profile);
+
+        showStep(9);
+    }
+
+    // Legacy compat
+    function afterDiagnostic() { showStep(9); }
+    function savePrefs() { finishOB(); }
+
+    // ==================== STEP 3 (legacy — now unused, kept for compat) ====================
+    function renderStep3(container) { renderOB_Summary(container); }
 
     // ==================== LAUNCH ACTION ====================
     function launchAction() {
@@ -391,6 +522,8 @@
         start: start,
         isActive: isActive,
         showStep: showStep,
+        nextOB: nextOB,
+        finishOB: finishOB,
         afterDiagnostic: afterDiagnostic,
         savePrefs: savePrefs,
         launchAction: launchAction,

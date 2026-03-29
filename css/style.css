@@ -6397,6 +6397,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     background: rgba(168,85,247,0.15); border-color: var(--accent); color: var(--text);
 }
 .ob-prefs { max-width: 400px; margin: 0 auto; }
+.ob-textarea {
+    width: 100%; padding: 12px 14px; border-radius: 12px;
+    background: var(--bg-glass, rgba(255,255,255,0.05));
+    border: 1.5px solid rgba(255,255,255,0.1);
+    color: var(--text); font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+    resize: none; box-sizing: border-box;
+}
+.ob-textarea:focus { outline: none; border-color: var(--accent); }
+.ob-textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
 .ob-btn-ghost {
     display: inline-block;
     padding: 0.6rem 1.5rem;
