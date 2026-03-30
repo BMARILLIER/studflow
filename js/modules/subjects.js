@@ -4,6 +4,35 @@
     var registry = {};
     var SUBJECT_ORDER = [];
     var PROGRESS_KEY = 'subjectProgress';
+    var _dataLoaded = false;
+    var _dataLoading = null;
+
+    // ==================== LAZY LOADER ====================
+    // Subject data modules are large (~1.3 MB total). Load on first access.
+    function ensureDataLoaded() {
+        if (_dataLoaded) return Promise.resolve();
+        if (_dataLoading) return _dataLoading;
+
+        _dataLoading = Promise.all([
+            import('./subjectData/philo.js'),
+            import('./subjectData/histgeo.js'),
+            import('./subjectData/maths.js'),
+            import('./subjectData/ses.js'),
+            import('./subjectData/physique.js'),
+            import('./subjectData/francais.js'),
+            import('./subjectData/figures.js'),
+            import('./subjectData/quizbac1.js'),
+            import('./subjectData/quizbac2.js'),
+            import('./subjectData/anglais.js'),
+            import('./subjectData/svt.js')
+        ].map(function(p) { return p.catch(function(err) { console.error('[Subjects] Load failed:', err); }); }))
+        .then(function() {
+            _dataLoaded = true;
+            _dataLoading = null;
+        });
+
+        return _dataLoading;
+    }
 
     // ==================== SECTION INTROS ====================
     var SECTION_INTROS = {
@@ -199,7 +228,11 @@
         currentView = 'hub';
         currentSubjectId = null;
         window.StudFlow.app.showScreen('matieres');
-        renderHub();
+        var container = document.getElementById('matieres-content');
+        if (container && !_dataLoaded) {
+            container.innerHTML = '<div style="text-align:center;padding:3rem 1rem;"><div class="loader-ring" style="margin:0 auto 1rem;width:40px;height:40px;"></div><p style="color:var(--text-muted);font-size:0.88rem;">Chargement des matieres...</p></div>';
+        }
+        ensureDataLoaded().then(function() { renderHub(); });
     }
 
     function renderSubjectCard(subj) {
@@ -356,6 +389,9 @@
 
     // ==================== UI — SUBJECT DETAIL ====================
     function showSubject(subjectId) {
+        ensureDataLoaded().then(function() { _showSubjectInner(subjectId); });
+    }
+    function _showSubjectInner(subjectId) {
         var subj = registry[subjectId];
         if (!subj) { renderHub(); return; }
 
@@ -536,7 +572,8 @@
         showSubject: showSubject,
         openSection: openSection,
         getProgress: getProgress,
-        markVisited: markVisited
+        markVisited: markVisited,
+        preload: ensureDataLoaded
     };
 
 })();

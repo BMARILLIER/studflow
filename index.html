@@ -72,7 +72,7 @@
         </div>
     </header>
 
-    <div class="app-container" id="main-content" role="main">
+    <main class="app-container" id="main-content">
 
         <!-- Beta Gate Screen -->
         <div class="screen" id="screen-betagate">
@@ -129,8 +129,8 @@
             <span id="quiz-count" style="display:none;">0 questions</span>
             <p id="dashboard-message" style="display:none;"></p>
 
-            <!-- Bottom actions -->
-            <div class="dash-bottom-actions">
+            <!-- Bottom actions (visible on desktop only, mobile uses tab bar) -->
+            <div class="dash-bottom-actions dash-desktop-only">
                 <button class="new-course-btn" data-action="screen:upload">
                     + Importer un PDF
                 </button>
@@ -200,44 +200,50 @@
         <div class="screen" id="screen-quiz">
             <button class="back-btn" aria-label="Retour au tableau de bord" data-action="screen:dashboard">← Retour</button>
 
-            <button class="toggle-create-btn" data-action="quiz:create-form">
-                + Creer un quiz
-            </button>
+            <!-- Deck picker (shown first) -->
+            <div id="quiz-deck-picker"></div>
 
-            <div class="create-form" id="quiz-create-form">
-                <h3>Nouvelle question</h3>
-                <input type="text" id="new-quiz-question" placeholder="Question...">
-                <input type="text" id="new-quiz-a" placeholder="Option A">
-                <input type="text" id="new-quiz-b" placeholder="Option B">
-                <input type="text" id="new-quiz-c" placeholder="Option C">
-                <input type="text" id="new-quiz-d" placeholder="Option D">
-                <select id="new-quiz-correct">
-                    <option value="0">Bonne reponse : A</option>
-                    <option value="1">Bonne reponse : B</option>
-                    <option value="2">Bonne reponse : C</option>
-                    <option value="3">Bonne reponse : D</option>
-                </select>
-                <button class="create-btn" id="create-quiz-btn" data-action="quiz:create">Ajouter</button>
-            </div>
+            <!-- Quiz content (hidden until deck selected) -->
+            <div id="quiz-content" style="display:none;">
+                <button class="toggle-create-btn" data-action="quiz:create-form">
+                    + Creer un quiz
+                </button>
 
-            <div class="flashcard-progress">
-                <span class="progress-text" id="quiz-progress">1/10</span>
-                <div class="progress-bar-small" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Progression quiz">
-                    <div class="fill" id="quiz-progress-bar" style="width: 10%"></div>
+                <div class="create-form" id="quiz-create-form">
+                    <h3>Nouvelle question</h3>
+                    <input type="text" id="new-quiz-question" placeholder="Question...">
+                    <input type="text" id="new-quiz-a" placeholder="Option A">
+                    <input type="text" id="new-quiz-b" placeholder="Option B">
+                    <input type="text" id="new-quiz-c" placeholder="Option C">
+                    <input type="text" id="new-quiz-d" placeholder="Option D">
+                    <select id="new-quiz-correct">
+                        <option value="0">Bonne reponse : A</option>
+                        <option value="1">Bonne reponse : B</option>
+                        <option value="2">Bonne reponse : C</option>
+                        <option value="3">Bonne reponse : D</option>
+                    </select>
+                    <button class="create-btn" id="create-quiz-btn" data-action="quiz:create">Ajouter</button>
                 </div>
-                <span class="progress-text" id="quiz-score">0 pts</span>
-            </div>
 
-            <div class="quiz-question-container">
-                <div class="quiz-question-number" id="quiz-number">Question 1</div>
-                <div class="quiz-question" id="quiz-question">Chargement...</div>
-                <div class="quiz-options" id="quiz-options"></div>
-                <div class="quiz-feedback" id="quiz-feedback"></div>
-            </div>
+                <div class="flashcard-progress">
+                    <span class="progress-text" id="quiz-progress">1/10</span>
+                    <div class="progress-bar-small" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Progression quiz">
+                        <div class="fill" id="quiz-progress-bar" style="width: 10%"></div>
+                    </div>
+                    <span class="progress-text" id="quiz-score">0 pts</span>
+                </div>
 
-            <button class="quiz-submit" id="quiz-submit" disabled>
-                Valider
-            </button>
+                <div class="quiz-question-container">
+                    <div class="quiz-question-number" id="quiz-number">Question 1</div>
+                    <div class="quiz-question" id="quiz-question">Chargement...</div>
+                    <div class="quiz-options" id="quiz-options"></div>
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+                </div>
+
+                <button class="quiz-submit" id="quiz-submit" disabled>
+                    Valider
+                </button>
+            </div>
         </div>
 
         <!-- Coach Screen -->
@@ -295,6 +301,11 @@
                 <div id="upload-quota-info" class="upload-quota-info"></div>
                 <p class="upload-note">Tu peux reviser sans IA — les flashcards et quiz integres sont illimites.</p>
             </div>
+        </div>
+
+        <!-- PDF Result Screen (shown after import) -->
+        <div class="screen" id="screen-pdf-result">
+            <div class="loading-screen" id="pdf-result-container"></div>
         </div>
 
         <!-- Loading Screen -->
@@ -639,11 +650,10 @@
                 </button>
             </div>
 
-            <!-- Aide -->
-            <div class="settings-section">
-                <h3>Besoin d'aide ?</h3>
-                <button class="breathing-btn secondary" data-action="screen:aide">
-                    ❓ Guide & FAQ
+            <!-- Aide (secondary — help bubble is the primary access point) -->
+            <div class="settings-section settings-aide-light">
+                <button class="settings-link-btn" data-action="screen:aide">
+                    ❓ FAQ & guide d'utilisation
                 </button>
             </div>
 
@@ -715,7 +725,7 @@
             </div>
         </div>
 
-    </div>
+    </main>
 
     <!-- Bottom Tab Bar -->
     <nav id="tab-bar" class="tab-bar" style="display:none;" role="navigation" aria-label="Navigation principale">
@@ -742,80 +752,74 @@
     </nav>
 
     <!-- More Menu Overlay (triggered by Plus tab) -->
-    <div id="tab-more-menu" class="tab-more-menu" style="display:none;" role="dialog" aria-modal="true" aria-label="Autres modules">
+    <div id="tab-more-menu" class="tab-more-menu" style="display:none;" role="menu" aria-label="Autres modules">
         <div class="tab-more-backdrop" data-action="toggle-more-menu"></div>
         <div class="tab-more-sheet">
             <div class="tab-more-header">
                 <span>Autres modules</span>
                 <button class="tab-more-close" data-action="toggle-more-menu" aria-label="Fermer">&times;</button>
             </div>
-            <div class="tab-more-grid">
-                <button data-action="sr:start">
-                    <span>🧠</span><span>Revision SR</span>
-                </button>
-                <button data-action="screen:stress">
-                    <span>💆</span><span>Anti-stress</span>
-                </button>
-                <button data-action="screen:bacfrancais">
-                    <span>🇫🇷</span><span>Bac Francais</span>
-                </button>
-                <button data-action="screen:planbac">
-                    <span>📅</span><span>Plan Bac</span>
-                </button>
-                <button data-action="screen:urgence">
-                    <span>🚨</span><span>Urgence</span>
-                </button>
-                <button data-action="screen:quiz">
-                    <span>⚡</span><span>Quiz</span>
-                </button>
-                <button data-action="screen:generators">
-                    <span>⚙️</span><span>Generateurs</span>
-                </button>
-                <button data-action="screen:badges">
-                    <span>🏅</span><span>Badges</span>
-                </button>
-                <button data-action="screen:stats">
-                    <span>📊</span><span>Stats</span>
-                </button>
-                <button data-action="screen:missions">
-                    <span>🎯</span><span>Missions</span>
-                </button>
-                <button data-action="screen:matieres">
-                    <span>📚</span><span>Matieres</span>
-                </button>
-                <button data-action="screen:timeline">
-                    <span>📋</span><span>Historique</span>
-                </button>
-                <button data-action="screen:annales">
-                    <span>📜</span><span>Annales Bac</span>
-                </button>
-                <button data-action="screen:dissertation">
-                    <span>✍️</span><span>Corriger dissert</span>
-                </button>
-                <button data-action="screen:orientation">
-                    <span>🧭</span><span>Orientation</span>
-                </button>
-                <button data-action="screen:ds-demain">
-                    <span>📝</span><span>DS demain</span>
-                </button>
-                <button data-action="screen:chrono">
-                    <span>⏱️</span><span>Mode Chrono</span>
-                </button>
-                <button data-action="screen:challenges">
-                    <span>⚔️</span><span>Defis amis</span>
-                </button>
-                <button class="admin-only" data-action="screen:admin">
-                    <span>🔐</span><span>Admin</span>
-                </button>
-                <button data-action="screen:errors">
-                    <span>📕</span><span>Carnet erreurs</span>
-                </button>
-                <button data-action="screen:aide">
-                    <span>❓</span><span>Aide</span>
-                </button>
-                <button data-action="screen:settings">
-                    <span>⚙️</span><span>Parametres</span>
-                </button>
+            <div class="tab-more-sections">
+                <!-- Section: Reviser -->
+                <div class="tab-more-section">
+                    <div class="tab-more-section-label">Reviser</div>
+                    <div class="tab-more-grid">
+                        <button data-action="screen:matieres">
+                            <span>📚</span><span>Matieres</span>
+                        </button>
+                        <button data-action="screen:bacfrancais">
+                            <span>🇫🇷</span><span>Bac Francais</span>
+                        </button>
+                        <button data-action="screen:annales">
+                            <span>📜</span><span>Annales</span>
+                        </button>
+                        <button data-action="screen:ds-demain">
+                            <span>📝</span><span>DS demain</span>
+                        </button>
+                        <button data-action="screen:urgence">
+                            <span>🚨</span><span>Urgence</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Section: Progresser -->
+                <div class="tab-more-section">
+                    <div class="tab-more-section-label">Progresser</div>
+                    <div class="tab-more-grid">
+                        <button data-action="screen:chrono">
+                            <span>⏱️</span><span>Chrono</span>
+                        </button>
+                        <button data-action="screen:challenges">
+                            <span>⚔️</span><span>Defis amis</span>
+                        </button>
+                        <button data-action="screen:stats">
+                            <span>📊</span><span>Stats</span>
+                        </button>
+                        <button data-action="screen:badges">
+                            <span>🏅</span><span>Badges</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Section: Outils -->
+                <div class="tab-more-section">
+                    <div class="tab-more-section-label">Outils</div>
+                    <div class="tab-more-grid">
+                        <button data-action="screen:stress">
+                            <span>💆</span><span>Anti-stress</span>
+                        </button>
+                        <button data-action="screen:planbac">
+                            <span>📅</span><span>Plan Bac</span>
+                        </button>
+                        <button data-action="screen:generators">
+                            <span>⚙️</span><span>Generateurs</span>
+                        </button>
+                        <button data-action="screen:settings">
+                            <span>⚙️</span><span>Parametres</span>
+                        </button>
+                        <button class="admin-only" data-action="screen:admin">
+                            <span>🔐</span><span>Admin</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

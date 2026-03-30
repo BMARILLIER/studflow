@@ -42,5 +42,25 @@
     ],
     "categories": ["education"],
     "lang": "fr",
-    "dir": "ltr"
+    "dir": "ltr",
+    "shortcuts": [
+        {
+            "name": "Reviser mes flashcards",
+            "short_name": "Reviser",
+            "url": "/index.html#flashcard",
+            "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "Lancer un quiz",
+            "short_name": "Quiz",
+            "url": "/index.html#quiz",
+            "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "Mode Focus",
+            "short_name": "Focus",
+            "url": "/index.html#focus",
+            "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+        }
+    ]
 }

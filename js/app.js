@@ -248,35 +248,44 @@
         }
 
         appState.fileName = file.name.replace(/\.(pdf|jpg|jpeg|png|webp)$/i, '');
+        console.log('[PDF] === DEBUT IMPORT ===', file.name, '(' + (file.size / 1024).toFixed(0) + ' Ko)');
         showScreen('loading');
 
         try {
+            var loadTitle = document.getElementById('loading-title');
+
+            // ETAPE 1 — Lecture du fichier
             var text;
             if (isImage) {
-                updateProgress(10, 'Chargement de l\'OCR...');
+                if (loadTitle) loadTitle.textContent = 'Lecture de l\'image...';
+                updateProgress(5, 'Chargement de l\'OCR...');
                 console.log('[OCR] Extraction lancee pour:', file.name);
                 text = await window.StudFlow.ocr.extractText(file, function(pct) {
-                    updateProgress(10 + Math.round(pct * 0.5), 'Lecture de l\'image... ' + pct + '%');
+                    updateProgress(5 + Math.round(pct * 0.2), 'Lecture de l\'image... ' + pct + '%');
                 });
                 console.log('[OCR] Extraction OK, longueur texte:', text.length);
             } else {
-                updateProgress(20, 'Extraction du texte...');
+                if (loadTitle) loadTitle.textContent = 'Lecture du PDF...';
+                updateProgress(10, 'Extraction du texte...');
                 console.log('[PDF] Extraction lancee pour:', file.name);
                 text = await window.StudFlow.pdf.extractText(file);
                 console.log('[PDF] Extraction OK, longueur texte:', text.length);
             }
 
+            // ETAPE 2 — Validation
+            updateProgress(25, 'Texte extrait, verification...');
             if (!text || text.trim().length < 20) {
                 console.warn('[PDF] Texte trop court ou vide');
-                if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
-                    window.StudFlow.gamification.showToast('PDF vide ou illisible. Essaie un autre fichier (pas un scan).', 'xp', '⚠️');
-                }
-                showScreen('dashboard');
+                showPdfErrorCard(
+                    'PDF vide ou illisible',
+                    'Aucun texte exploitable n\'a ete trouve. Essaie un autre fichier (les scans sans OCR ne fonctionnent pas).'
+                );
                 return;
             }
 
             appState.pdfText = text;
-            updateProgress(60, 'Texte extrait !');
+            if (loadTitle) loadTitle.textContent = 'Generation du contenu...';
+            updateProgress(30, 'Texte extrait ! Lancement de l\'analyse...');
 
             // AI analysis via Vercel Function (server-side, secure)
             if (window.StudFlow.features && window.StudFlow.features.AI_ENABLED) {
@@ -285,10 +294,7 @@
                 console.log('[PDF] Analyse IA terminee');
             } else {
                 console.log('[PDF] IA desactivee. Mode local uniquement.');
-                updateProgress(100, 'PDF importe ! Texte extrait avec succes.');
-                if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
-                    window.StudFlow.gamification.showToast('PDF importe ! Utilise les generateurs pour creer des fiches et quiz.', 'xp', '📄');
-                }
+                // PDF importe sans IA — montrer ecran avec acces generateurs
             }
 
             // Persist PDF text for generators
@@ -299,13 +305,39 @@
             window.StudFlow.storage.saveAppState(appState);
             if (window.StudFlow.analytics) window.StudFlow.analytics.track('pdf_import', { fileName: appState.fileName, textLength: text.length });
             updateDashboard();
-            showScreen('dashboard');
+
+            // TOUJOURS afficher un ecran de resultat — jamais de retour silencieux
+            var fcGenerated = (appState.flashcards || []).length;
+            var qzGenerated = (appState.quizQuestions || []).length;
+            console.log('[PDF] === RESULTAT FINAL ===');
+            console.log('[PDF] Flashcards:', fcGenerated, '| Quiz:', qzGenerated);
+            console.log('[PDF] Stockage: appState.flashcards =', fcGenerated, 'items, appState.quizQuestions =', qzGenerated, 'items');
+            console.log('[PDF] localStorage flashcards:', (JSON.parse(localStorage.getItem('studflow_flashcards') || '[]')).length);
+            console.log('[PDF] localStorage quizQuestions:', (JSON.parse(localStorage.getItem('studflow_quizQuestions') || '[]')).length);
+            if (fcGenerated > 0 || qzGenerated > 0) {
+                showPdfResultCard(fcGenerated, qzGenerated);
+            } else {
+                showPdfErrorCard('Aucun contenu exploitable n\'a pu etre extrait de ce PDF.', 'Essaie avec un autre fichier ou utilise les generateurs locaux.');
+            }
         } catch (error) {
             console.error('[PDF] Erreur extraction:', error);
-            if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
-                window.StudFlow.gamification.showToast('Erreur lors de l\'extraction du PDF. Essaie un autre fichier.', 'xp', '⚠️');
+            if (window.StudFlow.errorLog) {
+                window.StudFlow.errorLog.log('pdf_error', 'Extraction failed: ' + (error.message || error));
             }
-            showScreen('dashboard');
+            var errorTitle = 'Impossible d\'analyser ce PDF';
+            var errorMsg = 'Essaie un autre fichier (pas un scan).';
+            if (error.message && error.message.indexOf('network') !== -1) {
+                errorTitle = 'Erreur reseau';
+                errorMsg = 'Verifie ta connexion et reessaie.';
+            } else if (error.message && error.message.indexOf('password') !== -1) {
+                errorTitle = 'PDF protege';
+                errorMsg = 'Ce fichier est protege par un mot de passe.';
+            } else if (error.message && error.message.indexOf('abort') !== -1) {
+                errorTitle = 'Analyse trop longue';
+                errorMsg = 'Le PDF est trop volumineux ou le serveur ne repond pas. Essaie un fichier plus court.';
+            }
+            console.log('[PDF] Affichage ecran erreur:', errorTitle);
+            showPdfErrorCard(errorTitle, errorMsg);
         }
     }
 
@@ -416,51 +448,93 @@
             var pctBase = 30 + Math.round((i / totalChunks) * 55);
             updateProgress(pctBase, 'Analyse en cours' + chunkLabel + '...');
 
-            try {
-                console.log('[IA] Envoi chunk', i + 1, '/', totalChunks, '- longueur:', chunks[i].length);
-                var response = await fetch('/api/analyze', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        text: chunks[i],
-                        mode: 'both',
-                        chunkIndex: i,
-                        totalChunks: totalChunks
-                    })
-                });
+            var chunkOK = false;
+            var maxRetries = 2;
 
-                if (response.status === 429) {
-                    console.warn('[IA] Rate limit atteint au chunk', i + 1);
-                    if (window.StudFlow.gamification) {
-                        window.StudFlow.gamification.showToast('Limite quotidienne atteinte.', 'xp', '⏳');
-                    }
-                    break;
+            for (var attempt = 0; attempt < maxRetries && !chunkOK; attempt++) {
+                if (attempt > 0) {
+                    updateProgress(pctBase, 'Nouvel essai' + chunkLabel + '...');
+                    await new Promise(function(r) { setTimeout(r, 2000 * attempt); });
                 }
 
-                if (!response.ok) {
-                    errors++;
-                    console.error('[IA] Erreur chunk', i + 1, ':', response.status);
-                    continue; // Skip this chunk, try the next
-                }
+                var controller = new AbortController();
+                var timeoutId = setTimeout(function() { controller.abort(); }, 30000);
 
-                var result = await response.json();
-                if (result.success && result.data) {
-                    if (result.data.flashcards) {
-                        allFlashcards = allFlashcards.concat(result.data.flashcards);
+                try {
+                    console.log('[IA] Envoi chunk', i + 1, '/', totalChunks, '- tentative', attempt + 1);
+                    var response = await fetch('/api/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        signal: controller.signal,
+                        body: JSON.stringify({
+                            text: chunks[i],
+                            mode: 'both',
+                            chunkIndex: i,
+                            totalChunks: totalChunks
+                        })
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (response.status === 429) {
+                        console.warn('[IA] Rate limit atteint au chunk', i + 1);
+                        if (window.StudFlow.gamification) {
+                            window.StudFlow.gamification.showToast('Limite quotidienne atteinte.', 'xp', '⏳');
+                        }
+                        chunkOK = true; // don't retry rate limits
+                        break;
                     }
-                    if (result.data.quiz) {
-                        allQuiz = allQuiz.concat(result.data.quiz);
+
+                    if (!response.ok) {
+                        console.error('[IA] Erreur chunk', i + 1, ':', response.status, '- tentative', attempt + 1);
+                        if (window.StudFlow.errorLog) {
+                            window.StudFlow.errorLog.log('pdf_error', 'Chunk ' + (i+1) + ' HTTP ' + response.status);
+                        }
+                        continue; // retry
                     }
-                    if (Array.isArray(result.data)) {
+
+                    var result = await response.json();
+                    if (result && result.success && result.data) {
+                        if (Array.isArray(result.data.flashcards)) {
+                            allFlashcards = allFlashcards.concat(result.data.flashcards);
+                        }
+                        if (Array.isArray(result.data.quiz)) {
+                            allQuiz = allQuiz.concat(result.data.quiz);
+                        }
+                    } else if (result && Array.isArray(result.data)) {
                         allFlashcards = allFlashcards.concat(result.data);
+                    } else {
+                        console.warn('[IA] Chunk', i + 1, '- reponse inattendue:', JSON.stringify(result).substring(0, 200));
+                        if (window.StudFlow.errorLog) {
+                            window.StudFlow.errorLog.log('ai_error', 'Unexpected response shape chunk ' + (i+1));
+                        }
                     }
-                }
-                console.log('[IA] Chunk', i + 1, 'OK -', allFlashcards.length, 'flashcards,', allQuiz.length, 'quiz cumules');
+                    chunkOK = true;
+                    console.log('[IA] Chunk', i + 1, 'OK -', allFlashcards.length, 'flashcards,', allQuiz.length, 'quiz cumules');
 
-            } catch (err) {
+                } catch (err) {
+                    clearTimeout(timeoutId);
+                    var isTimeout = err.name === 'AbortError';
+                    console.error('[IA]', isTimeout ? 'Timeout' : 'Erreur reseau', 'chunk', i + 1, ':', err.message);
+                    if (window.StudFlow.errorLog) {
+                        window.StudFlow.errorLog.log('pdf_error', (isTimeout ? 'Timeout' : 'Network') + ' chunk ' + (i+1) + ': ' + err.message);
+                    }
+                    if (isTimeout && attempt === maxRetries - 1) {
+                        updateProgress(pctBase, 'Le serveur met trop de temps...');
+                    }
+                    // will retry if attempts remain
+                }
+            }
+
+            if (!chunkOK) {
                 errors++;
-                console.error('[IA] Erreur reseau chunk', i + 1, ':', err.message);
-                continue;
+                if (window.StudFlow.gamification) {
+                    window.StudFlow.gamification.showToast(
+                        'Le PDF est trop long ou illisible (partie ' + (i+1) + '). On continue avec le reste.',
+                        'xp', '⚠️'
+                    );
+                }
+                updateProgress(pctBase, 'Echec partie ' + (i+1) + ', on continue...');
             }
         }
 
@@ -507,22 +581,82 @@
             }
         }
 
-        if (fcCount === 0 && qzCount === 0) {
-            updateProgress(100, 'PDF importe (IA n\'a rien genere).');
-            if (errors > 0 && window.StudFlow.gamification) {
-                window.StudFlow.gamification.showToast('Erreur IA. PDF sauvegarde, utilise les generateurs locaux.', 'xp', '⚠️');
-            }
-        } else {
-            var msg = fcCount + ' flashcard' + (fcCount > 1 ? 's' : '');
-            if (qzCount > 0) msg += ' + ' + qzCount + ' quiz';
-            updateProgress(100, 'Termine ! ' + msg + ' generees.');
-            if (window.StudFlow.gamification) {
-                window.StudFlow.gamification.showToast(msg + ' generees par l\'IA !', 'xp', '🧠');
-            }
-            if (errors > 0) {
-                console.warn('[IA]', errors, 'chunk(s) ont echoue, resultats partiels');
-            }
+        // Ne pas afficher de message ici — l'ecran resultat est gere par le code appelant
+        // (showPdfResultCard ou showPdfErrorCard)
+        updateProgress(100, 'Analyse terminee.');
+        if (fcCount === 0 && qzCount === 0 && window.StudFlow.errorLog) {
+            window.StudFlow.errorLog.log('pdf_error', 'Zero results after analysis, errors=' + errors);
         }
+    }
+
+    // ==================== PDF RESULT SCREEN ====================
+    // Uses a dedicated screen (screen-pdf-result) to guarantee visibility.
+    // Never injects into loading screen — always navigates to a real screen.
+
+    function showPdfResultCard(fcCount, qzCount) {
+        var container = document.getElementById('pdf-result-container');
+        if (!container) {
+            console.error('[PDF] pdf-result-container introuvable, fallback dashboard');
+            if (window.StudFlow.gamification) {
+                window.StudFlow.gamification.showToast(fcCount + ' flashcards + ' + qzCount + ' quiz generes !', 'xp', '✅');
+            }
+            showScreen('dashboard');
+            return;
+        }
+
+        var items = '';
+        if (fcCount > 0) {
+            items += '<div class="pdf-result-stat">'
+                + '<span class="pdf-result-stat-icon">\uD83C\uDCCF</span>'
+                + '<span class="pdf-result-stat-text">' + fcCount + ' flashcard' + (fcCount > 1 ? 's' : '') + ' ajoutee' + (fcCount > 1 ? 's' : '') + '</span>'
+                + '</div>';
+        }
+        if (qzCount > 0) {
+            items += '<div class="pdf-result-stat">'
+                + '<span class="pdf-result-stat-icon">\u26A1</span>'
+                + '<span class="pdf-result-stat-text">' + qzCount + ' quiz ajoute' + (qzCount > 1 ? 's' : '') + '</span>'
+                + '</div>';
+        }
+
+        container.innerHTML = '<div class="pdf-result-card">'
+            + '<div class="pdf-result-icon">\u2705</div>'
+            + '<h2 class="pdf-result-title">PDF analyse avec succes</h2>'
+            + '<div class="pdf-result-stats">' + items + '</div>'
+            + '<div class="pdf-result-actions">'
+            + (fcCount > 0 ? '<button class="pdf-result-btn primary" data-action="pdf-result:flashcards">Voir mes fiches</button>' : '')
+            + (qzCount > 0 ? '<button class="pdf-result-btn accent" data-action="pdf-result:quiz">Lancer le quiz</button>' : '')
+            + '<button class="pdf-result-btn secondary" data-action="screen:dashboard">Retour au tableau de bord</button>'
+            + '</div>'
+            + '</div>';
+
+        showScreen('pdf-result');
+        console.log('[PDF] Ecran resultat AFFICHE — fc:', fcCount, 'quiz:', qzCount);
+    }
+
+    function showPdfErrorCard(title, message) {
+        var container = document.getElementById('pdf-result-container');
+        if (!container) {
+            console.error('[PDF] pdf-result-container introuvable, fallback dashboard');
+            if (window.StudFlow.gamification) {
+                window.StudFlow.gamification.showToast(title + ' — ' + message, 'xp', '⚠️');
+            }
+            showScreen('dashboard');
+            return;
+        }
+
+        container.innerHTML = '<div class="pdf-result-card">'
+            + '<div class="pdf-result-icon pdf-result-icon--error">\u26A0\uFE0F</div>'
+            + '<h2 class="pdf-result-title">' + (escapeText(title) || 'Erreur') + '</h2>'
+            + '<p class="pdf-result-message">' + (escapeText(message) || '') + '</p>'
+            + '<div class="pdf-result-actions">'
+            + '<button class="pdf-result-btn primary" data-action="screen:upload">Reessayer avec un autre PDF</button>'
+            + '<button class="pdf-result-btn secondary" data-action="screen:generators">Utiliser les generateurs</button>'
+            + '<button class="pdf-result-btn secondary" data-action="screen:dashboard">Retour au tableau de bord</button>'
+            + '</div>'
+            + '</div>';
+
+        showScreen('pdf-result');
+        console.log('[PDF] Ecran erreur AFFICHE:', title);
     }
 
     function deduplicateCards(cards) {
@@ -579,7 +713,11 @@
             let cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
             const start = cleaned.indexOf('[');
             const end = cleaned.lastIndexOf(']');
-            if (start === -1 || end === -1) return null;
+            if (start === -1 || end === -1) {
+                console.warn('[IA] cleanJSON: no array brackets found');
+                if (window.StudFlow.errorLog) window.StudFlow.errorLog.log('ai_error', 'cleanJSON: no brackets, input=' + String(text).substring(0, 100));
+                return null;
+            }
             let json = cleaned.substring(start, end + 1);
             json = json
                 .replace(/[\u201C\u201D\u00AB\u00BB]/g, '"')
@@ -593,6 +731,8 @@
             JSON.parse(json);
             return json;
         } catch (e) {
+            console.warn('[IA] cleanJSON parse failed:', e.message);
+            if (window.StudFlow.errorLog) window.StudFlow.errorLog.log('ai_error', 'cleanJSON parse: ' + e.message + ' | input=' + String(text).substring(0, 80));
             return null;
         }
     }

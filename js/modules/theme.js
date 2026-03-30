@@ -1,15 +1,11 @@
 // theme.js — Light/Dark theme toggle
+// Default: dark mode (StudFlow identity). User can toggle to light.
 (function() {
     'use strict';
 
     var STORAGE_KEY = 'studflow_theme';
-
-    function getSystemPreference() {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-            return 'light';
-        }
-        return 'dark';
-    }
+    var DARK_BG = '#0b1020';
+    var LIGHT_BG = '#f5f7fa';
 
     function applyTheme(theme) {
         if (theme === 'light') {
@@ -17,10 +13,10 @@
         } else {
             document.body.classList.remove('theme-light');
         }
-        // Update meta theme-color
+        // Update meta theme-color to match actual --bg
         var meta = document.querySelector('meta[name="theme-color"]');
         if (meta) {
-            meta.setAttribute('content', theme === 'light' ? '#f5f5f7' : '#1a1a2e');
+            meta.setAttribute('content', theme === 'light' ? LIGHT_BG : DARK_BG);
         }
         // Update toggle button icons
         updateToggleButtons(theme);
@@ -41,7 +37,8 @@
     function get() {
         var saved = localStorage.getItem(STORAGE_KEY);
         if (saved === 'light' || saved === 'dark') return saved;
-        return getSystemPreference();
+        // Default to dark — StudFlow's identity is dark mode
+        return 'dark';
     }
 
     function set(theme) {
@@ -58,16 +55,6 @@
     function init() {
         var theme = get();
         applyTheme(theme);
-
-        // Listen for system preference changes (only if no saved preference)
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(e) {
-                var saved = localStorage.getItem(STORAGE_KEY);
-                if (!saved) {
-                    applyTheme(e.matches ? 'light' : 'dark');
-                }
-            });
-        }
     }
 
     // Apply immediately to avoid flash

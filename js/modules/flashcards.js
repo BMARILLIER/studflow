@@ -171,6 +171,7 @@
         score = 0;
         startTime = Date.now();
         shuffledCards = null;
+        if (window.StudFlow.combo) window.StudFlow.combo.startSession();
 
         // Mode selection
         if (mode) {
@@ -336,10 +337,12 @@
             state.masteredCards = (state.masteredCards || 0) + 1;
             state.streak = (state.streak || 0) + 1;
             if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('flashcard_correct');
-            if (window.StudFlow.sounds) window.StudFlow.sounds.correct();
+            if (window.StudFlow.combo) window.StudFlow.combo.hit();
+            else if (window.StudFlow.sounds) window.StudFlow.sounds.correct();
         } else {
             state.streak = 0;
-            if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
+            if (window.StudFlow.combo) window.StudFlow.combo.miss();
+            else if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
         }
 
         if (window.StudFlow.analytics) window.StudFlow.analytics.track('flashcard_review', { correct: !!knew, mode: currentMode });
@@ -465,6 +468,7 @@
             if (srExtra2) srExtra2.style.display = 'none';
         }
 
+        if (window.StudFlow.combo) window.StudFlow.combo.endSession();
         if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('flashcard_complete');
         if (window.StudFlow.events) {
             window.StudFlow.events.emit('flashcard:completed', { score: score, total: total, percent: percent, deck: currentDeck, srMode: srMode, mode: currentMode });

@@ -5,6 +5,13 @@
     var STORAGE_KEY = 'studflow_error_log';
     var MAX_ENTRIES = 200;
 
+    // ==================== REMOTE TYPES ====================
+    // Errors worth sending to Supabase for production visibility
+    var REMOTE_TYPES = {
+        js_error: true, promise_rejection: true, pdf_error: true,
+        ai_error: true, auth: true, storage_error: true, network_error: true
+    };
+
     // ==================== LOG ====================
     function log(type, message, extra) {
         var entry = {
@@ -32,6 +39,15 @@
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
             } catch (e2) { /* give up silently */ }
+        }
+
+        // Push critical errors to Supabase via analytics pipeline
+        if (REMOTE_TYPES[type] && window.StudFlow && window.StudFlow.analytics) {
+            window.StudFlow.analytics.track('error_' + type, {
+                message: entry.message,
+                stack: entry.stack,
+                url: entry.url
+            });
         }
     }
 

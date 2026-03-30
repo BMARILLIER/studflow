@@ -35,7 +35,11 @@
                 refreshUI();
                 if (StudFlow.cloud) StudFlow.cloud.pull();
             }
-        }).catch(function() {});
+        }).catch(function(err) {
+            if (window.StudFlow.errorLog) {
+                window.StudFlow.errorLog.log('auth', 'Session restore failed: ' + (err && err.message || err));
+            }
+        });
     }
 
     // ==================== PASSWORD VISIBILITY TOGGLE ====================

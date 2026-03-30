@@ -40,14 +40,119 @@
     }
 
     function start(deck) {
-        currentDeck = deck || 'all';
+        // If no deck specified, show picker first
+        if (!deck || deck === 'all') {
+            showDeckPicker();
+            return;
+        }
+        launchQuiz(deck);
+    }
+
+    function launchQuiz(deck) {
+        currentDeck = deck;
         currentIndex = 0;
         score = 0;
         selectedAnswer = null;
         startTime = Date.now();
+        if (window.StudFlow.combo) window.StudFlow.combo.startSession();
         if (window.StudFlow.analytics) window.StudFlow.analytics.track('quiz_start', { deck: currentDeck });
         window.StudFlow.app.showScreen('quiz');
+        // Hide picker, show quiz content
+        var picker = document.getElementById('quiz-deck-picker');
+        var qContent = document.getElementById('quiz-content');
+        if (picker) picker.style.display = 'none';
+        if (qContent) qContent.style.display = '';
         displayQuestion();
+    }
+
+    function showDeckPicker() {
+        window.StudFlow.app.showScreen('quiz');
+
+        var state = window.StudFlow.app.getState();
+        var hasImported = (state.quizQuestions || []).length > 0;
+        var hasCustom = (state.customQuiz || []).length > 0;
+        var fileName = window.StudFlow.storage.loadData('pdfFileName', '');
+
+        // Build subject list
+        var subjectCards = '';
+        if (window.StudFlow.subjects) {
+            var subjects = window.StudFlow.subjects.getAll();
+            for (var i = 0; i < subjects.length; i++) {
+                var s = subjects[i];
+                var qzCount = 0;
+                for (var j = 0; j < (s.sections || []).length; j++) {
+                    qzCount += ((s.sections[j] || {}).quiz || []).length;
+                }
+                if (qzCount === 0) continue;
+                subjectCards += '<button class="quiz-deck-card" data-action="quiz:launch-deck" data-param="subj-' + s.id + '">'
+                    + '<span class="quiz-deck-icon">' + (s.icon || '\uD83D\uDCDA') + '</span>'
+                    + '<span class="quiz-deck-name">' + (s.name || s.id) + '</span>'
+                    + '<span class="quiz-deck-count">' + qzCount + ' Q</span>'
+                    + '</button>';
+            }
+        }
+
+        // Build imported card
+        var importedCard = '';
+        if (hasImported) {
+            var impCount = state.quizQuestions.length;
+            var impLabel = fileName || 'PDF importe';
+            importedCard = '<button class="quiz-deck-card quiz-deck-card--imported" data-action="quiz:launch-deck" data-param="imported">'
+                + '<span class="quiz-deck-icon">\uD83D\uDCC4</span>'
+                + '<span class="quiz-deck-name">Quiz de ton PDF</span>'
+                + '<span class="quiz-deck-sub">' + window.StudFlow.app.escapeText(impLabel) + '</span>'
+                + '<span class="quiz-deck-count">' + impCount + ' Q</span>'
+                + '</button>';
+        }
+
+        var html = '<div class="quiz-deck-header">'
+            + '<h2>Choisis ton quiz</h2>'
+            + '<p>Selectionne une matiere ou lance un mix.</p>'
+            + '</div>';
+
+        // Prominent CTA: mix all
+        html += '<button class="quiz-deck-cta" data-action="quiz:launch-deck" data-param="all">'
+            + '\u26A1 Tout melanger — quiz surprise'
+            + '</button>';
+
+        // Imported PDF section
+        if (importedCard) {
+            html += '<div class="quiz-deck-section">'
+                + '<div class="quiz-deck-section-label">Tes PDF</div>'
+                + importedCard
+                + '</div>';
+        }
+
+        // Subjects section
+        if (subjectCards) {
+            html += '<div class="quiz-deck-section">'
+                + '<div class="quiz-deck-section-label">Par matiere</div>'
+                + '<div class="quiz-deck-grid">' + subjectCards + '</div>'
+                + '</div>';
+        }
+
+        // Custom cards
+        if (hasCustom) {
+            html += '<button class="quiz-deck-card" data-action="quiz:launch-deck" data-param="custom">'
+                + '<span class="quiz-deck-icon">\u270D\uFE0F</span>'
+                + '<span class="quiz-deck-name">Mes quiz perso</span>'
+                + '<span class="quiz-deck-count">' + state.customQuiz.length + ' Q</span>'
+                + '</button>';
+        }
+
+        // Show picker, hide quiz content
+        var container = document.getElementById('quiz-deck-picker');
+        var qContent = document.getElementById('quiz-content');
+        if (!container) {
+            // Create picker container dynamically
+            container = document.createElement('div');
+            container.id = 'quiz-deck-picker';
+            var screen = document.getElementById('screen-quiz');
+            if (screen) screen.insertBefore(container, screen.querySelector('.flashcard-progress'));
+        }
+        container.innerHTML = html;
+        container.style.display = '';
+        if (qContent) qContent.style.display = 'none';
     }
 
     function displayQuestion() {
@@ -134,14 +239,16 @@
             if (window.StudFlow.mathRender) { window.StudFlow.mathRender.setContent(feedback, correctMsg); }
             else { feedback.textContent = correctMsg; }
             if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('quiz_correct');
-            if (window.StudFlow.sounds) window.StudFlow.sounds.correct();
+            if (window.StudFlow.combo) window.StudFlow.combo.hit();
+            else if (window.StudFlow.sounds) window.StudFlow.sounds.correct();
         } else {
             state.streak = 0;
             feedback.className = 'quiz-feedback wrong';
             var wrongMsg = '\u2717 ' + (q.explanation || 'La bonne reponse etait ' + q.options[q.correctIndex]);
             if (window.StudFlow.mathRender) { window.StudFlow.mathRender.setContent(feedback, wrongMsg); }
             else { feedback.textContent = wrongMsg; }
-            if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
+            if (window.StudFlow.combo) window.StudFlow.combo.miss();
+            else if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
         }
 
         window.StudFlow.app.updateStats();
@@ -182,6 +289,7 @@
             rRetry.onclick = function() { start(currentDeck); };
         }
 
+        if (window.StudFlow.combo) window.StudFlow.combo.endSession();
         if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('quiz_complete');
         if (window.StudFlow.stats) window.StudFlow.stats.recordActivity('quiz');
         if (window.StudFlow.events) {
@@ -275,7 +383,7 @@
 
     window.StudFlow = window.StudFlow || {};
     window.StudFlow.quiz = {
-        start, displayQuestion, selectAnswer, submitAnswer, showResults,
+        start, launchQuiz, displayQuestion, selectAnswer, submitAnswer, showResults,
         showCreateForm, createQuestion, updateCount, getAllQuestions
     };
 })();

@@ -275,6 +275,11 @@
         var container = document.getElementById('smart-dashboard');
         if (!container) return;
 
+        // Preload subject data in background for flashcard/quiz sessions
+        if (window.StudFlow.subjects && window.StudFlow.subjects.preload) {
+            window.StudFlow.subjects.preload();
+        }
+
         var profileKey = getMainProfile();
         var profileData = PROFILE_DETAILS[profileKey] || PROFILE_DETAILS.equilibre;
         var daily = getDailyData();
@@ -374,6 +379,7 @@
 
         // ===== BELOW: engagement + extras =====
         var belowFold = ''
+            + renderImportedCard()
             + renderStreakAlert(gamStats)
             + dailyMissionHTML
             + renderChronoCard()
@@ -390,6 +396,35 @@
             + '</div>';
 
         container.innerHTML = primaryHTML + exploreHTML;
+    }
+
+    // ==================== IMPORTED PDF CARD ====================
+    function renderImportedCard() {
+        var state = getAppState();
+        var fcCount = (state.flashcards || []).length;
+        var qzCount = (state.quizQuestions || []).length;
+        if (fcCount === 0 && qzCount === 0) return '';
+
+        var fileName = window.StudFlow.storage.loadData('pdfFileName', '');
+        var label = fileName ? fileName : 'PDF importe';
+
+        var badges = '';
+        if (fcCount > 0) badges += '<span class="imported-badge">\uD83C\uDCCF ' + fcCount + ' flashcard' + (fcCount > 1 ? 's' : '') + '</span>';
+        if (qzCount > 0) badges += '<span class="imported-badge">\u26A1 ' + qzCount + ' quiz</span>';
+
+        return '<div class="dash-section dash-imported-card">'
+            + '<div class="imported-header">'
+            + '<span class="imported-icon">\uD83D\uDCC4</span>'
+            + '<div class="imported-info">'
+            + '<strong>' + (window.StudFlow.app.escapeText ? window.StudFlow.app.escapeText(label) : label) + '</strong>'
+            + '<div class="imported-badges">' + badges + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="imported-actions">'
+            + (fcCount > 0 ? '<button class="imported-btn" data-action="pdf-result:flashcards">Reviser les fiches \u2192</button>' : '')
+            + (qzCount > 0 ? '<button class="imported-btn" data-action="pdf-result:quiz">Lancer le quiz \u2192</button>' : '')
+            + '</div>'
+            + '</div>';
     }
 
     // ==================== HERO CTA (import PDF) ====================
@@ -670,20 +705,24 @@
         var sub = subtexts[Math.floor(Math.random() * subtexts.length)];
 
         return '<div class="dash-section dash-hero-question">'
-            + '<h2 class="dash-hero-title">Que veux-tu faire aujourd\'hui ?</h2>'
+            + '<h2 class="dash-hero-title">Que veux-tu faire ?</h2>'
             + '<p class="dash-hero-sub">' + sub + '</p>'
-            + '<div class="dash-hero-grid">'
-            + '<button class="dash-hero-btn" data-action="dashboard.goTo" data-param="upload">'
-            + '<span class="dash-hero-icon">📄</span>'
-            + '<span class="dash-hero-label">Importer un cours</span>'
-            + '</button>'
-            + '<button class="dash-hero-btn" data-action="dashboard.goTo" data-param="flashcard">'
+            + '<div class="dash-hero-grid dash-hero-grid--2">'
+            + '<button class="dash-hero-btn dash-hero-btn--primary" data-action="dashboard.goTo" data-param="flashcard">'
             + '<span class="dash-hero-icon">🎴</span>'
             + '<span class="dash-hero-label">Reviser</span>'
             + '</button>'
-            + '<button class="dash-hero-btn" data-action="dashboard.goTo" data-param="quiz">'
+            + '<button class="dash-hero-btn dash-hero-btn--primary" data-action="dashboard.goTo" data-param="quiz">'
             + '<span class="dash-hero-icon">⚡</span>'
             + '<span class="dash-hero-label">S\'entrainer</span>'
+            + '</button>'
+            + '</div>'
+            + '<div class="dash-hero-secondary">'
+            + '<button class="dash-hero-link" data-action="dashboard.goTo" data-param="upload">'
+            + '<span>📄</span> Importer un cours'
+            + '</button>'
+            + '<button class="dash-hero-link" data-action="dashboard.goTo" data-param="matieres">'
+            + '<span>📚</span> Matieres'
             + '</button>'
             + '</div>'
             + '</div>';
@@ -877,11 +916,9 @@
             { icon: '\uD83D\uDCDA', label: 'Matieres', action: 'matieres' },
             { icon: '\uD83D\uDCDC', label: 'Annales', action: 'annales' },
             { icon: '\uD83C\uDFAF', label: 'Focus', action: 'focus' },
-            { icon: '\uD83D\uDCA8', label: 'Respiration', action: 'stress' },
-            { icon: '\uD83C\uDFAF', label: 'Jour du Bac', action: 'jourbac' },
+            { icon: '\uD83D\uDCA8', label: 'Anti-stress', action: 'stress' },
             { icon: '\uD83D\uDCCA', label: 'Progression', action: 'stats' },
-            { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' },
-            { icon: '\u2753', label: 'Aide', action: 'screen:aide' }
+            { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' }
         ];
 
         var grid = items.map(function(item) {
