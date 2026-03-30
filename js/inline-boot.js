@@ -37,6 +37,7 @@
         'screen:weekly-report': function() { if (StudFlow.weeklyReport) StudFlow.weeklyReport.show(); },
         'screen:errors':        function() { if (StudFlow.errorNotebook) StudFlow.errorNotebook.show(); },
         'screen:badges':        function() { if (StudFlow.badges) StudFlow.badges.show(); },
+        'screen:exam':          function() { if (StudFlow.examMode) StudFlow.examMode.show(); },
         'screen:stats':         function() { if (StudFlow.stats) StudFlow.stats.show(); },
         'screen:missions':      function() { if (StudFlow.missions) StudFlow.missions.show(); },
         'screen:timeline':      function() { if (StudFlow.timeline) StudFlow.timeline.show(); },

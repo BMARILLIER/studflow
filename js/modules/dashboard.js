@@ -192,6 +192,7 @@
         annales: function() { if (window.StudFlow.annales) window.StudFlow.annales.show(); },
         challenges: function() { if (window.StudFlow.challenges) window.StudFlow.challenges.show(); },
         chrono: function() { if (window.StudFlow.chronoMode) window.StudFlow.chronoMode.show(); },
+        exam: function() { if (window.StudFlow.examMode) window.StudFlow.examMode.show(); },
         sr: function() { window.StudFlow.flashcards.start('sr'); },
         jourbac: function() { if (window.StudFlow.jourBac) window.StudFlow.jourBac.show(); }
     };
@@ -732,7 +733,10 @@
             + '<span>📄</span> Importer un cours'
             + '</button>'
             + '<button class="dash-hero-link" data-action="dashboard.goTo" data-param="matieres">'
-            + '<span>📚</span> Matieres'
+            + '<span>\uD83D\uDCDA</span> Matieres'
+            + '</button>'
+            + '<button class="dash-hero-link" data-action="screen:exam">'
+            + '<span>\uD83C\uDFAF</span> Mode Examen'
             + '</button>'
             + '</div>'
             + '</div>';
