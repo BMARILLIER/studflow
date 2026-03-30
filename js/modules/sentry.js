@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/browser';
 (function() {
     'use strict';
 
-    var DSN = import.meta.env.VITE_SENTRY_DSN || '';
+    var DSN = import.meta.env.VITE_SENTRY_DSN || 'https://467edb361295f365da0a59450aa3e859@o4511132981067776.ingest.de.sentry.io/4511133220274256';
     if (!DSN) {
         console.log('[Sentry] DSN non configure — monitoring desactive');
         return;
