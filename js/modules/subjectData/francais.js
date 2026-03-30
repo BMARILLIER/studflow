@@ -348,6 +348,213 @@
                     { question: 'Dans une dissertation litteraire, quelle partie suit l\'introduction et developpe les arguments ?', options: ['La conclusion', 'L\'ouverture', 'Le developpement', 'L\'amorce'], correctIndex: 2, explanation: 'La dissertation suit un plan en trois parties : introduction (amorce, problematique, annonce du plan), developpement (en deux ou trois parties argumentees avec exemples litteraires) et conclusion (bilan et ouverture). Le developpement est le coeur de l\'argumentation.' },
                     { question: 'Quelle figure de style consiste a repeter un meme mot ou groupe de mots en debut de vers ou de phrase ?', options: ['La metaphore', 'L\'anaphore', 'La metonymie', 'L\'hyperbole'], correctIndex: 1, explanation: 'L\'anaphore est la repetition d\'un meme mot ou groupe de mots au debut de phrases ou de vers successifs. Elle cree un effet d\'insistance et de rythme. Hugo l\'utilise dans "Demain, des l\'aube..." et Zola dans "J\'accuse...".' }
                 ]
+            },
+            {
+                id: 'figures',
+                title: 'Figures de style',
+                icon: '\u2728',
+                content: '<h3>Figures d\'analogie</h3>'
+                    + '<ul>'
+                    + '<li><strong>Comparaison</strong> : rapprochement de deux elements avec un outil de comparaison (comme, tel, pareil a). Ex : "La terre est bleue comme une orange" (Eluard)</li>'
+                    + '<li><strong>Metaphore</strong> : comparaison sans outil. Ex : "Cette faucille d\'or dans le champ des etoiles" (Hugo) — la lune est une faucille</li>'
+                    + '<li><strong>Allegorie</strong> : representation concrete d\'une idee abstraite. Ex : Marianne = la Republique, la faucheuse = la mort</li>'
+                    + '<li><strong>Personnification</strong> : attribuer des traits humains a un objet ou une idee. Ex : "la mer gronde"</li>'
+                    + '</ul>'
+                    + '<h3>Figures d\'amplification et d\'attenuation</h3>'
+                    + '<ul>'
+                    + '<li><strong>Hyperbole</strong> : exageration. Ex : "mourir de rire", "un bruit a reveiller les morts"</li>'
+                    + '<li><strong>Litote</strong> : dire moins pour signifier plus. Ex : "Va, je ne te hais point" = je t\'aime (Le Cid)</li>'
+                    + '<li><strong>Euphemisme</strong> : attenuer une realite dure. Ex : "il nous a quittes" pour dire "il est mort"</li>'
+                    + '</ul>'
+                    + '<h3>Figures de construction</h3>'
+                    + '<ul>'
+                    + '<li><strong>Anaphore</strong> : repetition en debut de phrase/vers. Ex : "Moi president..." (rythme + insistance)</li>'
+                    + '<li><strong>Chiasme</strong> : structure croisee ABBA. Ex : "Il faut manger pour vivre et non vivre pour manger" (Moliere)</li>'
+                    + '<li><strong>Antithese</strong> : opposition de deux termes. Ex : "Je vis, je meurs" (Louise Labe)</li>'
+                    + '<li><strong>Oxymore</strong> : alliance de deux mots contradictoires. Ex : "cette obscure clarte" (Corneille)</li>'
+                    + '</ul>'
+                    + '<h3>Figures de substitution</h3>'
+                    + '<ul>'
+                    + '<li><strong>Metonymie</strong> : remplacer un mot par un autre lie logiquement. Ex : "boire un verre" (contenant pour contenu)</li>'
+                    + '<li><strong>Synecdoque</strong> : la partie pour le tout. Ex : "une voile" pour un bateau</li>'
+                    + '<li><strong>Periphrase</strong> : remplacer un mot par une expression. Ex : "la ville lumiere" pour Paris</li>'
+                    + '<li><strong>Antiphrase</strong> : dire le contraire (ironie). Ex : "Quel beau temps !" sous la pluie</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Quelle difference entre comparaison et metaphore ?', answer: '\uD83D\uDC49 Comparaison = outil present (comme, tel). Metaphore = pas d\'outil, lien direct. Ex : "fort comme un lion" (comparaison) vs "ce lion rugit" pour un homme (metaphore). \uD83C\uDFAF Cle Bac : cherche "comme/tel/pareil" — s\'il est absent, c\'est une metaphore.' },
+                    { question: 'Qu\'est-ce qu\'une litote ?', answer: '\uD83D\uDC49 Dire moins pour exprimer plus. Ex : "Va, je ne te hais point" (Le Cid) = je t\'aime passionnement. \uD83D\uDCCC Inverse de l\'hyperbole. \uD83C\uDFAF Cle Bac : la litote utilise souvent la negation ("pas mal" = bien).' },
+                    { question: 'Qu\'est-ce qu\'une anaphore ?', answer: '\uD83D\uDC49 Repetition d\'un mot/groupe en debut de phrase ou vers. Ex : "Moi president... Moi president..." Effet : insistance, rythme, force oratoire. \uD83C\uDFAF Cle Bac : anaphore = DEBUT de phrase. A ne pas confondre avec l\'epiphore (fin).' },
+                    { question: 'Qu\'est-ce qu\'un oxymore ?', answer: '\uD83D\uDC49 Alliance de deux mots contradictoires dans un meme groupe. Ex : "cette obscure clarte" (Corneille), "un silence assourdissant". \uD83C\uDFAF Cle Bac : oxymore = DANS le meme groupe syntaxique. Antithese = dans deux groupes opposes.' },
+                    { question: 'Qu\'est-ce qu\'une antithese ?', answer: '\uD83D\uDC49 Opposition forte entre deux termes ou idees. Ex : "Je vis, je meurs ; je me brule et me noye" (Louise Labe). \uD83D\uDCCC Cree un contraste saisissant. \uD83C\uDFAF Cle Bac : antithese = deux elements SEPARES qui s\'opposent. Oxymore = reunion dans un seul groupe.' },
+                    { question: 'Qu\'est-ce qu\'un chiasme ?', answer: '\uD83D\uDC49 Structure croisee ABBA. Ex : "Il faut manger pour vivre et non vivre pour manger" (Moliere). Les termes se croisent en miroir. \uD83C\uDFAF Cle Bac : repere la structure en croix. Effet : symetrie, equilibre, inversion de sens.' },
+                    { question: 'Qu\'est-ce qu\'une hyperbole ?', answer: '\uD83D\uDC49 Exageration volontaire. Ex : "mourir de rire", "un bruit a reveiller les morts", "je te l\'ai dit mille fois". \uD83D\uDCCC Inverse de la litote. \uD83C\uDFAF Cle Bac : l\'hyperbole amplifie pour impressionner, convaincre ou exprimer une emotion forte.' },
+                    { question: 'Qu\'est-ce qu\'une metonymie ?', answer: '\uD83D\uDC49 Remplacement d\'un mot par un autre lie logiquement. Ex : "boire un verre" (contenant pour contenu), "lire Zola" (auteur pour oeuvre). \uD83C\uDFAF Cle Bac : metonymie = lien logique (cause, lieu, contenant). Synecdoque = la partie pour le tout.' },
+                    { question: 'Qu\'est-ce qu\'une synecdoque ?', answer: '\uD83D\uDC49 La partie pour le tout (ou l\'inverse). Ex : "une voile a l\'horizon" = un bateau. "Les mortels" = les humains. \uD83D\uDCCC C\'est un type particulier de metonymie. \uD83C\uDFAF Cle Bac : si c\'est une partie du tout → synecdoque. Si c\'est un lien logique autre → metonymie.' },
+                    { question: 'Qu\'est-ce qu\'une allegorie ?', answer: '\uD83D\uDC49 Representation concrete d\'une idee abstraite. Ex : Marianne = la Republique, la faucheuse = la mort, la colombe = la paix. \uD83C\uDFAF Cle Bac : l\'allegorie est une metaphore FILEE (developpee sur plusieurs phrases ou un texte entier).' },
+                    { question: 'Qu\'est-ce qu\'une personnification ?', answer: '\uD83D\uDC49 Attribuer des qualites humaines a un objet, animal ou idee. Ex : "la mer en colere", "le soleil sourit". \uD83C\uDFAF Cle Bac : cherche des verbes humains appliques a des non-humains. Effet : rendre vivant, creer une image poetique.' },
+                    { question: 'Qu\'est-ce qu\'un euphemisme ?', answer: '\uD83D\uDC49 Attenuer une realite dure ou choquante. Ex : "il nous a quittes" pour "il est mort", "personnes a mobilite reduite". \uD83C\uDFAF Cle Bac : euphemisme = politesse/delicatesse. Litote = dire moins pour dire PLUS (sens renforce).' },
+                    { question: 'Qu\'est-ce qu\'une antiphrase ?', answer: '\uD83D\uDC49 Dire le contraire de ce qu\'on pense (ironie). Ex : "Quel beau temps !" sous la pluie. "C\'est du joli !" pour critiquer. \uD83C\uDFAF Cle Bac : antiphrase = forme la plus simple de l\'ironie. Chercher le decalage entre les mots et le contexte.' },
+                    { question: 'Qu\'est-ce qu\'une periphrase ?', answer: '\uD83D\uDC49 Remplacer un mot par une expression plus longue. Ex : "la ville lumiere" = Paris, "le roi des animaux" = le lion. \uD83C\uDFAF Cle Bac : la periphrase met en valeur une qualite ou cree un effet poetique. Elle evite la repetition.' },
+                    { question: 'Qu\'est-ce qu\'une gradation ?', answer: '\uD83D\uDC49 Enumeration de termes d\'intensite croissante (ou decroissante). Ex : "Va, cours, vole et nous venge !" (Corneille). Effet : acceleration, montee en puissance. \uD83C\uDFAF Cle Bac : verifier que les termes vont du plus faible au plus fort (ou l\'inverse).' },
+                    { question: 'Qu\'est-ce qu\'une enumeration / accumulation ?', answer: '\uD83D\uDC49 Suite de mots de meme nature. Ex : "des femmes, des enfants, des vieillards, des blesses". \uD83D\uDCCC L\'accumulation insiste sur la quantite, le desordre ou la richesse. \uD83C\uDFAF Cle Bac : enumeration = liste neutre. Accumulation = liste avec effet d\'exces.' },
+                    { question: 'Qu\'est-ce qu\'un parallelisme ?', answer: '\uD83D\uDC49 Repetition de la meme structure syntaxique. Ex : "La chair est triste, helas ! et j\'ai lu tous les livres" (Mallarme) — deux propositions paralleles. \uD83C\uDFAF Cle Bac : parallelisme = meme construction. Chiasme = construction inversee (croisee).' },
+                    { question: 'Qu\'est-ce qu\'un enjambement en poesie ?', answer: '\uD83D\uDC49 La phrase deborde d\'un vers sur le suivant. Ex : une idee commencee au vers 1 se termine au vers 2. \uD83D\uDCCC Rejet = le mot deborde seul au vers suivant (mise en relief). \uD83C\uDFAF Cle Bac : enjambement = fluidite. Rejet = insistance sur le mot rejete.' },
+                    { question: 'Comment analyser une figure de style au Bac ?', answer: '\uD83D\uDC49 3 etapes : 1) NOMMER la figure. 2) CITER l\'exemple dans le texte. 3) INTERPRETER l\'effet produit (emotion, image, rythme, ironie...). \uD83C\uDFAF Cle Bac : JAMAIS lister des figures sans les interpreter — c\'est l\'interpretation qui rapporte les points.' },
+                    { question: 'Quelles sont les figures les plus rentables a reperer au Bac ?', answer: '\uD83D\uDC49 Top 5 : metaphore, anaphore, antithese, hyperbole, ironie (antiphrase). Elles tombent dans 80% des textes. \uD83D\uDCCC Apprendre aussi : chiasme, litote, oxymore, gradation. \uD83C\uDFAF Cle Bac : mieux vaut 3 figures bien analysees que 10 juste nommees.' }
+                ],
+                quiz: [
+                    { question: '"Cette faucille d\'or dans le champ des etoiles" (Hugo) est :', options: ['Une comparaison', 'Une metaphore', 'Une metonymie', 'Une litote'], correctIndex: 1, explanation: 'C\'est une metaphore : la lune est designee comme "faucille d\'or" sans outil de comparaison (pas de "comme").' },
+                    { question: '"Va, je ne te hais point" est un exemple de :', options: ['Antiphrase', 'Euphemisme', 'Litote', 'Hyperbole'], correctIndex: 2, explanation: 'Chimene dit le contraire du minimum : "je ne te hais point" signifie en realite "je t\'aime passionnement". C\'est dire moins pour exprimer plus.' },
+                    { question: 'Un oxymore est :', options: ['Une exageration', 'Une alliance de mots contradictoires dans un meme groupe', 'Une opposition entre deux phrases', 'Une repetition en debut de vers'], correctIndex: 1, explanation: '"Obscure clarte", "silence assourdissant" : deux mots contradictoires reunis dans un seul groupe syntaxique.' },
+                    { question: '"Boire un verre" est un exemple de :', options: ['Synecdoque', 'Metaphore', 'Metonymie', 'Periphrase'], correctIndex: 2, explanation: 'On designe le contenu (la boisson) par le contenant (le verre). C\'est un lien logique, donc une metonymie.' },
+                    { question: 'Quelle est la structure d\'un chiasme ?', options: ['AABB', 'ABBA', 'ABAB', 'AAAB'], correctIndex: 1, explanation: 'Le chiasme croise les termes en miroir : ABBA. Ex : "Il faut manger (A) pour vivre (B) et non vivre (B) pour manger (A)".' },
+                    { question: '"Va, cours, vole et nous venge !" est une :', options: ['Enumeration', 'Anaphore', 'Gradation', 'Litote'], correctIndex: 2, explanation: 'Les verbes augmentent en intensite : va (marche) → cours → vole. C\'est une gradation ascendante qui accelere le rythme.' },
+                    { question: 'Quelle est la difference entre euphemisme et litote ?', options: ['Aucune, c\'est pareil', 'L\'euphemisme attenue, la litote dit moins pour dire plus', 'L\'euphemisme exagere, la litote attenue', 'L\'euphemisme est une comparaison'], correctIndex: 1, explanation: 'Euphemisme = adoucir ("il nous a quittes" pour la mort). Litote = dire moins pour signifier DAVANTAGE ("pas mal" = tres bien).' }
+                ]
+            },
+            {
+                id: 'methode',
+                title: 'Methode : Commentaire & Dissertation',
+                icon: '\uD83D\uDCDD',
+                content: '<h3>Le commentaire compose</h3>'
+                    + '<ul>'
+                    + '<li><strong>Principe</strong> : analyser un texte litteraire en montrant COMMENT la forme (style, figures, structure) sert le SENS (themes, intentions de l\'auteur)</li>'
+                    + '<li><strong>Introduction</strong> : amorce (contexte), presentation du texte (auteur, oeuvre, passage), problematique, annonce du plan</li>'
+                    + '<li><strong>Developpement</strong> : 2 ou 3 axes (pas 1, pas 4). Chaque axe = idee directrice + sous-parties avec citation + analyse + interpretation</li>'
+                    + '<li><strong>Conclusion</strong> : bilan des axes + ouverture (lien avec une autre oeuvre ou une question plus large)</li>'
+                    + '</ul>'
+                    + '<h3>La dissertation</h3>'
+                    + '<ul>'
+                    + '<li><strong>Principe</strong> : repondre a une question litteraire en construisant une argumentation structuree appuyee sur des oeuvres</li>'
+                    + '<li><strong>Analyser le sujet</strong> : reperer les mots cles, reformuler, identifier la tension/probleme</li>'
+                    + '<li><strong>Plans classiques</strong> : these/antithese/synthese (dialectique), thematique (3 aspects), progressif (du plus simple au plus complexe)</li>'
+                    + '<li><strong>Chaque paragraphe</strong> : argument + exemple litteraire precis (oeuvre, auteur, passage) + analyse</li>'
+                    + '</ul>'
+                    + '<h3>Erreurs frequentes</h3>'
+                    + '<ul>'
+                    + '<li>Paraphraser le texte sans analyser (commentaire)</li>'
+                    + '<li>Pas de citations ou citations non analysees</li>'
+                    + '<li>Plan desequilibre (une partie trop longue, une trop courte)</li>'
+                    + '<li>Pas de transition entre les parties</li>'
+                    + '<li>Conclusion qui repete l\'intro mot pour mot</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Quelles sont les 4 etapes d\'une introduction de commentaire ?', answer: '\uD83D\uDC49 1) Amorce (contexte historique/litteraire). 2) Presentation du texte (auteur, oeuvre, passage). 3) Problematique. 4) Annonce du plan (2-3 axes). \uD83C\uDFAF Cle Bac : une intro sans problematique = hors sujet. C\'est la partie la plus lue par le correcteur.' },
+                    { question: 'Comment construire un axe de commentaire ?', answer: '\uD83D\uDC49 Un axe = une idee directrice (pas un theme vague). Sous-parties : citation precise + identification du procede + interpretation de l\'effet. \uD83C\uDFAF Cle Bac : JAMAIS "les figures de style" comme axe. Dire QUEL effet elles produisent.' },
+                    { question: 'Quelle est l\'erreur n°1 au commentaire ?', answer: '\uD83D\uDC49 La paraphrase : repeter ce que dit le texte sans analyser COMMENT il le dit. Ex : "le poete est triste" = paraphrase. "Le champ lexical de la melancolie traduit le desespoir" = analyse. \uD83C\uDFAF Cle Bac : toujours lier FORME (procede) et SENS (effet).' },
+                    { question: 'Combien de parties dans un commentaire ?', answer: '\uD83D\uDC49 2 ou 3 axes, jamais 1 ni 4. Chaque axe = 2-3 sous-parties. Les axes doivent progresser (du plus evident au plus subtil). \uD83C\uDFAF Cle Bac : 2 axes bien faits > 3 axes bacles. Mieux vaut qualite que quantite.' },
+                    { question: 'Comment rediger une transition entre deux axes ?', answer: '\uD83D\uDC49 3 temps : 1) Bilan de l\'axe qu\'on quitte. 2) Lien logique (mais, cependant, au-dela). 3) Annonce de l\'axe suivant. Ex : "Si le poete exprime sa douleur, il cherche aussi a la depasser." \uD83C\uDFAF Cle Bac : pas de transition = impression de catalogue.' },
+                    { question: 'Quels sont les 3 types de plan en dissertation ?', answer: '\uD83D\uDC49 1) Dialectique : these/antithese/synthese. 2) Thematique : 3 aspects du sujet. 3) Progressif : du plus simple au plus complexe. \uD83D\uDCCC Le dialectique est le plus courant au Bac. \uD83C\uDFAF Cle Bac : le plan dialectique N\'EST PAS oui/non/peut-etre. La synthese DEPASSE l\'opposition.' },
+                    { question: 'Comment analyser un sujet de dissertation ?', answer: '\uD83D\uDC49 1) Souligner les mots cles. 2) Les definir. 3) Reformuler le sujet. 4) Trouver la tension (le probleme). Ex : "La poesie doit-elle embellir ?" → tension entre verite et beaute. \uD83C\uDFAF Cle Bac : 10 min d\'analyse du sujet = eviter le hors-sujet.' },
+                    { question: 'Comment utiliser un exemple litteraire en dissertation ?', answer: '\uD83D\uDC49 3 temps : 1) Argument (idee). 2) Exemple precis (auteur + oeuvre + passage). 3) Analyse (en quoi ca prouve l\'argument). Ex : pas juste "Hugo dans Les Miserables" mais "le personnage de Valjean illustre la redemption par..." \uD83C\uDFAF Cle Bac : un exemple sans analyse = 0 point.' },
+                    { question: 'Comment rediger une conclusion de commentaire ou dissertation ?', answer: '\uD83D\uDC49 1) Bilan : reponse claire a la problematique. 2) Ouverture : lien avec une autre oeuvre, une epoque, une question plus large. \uD83D\uDCCC NE PAS repeter l\'intro mot pour mot. \uD83C\uDFAF Cle Bac : l\'ouverture doit etre pertinente, pas une question vague lancee en l\'air.' },
+                    { question: 'Que signifie "lier forme et sens" dans un commentaire ?', answer: '\uD83D\uDC49 Montrer que les choix d\'ecriture (figures, rythme, vocabulaire) servent le message. Ex : un enjambement = la pensee deborde, traduit l\'emotion. \uD83D\uDCCC Forme = le "comment". Sens = le "pourquoi". \uD83C\uDFAF Cle Bac : c\'est LE critere n°1 du correcteur. Pas de forme seule, pas de sens seul.' },
+                    { question: 'Qu\'est-ce qu\'une problematique ?', answer: '\uD83D\uDC49 Une question precise a laquelle le devoir repond. Pas un theme, pas un resume. Ex : pas "ce texte parle de l\'amour" mais "comment le poete transforme-t-il la souffrance en beaute ?" \uD83C\uDFAF Cle Bac : une bonne problematique commence par "comment" ou "en quoi".' },
+                    { question: 'Quels connecteurs utiliser dans un devoir ?', answer: '\uD83D\uDC49 Addition : de plus, en outre. Opposition : cependant, neanmoins. Cause : en effet, car. Consequence : ainsi, donc. Concession : certes... mais. \uD83C\uDFAF Cle Bac : les connecteurs montrent la logique du raisonnement. Sans eux = impression brouillonne.' },
+                    { question: 'Comment citer un texte dans un commentaire ?', answer: '\uD83D\uDC49 Courte : integree a la phrase entre guillemets. Ex : Le poete evoque "l\'azur" pour signifier l\'ideal. Longue : en retrait, precedee de deux-points. \uD83D\uDCCC Toujours analyser la citation APRES l\'avoir posee. \uD83C\uDFAF Cle Bac : citation non analysee = citation inutile.' },
+                    { question: 'Que doit contenir chaque paragraphe du developpement ?', answer: '\uD83D\uDC49 1) Idee (argument). 2) Preuve (citation ou exemple precis). 3) Analyse (explication de l\'effet/du sens). 4) Mini-conclusion (retour a l\'axe). \uD83C\uDFAF Cle Bac : un paragraphe = UNE idee. Pas deux, pas zero.' }
+                ],
+                quiz: [
+                    { question: 'L\'erreur la plus courante au commentaire est :', options: ['Trop de citations', 'La paraphrase (repeter le texte sans analyser)', 'Un plan en 4 parties', 'Des axes trop longs'], correctIndex: 1, explanation: 'Paraphraser = reformuler le texte sans expliquer les procedes ni interpreter les effets. C\'est la premiere cause de notes basses au commentaire.' },
+                    { question: 'Une bonne problematique commence generalement par :', options: ['"Ce texte parle de..."', '"En quoi..." ou "Comment..."', '"Je vais montrer que..."', '"L\'auteur dit que..."'], correctIndex: 1, explanation: 'Les problematiques en "en quoi" ou "comment" orientent vers une analyse (forme + sens), pas un simple resume ou une affirmation.' },
+                    { question: 'Le plan dialectique en dissertation suit la structure :', options: ['Intro / Developpement / Conclusion', 'Theme 1 / Theme 2 / Theme 3', 'These / Antithese / Synthese', 'Chronologique'], correctIndex: 2, explanation: 'Le plan dialectique confronte une these a une antithese puis les depasse par une synthese. La synthese n\'est PAS un compromis mou mais un depassement.' },
+                    { question: 'Dans un commentaire, "lier forme et sens" signifie :', options: ['Separer l\'analyse du style et l\'analyse du contenu', 'Montrer comment les procedes d\'ecriture servent le message', 'Lister les figures de style puis les themes', 'Recopier des passages du texte'], correctIndex: 1, explanation: 'Le commentaire compose exige de montrer en quoi les choix d\'ecriture (metaphore, rythme, registre...) produisent un effet precis et servent l\'intention de l\'auteur.' },
+                    { question: 'Un exemple litteraire en dissertation doit etre :', options: ['Vague ("Hugo dans son oeuvre...")', 'Precis (auteur + oeuvre + passage + analyse)', 'Le plus court possible', 'Toujours une citation mot pour mot'], correctIndex: 1, explanation: 'Un exemple precis mentionne l\'auteur, l\'oeuvre, le passage concret et surtout analyse en quoi il illustre l\'argument. Un exemple vague n\'apporte aucun point.' }
+                ]
+            },
+            {
+                id: 'registres',
+                title: 'Les Registres litteraires',
+                icon: '\uD83C\uDFAD',
+                content: '<h3>Registres principaux au Bac</h3>'
+                    + '<ul>'
+                    + '<li><strong>Lyrique</strong> : expression des sentiments personnels (amour, nostalgie, melancolie). Marques du "je", champ lexical des emotions, exclamations</li>'
+                    + '<li><strong>Tragique</strong> : fatalite, mort inevitable, impuissance du heros face au destin. Lexique du malheur, de la mort, de la fatalite</li>'
+                    + '<li><strong>Comique</strong> : provoquer le rire. Sous-types : comique de geste, de situation, de caractere, de mots, de repetition</li>'
+                    + '<li><strong>Pathetique</strong> : susciter la pitie et la compassion. Lexique de la souffrance, exclamations, interjections</li>'
+                    + '</ul>'
+                    + '<h3>Registres de l\'argumentation</h3>'
+                    + '<ul>'
+                    + '<li><strong>Polemique</strong> : attaquer un adversaire avec virulence. Vocabulaire devalorisant, ironie mordante, interpellations</li>'
+                    + '<li><strong>Satirique</strong> : critiquer en se moquant. Exageration, caricature, ironie. But : corriger les defauts de la societe</li>'
+                    + '<li><strong>Didactique</strong> : instruire, transmettre un savoir. Vocabulaire precis, structure logique, exemples explicatifs</li>'
+                    + '</ul>'
+                    + '<h3>Autres registres</h3>'
+                    + '<ul>'
+                    + '<li><strong>Epique</strong> : grandeur heroique, combats, aventures. Hyperboles, enumerations, superlatifs, heros surhumain</li>'
+                    + '<li><strong>Fantastique</strong> : irruption de l\'etrange dans le reel. Doute, atmosphere inquietante, lexique de l\'incertitude</li>'
+                    + '<li><strong>Realiste</strong> : decrire le reel avec precision. Details concrets, vocabulaire technique, absence d\'idealisation</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Qu\'est-ce que le registre lyrique ?', answer: '\uD83D\uDC49 Expression des sentiments personnels (amour, melancolie, nostalgie). Marques : "je", exclamations, champ lexical des emotions. Ex : "Demain, des l\'aube" de Hugo. \uD83C\uDFAF Cle Bac : lyrique = sentiments + "je". A ne pas confondre avec pathetique (qui vise la pitie).' },
+                    { question: 'Qu\'est-ce que le registre tragique ?', answer: '\uD83D\uDC49 Le heros est ecrase par un destin inevitable — fatalite, mort, impuissance. Ex : Phedre de Racine (passion interdite = destruction). \uD83C\uDFAF Cle Bac : tragique = fatalite + impuissance. Pathetique = souffrance qui provoque la pitie.' },
+                    { question: 'Quelle difference entre tragique et pathetique ?', answer: '\uD83D\uDC49 Tragique = fatalite, le heros ne PEUT PAS echapper. Pathetique = souffrance qui suscite la PITIE du lecteur. Ex : la mort de Gavroche (Hugo) = pathetique. Phedre = tragique. \uD83C\uDFAF Cle Bac : tragique = destin. Pathetique = emotion du lecteur.' },
+                    { question: 'Quels sont les types de comique ?', answer: '\uD83D\uDC49 5 types : geste (gifles), situation (quiproquo), caractere (l\'avare), mots (jeux de mots), repetition (une scene qui revient). Ex : Moliere utilise les 5 dans ses comedies. \uD83C\uDFAF Cle Bac : toujours preciser le TYPE de comique, pas juste "c\'est comique".' },
+                    { question: 'Qu\'est-ce que le registre polemique ?', answer: '\uD83D\uDC49 Attaque violente contre un adversaire : vocabulaire devalorisant, ironie mordante, interpellations directes. Ex : "J\'accuse" de Zola, Les Chatiments de Hugo. \uD83C\uDFAF Cle Bac : polemique = attaque directe. Satirique = moquerie plus subtile.' },
+                    { question: 'Qu\'est-ce que le registre satirique ?', answer: '\uD83D\uDC49 Critiquer en se moquant : caricature, exageration, ironie. But = corriger les defauts de la societe par le rire. Ex : Voltaire dans Candide (moque la guerre, le fanatisme). \uD83C\uDFAF Cle Bac : satirique = rire POUR critiquer (pas juste pour rire).' },
+                    { question: 'Qu\'est-ce que le registre epique ?', answer: '\uD83D\uDC49 Grandeur heroique, combats surhumains, depassement de soi. Procedes : hyperboles, enumerations, superlatifs. Ex : la bataille de Waterloo dans Les Miserables (Hugo). \uD83C\uDFAF Cle Bac : epique = grandeur + heros surhumain + amplification.' },
+                    { question: 'Qu\'est-ce que le registre didactique ?', answer: '\uD83D\uDC49 But = instruire, transmettre un savoir. Style clair, structure logique, vocabulaire precis. Ex : L\'Encyclopedie de Diderot, les Fables de La Fontaine (morale a la fin). \uD83C\uDFAF Cle Bac : didactique = enseigner. A reperer dans les textes argumentatifs.' },
+                    { question: 'Qu\'est-ce que le registre fantastique ?', answer: '\uD83D\uDC49 Irruption de l\'etrange dans un cadre realiste. Le lecteur DOUTE : reel ou surnaturel ? Ex : Le Horla de Maupassant (folie ou presence invisible ?). \uD83C\uDFAF Cle Bac : fantastique = doute. Si l\'explication est surnaturelle → merveilleux. Si rationnelle → etrange.' },
+                    { question: 'Comment identifier un registre dans un texte ?', answer: '\uD83D\uDC49 3 indices : 1) Le vocabulaire dominant (emotions, mort, rire...). 2) Les procedes (exclamations, hyperboles, ironie...). 3) L\'effet sur le lecteur (pitie, rire, terreur, admiration...). \uD83C\uDFAF Cle Bac : le registre = l\'EFFET produit, pas juste le theme.' }
+                ],
+                quiz: [
+                    { question: 'Le registre lyrique se caracterise par :', options: ['L\'attaque d\'un adversaire', 'L\'expression des sentiments personnels', 'La description precise du reel', 'Le rire et la moquerie'], correctIndex: 1, explanation: 'Le registre lyrique exprime les sentiments intimes du "je" : amour, nostalgie, melancolie. Il utilise exclamations, metaphores et champ lexical des emotions.' },
+                    { question: 'Quelle est la difference entre tragique et pathetique ?', options: ['Aucune difference', 'Tragique = fatalite inevitable ; Pathetique = souffrance qui provoque la pitie', 'Pathetique = destin ; Tragique = pitie', 'Tragique = rire ; Pathetique = larmes'], correctIndex: 1, explanation: 'Le tragique implique la fatalite et l\'impuissance face au destin. Le pathetique vise a susciter l\'emotion et la compassion du lecteur face a la souffrance.' },
+                    { question: 'Le registre satirique vise a :', options: ['Enseigner un savoir', 'Exprimer ses sentiments', 'Critiquer par la moquerie et le rire', 'Raconter un combat heroique'], correctIndex: 2, explanation: 'La satire utilise l\'ironie, la caricature et l\'exageration pour critiquer les defauts de la societe et les corriger par le rire.' },
+                    { question: 'Le registre fantastique se distingue du merveilleux par :', options: ['L\'absence de surnaturel', 'Le doute maintenu entre explication rationnelle et surnaturelle', 'La presence certaine de magie', 'Le cadre historique'], correctIndex: 1, explanation: 'Le fantastique maintient le doute : est-ce reel ou surnaturel ? Le merveilleux accepte le surnaturel (contes de fees). L\'etrange donne une explication rationnelle.' },
+                    { question: 'Dans "J\'accuse" de Zola, le registre dominant est :', options: ['Lyrique', 'Didactique', 'Polemique', 'Fantastique'], correctIndex: 2, explanation: 'Zola attaque directement les responsables de l\'affaire Dreyfus avec un vocabulaire violent, des interpellations et des accusations nominales. C\'est un texte polemique.' }
+                ]
+            },
+            {
+                id: 'mouvements',
+                title: 'Les Mouvements litteraires',
+                icon: '\uD83D\uDCDA',
+                content: '<h3>XVIe - XVIIe siecle</h3>'
+                    + '<ul>'
+                    + '<li><strong>Humanisme (XVIe)</strong> : l\'homme au centre, retour aux textes antiques, confiance en la raison et l\'education. Auteurs : Rabelais, Montaigne, Erasme</li>'
+                    + '<li><strong>Pleiade (XVIe)</strong> : renouveler la poesie francaise, enrichir la langue. Du Bellay ("Defense et illustration de la langue francaise"), Ronsard</li>'
+                    + '<li><strong>Classicisme (XVIIe)</strong> : ordre, raison, mesure, respect des regles. Ideal de "l\'honnete homme". Auteurs : Moliere, Racine, La Fontaine, La Bruyere</li>'
+                    + '</ul>'
+                    + '<h3>XVIIIe siecle</h3>'
+                    + '<ul>'
+                    + '<li><strong>Les Lumieres</strong> : raison contre obscurantisme, progres, tolerance, liberte. Arme : l\'ironie. Auteurs : Voltaire, Rousseau, Montesquieu, Diderot</li>'
+                    + '</ul>'
+                    + '<h3>XIXe siecle</h3>'
+                    + '<ul>'
+                    + '<li><strong>Romantisme</strong> : emotion, nature, "je" lyrique, mal du siecle, revolte. Auteurs : Hugo, Musset, Lamartine, Chateaubriand</li>'
+                    + '<li><strong>Realisme</strong> : decrire le reel sans idealiser, toutes les classes sociales. Auteurs : Balzac, Stendhal, Flaubert</li>'
+                    + '<li><strong>Naturalisme</strong> : pousser le realisme avec une methode scientifique, montrer l\'influence du milieu et de l\'heredite. Auteur principal : Zola</li>'
+                    + '<li><strong>Symbolisme</strong> : suggerer plutot que decrire, musicalite du vers, correspondances entre sens. Auteurs : Baudelaire (precurseur), Verlaine, Rimbaud, Mallarme</li>'
+                    + '</ul>'
+                    + '<h3>XXe siecle</h3>'
+                    + '<ul>'
+                    + '<li><strong>Surrealisme</strong> : liberer l\'inconscient, ecriture automatique, reves, images inattendues. Auteurs : Breton, Eluard, Aragon</li>'
+                    + '<li><strong>Existentialisme</strong> : liberte, responsabilite, engagement. La litterature doit avoir un sens politique. Auteurs : Sartre, Camus, Beauvoir</li>'
+                    + '<li><strong>Absurde</strong> : le monde n\'a pas de sens, le langage est vain. Auteurs : Ionesco (La Cantatrice chauve), Beckett (En attendant Godot)</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Qu\'est-ce que l\'Humanisme ?', answer: '\uD83D\uDC49 Mouvement du XVIe qui place l\'homme au centre : confiance en la raison, l\'education, retour aux textes antiques. Ex : Rabelais (Gargantua), Montaigne (Essais). \uD83C\uDFAF Cle Bac : Humanisme = homme + raison + education + Antiquite. Siecle : XVIe.' },
+                    { question: 'Qu\'est-ce que le Classicisme ?', answer: '\uD83D\uDC49 XVIIe siecle : ordre, raison, mesure. Ideal de "l\'honnete homme". Regles strictes au theatre (3 unites). Ex : Racine, Moliere, La Fontaine. \uD83C\uDFAF Cle Bac : classicisme = REGLES + raison + bienseance. Oppose au baroque (exces, mouvement).' },
+                    { question: 'Qu\'est-ce que les Lumieres ?', answer: '\uD83D\uDC49 XVIIIe : la raison contre l\'obscurantisme. Valeurs : progres, tolerance, liberte. Arme favorite : l\'ironie. Ex : Voltaire (Candide), Diderot (Encyclopedie). \uD83C\uDFAF Cle Bac : Lumieres = raison + critique + ironie. A lier au contexte pre-revolutionnaire.' },
+                    { question: 'Qu\'est-ce que le Romantisme ?', answer: '\uD83D\uDC49 Debut XIXe : primaute de l\'emotion, du "je", de la nature. "Mal du siecle" = melancolie d\'une generation. Ex : Hugo (Hernani), Musset, Lamartine ("Le Lac"). \uD83C\uDFAF Cle Bac : romantisme = emotion + nature + "je" + revolte. OPPOSE au classicisme (raison).' },
+                    { question: 'Qu\'est-ce que le Realisme ?', answer: '\uD83D\uDC49 Milieu XIXe : decrire le reel tel qu\'il est, sans idealiser. Toutes les classes sociales, y compris les plus basses. Ex : Balzac (La Comedie humaine), Flaubert (Madame Bovary). \uD83C\uDFAF Cle Bac : realisme = miroir du reel. Flaubert = style impersonnel, precision chirurgicale.' },
+                    { question: 'Qu\'est-ce que le Naturalisme ?', answer: '\uD83D\uDC49 Fin XIXe : le realisme + methode scientifique. L\'ecrivain etudie l\'influence du milieu social et de l\'heredite. Ex : Zola (Les Rougon-Macquart, Germinal). \uD83C\uDFAF Cle Bac : naturalisme = Zola + heredite + milieu + methode experimentale. Le roman = "laboratoire".' },
+                    { question: 'Qu\'est-ce que le Symbolisme ?', answer: '\uD83D\uDC49 Fin XIXe : suggerer plutot que nommer, musicalite du vers, correspondances entre les sens. Ex : Baudelaire (precurseur, "Correspondances"), Verlaine, Rimbaud, Mallarme. \uD83C\uDFAF Cle Bac : symbolisme = suggestion + musique + synesthesies. "De la musique avant toute chose" (Verlaine).' },
+                    { question: 'Qu\'est-ce que le Surrealisme ?', answer: '\uD83D\uDC49 XXe siecle : liberer l\'inconscient, ecriture automatique, images oniriques inattendues. Ex : Breton (Manifeste du surrealisme), Eluard ("La terre est bleue comme une orange"). \uD83C\uDFAF Cle Bac : surrealisme = inconscient + reve + images folles + ecriture automatique.' },
+                    { question: 'Qu\'est-ce que l\'Existentialisme en litterature ?', answer: '\uD83D\uDC49 XXe siecle : l\'homme est libre et responsable, "l\'existence precede l\'essence". La litterature doit etre engagee. Ex : Sartre (La Nausee), Camus (L\'Etranger), Beauvoir. \uD83C\uDFAF Cle Bac : existentialisme = liberte + responsabilite + engagement. Sartre + Camus (meme s\'ils divergent).' },
+                    { question: 'Qu\'est-ce que le Theatre de l\'Absurde ?', answer: '\uD83D\uDC49 XXe siecle : le monde n\'a pas de sens, le langage tourne a vide, l\'intrigue n\'avance pas. Ex : Ionesco (La Cantatrice chauve), Beckett (En attendant Godot). \uD83C\uDFAF Cle Bac : absurde = pas d\'intrigue + langage vide + pas de sens. Rupture avec le theatre classique.' },
+                    { question: 'Qu\'est-ce que la Pleiade ?', answer: '\uD83D\uDC49 XVIe siecle : groupe de 7 poetes qui veulent enrichir la langue francaise et rivaliser avec les Anciens. Ex : Ronsard ("Mignonne, allons voir si la rose"), Du Bellay. \uD83C\uDFAF Cle Bac : Pleiade = defense de la langue francaise + poesie + XVIe. Texte fondateur : Du Bellay.' },
+                    { question: 'Comment situer les mouvements dans le temps ?', answer: '\uD83D\uDC49 XVIe : Humanisme, Pleiade. XVIIe : Classicisme. XVIIIe : Lumieres. XIXe : Romantisme → Realisme → Naturalisme → Symbolisme. XXe : Surrealisme, Existentialisme, Absurde. \uD83C\uDFAF Cle Bac : chaque mouvement REAGIT au precedent. Apprendre la chronologie par coeur.' }
+                ],
+                quiz: [
+                    { question: 'Le mouvement des Lumieres se situe au :', options: ['XVIe siecle', 'XVIIe siecle', 'XVIIIe siecle', 'XIXe siecle'], correctIndex: 2, explanation: 'Les Lumieres (XVIIIe) pronent la raison, le progres et la tolerance. Voltaire, Rousseau, Montesquieu et Diderot en sont les figures centrales.' },
+                    { question: 'Le Naturalisme se distingue du Realisme par :', options: ['Son refus du reel', 'Sa methode scientifique et l\'etude de l\'heredite', 'Son gout pour l\'emotion', 'Son usage de l\'ironie'], correctIndex: 1, explanation: 'Zola applique au roman une methode experimentale : il etudie comment le milieu et l\'heredite determinent le comportement des personnages.' },
+                    { question: '"De la musique avant toute chose" est la devise du :', options: ['Romantisme', 'Classicisme', 'Symbolisme', 'Surrealisme'], correctIndex: 2, explanation: 'Verlaine ouvre son "Art poetique" par ce vers. Le symbolisme privilegia la musicalite, la suggestion et les correspondances sensorielles.' },
+                    { question: 'Le Surrealisme vise a liberer :', options: ['La raison', 'L\'inconscient', 'La morale', 'Le langage classique'], correctIndex: 1, explanation: 'Le surrealisme, inspire par Freud, cherche a liberer l\'inconscient par l\'ecriture automatique, les reves et les images inattendues.' },
+                    { question: 'Le Classicisme se caracterise par :', options: ['L\'exces et le mouvement', 'L\'ordre, la raison et le respect des regles', 'La liberte totale de l\'artiste', 'Le rejet de l\'Antiquite'], correctIndex: 1, explanation: 'Le Classicisme (XVIIe) promeut l\'ideal de mesure, de raison et de bienseance. Au theatre : regle des trois unites (temps, lieu, action).' },
+                    { question: 'Quel mouvement reagit CONTRE le Classicisme ?', options: ['Le Naturalisme', 'Le Romantisme', 'Le Symbolisme', 'L\'Humanisme'], correctIndex: 1, explanation: 'Le Romantisme (debut XIXe) s\'oppose au Classicisme : emotion contre raison, liberte contre regles, "je" contre impersonnel. Hugo brise les regles du theatre dans Hernani (1830).' },
+                    { question: 'L\'Existentialisme en litterature est associe a :', options: ['Voltaire et Diderot', 'Zola et Maupassant', 'Sartre, Camus et Beauvoir', 'Breton et Eluard'], correctIndex: 2, explanation: 'L\'existentialisme litteraire (XXe) affirme que l\'homme est libre et responsable. Sartre (La Nausee), Camus (L\'Etranger) et Beauvoir incarnent ce mouvement.' }
+                ]
             }
         ]
     });
