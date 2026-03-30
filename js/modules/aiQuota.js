@@ -8,10 +8,10 @@
 
     // ==================== QUOTAS (per day, per user) ====================
     var LIMITS = {
-        'pdf_analyze':  3,    // PDF analysis via /api/analyze
-        'prof_chat':    15,   // Prof IA messages
-        'coach_chat':   10,   // Coach IA messages
-        'total':        28    // Hard cap for all AI calls combined
+        'pdf_analyze':  50,   // PDF analysis via /api/analyze
+        'prof_chat':    50,   // Prof IA messages
+        'coach_chat':   50,   // Coach IA messages
+        'total':        150   // Hard cap for all AI calls combined
     };
 
     // ==================== STATE ====================
