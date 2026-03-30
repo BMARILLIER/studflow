@@ -68,6 +68,17 @@
     function showDeckPicker() {
         window.StudFlow.app.showScreen('quiz');
 
+        // Ensure subject data is loaded before building the picker
+        if (window.StudFlow.subjects && window.StudFlow.subjects.preload) {
+            window.StudFlow.subjects.preload().then(function() {
+                renderDeckPicker();
+            });
+        } else {
+            renderDeckPicker();
+        }
+    }
+
+    function renderDeckPicker() {
         var state = window.StudFlow.app.getState();
         var hasImported = (state.quizQuestions || []).length > 0;
         var hasCustom = (state.customQuiz || []).length > 0;
