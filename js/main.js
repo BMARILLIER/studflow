@@ -1,6 +1,7 @@
 // main.js — Vite entry point (side-effect imports, order matters)
 // Each file is an IIFE that attaches to window.StudFlow
 
+import './modules/sentry.js'    // Error monitoring — must be first
 import './modules/storage.js'
 import './modules/theme.js'
 import './modules/errorLog.js'

@@ -49,6 +49,17 @@
                 url: entry.url
             });
         }
+
+        // Forward to Sentry
+        if (REMOTE_TYPES[type] && window.StudFlow && window.StudFlow.sentry) {
+            if (extra && extra.stack) {
+                var err = new Error(message);
+                err.stack = extra.stack;
+                window.StudFlow.sentry.captureException(err, { type: type, url: entry.url });
+            } else {
+                window.StudFlow.sentry.captureMessage(type + ': ' + message, 'error', { type: type, url: entry.url });
+            }
+        }
     }
 
     // ==================== READ ====================
