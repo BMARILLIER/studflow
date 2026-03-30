@@ -9,7 +9,7 @@
 
     // ==================== GENERATE CARD HTML ====================
     function generate(data) {
-        // data = { type, score, total, streak, subject, percentile, xp }
+        // data = { type, score, total, streak, subject, percentile, xp, combo }
         var type = data.type || 'session';
         var score = data.score || 0;
         var total = data.total || 0;
@@ -17,6 +17,7 @@
         var subject = data.subject || '';
         var percentile = data.percentile || 0;
         var xp = data.xp || 0;
+        var combo = data.combo || 0;
 
         var pct = total > 0 ? Math.round((score / total) * 100) : 0;
 
@@ -60,6 +61,13 @@
             html += '<div class="rc-detail-item">';
             html += '<span class="rc-detail-icon">\uD83D\uDCCA</span>';
             html += '<span class="rc-detail-text">Top ' + percentile + '% des \u00e9l\u00e8ves</span>';
+            html += '</div>';
+        }
+
+        if (combo > 1) {
+            html += '<div class="rc-detail-item">';
+            html += '<span class="rc-detail-icon">\uD83C\uDFAF</span>';
+            html += '<span class="rc-detail-text">Combo x' + combo + '</span>';
             html += '</div>';
         }
 
@@ -182,31 +190,29 @@
         var total = data.total || 0;
         var streak = data.streak || 0;
         var xp = data.xp || 0;
+        var combo = data.combo || 0;
         var pct = total > 0 ? Math.round((score / total) * 100) : 0;
 
         var lines = [];
 
         if (type === 'session') {
-            lines.push('\uD83D\uDD25 ' + pct + '% sur ma session StudFlow !');
-            lines.push(score + '/' + total + ' correct');
+            lines.push(pct + '% sur ma session StudFlow');
+            var details = [score + '/' + total];
+            if (combo > 1) details.push('combo x' + combo);
+            if (streak > 0) details.push(streak + 'j de streak');
+            if (xp > 0) details.push('+' + xp + ' XP');
+            lines.push(details.join(' \u00b7 '));
         } else if (type === 'challenge') {
-            lines.push('\u2694\uFE0F Defi StudFlow : ' + pct + '% (' + score + '/' + total + ')');
+            lines.push('Defi StudFlow : ' + pct + '% (' + score + '/' + total + ')');
             lines.push('Tu fais mieux ?');
         } else if (type === 'chrono') {
-            lines.push('\u23F1 Chrono StudFlow : ' + pct + '% (' + score + '/' + total + ')');
+            lines.push('Chrono StudFlow : ' + pct + '% (' + score + '/' + total + ')');
         } else if (type === 'streak') {
-            lines.push('\uD83D\uDD25 ' + streak + ' jours de streak sur StudFlow !');
-        }
-
-        if (streak > 0 && type !== 'streak') {
-            lines.push('\uD83D\uDD25 Streak : ' + streak + ' jours');
-        }
-        if (xp > 0) {
-            lines.push('\u26A1 +' + xp + ' XP');
+            lines.push(streak + ' jours de streak sur StudFlow');
         }
 
         lines.push('');
-        lines.push('Revise aussi sur ' + BRAND_URL);
+        lines.push(BRAND_URL);
 
         return lines.join('\n');
     }

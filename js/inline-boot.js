@@ -59,6 +59,27 @@
         'quiz:create-form':     function() { StudFlow.quiz.showCreateForm(); },
         'quiz:create':          function() { StudFlow.quiz.createQuestion(); },
         'quiz:launch-deck':     function(target) { var deck = target.getAttribute('data-param') || 'all'; StudFlow.quiz.launchQuiz(deck); },
+        'results:share':        function() {
+            var score = parseInt(document.getElementById('results-correct').textContent) || 0;
+            var wrong = parseInt(document.getElementById('results-wrong').textContent) || 0;
+            var total = score + wrong;
+            var gStats = StudFlow.gamification ? StudFlow.gamification.getStats() : {};
+            var combo = StudFlow.combo ? StudFlow.combo.getMax() : 0;
+            var data = { type: 'session', score: score, total: total, streak: gStats.streak || 0, xp: gStats.xp || 0, combo: combo };
+            if (StudFlow.resultCard) { StudFlow.resultCard.show(data); }
+            else {
+                var text = StudFlow.resultCard ? StudFlow.resultCard.getShareText(data) : '';
+                if (!text) {
+                    var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+                    text = pct + '% sur ma session StudFlow ! ' + score + '/' + total + ' correct';
+                    if (data.streak > 0) text += ' | Streak : ' + data.streak + 'j';
+                    if (combo > 0) text += ' | Combo x' + combo;
+                    text += '\nstudflow.app';
+                }
+                if (navigator.share) { navigator.share({ title: 'Mon score StudFlow', text: text, url: window.location.origin }); }
+                else if (navigator.clipboard) { navigator.clipboard.writeText(text).then(function() { if (StudFlow.gamification) StudFlow.gamification.showToast('Score copie !', 'xp', '\uD83D\uDCCB'); }); }
+            }
+        },
         'breathing:toggle':     function() { StudFlow.breathing.toggle(); },
         'breathing:stop':       function() { StudFlow.breathing.stop(); StudFlow.app.showScreen('dashboard'); },
         'diagnostic:start':     function() { StudFlow.diagnostic.start(); },

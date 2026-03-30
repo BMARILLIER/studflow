@@ -1650,6 +1650,15 @@ body.theme-light .math-fallback {
     border: 1px solid var(--border);
 }
 
+/* Results share button */
+.results-share { text-align: center; margin-top: 1rem; }
+.result-share-btn {
+    background: none; border: 1px solid var(--accent); border-radius: 10px;
+    color: var(--accent); padding: 10px 24px; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.result-share-btn:hover { background: var(--accent); color: #fff; }
+
 /* ==================== BACK BUTTON ==================== */
 .back-btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
