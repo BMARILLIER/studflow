@@ -59,17 +59,6 @@
         // Snapshot the questions ONCE — this array is used for the entire session
         sessionQuestions = getAllQuestions().slice();
 
-        // === VISIBLE DEBUG BANNER (remove after fix confirmed) ===
-        console.log('[Quiz] launchQuiz — deck:', deck, '— sessionQuestions:', sessionQuestions.length);
-        var _dbg = document.getElementById('quiz-debug-banner');
-        if (!_dbg) {
-            _dbg = document.createElement('div');
-            _dbg.id = 'quiz-debug-banner';
-            _dbg.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#222;color:#0f0;font-family:monospace;font-size:12px;padding:6px 10px;white-space:pre-wrap;';
-            document.body.appendChild(_dbg);
-        }
-        _dbg.style.display = 'block';
-        _dbg.textContent = '[QUIZ DEBUG] deck=' + deck + ' | questions=' + sessionQuestions.length + ' | first="' + (sessionQuestions[0] ? sessionQuestions[0].question.substring(0, 40) : 'NONE') + '..."';
 
         if (window.StudFlow.combo) window.StudFlow.combo.startSession();
         if (window.StudFlow.analytics) window.StudFlow.analytics.track('quiz_start', { deck: currentDeck });
@@ -191,13 +180,9 @@
         var total = sessionQuestions.length;
         var q = sessionQuestions[currentIndex];
 
-        // === VISIBLE DEBUG (remove after fix confirmed) ===
-        var _dbg = document.getElementById('quiz-debug-banner');
-        if (_dbg) _dbg.textContent = '[QUIZ] index=' + currentIndex + '/' + total + ' | hasQ=' + !!q + ' | deck=' + currentDeck;
-        console.log('[Quiz] displayQuestion — index:', currentIndex, '/ total:', total, '— hasQuestion:', !!q);
 
         if (!q) {
-            console.log('[Quiz] End of quiz at index', currentIndex);
+
             showResults();
             return;
         }
@@ -300,7 +285,7 @@
             // Last question — button goes to results
             submitBtn.textContent = 'Voir les resultats';
             submitBtn.onclick = function() {
-                console.log('[Quiz] Last question answered — showing results');
+
                 currentIndex++;
                 showResults();
             };
@@ -308,7 +293,7 @@
             // More questions — button advances
             submitBtn.textContent = 'Question suivante \u2192';
             submitBtn.onclick = function() {
-                console.log('[Quiz] Next question — advancing from', currentIndex, 'to', currentIndex + 1, '/', total);
+
                 currentIndex++;
                 displayQuestion();
             };
@@ -322,7 +307,6 @@
         var minutes = Math.floor(elapsed / 60);
         var seconds = elapsed % 60;
 
-        console.log('[Quiz] showResults — score:', score, '/', total, '(' + percent + '%)');
 
         var rIcon = document.getElementById('results-icon');
         var rTitle = document.getElementById('results-title');
