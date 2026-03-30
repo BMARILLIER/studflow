@@ -3,7 +3,7 @@
 
 const DAILY_LIMIT = 15;
 const MAX_INPUT_TOKENS = 3000;
-const MAX_OUTPUT_TOKENS = 1024;
+const MAX_OUTPUT_TOKENS = 4096;
 
 // In-memory rate limit (resets on cold start, good enough for light usage)
 const rateLimits = {};
