@@ -491,6 +491,200 @@
                     { question: 'Pour Heidegger, la technique moderne se distingue de la technique ancienne par :', options: ['Sa plus grande efficacite uniquement', 'L\'arraisonnement (Gestell) qui reduit la nature a un stock exploitable', 'Son respect de l\'environnement', 'Son caractere artisanal'], correctIndex: 1, explanation: 'Heidegger, dans La Question de la technique, montre que la technique moderne "provoque" la nature et la somme de livrer ses ressources, contrairement a la technique ancienne qui l\'accompagnait.' },
                     { question: 'Rousseau considere que l\'homme a l\'etat de nature est :', options: ['Violent et egoiste', 'Bon et corrompu par la societe', 'Rationnel et calculateur', 'Identique a l\'homme civilise'], correctIndex: 1, explanation: 'Rousseau, dans le Discours sur l\'origine de l\'inegalite, soutient que l\'homme naturel est bon, guide par la pitie et l\'amour de soi, et que c\'est la societe qui introduit l\'inegalite et la corruption.' }
                 ]
+            },
+            {
+                id: 'langage',
+                title: 'Le Langage',
+                icon: '\uD83D\uDDE3\uFE0F',
+                content: '<h3>Langage, pensee et communication</h3>'
+                    + '<ul>'
+                    + '<li><strong>Aristote</strong> : l\'homme est un "animal politique" dote du logos (parole/raison) — le langage permet de distinguer le juste de l\'injuste</li>'
+                    + '<li><strong>Saussure</strong> : le signe linguistique est arbitraire (aucun lien naturel entre le mot et la chose). La langue est un systeme de differences</li>'
+                    + '<li><strong>Benveniste</strong> : "c\'est dans et par le langage que l\'homme se constitue comme sujet" — dire "je" fonde la conscience de soi</li>'
+                    + '</ul>'
+                    + '<h3>Les limites du langage</h3>'
+                    + '<ul>'
+                    + '<li><strong>Bergson</strong> : le langage fige et generalise, il trahit la singularite de l\'experience vecue — les mots sont des etiquettes</li>'
+                    + '<li><strong>Wittgenstein</strong> : "les limites de mon langage signifient les limites de mon monde" — ce qu\'on ne peut pas dire, on ne peut pas le penser</li>'
+                    + '<li><strong>Merleau-Ponty</strong> : le langage n\'est pas un simple instrument, il est l\'expression meme de la pensee — parler c\'est penser</li>'
+                    + '</ul>'
+                    + '<h3>Langage et pouvoir</h3>'
+                    + '<ul>'
+                    + '<li><strong>Orwell (1984)</strong> : la novlangue montre que controler le langage permet de controler la pensee</li>'
+                    + '<li><strong>Bourdieu</strong> : le langage est un instrument de domination — ceux qui maitrisent la "langue legitime" exercent un pouvoir symbolique</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Pourquoi Aristote dit-il que l\'homme est un "animal politique" ?', answer: 'Parce que l\'homme possede le logos (parole et raison), qui lui permet de communiquer sur le juste et l\'injuste, et donc de vivre en communaute politique.' },
+                    { question: 'Qu\'est-ce que l\'arbitraire du signe chez Saussure ?', answer: 'Il n\'y a aucun lien naturel entre le signifiant (le mot, le son) et le signifie (le concept). "Arbre" ne ressemble pas a un arbre. C\'est une convention.' },
+                    { question: 'Que signifie "les limites de mon langage signifient les limites de mon monde" (Wittgenstein) ?', answer: 'On ne peut penser que ce qu\'on peut exprimer. Ce qui echappe au langage echappe aussi a la pensee. Le langage delimite notre univers mental.' },
+                    { question: 'Pourquoi Bergson critique-t-il le langage ?', answer: 'Le langage est fait de mots generaux qui figent et simplifient la realite. Il est incapable de saisir la singularite de l\'experience vecue et la fluidite de la conscience.' },
+                    { question: 'Comment Benveniste relie-t-il langage et conscience de soi ?', answer: 'C\'est en disant "je" que l\'homme se constitue comme sujet. Le langage n\'est pas un outil exterieur : il est le lieu meme ou la subjectivite se forme.' },
+                    { question: 'Qu\'est-ce que la novlangue dans 1984 d\'Orwell ?', answer: 'Une langue appauvrie volontairement par le pouvoir totalitaire. En supprimant des mots, on supprime la capacite de penser certaines idees (ex : plus de mot pour "liberte").' },
+                    { question: 'Qu\'est-ce que le pouvoir symbolique selon Bourdieu ?', answer: 'La capacite d\'imposer des representations du monde comme legitimes. Ceux qui maitrisent la langue dominante exercent un pouvoir invisible sur les autres.' },
+                    { question: 'Quelle est la position de Merleau-Ponty sur le langage ?', answer: 'Le langage n\'est pas un vetement de la pensee mais son corps meme. On ne pense pas d\'abord pour parler ensuite : parler, c\'est penser. L\'expression est creatrice.' }
+                ],
+                quiz: [
+                    { question: 'L\'arbitraire du signe linguistique est un concept de :', options: ['Chomsky', 'Saussure', 'Bergson', 'Platon'], correctIndex: 1, explanation: 'Ferdinand de Saussure, dans le Cours de linguistique generale, montre que le lien entre signifiant et signifie est conventionnel, pas naturel.' },
+                    { question: 'Selon Bergson, le langage :', options: ['Revele parfaitement la realite', 'Fige et simplifie l\'experience vecue', 'Est inutile a la pensee', 'Cree la realite'], correctIndex: 1, explanation: 'Pour Bergson, les mots sont des etiquettes generales qui trahissent la singularite et la continuite de notre experience interieure.' },
+                    { question: 'La novlangue d\'Orwell illustre l\'idee que :', options: ['Le langage est naturel', 'Controler le langage permet de controler la pensee', 'Le langage est toujours libre', 'Les mots n\'ont pas d\'importance'], correctIndex: 1, explanation: 'Dans 1984, le regime totalitaire appauvrit la langue pour rendre impossible toute pensee critique ou dissidente.' },
+                    { question: '"Les limites de mon langage signifient les limites de mon monde" est une formule de :', options: ['Bergson', 'Saussure', 'Wittgenstein', 'Benveniste'], correctIndex: 2, explanation: 'Wittgenstein affirme dans le Tractatus logico-philosophicus que le langage trace les frontieres de ce qui est pensable.' },
+                    { question: 'Pour Benveniste, le langage est le lieu ou :', options: ['La societe impose ses regles', 'L\'homme se constitue comme sujet en disant "je"', 'La verite se revele', 'La nature s\'exprime'], correctIndex: 1, explanation: 'Benveniste montre que la subjectivite nait dans le langage : c\'est en prenant la parole et en disant "je" que l\'individu se constitue comme personne.' }
+                ]
+            },
+            {
+                id: 'inconscient',
+                title: 'L\'Inconscient',
+                icon: '\uD83E\uDDE0',
+                content: '<h3>La decouverte de l\'inconscient</h3>'
+                    + '<ul>'
+                    + '<li><strong>Freud</strong> : l\'inconscient est un reservoir de pulsions, desirs et souvenirs refoules. Le psychisme est divise en ca (pulsions), moi (conscience) et surmoi (morale interiorisee)</li>'
+                    + '<li><strong>Les manifestations de l\'inconscient</strong> : reves, lapsus, actes manques, symptomes nevrotiques — autant de "retours du refoule"</li>'
+                    + '<li><strong>Leibniz (petites perceptions)</strong> : des perceptions trop faibles pour etre conscientes influencent notre esprit — premisse de l\'idee d\'inconscient</li>'
+                    + '</ul>'
+                    + '<h3>L\'inconscient remet-il en cause la liberte ?</h3>'
+                    + '<ul>'
+                    + '<li><strong>Freud</strong> : "le moi n\'est pas maitre dans sa propre maison" — nos choix sont influences par des forces dont nous n\'avons pas conscience</li>'
+                    + '<li><strong>Sartre (critique)</strong> : l\'inconscient est une forme de mauvaise foi — l\'homme est toujours conscient et responsable de ses choix</li>'
+                    + '<li><strong>Alain</strong> : croire en l\'inconscient, c\'est renoncer a sa responsabilite. "L\'inconscient est une maniere de se donner raison"</li>'
+                    + '</ul>'
+                    + '<h3>Portee et limites</h3>'
+                    + '<ul>'
+                    + '<li><strong>Nietzsche</strong> : avant Freud, Nietzsche affirme que la conscience n\'est que la surface — les pulsions et les instincts dirigent nos actes</li>'
+                    + '<li><strong>Debat</strong> : l\'inconscient psychanalytique est-il une decouverte scientifique ou une hypothese interpretative ?</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Quelles sont les trois instances du psychisme selon Freud ?', answer: 'Le ca (pulsions inconscientes, principe de plaisir), le moi (instance consciente, principe de realite) et le surmoi (morale interiorisee, interdits parentaux et sociaux).' },
+                    { question: 'Comment l\'inconscient se manifeste-t-il selon Freud ?', answer: 'Par les reves (voie royale vers l\'inconscient), les lapsus, les actes manques et les symptomes nevrotiques. Ce sont des "retours du refoule".' },
+                    { question: 'Que signifie "le moi n\'est pas maitre dans sa propre maison" (Freud) ?', answer: 'L\'homme croit se connaitre et agir librement, mais l\'inconscient (pulsions, desirs refoules) influence ses pensees et ses comportements a son insu.' },
+                    { question: 'Pourquoi Sartre rejette-t-il l\'inconscient freudien ?', answer: 'Pour Sartre, invoquer l\'inconscient est de la mauvaise foi : une facon de fuir sa responsabilite. L\'homme est toujours conscient de ses choix, meme quand il pretend ne pas l\'etre.' },
+                    { question: 'Qu\'est-ce que le refoulement selon Freud ?', answer: 'Un mecanisme de defense par lequel le moi repousse dans l\'inconscient les desirs, souvenirs ou pulsions juges inacceptables par le surmoi. Le contenu refoule cherche a revenir.' },
+                    { question: 'Que sont les "petites perceptions" de Leibniz ?', answer: 'Des perceptions trop faibles pour etre conscientes mais qui influencent notre etat mental. Ex : le bruit de chaque vague est imperceptible, mais l\'ensemble forme le bruit de la mer.' },
+                    { question: 'Comment Alain critique-t-il l\'idee d\'inconscient ?', answer: 'Alain refuse l\'inconscient psychique : invoquer l\'inconscient est une excuse commode pour ne pas assumer ses actes. Pour lui, tout ce qui est mental est conscient.' },
+                    { question: 'Quel role Nietzsche attribue-t-il aux pulsions ?', answer: 'Nietzsche pense que la conscience n\'est que la surface de la vie psychique. Les pulsions, les instincts et la volonte de puissance sont les vraies forces qui guident nos actions.' }
+                ],
+                quiz: [
+                    { question: 'Le "ca" chez Freud designe :', options: ['La conscience morale', 'Le reservoir des pulsions inconscientes', 'L\'instance rationnelle', 'La memoire consciente'], correctIndex: 1, explanation: 'Le ca est la partie la plus primitive du psychisme, siege des pulsions et des desirs inconscients, regi par le principe de plaisir.' },
+                    { question: 'Sartre critique l\'inconscient freudien au nom de :', options: ['La science', 'La liberte et la responsabilite', 'La religion', 'Le determinisme'], correctIndex: 1, explanation: 'Pour Sartre, l\'homme est condamne a etre libre. Invoquer l\'inconscient est de la mauvaise foi, une facon de nier sa responsabilite.' },
+                    { question: 'Selon Freud, la "voie royale" vers l\'inconscient est :', options: ['L\'hypnose', 'Le reve', 'La meditation', 'Le langage'], correctIndex: 1, explanation: 'Freud affirme dans L\'Interpretation des reves (1900) que le reve est la voie royale qui mene a l\'inconscient, car il exprime des desirs refoules sous forme deguisee.' },
+                    { question: 'Les "petites perceptions" de Leibniz annoncent :', options: ['Le rationalisme cartesien', 'L\'idee que des processus inconscients influencent l\'esprit', 'Le materialisme de Marx', 'La phenomenologie de Husserl'], correctIndex: 1, explanation: 'Leibniz, dans les Nouveaux essais, montre que des perceptions insensibles influencent notre vie mentale, prefigurant l\'idee d\'inconscient.' },
+                    { question: 'Le refoulement est un mecanisme qui :', options: ['Rend conscient ce qui est inconscient', 'Repousse dans l\'inconscient les desirs juges inacceptables', 'Detruit definitivement les souvenirs', 'Renforce la volonte'], correctIndex: 1, explanation: 'Le refoulement (Freud) est un mecanisme de defense du moi qui maintient hors de la conscience les representations penibles ou interdites.' }
+                ]
+            },
+            {
+                id: 'desir',
+                title: 'Le Desir',
+                icon: '\uD83D\uDD25',
+                content: '<h3>Nature et objet du desir</h3>'
+                    + '<ul>'
+                    + '<li><strong>Platon (Le Banquet)</strong> : le desir nait du manque — on desire ce qu\'on n\'a pas. Le desir est une tension vers ce qui nous complete</li>'
+                    + '<li><strong>Epicure</strong> : distingue les desirs naturels necessaires (manger), naturels non necessaires (gastronomie) et ni naturels ni necessaires (gloire) — seuls les premiers menent au bonheur</li>'
+                    + '<li><strong>Spinoza</strong> : "le desir est l\'essence meme de l\'homme" — on ne desire pas une chose parce qu\'elle est bonne, elle est bonne parce qu\'on la desire</li>'
+                    + '</ul>'
+                    + '<h3>Desir et bonheur</h3>'
+                    + '<ul>'
+                    + '<li><strong>Schopenhauer</strong> : le desir est souffrance. Satisfait, il mene a l\'ennui. Insatisfait, a la frustration. L\'homme oscille entre les deux</li>'
+                    + '<li><strong>Hegel</strong> : le desir humain est desir de reconnaissance — on desire etre reconnu par l\'autre comme conscience libre</li>'
+                    + '<li><strong>Girard (desir mimetique)</strong> : on desire ce que l\'autre desire — le desir est imitation, pas spontaneite</li>'
+                    + '</ul>'
+                    + '<h3>Faut-il maitriser ses desirs ?</h3>'
+                    + '<ul>'
+                    + '<li><strong>Les stoiciens</strong> : il faut distinguer ce qui depend de nous et ce qui n\'en depend pas, et limiter nos desirs a ce qui est en notre pouvoir</li>'
+                    + '<li><strong>Nietzsche</strong> : vouloir supprimer les desirs est hostile a la vie — il faut affirmer ses desirs et sa volonte de puissance</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Comment Platon definit-il le desir dans Le Banquet ?', answer: 'Le desir nait du manque. On desire ce qu\'on n\'a pas. Le mythe d\'Eros fils de Poros (richesse) et Penia (pauvrete) illustre cette tension entre manque et recherche.' },
+                    { question: 'Quels sont les trois types de desirs selon Epicure ?', answer: '1) Naturels et necessaires (manger, boire, dormir). 2) Naturels mais non necessaires (gastronomie, sexualite raffinee). 3) Ni naturels ni necessaires (gloire, richesse, pouvoir).' },
+                    { question: 'Pourquoi Spinoza dit-il que "le desir est l\'essence de l\'homme" ?', answer: 'Le desir (conatus) est l\'effort pour perseverer dans l\'etre. On ne desire pas une chose parce qu\'elle est bonne : c\'est parce qu\'on la desire qu\'on la juge bonne.' },
+                    { question: 'Pourquoi le desir est-il source de souffrance selon Schopenhauer ?', answer: 'Le desir insatisfait est souffrance. Le desir satisfait mene a l\'ennui, puis a un nouveau desir. L\'homme est condamne a osciller entre souffrance et ennui.' },
+                    { question: 'Qu\'est-ce que le desir de reconnaissance chez Hegel ?', answer: 'Le desir humain n\'est pas seulement desir d\'objets mais desir d\'etre reconnu par autrui comme conscience libre. C\'est le moteur de la dialectique maitre-esclave.' },
+                    { question: 'Qu\'est-ce que le desir mimetique selon Rene Girard ?', answer: 'On ne desire pas spontanement : on desire ce que l\'autre desire. Le desir est triangulaire (sujet-modele-objet). Le modele est aussi un rival, ce qui engendre la violence.' },
+                    { question: 'Comment les stoiciens proposent-ils de maitriser le desir ?', answer: 'En distinguant ce qui depend de nous (nos jugements, nos desires) et ce qui n\'en depend pas (la fortune, la mort). Le sage limite ses desirs a ce qui est en son pouvoir.' },
+                    { question: 'Pourquoi Nietzsche refuse-t-il de supprimer les desirs ?', answer: 'Nier ses desirs est une attitude nihiliste, hostile a la vie. Nietzsche promeut l\'affirmation joyeuse de la vie et de la volonte de puissance contre l\'ascetisme moral.' }
+                ],
+                quiz: [
+                    { question: 'Pour Platon, le desir nait de :', options: ['L\'abondance', 'Le manque', 'La raison', 'L\'habitude'], correctIndex: 1, explanation: 'Dans Le Banquet, Platon montre que le desir est fils du manque : on desire ce dont on est prive, ce qui nous manque pour etre complets.' },
+                    { question: 'Selon Epicure, les seuls desirs a satisfaire pour etre heureux sont :', options: ['Tous les desirs sans exception', 'Les desirs naturels et necessaires', 'Les desirs de gloire et de richesse', 'Les desirs de connaissance'], correctIndex: 1, explanation: 'Epicure recommande de se limiter aux desirs naturels et necessaires (manger, boire, s\'abriter) pour atteindre l\'ataraxie (absence de trouble).' },
+                    { question: 'Pour Spinoza, on juge une chose bonne parce que :', options: ['Elle est objectivement bonne', 'On la desire', 'La societe l\'approuve', 'La raison le dicte'], correctIndex: 1, explanation: 'Spinoza renverse le rapport traditionnel : ce n\'est pas la bonte de l\'objet qui cause le desir, c\'est le desir qui fait juger l\'objet bon.' },
+                    { question: 'Le desir mimetique de Girard signifie que :', options: ['Le desir est inne', 'On desire ce que l\'autre desire', 'Le desir est rationnel', 'Le desir est independant des autres'], correctIndex: 1, explanation: 'Rene Girard montre que le desir est toujours imitation du desir d\'un modele. L\'objet desire n\'a de valeur que parce qu\'un autre le desire aussi.' },
+                    { question: 'Schopenhauer voit dans le desir :', options: ['La source du bonheur', 'Une oscillation entre souffrance et ennui', 'Un moteur de progres', 'Une illusion sans consequence'], correctIndex: 1, explanation: 'Pour Schopenhauer, le desir insatisfait est souffrance et le desir satisfait mene a l\'ennui. La vie est un pendule entre les deux.' }
+                ]
+            },
+            {
+                id: 'religion',
+                title: 'La Religion',
+                icon: '\uD83D\uDD4A\uFE0F',
+                content: '<h3>Qu\'est-ce que la religion ?</h3>'
+                    + '<ul>'
+                    + '<li><strong>Etymologie</strong> : religio peut venir de religare (relier les hommes entre eux et au divin) ou de relegere (recueillir avec soin les rites)</li>'
+                    + '<li><strong>Durkheim</strong> : la religion est un fait social — elle soude la communaute par des croyances et des rites. Le sacre n\'est que la societe transfiguree</li>'
+                    + '<li><strong>Pascal</strong> : le pari — face a l\'incertitude, il est rationnel de parier sur l\'existence de Dieu car le gain potentiel (la vie eternelle) est infini</li>'
+                    + '</ul>'
+                    + '<h3>Critiques de la religion</h3>'
+                    + '<ul>'
+                    + '<li><strong>Marx</strong> : "la religion est l\'opium du peuple" — elle console les opprimes mais les empeche de se revolter contre leurs conditions reelles</li>'
+                    + '<li><strong>Nietzsche</strong> : "Dieu est mort" — les valeurs chretiennes (humilite, pitie) sont une morale d\'esclaves qui nie la vie et la puissance</li>'
+                    + '<li><strong>Freud</strong> : la religion est une illusion, une projection du desir d\'un pere protecteur face a l\'angoisse de la mort et de l\'impuissance</li>'
+                    + '</ul>'
+                    + '<h3>Raison et foi</h3>'
+                    + '<ul>'
+                    + '<li><strong>Kant</strong> : on ne peut ni prouver ni refuter l\'existence de Dieu par la raison — mais l\'idee de Dieu est un postulat utile a la morale</li>'
+                    + '<li><strong>Kierkegaard</strong> : la foi est un "saut" qui depasse la raison — croire, c\'est accepter l\'absurde avec passion</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Que signifie "la religion est l\'opium du peuple" (Marx) ?', answer: 'La religion soulage la souffrance comme un anesthesiant, mais empeche les opprimes de prendre conscience de leur exploitation et de se revolter pour changer leurs conditions.' },
+                    { question: 'Que signifie "Dieu est mort" chez Nietzsche ?', answer: 'Les valeurs chretiennes ne fondent plus notre civilisation. L\'homme moderne a tue Dieu (par la science et la raison) sans encore trouver de nouvelles valeurs pour le remplacer.' },
+                    { question: 'Comment Freud explique-t-il la religion ?', answer: 'La religion est une illusion : une projection du desir infantile d\'un pere tout-puissant et protecteur, face a l\'angoisse de la mort et au sentiment d\'impuissance face a la nature.' },
+                    { question: 'Qu\'est-ce que le pari de Pascal ?', answer: 'Face a l\'incertitude sur l\'existence de Dieu, il est rationnel de parier qu\'il existe : si on gagne (Dieu existe), le gain est infini (vie eternelle). Si on perd, la perte est finie.' },
+                    { question: 'Comment Durkheim definit-il la religion ?', answer: 'Un systeme solidaire de croyances et de pratiques relatives au sacre, qui unissent en une communaute morale (Eglise) tous ceux qui y adherent. Le sacre est la societe elle-meme transfiguree.' },
+                    { question: 'Quelle est la position de Kant sur l\'existence de Dieu ?', answer: 'La raison theorique ne peut ni prouver ni refuter Dieu. Mais la raison pratique (morale) a besoin de Dieu comme postulat : pour garantir que la vertu sera recompensee.' },
+                    { question: 'Qu\'est-ce que le "saut de la foi" chez Kierkegaard ?', answer: 'La foi n\'est pas une conclusion de la raison mais un saut dans l\'absurde. Croire en Dieu demande de depasser la logique et d\'accepter ce que la raison ne peut comprendre.' },
+                    { question: 'Quelle distinction fait-on entre foi et superstition ?', answer: 'La foi est un engagement personnel envers le transcendant, assumant son caractere non demontrable. La superstition est une croyance irrationnelle en des pouvoirs magiques sans fondement.' }
+                ],
+                quiz: [
+                    { question: '"La religion est l\'opium du peuple" est une formule de :', options: ['Nietzsche', 'Freud', 'Marx', 'Voltaire'], correctIndex: 2, explanation: 'Marx ecrit cette formule dans la Critique de la philosophie du droit de Hegel (1843). La religion console mais empeche la prise de conscience revolutionnaire.' },
+                    { question: 'Pour Freud, la religion est :', options: ['Une verite revelee', 'Une illusion nee du desir d\'un pere protecteur', 'Un fait scientifique', 'Une creation artistique'], correctIndex: 1, explanation: 'Dans L\'Avenir d\'une illusion, Freud explique la religion comme la projection du desir infantile de protection face a l\'angoisse existentielle.' },
+                    { question: '"Dieu est mort" chez Nietzsche signifie :', options: ['Dieu a physiquement cesse d\'exister', 'Les valeurs chretiennes ne fondent plus notre civilisation', 'Nietzsche est athee depuis toujours', 'La science a prouve l\'inexistence de Dieu'], correctIndex: 1, explanation: 'Nietzsche constate dans Le Gai Savoir que la civilisation occidentale a perdu son fondement religieux sans encore trouver de nouvelles valeurs.' },
+                    { question: 'Le pari de Pascal repose sur l\'idee que :', options: ['Dieu existe certainement', 'Il est rationnel de parier sur l\'existence de Dieu vu le gain infini possible', 'La foi est irrationnelle', 'La raison prouve l\'existence de Dieu'], correctIndex: 1, explanation: 'Pascal propose dans les Pensees un raisonnement probabiliste : miser sur Dieu est le choix rationnel car le gain potentiel (vie eternelle) est incommensurable.' },
+                    { question: 'Pour Durkheim, le sacre est :', options: ['Une realite surnaturelle', 'La societe elle-meme transfiguree', 'Une invention des pretres', 'Un concept depasse'], correctIndex: 1, explanation: 'Durkheim, dans Les Formes elementaires de la vie religieuse, montre que le sacre est la representation symbolique de la force collective de la societe.' }
+                ]
+            },
+            {
+                id: 'autrui',
+                title: 'Autrui',
+                icon: '\uD83E\uDDD1\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1',
+                content: '<h3>La rencontre avec autrui</h3>'
+                    + '<ul>'
+                    + '<li><strong>Husserl</strong> : autrui est un alter ego — un autre moi que je reconnais par analogie avec ma propre experience (l\'intersubjectivite)</li>'
+                    + '<li><strong>Sartre</strong> : "l\'enfer, c\'est les autres" — le regard d\'autrui me fige, me juge et me reduit a un objet. Autrui est celui qui me revele a moi-meme mais aussi me limite</li>'
+                    + '<li><strong>Levinas</strong> : le visage d\'autrui est une exigence ethique — il m\'interpelle et me dit "tu ne tueras point" avant toute reflexion</li>'
+                    + '</ul>'
+                    + '<h3>Autrui comme condition de la conscience de soi</h3>'
+                    + '<ul>'
+                    + '<li><strong>Hegel</strong> : la conscience de soi n\'existe que par la reconnaissance mutuelle — j\'ai besoin qu\'autrui me reconnaisse comme sujet libre</li>'
+                    + '<li><strong>Merleau-Ponty</strong> : autrui n\'est pas un probleme mais une evidence — des l\'enfance, le corps d\'autrui est percu comme un autre sujet, pas comme un objet</li>'
+                    + '</ul>'
+                    + '<h3>Ethique et politique du rapport a autrui</h3>'
+                    + '<ul>'
+                    + '<li><strong>Kant</strong> : "traite autrui toujours en meme temps comme une fin et jamais simplement comme un moyen" — la dignite humaine est inconditionnelle</li>'
+                    + '<li><strong>Simone de Beauvoir</strong> : "on ne nait pas femme, on le devient" — autrui (la societe) construit nos identites par le regard et les normes</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Que signifie "l\'enfer, c\'est les autres" (Sartre) ?', answer: 'Le regard d\'autrui me transforme en objet, me fige dans une image. Je ne peux echapper au jugement des autres, qui me definissent malgre moi. C\'est la source du conflit entre consciences.' },
+                    { question: 'Qu\'est-ce que l\'ethique du visage chez Levinas ?', answer: 'Le visage d\'autrui est une epiphanie : il se presente nu, vulnerable, et m\'adresse une injonction ethique ("tu ne tueras point") qui precede toute reflexion ou theorie morale.' },
+                    { question: 'Pourquoi Hegel dit-il que la conscience de soi a besoin d\'autrui ?', answer: 'La conscience de soi n\'existe pas isolement. Elle a besoin d\'etre reconnue par une autre conscience pour se confirmer comme sujet libre. C\'est le moteur de la dialectique maitre-esclave.' },
+                    { question: 'Comment Husserl explique-t-il l\'acces a autrui ?', answer: 'Par analogie (appresentation) : je percois le corps d\'autrui et, par ressemblance avec le mien, je lui attribue une vie interieure. Autrui est un alter ego, un autre moi-meme.' },
+                    { question: 'Que signifie "traiter autrui comme une fin" (Kant) ?', answer: 'Ne jamais utiliser l\'autre uniquement comme un instrument pour ses propres fins. Reconnaitre en chaque personne une dignite inconditionnelle qui interdit de la reduire a un moyen.' },
+                    { question: 'Que signifie "on ne nait pas femme, on le devient" (Beauvoir) ?', answer: 'L\'identite feminine n\'est pas naturelle mais construite par la societe, l\'education et le regard d\'autrui. C\'est la culture, pas la biologie, qui definit ce qu\'est une "femme".' },
+                    { question: 'Comment Merleau-Ponty conçoit-il le rapport a autrui ?', answer: 'Autrui n\'est pas un probleme philosophique mais une evidence preconceptuelle. Des la naissance, l\'enfant percoit autrui comme un sujet a travers l\'intercorporeite (communication des corps).' },
+                    { question: 'Pourquoi le regard d\'autrui est-il ambivalent chez Sartre ?', answer: 'D\'un cote, autrui me revele a moi-meme (je decouvre la honte, la fierte). De l\'autre, son regard me fige et me reduit a un objet. Le rapport a autrui est un conflit de libertes.' }
+                ],
+                quiz: [
+                    { question: '"L\'enfer, c\'est les autres" est une replique de :', options: ['Camus, L\'Etranger', 'Sartre, Huis clos', 'Beauvoir, Le Deuxieme Sexe', 'Levinas, Totalite et Infini'], correctIndex: 1, explanation: 'Cette replique conclut la piece Huis clos (1944) de Sartre, ou trois personnages decouvrent que le jugement perpetuel des autres est leur veritable enfer.' },
+                    { question: 'Pour Levinas, le visage d\'autrui est avant tout :', options: ['Un objet esthetique', 'Une exigence ethique qui m\'interpelle', 'Une menace pour ma liberte', 'Un simple corps physique'], correctIndex: 1, explanation: 'Levinas montre dans Totalite et Infini que le visage est une epiphanie ethique : il exprime la vulnerabilite d\'autrui et m\'oblige a la responsabilite.' },
+                    { question: 'Selon Hegel, la conscience de soi se constitue par :', options: ['La reflexion solitaire', 'La reconnaissance mutuelle entre consciences', 'L\'experience des sens', 'La connaissance scientifique'], correctIndex: 1, explanation: 'Hegel montre dans la Phenomenologie de l\'esprit que la conscience de soi n\'existe que par la reconnaissance : j\'ai besoin qu\'autrui me confirme comme sujet.' },
+                    { question: '"On ne nait pas femme, on le devient" signifie que :', options: ['L\'identite feminine est purement biologique', 'L\'identite feminine est une construction sociale', 'Les femmes choisissent librement leur identite', 'La feminite est innee'], correctIndex: 1, explanation: 'Beauvoir montre dans Le Deuxieme Sexe (1949) que la feminite est un ensemble de comportements appris et de normes imposees par la societe, pas une nature.' },
+                    { question: 'La deuxieme formulation de l\'imperatif categorique de Kant concerne :', options: ['Le bonheur individuel', 'Le respect de la dignite humaine (ne pas traiter autrui comme un moyen)', 'L\'obeissance a l\'Etat', 'La recherche de la verite'], correctIndex: 1, explanation: 'Kant formule : "Agis de telle sorte que tu traites l\'humanite toujours en meme temps comme une fin et jamais simplement comme un moyen." C\'est le fondement de la dignite.' }
+                ]
             }
         ]
     });
