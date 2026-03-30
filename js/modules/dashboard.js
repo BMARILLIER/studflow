@@ -303,6 +303,12 @@
             dailyGoalHTML = window.StudFlow.dailyGoal.renderDashboardBlock();
         }
 
+        // Revision plan (smart weakness analysis)
+        var revisionPlanHTML = '';
+        if (window.StudFlow.revisionPlan) {
+            revisionPlanHTML = window.StudFlow.revisionPlan.renderDashboardWidget();
+        }
+
         // Secondary zone blocks
         var srBlockHTML = '';
         if (window.StudFlow.spacedRepetition) {
@@ -379,9 +385,13 @@
 
         // ===== BELOW: engagement + extras =====
         var belowFold = ''
+            + revisionPlanHTML
+            + dailyGoalHTML
             + renderImportedCard()
             + renderStreakAlert(gamStats)
             + dailyMissionHTML
+            + srBlockHTML
+            + missionsWidgetHTML
             + renderChronoCard()
             + renderDailyTip();
 
