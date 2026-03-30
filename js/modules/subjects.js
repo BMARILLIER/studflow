@@ -159,6 +159,21 @@
         var p = parseDeckId(deckId);
         var subj = registry[p.subjectId];
         if (!subj) return [];
+
+        // No section specified → return all flashcards for this subject
+        if (!p.sectionId) {
+            var all = [];
+            for (var i = 0; i < subj.sections.length; i++) {
+                var fc = subj.sections[i].flashcards;
+                if (fc) {
+                    for (var k = 0; k < fc.length; k++) {
+                        all.push({ question: fc[k].question, answer: fc[k].answer, mastered: false });
+                    }
+                }
+            }
+            return all;
+        }
+
         var section = null;
         for (var i = 0; i < subj.sections.length; i++) {
             if (subj.sections[i].id === p.sectionId) { section = subj.sections[i]; break; }
@@ -173,6 +188,17 @@
         var p = parseDeckId(deckId);
         var subj = registry[p.subjectId];
         if (!subj) return [];
+
+        // No section specified → return all quiz for this subject
+        if (!p.sectionId) {
+            var all = [];
+            for (var i = 0; i < subj.sections.length; i++) {
+                var q = subj.sections[i].quiz;
+                if (q) all = all.concat(q);
+            }
+            return all;
+        }
+
         var section = null;
         for (var i = 0; i < subj.sections.length; i++) {
             if (subj.sections[i].id === p.sectionId) { section = subj.sections[i]; break; }

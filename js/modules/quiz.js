@@ -5,6 +5,7 @@
     let startTime = null;
     let selectedAnswer = null;
     let currentDeck = 'all';
+    let sessionQuestions = []; // Fixed question set for the entire session
 
     function getAllQuestions() {
         const state = window.StudFlow.app.getState();
@@ -54,6 +55,22 @@
         score = 0;
         selectedAnswer = null;
         startTime = Date.now();
+
+        // Snapshot the questions ONCE — this array is used for the entire session
+        sessionQuestions = getAllQuestions().slice();
+
+        // === VISIBLE DEBUG BANNER (remove after fix confirmed) ===
+        console.log('[Quiz] launchQuiz — deck:', deck, '— sessionQuestions:', sessionQuestions.length);
+        var _dbg = document.getElementById('quiz-debug-banner');
+        if (!_dbg) {
+            _dbg = document.createElement('div');
+            _dbg.id = 'quiz-debug-banner';
+            _dbg.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#222;color:#0f0;font-family:monospace;font-size:12px;padding:6px 10px;white-space:pre-wrap;';
+            document.body.appendChild(_dbg);
+        }
+        _dbg.style.display = 'block';
+        _dbg.textContent = '[QUIZ DEBUG] deck=' + deck + ' | questions=' + sessionQuestions.length + ' | first="' + (sessionQuestions[0] ? sessionQuestions[0].question.substring(0, 40) : 'NONE') + '..."';
+
         if (window.StudFlow.combo) window.StudFlow.combo.startSession();
         if (window.StudFlow.analytics) window.StudFlow.analytics.track('quiz_start', { deck: currentDeck });
         window.StudFlow.app.showScreen('quiz');
@@ -67,6 +84,10 @@
 
     function showDeckPicker() {
         window.StudFlow.app.showScreen('quiz');
+
+        // Immediately hide quiz content to avoid flashing old state
+        var qContent = document.getElementById('quiz-content');
+        if (qContent) qContent.style.display = 'none';
 
         // Ensure subject data is loaded before building the picker
         if (window.StudFlow.subjects && window.StudFlow.subjects.preload) {
@@ -167,14 +188,21 @@
     }
 
     function displayQuestion() {
-        const questions = getAllQuestions();
-        const q = questions[currentIndex];
+        var total = sessionQuestions.length;
+        var q = sessionQuestions[currentIndex];
+
+        // === VISIBLE DEBUG (remove after fix confirmed) ===
+        var _dbg = document.getElementById('quiz-debug-banner');
+        if (_dbg) _dbg.textContent = '[QUIZ] index=' + currentIndex + '/' + total + ' | hasQ=' + !!q + ' | deck=' + currentDeck;
+        console.log('[Quiz] displayQuestion — index:', currentIndex, '/ total:', total, '— hasQuestion:', !!q);
+
         if (!q) {
+            console.log('[Quiz] End of quiz at index', currentIndex);
             showResults();
             return;
         }
 
-        document.getElementById('quiz-number').textContent = `Question ${currentIndex + 1}`;
+        document.getElementById('quiz-number').textContent = 'Question ' + (currentIndex + 1);
         var math = window.StudFlow.mathRender;
         if (math) {
             math.setContent(document.getElementById('quiz-question'), q.question);
@@ -182,26 +210,26 @@
             document.getElementById('quiz-question').textContent = q.question;
         }
         document.getElementById('quiz-progress').textContent =
-            `${currentIndex + 1}/${questions.length}`;
-        var qzPct = Math.round(((currentIndex + 1) / questions.length) * 100);
+            (currentIndex + 1) + '/' + total;
+        var qzPct = Math.round(((currentIndex + 1) / total) * 100);
         document.getElementById('quiz-progress-bar').style.width = qzPct + '%';
         var qzBar = document.getElementById('quiz-progress-bar').parentElement;
         if (qzBar) qzBar.setAttribute('aria-valuenow', qzPct);
-        document.getElementById('quiz-score').textContent = `${score} pts`;
+        document.getElementById('quiz-score').textContent = score + ' pts';
 
-        const optionsContainer = document.getElementById('quiz-options');
+        var optionsContainer = document.getElementById('quiz-options');
         optionsContainer.innerHTML = '';
 
-        q.options.forEach((option, index) => {
-            const btn = document.createElement('button');
+        q.options.forEach(function(option, index) {
+            var btn = document.createElement('button');
             btn.className = 'quiz-option';
-            var optText = `${String.fromCharCode(65 + index)}. ${option}`;
+            var optText = String.fromCharCode(65 + index) + '. ' + option;
             if (window.StudFlow.mathRender) {
                 window.StudFlow.mathRender.setContent(btn, optText);
             } else {
                 btn.textContent = optText;
             }
-            btn.onclick = () => selectAnswer(index, btn);
+            btn.onclick = function() { selectAnswer(index, btn); };
             optionsContainer.appendChild(btn);
         });
 
@@ -215,7 +243,7 @@
     }
 
     function selectAnswer(index, btn) {
-        document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
+        document.querySelectorAll('.quiz-option').forEach(function(b) { b.classList.remove('selected'); });
         btn.classList.add('selected');
         selectedAnswer = index;
         document.getElementById('quiz-submit').disabled = false;
@@ -225,14 +253,13 @@
         // Guard: do nothing if no answer selected
         if (selectedAnswer === null || selectedAnswer === undefined) return;
 
-        const questions = getAllQuestions();
-        const q = questions[currentIndex];
+        var q = sessionQuestions[currentIndex];
         if (!q) return;
-        const isCorrect = selectedAnswer === q.correctIndex;
-        const options = document.querySelectorAll('.quiz-option');
-        const state = window.StudFlow.app.getState();
+        var isCorrect = selectedAnswer === q.correctIndex;
+        var options = document.querySelectorAll('.quiz-option');
+        var state = window.StudFlow.app.getState();
 
-        options.forEach((opt, i) => {
+        options.forEach(function(opt, i) {
             opt.onclick = null;
             if (i === q.correctIndex) {
                 opt.classList.add('correct');
@@ -241,7 +268,7 @@
             }
         });
 
-        const feedback = document.getElementById('quiz-feedback');
+        var feedback = document.getElementById('quiz-feedback');
         if (isCorrect) {
             score++;
             state.streak = (state.streak || 0) + 1;
@@ -265,22 +292,37 @@
         window.StudFlow.app.updateStats();
         window.StudFlow.storage.saveAppState(state);
 
+        var total = sessionQuestions.length;
         var submitBtn = document.getElementById('quiz-submit');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Question suivante \u2192';
-        submitBtn.onclick = function() {
-            currentIndex++;
-            displayQuestion();
-        };
+
+        if (currentIndex >= total - 1) {
+            // Last question — button goes to results
+            submitBtn.textContent = 'Voir les resultats';
+            submitBtn.onclick = function() {
+                console.log('[Quiz] Last question answered — showing results');
+                currentIndex++;
+                showResults();
+            };
+        } else {
+            // More questions — button advances
+            submitBtn.textContent = 'Question suivante \u2192';
+            submitBtn.onclick = function() {
+                console.log('[Quiz] Next question — advancing from', currentIndex, 'to', currentIndex + 1, '/', total);
+                currentIndex++;
+                displayQuestion();
+            };
+        }
     }
 
     function showResults() {
-        const questions = getAllQuestions();
-        const total = questions.length;
-        const percent = Math.round((score / total) * 100);
-        const elapsed = Math.floor((Date.now() - startTime) / 1000);
-        const minutes = Math.floor(elapsed / 60);
-        const seconds = elapsed % 60;
+        var total = sessionQuestions.length;
+        var percent = total > 0 ? Math.round((score / total) * 100) : 0;
+        var elapsed = Math.floor((Date.now() - startTime) / 1000);
+        var minutes = Math.floor(elapsed / 60);
+        var seconds = elapsed % 60;
+
+        console.log('[Quiz] showResults — score:', score, '/', total, '(' + percent + '%)');
 
         var rIcon = document.getElementById('results-icon');
         var rTitle = document.getElementById('results-title');
@@ -291,10 +333,10 @@
         var rRetry = document.getElementById('results-retry');
         if (rIcon) rIcon.textContent = percent >= 70 ? '🏆' : '📚';
         if (rTitle) rTitle.textContent = percent >= 70 ? 'Bravo !' : 'Continue de reviser !';
-        if (rScore) rScore.textContent = `${percent}%`;
+        if (rScore) rScore.textContent = percent + '%';
         if (rCorrect) rCorrect.textContent = score;
         if (rWrong) rWrong.textContent = total - score;
-        if (rTime) rTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        if (rTime) rTime.textContent = minutes + ':' + seconds.toString().padStart(2, '0');
         if (rRetry) {
             rRetry.textContent = 'Refaire le quiz';
             rRetry.onclick = function() { start(currentDeck); };
@@ -329,27 +371,27 @@
 
     // Creation manuelle
     function showCreateForm() {
-        const container = document.getElementById('quiz-create-form');
+        var container = document.getElementById('quiz-create-form');
         if (container) {
             container.style.display = container.style.display === 'none' ? 'block' : 'none';
         }
     }
 
     function createQuestion() {
-        const escape = window.StudFlow.app.escapeText;
-        const question = escape(document.getElementById('new-quiz-question').value.trim());
-        const optA = escape(document.getElementById('new-quiz-a').value.trim());
-        const optB = escape(document.getElementById('new-quiz-b').value.trim());
-        const optC = escape(document.getElementById('new-quiz-c').value.trim());
-        const optD = escape(document.getElementById('new-quiz-d').value.trim());
-        const correct = parseInt(document.getElementById('new-quiz-correct').value);
+        var escape = window.StudFlow.app.escapeText;
+        var question = escape(document.getElementById('new-quiz-question').value.trim());
+        var optA = escape(document.getElementById('new-quiz-a').value.trim());
+        var optB = escape(document.getElementById('new-quiz-b').value.trim());
+        var optC = escape(document.getElementById('new-quiz-c').value.trim());
+        var optD = escape(document.getElementById('new-quiz-d').value.trim());
+        var correct = parseInt(document.getElementById('new-quiz-correct').value);
 
         if (!question || !optA || !optB || !optC || !optD) return;
 
-        const state = window.StudFlow.app.getState();
+        var state = window.StudFlow.app.getState();
         if (!state.customQuiz) state.customQuiz = [];
         state.customQuiz.push({
-            question,
+            question: question,
             options: [optA, optB, optC, optD],
             correctIndex: correct,
             explanation: ''
@@ -366,11 +408,11 @@
         if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('create_quiz');
 
         // Confirmation
-        const btn = document.getElementById('create-quiz-btn');
-        const oldText = btn.textContent;
+        var btn = document.getElementById('create-quiz-btn');
+        var oldText = btn.textContent;
         btn.textContent = 'Quiz ajoute !';
         btn.style.background = 'var(--green)';
-        setTimeout(() => {
+        setTimeout(function() {
             btn.textContent = oldText;
             btn.style.background = '';
         }, 1500);
@@ -379,22 +421,30 @@
     }
 
     function updateCount() {
-        const state = window.StudFlow.app.getState();
-        let subjectTotal = 0;
+        var state = window.StudFlow.app.getState();
+        var subjectTotal = 0;
         if (window.StudFlow.subjects) {
             subjectTotal = window.StudFlow.subjects.getAllQuiz().length;
         } else if (window.StudFlow.bacfrancais) {
             subjectTotal = window.StudFlow.bacfrancais.getAllQuiz().length;
         }
-        const total = (state.quizQuestions || []).length +
+        var total = (state.quizQuestions || []).length +
                       (state.customQuiz || []).length + subjectTotal;
-        const el = document.getElementById('quiz-count');
-        if (el) el.textContent = `${total} questions`;
+        var el = document.getElementById('quiz-count');
+        if (el) el.textContent = total + ' questions';
     }
 
     window.StudFlow = window.StudFlow || {};
     window.StudFlow.quiz = {
-        start, launchQuiz, displayQuestion, selectAnswer, submitAnswer, showResults,
-        showCreateForm, createQuestion, updateCount, getAllQuestions
+        start: start,
+        launchQuiz: launchQuiz,
+        displayQuestion: displayQuestion,
+        selectAnswer: selectAnswer,
+        submitAnswer: submitAnswer,
+        showResults: showResults,
+        showCreateForm: showCreateForm,
+        createQuestion: createQuestion,
+        updateCount: updateCount,
+        getAllQuestions: getAllQuestions
     };
 })();
