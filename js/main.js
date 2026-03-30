@@ -1,7 +1,8 @@
 // main.js — Vite entry point (side-effect imports, order matters)
 // Each file is an IIFE that attaches to window.StudFlow
 
-import './modules/sentry.js'    // Error monitoring — must be first
+// ==================== CRITICAL — needed for first paint ====================
+import './modules/sentry.js'           // Error monitoring — must be first
 import './modules/storage.js'
 import './modules/theme.js'
 import './modules/errorLog.js'
@@ -12,70 +13,39 @@ import './modules/cloud.js'
 import './modules/auth.js'
 import './modules/roles.js'
 import './modules/adminDashboard.js'
-import './modules/mathRender.js'
 import './modules/aiQuota.js'
 import './modules/pedagogicalGuard.js'
-import './modules/ocr.js'
-import './modules/pdf.js'
-import './modules/breathing.js'
-import './modules/flashcards.js'
-import './modules/quiz.js'
-import './modules/diagnostic.js'
-import './modules/coachEngine.js'
-import './modules/sessionSettings.js'
-import './modules/jourBac.js'
-import './modules/coach.js'
-import './modules/coachChat.js'
-import './modules/coachLLM.js'
-import './modules/analytics.js'
-import './modules/contentAudit.js'
-import './modules/stress.js'
-import './modules/focus.js'
 import './modules/subjectPicker.js'
 import './modules/subjects.js'
-import './modules/bacfrancais.js'
 // subjectData modules are lazy-loaded by subjects.js on first access
-// (philo, histgeo, maths, ses, physique, francais, figures, quizbac1, quizbac2, anglais, svt)
-import './modules/planbac.js'
-import './modules/urgence.js'
-import './modules/confiance.js'
-import './modules/conseils.js'
-import './modules/generators/engineLocal.js'
-import './modules/generators/adviceGenerator.js'
-import './modules/generators/ficheGenerator.js'
-import './modules/generators/quizGenerator.js'
-import './modules/exporter.js'
-import './modules/ui/generatorViews.js'
-import './modules/ui/generatorHub.js'
 import './modules/premium.js'
 import './modules/subscription.js'
 import './modules/gamification.js'
-import './modules/combo.js'
 import './modules/stats.js'
 import './modules/dailyGoal.js'
 import './modules/badges.js'
-import './modules/missions.js'
-import './modules/timeline.js'
-import './modules/spacedRepetition.js'
-import './modules/dailySession.js'
-import './modules/dsDemain.js'
-import './modules/onboarding.js'
-import './modules/feedback.js'
+import './modules/analytics.js'
 import './modules/notifications.js'
-import './modules/aide.js'
-import './modules/backup.js'
-import './modules/annales.js'
-import './modules/adaptive.js'
-import './modules/errorNotebook.js'
-import './modules/profChat.js'
-import './modules/storiesMode.js'
-import './modules/challenges.js'
-import './modules/chronoMode.js'
-import './modules/weeklyReport.js'
-import './modules/resultCard.js'
+import './modules/onboarding.js'
 import './modules/dashboard.js'
-import './modules/sounds.js'
-import './modules/helpBubble.js'
 import './modules/home.js'
 import './app.js'
 import './modules/router.js'
+
+// ==================== DEFERRED — loaded after first paint ====================
+// Feature modules (flashcards, quiz, coach, generators, etc.)
+// Dashboard guards all references with if(window.StudFlow.module) checks.
+function loadDeferred() {
+    import('./deferred.js').then(function() {
+        // Re-render dashboard to pick up deferred widgets (SR, missions, timeline, etc.)
+        if (window.StudFlow && window.StudFlow.dashboard && window.StudFlow.dashboard.render) {
+            window.StudFlow.dashboard.render();
+        }
+    });
+}
+
+if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadDeferred, { timeout: 2000 });
+} else {
+    setTimeout(loadDeferred, 150);
+}
