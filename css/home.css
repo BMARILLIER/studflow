@@ -21,23 +21,44 @@
     display: flex; align-items: center; gap: 0.5rem;
     text-decoration: none; color: var(--text);
 }
-/* Logo icon */
-.home-logo-icon {
-    width: 32px; height: 32px; min-width: 32px; min-height: 32px;
-    border-radius: 8px; overflow: hidden;
-    background-image: url('/icons/Studflow.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    box-shadow: 0 2px 8px rgba(96,165,250,0.2);
+/* Logo mark — shared between landing & dashboard */
+.sf-logo-mark {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 10px rgba(96,165,250,0.3);
 }
-.home-logo-text {
-    font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; color: var(--text);
+.sf-logo-mark span {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem; font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.02em;
 }
-.home-logo-text span {
+.sf-logo-text {
+    font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 700;
+    color: var(--text); letter-spacing: -0.01em;
+}
+.sf-logo-text span {
     background: linear-gradient(135deg, #60a5fa, #22d3ee);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+/* Large variant — dashboard */
+.sf-logo-mark--lg {
+    width: 44px; height: 44px; border-radius: 12px;
+}
+.sf-logo-mark--lg span { font-size: 1.5rem; }
+.sf-logo-text--lg { font-size: 1.5rem; }
+@media (max-width: 600px) {
+    .sf-logo-mark { width: 30px; height: 30px; border-radius: 8px; }
+    .sf-logo-mark span { font-size: 1rem; }
+    .sf-logo-text { font-size: 1.1rem; }
+    .sf-logo-mark--lg { width: 38px; height: 38px; }
+    .sf-logo-mark--lg span { font-size: 1.25rem; }
+    .sf-logo-text--lg { font-size: 1.3rem; }
 }
 .landing-beta-tag {
     font-size: 0.6rem; font-weight: 800; letter-spacing: 0.08em;

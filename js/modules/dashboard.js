@@ -364,7 +364,7 @@
         }
 
         // ===== ABOVE THE FOLD: logo + hero + actions =====
-        var logoHTML = '<div class="dash-logo"><img src="/icons/logo-icon.png" alt="StudFlow" class="dash-logo-img"></div>';
+        var logoHTML = '<div class="dash-logo"><div class="sf-logo-mark sf-logo-mark--lg"><span>S</span></div><span class="sf-logo-text sf-logo-text--lg">Stud<span>Flow</span></span></div>';
 
         var aboveFold = ''
             + logoHTML

@@ -2464,8 +2464,10 @@ body.theme-light .math-fallback {
 /* ============================================
    DASHBOARD LOGO
    ============================================ */
-.dash-logo { text-align: center; padding: 8px 0 0; }
-.dash-logo-img { width: 80px; height: 80px; object-fit: contain; }
+.dash-logo {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0.5rem; padding: 14px 0 6px;
+}
 
 /* ============================================
    HERO BAC — countdown + CTA + engagement
