@@ -11,8 +11,8 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "jsdom": "^25.0.0",
     "vite": "^6.0.0",
-    "vitest": "^3.0.0",
-    "jsdom": "^25.0.0"
+    "vitest": "^3.0.0"
   }
 }

@@ -1,5 +1,5 @@
 // service-worker.js — StudFlow PWA offline cache
-var CACHE_VERSION = 'studflow-v30';
+var CACHE_VERSION = 'studflow-v31';
 
 // Critical assets: install FAILS if any of these 404
 var CRITICAL_ASSETS = [
@@ -14,6 +14,7 @@ var NON_CRITICAL_ASSETS = [
     '/lib/pdf.min.js',
     '/lib/pdf.worker.min.js',
     '/manifest.json',
+    '/icons/icon-180.png',
     '/icons/icon-192.png',
     '/icons/icon-512.png',
     '/icons/icon.svg'

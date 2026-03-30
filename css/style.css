@@ -6887,6 +6887,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     padding: 0.2rem;
     line-height: 1;
 }
+/* iOS install guide variant */
+.pwa-install-prompt.pwa-ios-guide {
+    flex-direction: column; text-align: center; gap: 0.4rem;
+    padding: 1rem 1.2rem;
+}
+.pwa-install-prompt.pwa-ios-guide .pwa-install-close {
+    position: absolute; top: 8px; right: 10px;
+}
+.pwa-ios-steps {
+    font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;
+}
+.pwa-ios-icon {
+    display: inline-block; font-size: 1rem; vertical-align: middle;
+}
 @media (min-width: 600px) {
     .pwa-install-prompt {
         max-width: 420px;
