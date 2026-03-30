@@ -11879,3 +11879,145 @@ button:active, .tab-item:active, .nav-item:active {
 .dash-quick-actions .dash-chrono-cta .dash-challenge-icon {
     font-size: 1.3rem;
 }
+
+/* ============================================
+   HELP BUBBLE — floating help button + panel
+   ============================================ */
+.help-bubble {
+    position: fixed; bottom: 80px; right: 16px; z-index: 900;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(96,165,250,0.35), 0 0 0 0 rgba(96,165,250,0);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.help-bubble:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 20px rgba(96,165,250,0.5);
+}
+.help-bubble.active {
+    transform: scale(0.95);
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+}
+.help-bubble-icon {
+    font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 800;
+    color: #fff; line-height: 1; user-select: none;
+}
+
+/* Panel */
+.help-bubble-panel {
+    position: fixed; bottom: 140px; right: 16px; z-index: 901;
+    width: 300px; max-height: 420px;
+    background: var(--card, #161b2e);
+    border: 1px solid var(--border, rgba(255,255,255,0.08));
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    opacity: 0; transform: translateY(12px) scale(0.95);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    overflow: hidden;
+}
+.help-bubble-panel.open {
+    opacity: 1; transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* Panel header */
+.help-panel-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border, rgba(255,255,255,0.06));
+}
+.help-panel-title {
+    flex: 1; font-size: 0.92rem; font-weight: 700;
+    color: var(--text, #e5eefb);
+}
+.help-panel-close, .help-panel-back {
+    background: none; border: none; cursor: pointer;
+    color: var(--text-muted, #8892b0); font-size: 1.2rem;
+    padding: 4px; line-height: 1; border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+}
+.help-panel-close:hover, .help-panel-back:hover {
+    color: var(--text, #e5eefb);
+    background: rgba(255,255,255,0.06);
+}
+
+/* Options list */
+.help-panel-options {
+    padding: 8px;
+    display: flex; flex-direction: column; gap: 4px;
+}
+.help-option {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px; border-radius: 10px;
+    background: none; border: none; cursor: pointer;
+    color: var(--text, #e5eefb);
+    transition: background 0.15s;
+    text-align: left; width: 100%;
+}
+.help-option:hover {
+    background: rgba(96,165,250,0.1);
+}
+.help-option-icon {
+    font-size: 1.2rem; flex-shrink: 0;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(96,165,250,0.1);
+    border-radius: 8px;
+}
+.help-option-label {
+    font-size: 0.88rem; font-weight: 600;
+}
+
+/* Detail view */
+.help-panel-detail {
+    padding: 16px;
+}
+.help-detail-msg {
+    font-size: 0.88rem; line-height: 1.55;
+    color: var(--text-muted, #8892b0);
+    margin: 0 0 16px;
+}
+.help-detail-cta {
+    width: 100%; padding: 11px 16px;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    color: #fff; border: none; border-radius: 10px;
+    font-size: 0.88rem; font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.15s;
+}
+.help-detail-cta:hover {
+    opacity: 0.9; transform: translateY(-1px);
+}
+
+/* Nudge tooltip */
+.help-bubble-nudge {
+    position: fixed; bottom: 134px; right: 16px; z-index: 899;
+    background: var(--card, #161b2e);
+    border: 1px solid var(--border, rgba(255,255,255,0.08));
+    color: var(--text, #e5eefb);
+    font-size: 0.8rem; font-weight: 600;
+    padding: 8px 14px; border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    opacity: 0; transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap;
+}
+.help-bubble-nudge.visible {
+    opacity: 1; transform: translateY(0);
+    pointer-events: auto; cursor: pointer;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    .help-bubble { width: 44px; height: 44px; bottom: 74px; right: 12px; }
+    .help-bubble-icon { font-size: 1.15rem; }
+    .help-bubble-panel {
+        right: 8px; left: 8px; bottom: 126px;
+        width: auto; max-width: none;
+    }
+    .help-bubble-nudge { bottom: 124px; right: 12px; }
+}
