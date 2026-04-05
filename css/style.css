@@ -913,34 +913,56 @@ body.theme-light .math-fallback {
 
 .flashcard-actions { display: flex; gap: 1rem; justify-content: center; }
 
-/* Bouton "Je ne comprends pas" */
+/* Bouton "Mode clair" — premium, engageant, non culpabilisant */
 .fc-simplify-btn {
-    display: block; margin: 12px auto 0; padding: 10px 20px;
-    border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
-    background: var(--bg-glass); color: var(--text-muted);
-    font-size: 0.82rem; font-weight: 600; cursor: pointer;
-    transition: all 0.2s ease; font-family: 'DM Sans', sans-serif;
+    display: block; width: 100%; margin: 16px auto 0; padding: 14px 24px;
+    border-radius: 16px; border: none;
+    background: linear-gradient(135deg, rgba(96,165,250,0.15), rgba(167,139,250,0.15));
+    color: var(--accent); font-size: 0.95rem; font-weight: 700;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.3s var(--ease-bounce);
+    box-shadow: 0 0 0 0 rgba(96,165,250,0);
 }
-.fc-simplify-btn:hover { border-color: var(--accent); color: var(--accent); }
+.fc-simplify-btn:hover {
+    background: linear-gradient(135deg, rgba(96,165,250,0.25), rgba(167,139,250,0.25));
+    box-shadow: 0 0 20px rgba(96,165,250,0.2);
+    transform: translateY(-2px);
+}
+.fc-simplify-btn:active { transform: scale(0.97); }
+.fc-simplify-btn--active {
+    background: var(--bg-glass); color: var(--text-muted);
+    font-size: 0.82rem; padding: 10px 20px;
+}
 
-/* Box explication simplifiee */
+/* Box mode clair */
 .fc-simplify-box {
-    margin: 12px auto 0; max-width: 600px; padding: 16px 20px;
-    border-radius: 16px; border: 1px solid rgba(52,211,153,0.2);
-    background: rgba(52,211,153,0.06);
+    margin: 12px auto 0; max-width: 600px; padding: 20px 24px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(96,165,250,0.06), rgba(167,139,250,0.06));
+    border: 1px solid rgba(96,165,250,0.15);
+    animation: fadeIn 0.3s ease;
+}
+.fc-simple-header {
+    text-align: center; font-size: 0.78rem; font-weight: 600;
+    color: var(--accent); margin-bottom: 14px; opacity: 0.8;
 }
 .fc-simple-content { }
-.fc-simple-section { margin-bottom: 10px; }
+.fc-simple-section { margin-bottom: 12px; }
 .fc-simple-section:last-child { margin-bottom: 0; }
 .fc-simple-label {
-    display: block; font-size: 0.72rem; font-weight: 700;
-    color: var(--mint); text-transform: uppercase; letter-spacing: 0.04em;
-    margin-bottom: 3px;
+    display: block; font-size: 0.7rem; font-weight: 700;
+    color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 4px; opacity: 0.7;
 }
-.fc-simple-text { font-size: 0.85rem; color: var(--text); margin: 0; line-height: 1.5; }
+.fc-simple-text { font-size: 0.88rem; color: var(--text); margin: 0; line-height: 1.6; }
 .fc-simple-step {
-    font-size: 0.82rem; color: var(--text); margin: 2px 0;
-    padding-left: 12px; border-left: 2px solid var(--mint);
+    font-size: 0.85rem; color: var(--text); margin: 3px 0;
+    padding-left: 14px; border-left: 2px solid var(--accent); opacity: 0.9;
+}
+.fc-simple-footer {
+    text-align: center; font-size: 0.8rem; color: var(--text-muted);
+    margin-top: 14px; padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
 }
 .flashcard-btn {
     padding: 1rem 2.5rem; border-radius: var(--radius-pill);

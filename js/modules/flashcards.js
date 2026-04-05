@@ -616,7 +616,10 @@
         // Toggle : si deja visible, cacher
         if (box.style.display !== 'none') {
             box.style.display = 'none';
-            if (btn) btn.textContent = '\uD83E\uDDE0 Je ne comprends pas';
+            if (btn) {
+                btn.textContent = '\u2728 Passe en mode clair';
+                btn.classList.remove('fc-simplify-btn--active');
+            }
             return;
         }
 
@@ -640,7 +643,8 @@
         if (mdMatch) motsDifficiles = mdMatch[1].trim();
 
         // Construire la version simplifiee
-        var html = '<div class="fc-simple-content">';
+        var html = '<div class="fc-simple-header">Mode clair active</div>'
+            + '<div class="fc-simple-content">';
 
         // Reponse simple
         if (enGros) {
@@ -689,9 +693,15 @@
 
         html += '</div>';
 
+        // Footer
+        html += '<div class="fc-simple-footer">C\'est plus clair ?</div>';
+
         box.innerHTML = html;
         box.style.display = '';
-        if (btn) btn.textContent = '\u2715 Fermer l\'aide';
+        if (btn) {
+            btn.textContent = '\u2715 Fermer le mode clair';
+            btn.classList.add('fc-simplify-btn--active');
+        }
     }
 
     function escapeSimple(str) {
@@ -705,7 +715,10 @@
         var box = document.getElementById('fc-simplify-box');
         var btn = document.getElementById('fc-simplify-btn');
         if (box) box.style.display = 'none';
-        if (btn) btn.textContent = '\uD83E\uDDE0 Je ne comprends pas';
+        if (btn) {
+            btn.textContent = '\u2728 Passe en mode clair';
+            btn.classList.remove('fc-simplify-btn--active');
+        }
         _origDisplay();
     };
 
