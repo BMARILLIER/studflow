@@ -267,74 +267,18 @@
         }, 3500);
     }
 
-    // ==================== STREAK LOSS DETECTION ====================
-    function checkStreakLoss() {
-        var stats = getStats();
-        var lostStreak = parseInt(localStorage.getItem('studflow_lost_streak') || '0', 10);
-        if (lostStreak <= 0) return;
-        // Clear the flag so it only shows once
-        localStorage.removeItem('studflow_lost_streak');
-
-        // Emotional messages based on streak length
-        var msg = '';
-        if (lostStreak >= 7) {
-            msg = 'Tu avais une serie de <strong>' + lostStreak + ' jours</strong>.<br>C\'etait impressionnant.';
-        } else if (lostStreak >= 3) {
-            msg = 'Ta serie de <strong>' + lostStreak + ' jours</strong> s\'est arretee.<br>Tu etais sur une belle lancee.';
-        } else {
-            msg = 'Tu avais <strong>' + lostStreak + ' jours</strong> de suite.<br>Recommence aujourd\'hui.';
-        }
-
-        // Show streak loss overlay — full screen, emotional
-        var overlay = document.createElement('div');
-        overlay.className = 'streak-lost-overlay';
-        overlay.innerHTML = '<div class="streak-lost-card">'
-            + '<div class="streak-lost-icon">\uD83D\uDD25</div>'
-            + '<div class="streak-lost-number">' + lostStreak + '</div>'
-            + '<h2 class="streak-lost-title">Serie perdue</h2>'
-            + '<p class="streak-lost-msg">' + msg + '</p>'
-            + '<button class="streak-lost-btn" id="streak-lost-close">Recommencer maintenant</button>'
-            + '</div>';
-        document.body.appendChild(overlay);
-
-        overlay.querySelector('#streak-lost-close').addEventListener('click', function() {
-            overlay.remove();
-            // Launch session directly after closing
-            if (window.StudFlow.dailySession) {
-                window.StudFlow.dailySession.show();
-            }
-        });
-    }
-
-    // Save previous streak before reset for loss detection
-    var _origCheckStreak = checkStreak;
-    checkStreak = function(stats) {
-        var today = new Date().toDateString();
-        if (stats.lastActiveDate !== today) {
-            var yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            // If last active was NOT yesterday AND we had a streak > 1, it's a loss
-            if (stats.lastActiveDate && stats.lastActiveDate !== yesterday.toDateString() && stats.streak > 1) {
-                localStorage.setItem('studflow_lost_streak', String(stats.streak));
-            }
-        }
-        _origCheckStreak(stats);
-    };
-
     // Init — check streak on load
     function init() {
         const stats = getStats();
         checkStreak(stats);
         saveStats(stats);
         updateXPDisplay();
-        // Show streak loss popup after a short delay
-        setTimeout(checkStreakLoss, 800);
     }
 
     window.StudFlow = window.StudFlow || {};
     window.StudFlow.gamification = {
         addXP, getStats, getCurrentLevel, getNextLevel, getLevelProgress,
-        updateXPDisplay, showToast, spawnConfetti, init, checkStreakLoss,
+        updateXPDisplay, showToast, spawnConfetti, init,
         XP_ACTIONS, LEVELS
     };
 })();

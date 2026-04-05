@@ -3,8 +3,8 @@
     'use strict';
 
     var SESSION_KEY = 'studflow_daily_session';
-    var TARGET_ITEMS = 12; // ~7 flashcards + 3 quiz + 2 errors = ~5 min
-    var FC_RATIO = 0.6;    // 60% flashcards, 30% quiz, 10% error review
+    var TARGET_ITEMS = 20; // ~12 flashcards + 8 quiz = 10-15 min
+    var FC_RATIO = 0.6;    // 60% flashcards, 40% quiz
 
     // ==================== SESSION STATE ====================
     var _items = [];        // [{type:'fc'|'quiz', data:{...}, done:false, correct:null}]
@@ -21,28 +21,8 @@
 
     // ==================== BUILD SESSION ====================
     function getDailySession() {
-        // Split: 60% flashcards, 30% quiz, 10% error review
-        var errorTarget = Math.max(1, Math.round(TARGET_ITEMS * 0.1));
         var fcTarget = Math.round(TARGET_ITEMS * FC_RATIO);
-        var qzTarget = TARGET_ITEMS - fcTarget - errorTarget;
-
-        // 0. Get error notebook items (past mistakes to review)
-        var errorItems = [];
-        if (window.StudFlow.errorNotebook) {
-            var errData = window.StudFlow.storage.loadData('studflow_error_notebook', { errors: [] });
-            var errors = (errData.errors || []).slice();
-            // Sort by frequency (most repeated errors first)
-            errors.sort(function(a, b) { return (b.count || 1) - (a.count || 1); });
-            for (var e = 0; e < Math.min(errors.length, errorTarget); e++) {
-                var err = errors[e];
-                errorItems.push({
-                    type: 'fc',
-                    data: { question: err.question, answer: err.correctAnswer || 'Revois cette notion', _errorReview: true },
-                    done: false,
-                    correct: null
-                });
-            }
-        }
+        var qzTarget = TARGET_ITEMS - fcTarget;
 
         // 1. Get SR due flashcards (priority)
         var srCards = [];
@@ -69,8 +49,6 @@
         for (var j = 0; j < quizItems.length; j++) {
             items.push({ type: 'quiz', data: quizItems[j], done: false, correct: null });
         }
-        // Add error review items
-        items = items.concat(errorItems);
 
         // 5. Interleave: alternate fc and quiz for variety
         items = interleave(items);
@@ -540,25 +518,7 @@
         if (tabBar) tabBar.style.display = 'none';
 
         window.StudFlow.app.showScreen('daily-session');
-
-        // Skip mood picker + goal screen → build session and start IMMEDIATELY
-        _items = getDailySession();
-        _currentIndex = 0;
-        _startTime = Date.now();
-        _xpEarned = 0;
-        _flipped = false;
-        _errorCounts = {};
-
-        if (_items.length === 0) {
-            if (window.StudFlow.gamification) {
-                window.StudFlow.gamification.showToast('Rien a reviser !', 'xp', '\uD83C\uDF89');
-            }
-            exit();
-            return;
-        }
-
-        snapshotMastery();
-        renderCurrent();
+        renderMoodCheck();
     }
 
     function showWithItems(customItems, customTitle) {
@@ -645,7 +605,7 @@
             + '<div class="ds-goal-emoji">' + goalEmoji + '</div>'
             + '<h2 class="ds-goal-title">' + escapeHTML(goalTitle) + '</h2>'
             + moodSub
-            + '<p class="ds-goal-subtitle">' + _items.length + ' items \u00B7 ~5 min \u00B7 ' + fcCount + ' flashcards + ' + qzCount + ' quiz</p>'
+            + '<p class="ds-goal-subtitle">' + _items.length + ' items \u00B7 ~10 min \u00B7 ' + fcCount + ' flashcards + ' + qzCount + ' quiz</p>'
             + focusHTML
             + streakHTML
             + '<button class="ds-btn ds-btn-primary ds-goal-start" data-action="dailySession.startSession">C\'est parti \u2192</button>'
@@ -1029,66 +989,98 @@
             : pct >= 50 ? 'Bien joue, continue !'
             : 'Chaque session compte !';
 
-        // Compare with previous session for "better than yesterday" message
-        var prevData = window.StudFlow.storage.loadData(SESSION_KEY, {});
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        var yesterdayKey = yesterday.toISOString().slice(0, 10);
-        var prevSession = prevData[yesterdayKey];
-        var comparisonMsg = '';
-        if (prevSession && prevSession.correct !== undefined) {
-            var prevPct = prevSession.total > 0 ? Math.round((prevSession.correct / prevSession.total) * 100) : 0;
-            if (pct > prevPct) {
-                comparisonMsg = '\u2B06\uFE0F Tu progresses mieux qu\'hier ! (' + prevPct + '% \u2192 ' + pct + '%)';
-            } else if (pct === prevPct) {
-                comparisonMsg = '\u2705 Aussi bien qu\'hier. Regulier(e) !';
-            } else {
-                comparisonMsg = '\uD83D\uDCAA Pas de pression, tu t\'entraines. C\'est ca qui compte.';
-            }
-        }
-
-        // Social proof percentile
-        var gamStats = window.StudFlow.gamification ? window.StudFlow.gamification.getStats() : {};
-        var streak = gamStats.streak || streakInfo.streak || 0;
-        var percentile = Math.min(95, Math.max(10, 20 + (streak * 8) + (correct * 3)));
-
-        // === Build HTML — DOPAMINE FOCUSED ===
+        // === Build HTML ===
         var html = '<div class="ds-overlay">'
             + '<div class="ds-summary">'
             + '<div class="ds-summary-emoji">' + emoji + '</div>'
             + '<h2 class="ds-summary-title">' + message + '</h2>';
 
-        // Score + XP (compact, impactful)
+        // XP + Streak row
         html += '<div class="ds-impact-row">'
-            + '<div class="ds-impact-stat"><span class="ds-impact-val">' + correct + '/' + total + '</span><span class="ds-impact-label">correct</span></div>'
-            + '<div class="ds-impact-stat"><span class="ds-impact-val">+' + _xpEarned + '</span><span class="ds-impact-label">XP</span></div>'
-            + '<div class="ds-impact-stat"><span class="ds-impact-val">' + minutes + ':' + String(seconds).padStart(2, '0') + '</span><span class="ds-impact-label">temps</span></div>'
+            + '<div class="ds-impact-xp">+' + _xpEarned + ' XP</div>';
+        if (streakInfo.streak > 0) {
+            html += '<div class="ds-impact-streak">🔥 ' + streakInfo.streak + ' jour' + (streakInfo.streak > 1 ? 's' : '') + '</div>';
+        }
+        html += '</div>';
+
+        // Score compact
+        html += '<div class="ds-impact-score">'
+            + '<span>' + correct + '/' + total + ' correct</span>'
+            + '<span>' + minutes + ':' + String(seconds).padStart(2, '0') + '</span>'
             + '</div>';
 
-        // Comparison with yesterday (THE emotional hook)
-        if (comparisonMsg) {
-            html += '<div class="session-success-msg">' + comparisonMsg + '</div>';
+        // Subject progress diffs
+        if (diffs.length > 0) {
+            html += '<div class="ds-impact-section">'
+                + '<h3 class="ds-impact-heading">Progression par sujet</h3>';
+            var shown = Math.min(diffs.length, 4);
+            for (var k = 0; k < shown; k++) {
+                var df = diffs[k];
+                var arrow = df.diff > 0 ? '↑' : '↓';
+                var cls = df.diff > 0 ? 'ds-diff-up' : 'ds-diff-down';
+                html += '<div class="ds-impact-diff">'
+                    + '<span class="ds-diff-label">' + escapeHTML(df.label) + '</span>'
+                    + '<span class="' + cls + '">' + df.before + '% → ' + df.after + '% ' + arrow + '</span>'
+                    + '</div>';
+            }
+            if (improved > 0) {
+                html += '<div class="ds-impact-win">✓ ' + improved + ' point' + (improved > 1 ? 's' : '') + ' faible' + (improved > 1 ? 's' : '') + ' ameliore' + (improved > 1 ? 's' : '') + '</div>';
+            }
+            html += '</div>';
         }
 
-        // Social proof
-        html += '<div class="ds-social-proof">Top ' + percentile + '% des eleves cette semaine</div>';
+        // Projection: tomorrow
+        html += '<div class="ds-impact-section ds-impact-projection">'
+            + '<h3 class="ds-impact-heading">Demain</h3>'
+            + '<div class="ds-projection-line">📋 ' + tomorrowDue + ' cartes a revoir</div>'
+            + '<div class="ds-projection-line">🎯 Objectif : atteindre ' + targetMastery + '% de maitrise</div>'
+            + '</div>';
 
-        // Streak + return hook
-        if (streak >= 1) {
-            html += '<div class="ds-streak-hook">'
-                + '\uD83D\uDD25 ' + streak + ' jour' + (streak > 1 ? 's' : '') + ' de suite'
-                + (streak >= 2 ? ' \u2014 reviens demain pour continuer' : '')
+        // Urgency: streak warning
+        if (streakInfo.streak >= 2) {
+            html += '<div class="ds-impact-urgency">'
+                + '⚠️ Tu perds ta serie de ' + streakInfo.streak + ' jours si tu ne reviens pas demain'
                 + '</div>';
         }
 
-        // Single CTA
+        // Momentum push: show what continuing would gain
+        html += buildMomentumSummary();
+
+        // Adaptive end message (mood-aware)
+        var endMsg;
+        if (_mood && MOOD_CONFIG[_mood] && MOOD_CONFIG[_mood].endMsg) {
+            endMsg = MOOD_CONFIG[_mood].emoji + ' ' + MOOD_CONFIG[_mood].endMsg;
+        } else {
+            endMsg = pct >= 80 ? '\uD83C\uDFC6 Tu prends de l\'avance sur le Bac'
+                : pct >= 60 ? '\uD83D\uDCAA Solide. Tu consolides tes bases'
+                : pct >= 40 ? '\uD83D\uDCDA Parfait, tu travailles exactement ce qu\'il faut'
+                : '\uD83E\uDDE0 C\'est en se trompant qu\'on progresse le plus';
+        }
+        html += '<div class="ds-adaptive ds-end-msg">' + endMsg + '</div>';
+
+        // Contextual coach message
+        var coachMsg = getCoachMessage();
+        html += '<div class="ds-coach-msg">'
+            + '<div class="ds-coach-avatar">🎓</div>'
+            + '<p class="ds-coach-text">' + coachMsg + '</p>'
+            + '</div>';
+
+        // Quick challenge
+        html += '<div class="ds-quick-challenge" data-action="dailySession.quickChallenge">'
+            + '⚔️ Defie un ami en 1 tap'
+            + '</div>';
+
+        // Actions
         html += '<div class="ds-summary-actions">'
-            + '<button class="ds-btn ds-btn-primary ds-goal-start" data-action="dailySession.exit">Terminer \u2713</button>'
+            + '<button class="ds-btn ds-btn-primary ds-share-score" data-action="dailySession.shareScore">\uD83D\uDCF8 Partager mon score</button>'
+            + '<button class="ds-btn ds-btn-primary ds-goal-start" data-action="dailySession.show">Continuer \u2192</button>'
+            + '<button class="ds-btn ds-btn-secondary" data-action="dailySession.exit">Retour au dashboard</button>'
             + '</div>'
             + '</div>'
             + '</div>';
 
-        _lastSummary = { correct: correct, total: total, streak: streak, xp: _xpEarned, pct: pct };
+        // Store summary data for share
+        _lastSummary = { correct: correct, total: total, streak: streakInfo.streak, xp: _xpEarned, pct: pct };
 
         container.innerHTML = html;
     }
@@ -1141,7 +1133,7 @@
             + '<p class="ds-launch-sub">' + subtitle + '</p>'
             + '</div>'
             + '</div>'
-            + '<div class="ds-launch-meta">~5 min · ' + TARGET_ITEMS + ' items</div>'
+            + '<div class="ds-launch-meta">~10 min · ' + TARGET_ITEMS + ' items</div>'
             + '</div>';
     }
 
