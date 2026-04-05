@@ -83,6 +83,14 @@
         if (screenId === 'dashboard' && window.StudFlow.onboarding && window.StudFlow.onboarding.checkPendingCelebration()) {
             return; // onboarding took over
         }
+        // Init search screen
+        if (screenId === 'search' && window.StudFlow.cardSearch) {
+            window.StudFlow.cardSearch.renderSearchBar('card-search-container');
+            setTimeout(function() {
+                var input = document.getElementById('card-search-input');
+                if (input) input.focus();
+            }, 200);
+        }
         // Show quota info on upload screen
         if (screenId === 'upload') {
             var quotaEl = document.getElementById('upload-quota-info');

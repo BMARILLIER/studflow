@@ -298,6 +298,13 @@
         // 3. Micro feedback (une ligne)
         html += renderMicroFeedback(gamStats);
 
+        // 4. Lien recherche (discret)
+        html += '<div class="dash-section" style="text-align:center;padding:4px 0;">'
+            + '<button class="dash-search-link" data-action="screen:search">'
+            + '\uD83D\uDD0D Chercher un chapitre a reviser'
+            + '</button>'
+            + '</div>';
+
         container.innerHTML = html;
     }
 
