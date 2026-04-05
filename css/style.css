@@ -12534,6 +12534,39 @@ button:active, .tab-item:active, .nav-item:active {
     .help-bubble-nudge { bottom: 130px; right: 14px; }
 }
 
+/* ==================== DASHBOARD SEARCH BAR ==================== */
+.dash-search-bar { padding: 0 0 8px; }
+.dash-search-input {
+    width: 100%; padding: 13px 16px; border-radius: 14px;
+    background: var(--bg-glass); border: 1.5px solid rgba(255,255,255,0.08);
+    color: var(--text); font-size: 0.92rem; font-family: 'DM Sans', sans-serif;
+    outline: none; transition: border-color 0.2s ease;
+}
+.dash-search-input:focus { border-color: var(--accent); }
+.dash-search-input::placeholder { color: var(--text-muted); opacity: 0.5; }
+.dash-search-results { margin-top: 8px; }
+.dash-search-count { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
+.dash-search-card {
+    padding: 12px 14px; border-radius: 12px; margin-bottom: 6px;
+    background: var(--bg-glass); border: 1px solid rgba(255,255,255,0.05);
+}
+.dash-search-card:hover { border-color: var(--accent); }
+.dash-search-card-head { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+.dash-search-badge {
+    font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 5px;
+    background: rgba(96,165,250,0.1); color: var(--accent);
+}
+.dash-search-section { font-size: 0.7rem; color: var(--text-muted); }
+.dash-search-q { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.dash-search-a { font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; }
+.dash-search-empty { text-align: center; padding: 14px; }
+.dash-search-empty p { color: var(--text-muted); font-size: 0.85rem; margin: 0; }
+.dash-search-session-btn {
+    display: block; width: 100%; padding: 12px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, var(--accent), var(--hot));
+    color: #fff; font-weight: 700; font-size: 0.88rem; cursor: pointer; margin-top: 8px;
+}
+
 /* ==================== CARD SEARCH ==================== */
 .card-search { margin: 12px 0; }
 .card-search-input-wrap { display: flex; gap: 8px; margin-bottom: 12px; }

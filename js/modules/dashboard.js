@@ -378,8 +378,15 @@
         // ===== ABOVE THE FOLD: logo + hero + actions =====
         var logoHTML = '<div class="dash-logo"><div class="sf-logo-mark sf-logo-mark--lg"><span>S</span></div><span class="sf-logo-text sf-logo-text--lg">Stud<span>Flow</span></span></div>';
 
+        var searchBarHTML = '<div class="dash-section dash-search-bar">'
+            + '<input type="text" class="dash-search-input" id="dash-search-input" '
+            + 'placeholder="\uD83D\uDD0D Que veux-tu reviser ?" autocomplete="off">'
+            + '<div id="dash-search-results" class="dash-search-results"></div>'
+            + '</div>';
+
         var aboveFold = ''
             + logoHTML
+            + searchBarHTML
             + renderHeroBac(gamStats)
             + renderHeroActions()
             + renderSubjectStrip();
@@ -407,6 +414,88 @@
             + '</div>';
 
         container.innerHTML = primaryHTML + exploreHTML;
+
+        // Wire up search
+        initDashboardSearch();
+    }
+
+    // ==================== DASHBOARD SEARCH ====================
+    var _searchTimer = null;
+    function initDashboardSearch() {
+        var input = document.getElementById('dash-search-input');
+        if (!input) return;
+
+        input.addEventListener('input', function() {
+            clearTimeout(_searchTimer);
+            var query = input.value.trim();
+            if (query.length < 3) {
+                document.getElementById('dash-search-results').innerHTML = '';
+                return;
+            }
+            _searchTimer = setTimeout(function() { runDashboardSearch(query); }, 300);
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                clearTimeout(_searchTimer);
+                var query = input.value.trim();
+                if (query.length >= 2) runDashboardSearch(query);
+            }
+        });
+    }
+
+    function runDashboardSearch(query) {
+        var resultsEl = document.getElementById('dash-search-results');
+        if (!resultsEl) return;
+
+        // Ensure data loaded
+        if (window.StudFlow.subjects && window.StudFlow.subjects.preload) {
+            window.StudFlow.subjects.preload().then(function() {
+                renderSearchResults(query, resultsEl);
+            });
+        } else {
+            renderSearchResults(query, resultsEl);
+        }
+    }
+
+    function renderSearchResults(query, container) {
+        if (window.StudFlow.cardSearch) {
+            var result = window.StudFlow.cardSearch.search(query, { maxResults: 6 });
+
+            if (result.results.length === 0) {
+                container.innerHTML = '<div class="dash-search-empty">'
+                    + '<p>Pas encore de cartes sur "' + (window.StudFlow.app.escapeText ? window.StudFlow.app.escapeText(query) : query) + '"</p>'
+                    + '</div>';
+                return;
+            }
+
+            var html = '<div class="dash-search-count">' + result.total + ' carte' + (result.total > 1 ? 's' : '') + ' trouvee' + (result.total > 1 ? 's' : '') + '</div>';
+
+            for (var i = 0; i < result.results.length; i++) {
+                var card = result.results[i].card;
+                var answer = (card.answer || card.explanation || '').replace(/<[^>]+>/g, '');
+                if (answer.length > 100) answer = answer.substring(0, 100) + '...';
+
+                html += '<div class="dash-search-card">'
+                    + '<div class="dash-search-card-head">'
+                    + '<span class="dash-search-badge">' + (card.subjectIcon || '') + ' ' + (card.subjectName || '') + '</span>'
+                    + '<span class="dash-search-section">' + (card.sectionTitle || '') + '</span>'
+                    + '</div>'
+                    + '<div class="dash-search-q">' + (window.StudFlow.app.escapeText ? window.StudFlow.app.escapeText(card.question) : card.question) + '</div>'
+                    + '<div class="dash-search-a">' + (window.StudFlow.app.escapeText ? window.StudFlow.app.escapeText(answer) : answer) + '</div>'
+                    + '</div>';
+            }
+
+            if (result.results.length >= 3) {
+                html += '<button class="dash-search-session-btn" data-action="cardSearch.launchSession" data-param="' + (window.StudFlow.app.escapeText ? window.StudFlow.app.escapeText(query) : query) + '">'
+                    + 'Lancer une session avec ces cartes \u2192'
+                    + '</button>';
+            }
+
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = '<div class="dash-search-empty"><p>Recherche en cours de chargement...</p></div>';
+        }
     }
 
     // ==================== IMPORTED PDF CARD ====================
