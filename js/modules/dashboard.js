@@ -276,137 +276,125 @@
         var container = document.getElementById('smart-dashboard');
         if (!container) return;
 
-        // Preload subject data in background for flashcard/quiz sessions
+        // Preload subject data in background
         if (window.StudFlow.subjects && window.StudFlow.subjects.preload) {
             window.StudFlow.subjects.preload();
         }
 
-        var profileKey = getMainProfile();
-        var profileData = PROFILE_DETAILS[profileKey] || PROFILE_DETAILS.equilibre;
-        var daily = getDailyData();
-        var focusStats = getFocusStats();
         var gamStats = getGamificationStats();
-        var state = getAppState();
-        var recs = RECOMMENDATIONS[profileKey] || RECOMMENDATIONS.equilibre;
-        var objectives = getObjectivesForToday(profileKey);
         var greeting = getGreeting();
+        var profile = getProfile();
+        var name = (profile && profile.identity && profile.identity.name) || '';
 
-        // Calculate progress stats
-        var totalCards = (state.flashcards ? state.flashcards.length : 0)
-                       + (state.customFlashcards ? state.customFlashcards.length : 0);
-        var masteredCards = state.masteredCards || 0;
-        var totalQuiz = (state.quizQuestions ? state.quizQuestions.length : 0)
-                       + (state.customQuiz ? state.customQuiz.length : 0);
+        // ===== 3 ELEMENTS. C'EST TOUT. =====
+        var html = '';
 
-        // Daily Goal block (warm unique objective)
-        var dailyGoalHTML = '';
-        if (window.StudFlow.dailyGoal) {
-            dailyGoalHTML = window.StudFlow.dailyGoal.renderDashboardBlock();
+        // 1. Streak (hero, centre de l'ecran)
+        html += renderStreakHero(gamStats, name || greeting);
+
+        // 2. CTA unique
+        html += renderMainCTA(gamStats);
+
+        // 3. Micro feedback (une ligne)
+        html += renderMicroFeedback(gamStats);
+
+        container.innerHTML = html;
+    }
+
+    // ==================== STREAK HERO (centre emotionnel) ====================
+    function renderStreakHero(gamStats, name) {
+        var streak = gamStats.streak || 0;
+
+        // Bac countdown
+        var now = new Date();
+        var bacDate = new Date(now.getFullYear(), 5, 18);
+        if (now > new Date(now.getFullYear(), 6, 5)) {
+            bacDate = new Date(now.getFullYear() + 1, 5, 18);
+        }
+        var days = Math.max(0, Math.ceil((bacDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
+
+        var greetText = name ? name : getGreeting();
+
+        var streakHTML = '';
+        if (streak > 0) {
+            streakHTML = '<div class="dash-streak-hero">'
+                + '<span class="dash-streak-fire-big">\uD83D\uDD25</span>'
+                + '<span class="dash-streak-number">' + streak + '</span>'
+                + '</div>'
+                + '<div class="dash-streak-label">' + streak + ' jour' + (streak > 1 ? 's' : '') + ' de suite</div>';
+        } else {
+            streakHTML = '<div class="dash-streak-hero dash-streak-zero">'
+                + '<span class="dash-streak-fire-big">\uD83D\uDD25</span>'
+                + '</div>'
+                + '<div class="dash-streak-label dash-streak-label--zero">Jour 1 commence maintenant</div>';
         }
 
-        // Revision plan (smart weakness analysis)
-        var revisionPlanHTML = '';
-        if (window.StudFlow.revisionPlan) {
-            revisionPlanHTML = window.StudFlow.revisionPlan.renderDashboardWidget();
-        }
+        return '<div class="dash-section dash-streak-section">'
+            + '<p class="dash-greet-small">' + greetText + '</p>'
+            + streakHTML
+            + '<div class="dash-bac-countdown">J\u2212' + days + ' avant le Bac</div>'
+            + '</div>';
+    }
 
-        // Secondary zone blocks
-        var srBlockHTML = '';
-        if (window.StudFlow.spacedRepetition) {
-            srBlockHTML = window.StudFlow.spacedRepetition.renderDashboardBlock();
-        }
+    // ==================== MAIN CTA: LE bouton ====================
+    function renderMainCTA(gamStats) {
+        var done = window.StudFlow.dailySession && window.StudFlow.dailySession.hasSessionToday();
 
-        var missionsWidgetHTML = '';
-        if (window.StudFlow.missions) {
-            missionsWidgetHTML = window.StudFlow.missions.renderDashboardWidget();
-        }
-
-        var timelineWidgetHTML = '';
-        if (window.StudFlow.timeline) {
-            timelineWidgetHTML = window.StudFlow.timeline.renderDashboardWidget();
-        }
-
-        var premiumBadgeHTML = '';
-        if (window.StudFlow.premium) {
-            premiumBadgeHTML = '<div class="dash-section dash-premium-badge-row">'
-                + window.StudFlow.premium.renderBadge()
+        if (done) {
+            return '<div class="dash-section dash-main-cta dash-main-cta--done" data-action="dailySession.show">'
+                + '<span class="dash-main-cta-title">Encore une session ?</span>'
                 + '</div>';
         }
 
-        // ===== PRIMARY ZONE (5 focused sections) =====
-        // 1. Bac countdown
-        // 2. Main action card (Session: Focus / Flashcards / Quiz)
-        // 3. Mission du jour
-        // 4. Gamification (XP / Streak / Badges)
-        // 5. Progression (adaptive mastery + stats)
-
-        var dailyMissionHTML = '';
-        if (window.StudFlow.dailyMission) {
-            dailyMissionHTML = window.StudFlow.dailyMission.renderCard();
-        }
-
-        var adaptiveHTML = '';
-        if (window.StudFlow.adaptive) {
-            adaptiveHTML = window.StudFlow.adaptive.renderCard();
-        }
-
-        var dailySessionHTML = '';
-        if (window.StudFlow.dailySession) {
-            dailySessionHTML = window.StudFlow.dailySession.renderDashboardButton();
-        }
-
-        var dsDemainHTML = '';
-        if (window.StudFlow.dsDemain) {
-            dsDemainHTML = window.StudFlow.dsDemain.renderDashboardLink();
-        }
-
-        var subjectPickerCTA = '';
-        if (window.StudFlow.subjectPicker) {
-            subjectPickerCTA = window.StudFlow.subjectPicker.renderDashboardCTA();
-        }
-
-        var errorNbHTML = '';
-        if (window.StudFlow.errorNotebook) {
-            errorNbHTML = window.StudFlow.errorNotebook.renderDashboardWidget();
-        }
-
-        var weeklyReportBannerHTML = '';
-        if (window.StudFlow.weeklyReport) {
-            weeklyReportBannerHTML = window.StudFlow.weeklyReport.renderDashboardBanner();
-        }
-
-        // ===== ABOVE THE FOLD: logo + hero + actions =====
-        var logoHTML = '<div class="dash-logo"><div class="sf-logo-mark sf-logo-mark--lg"><span>S</span></div><span class="sf-logo-text sf-logo-text--lg">Stud<span>Flow</span></span></div>';
-
-        var aboveFold = ''
-            + logoHTML
-            + renderHeroBac(gamStats)
-            + renderHeroActions()
-            + renderSubjectStrip();
-
-        // ===== BELOW: engagement + extras =====
-        var belowFold = ''
-            + revisionPlanHTML
-            + dailyGoalHTML
-            + renderImportedCard()
-            + renderStreakAlert(gamStats)
-            + dailyMissionHTML
-            + srBlockHTML
-            + missionsWidgetHTML
-            + renderChronoCard()
-            + renderDailyTip();
-
-        var primaryHTML = aboveFold + belowFold;
-
-        // ===== EXPLORE BUTTON (replaces cluttered collapsible) =====
-        var exploreHTML = '<div class="dash-section dash-explore-row">'
-            + '<button class="dash-explore-btn" data-action="dashboard.openExplore">'
-            + '<span>\uD83D\uDD0D Explorer tous les outils</span>'
-            + '<span class="dash-explore-arrow">\u2192</span>'
-            + '</button>'
+        return '<div class="dash-section dash-main-cta" data-action="dailySession.show">'
+            + '<span class="dash-main-cta-title">Lancer ma session</span>'
+            + '<span class="dash-main-cta-sub">5 min</span>'
             + '</div>';
+    }
 
-        container.innerHTML = primaryHTML + exploreHTML;
+    // ==================== MICRO FEEDBACK (une seule ligne emotionnelle) ====================
+    function renderMicroFeedback(gamStats) {
+        var sr = window.StudFlow.spacedRepetition;
+        var mastered = sr ? sr.getMasteredCount() : 0;
+        var sessions = window.StudFlow.dailySession ? window.StudFlow.dailySession.getSessionCount() : 0;
+        var streak = gamStats.streak || 0;
+
+        // Social proof: simulated percentile based on consistency
+        var percentile = Math.min(95, Math.max(5, 20 + (streak * 8) + (sessions * 3) + Math.round(mastered * 0.5)));
+
+        var msg = '';
+        if (sessions === 0 && mastered === 0) {
+            msg = '\uD83C\uDF31 Ta premiere session va tout changer.';
+        } else {
+            // Pick the most emotionally impactful message
+            var SESSION_KEY = 'studflow_daily_session';
+            var prevData = window.StudFlow.storage.loadData(SESSION_KEY, {});
+            var yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            var yesterdayKey = yesterday.toISOString().slice(0, 10);
+            var prevSession = prevData[yesterdayKey];
+
+            if (prevSession && prevSession.correct !== undefined) {
+                var prevPct = prevSession.total > 0 ? Math.round((prevSession.correct / prevSession.total) * 100) : 0;
+                var todayData = prevData[new Date().toISOString().slice(0, 10)];
+                if (todayData && todayData.correct !== undefined) {
+                    var todayPct = todayData.total > 0 ? Math.round((todayData.correct / todayData.total) * 100) : 0;
+                    if (todayPct > prevPct) {
+                        msg = '\u2B06\uFE0F Meilleur qu\'hier \u00B7 Top ' + percentile + '% cette semaine';
+                    } else {
+                        msg = '\uD83D\uDCAA ' + mastered + ' cartes maitrisees \u00B7 Top ' + percentile + '%';
+                    }
+                } else {
+                    msg = '\uD83D\uDCAA ' + mastered + ' cartes maitrisees \u00B7 Top ' + percentile + '%';
+                }
+            } else {
+                msg = '\uD83D\uDCAA ' + mastered + ' cartes maitrisees \u00B7 Top ' + percentile + '%';
+            }
+        }
+
+        return '<div class="dash-section dash-micro-feedback">'
+            + '<p class="dash-micro-text">' + msg + '</p>'
+            + '</div>';
     }
 
     // ==================== IMPORTED PDF CARD ====================
@@ -928,11 +916,13 @@
 
         var items = [
             { icon: '\uD83D\uDCDA', label: 'Matieres', action: 'matieres' },
+            { icon: '\u26A1', label: 'Quiz', action: 'quiz' },
+            { icon: '\uD83C\uDDEB\uD83C\uDDF7', label: 'Bac Francais', action: 'bacfrancais' },
             { icon: '\uD83D\uDCDC', label: 'Annales', action: 'annales' },
-            { icon: '\uD83C\uDFAF', label: 'Focus', action: 'focus' },
             { icon: '\uD83D\uDCA8', label: 'Anti-stress', action: 'stress' },
             { icon: '\uD83D\uDCCA', label: 'Progression', action: 'stats' },
-            { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' }
+            { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' },
+            { icon: '\u2699\uFE0F', label: 'Parametres', action: 'settings' }
         ];
 
         var grid = items.map(function(item) {

@@ -118,9 +118,10 @@
         container.style.transform = 'translateY(8px)';
         setTimeout(function() {
             switch (step) {
-                case 1: renderStep1(container); break;
-                case 2: renderOB_Class(container); break;
-                case 3: renderOB_Strong(container); break;
+                case 1: renderFastStep1_Name(container); break;
+                case 2: renderFastStep2_Subject(container); break;
+                case 3: renderFastStep3_Go(container); break;
+                // Legacy steps (still reachable for users mid-onboarding)
                 case 4: renderOB_Weak(container); break;
                 case 5: renderOB_WorkStyle(container); break;
                 case 6: renderOB_Stress(container); break;
@@ -128,9 +129,8 @@
                 case 8: renderOB_Preferences(container); break;
                 case 9: renderOB_Summary(container); break;
                 case 10: renderStep4(container); break;
-                // Legacy compat
                 case 25: renderOB_Preferences(container); break;
-                default: renderStep1(container);
+                default: renderFastStep1_Name(container);
             }
             container.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             container.style.opacity = '1';
@@ -138,7 +138,101 @@
         }, 50);
     }
 
-    // ==================== STEP 1 — BIENVENUE ====================
+    // ==================== FAST ONBOARDING (3 steps) ====================
+    function renderFastStep1_Name(container) {
+        container.innerHTML = ''
+            + '<div class="ob-step ob-fast">'
+            + '<div class="ob-logo">'
+            + '<div class="ob-logo-icon"></div>'
+            + '<span class="ob-logo-text">Stud<span>Flow</span></span>'
+            + '</div>'
+            + '<h1 class="ob-title">Comment tu t\'appelles ?</h1>'
+            + '<p class="ob-subtitle">On va personnaliser ton experience.</p>'
+            + '<input type="text" class="ob-input" id="ob-name" placeholder="Ton prenom..." maxlength="30" autocomplete="given-name">'
+            + renderProgressDots(1, 3)
+            + '<button class="ob-btn-primary" data-action="onboarding.fastNext1">Continuer</button>'
+            + '</div>';
+
+        setTimeout(function() {
+            var input = document.getElementById('ob-name');
+            if (input) {
+                input.focus();
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') fastNext1();
+                });
+            }
+        }, 100);
+    }
+
+    function fastNext1() {
+        var nameEl = document.getElementById('ob-name');
+        _obData.name = nameEl ? nameEl.value.trim() : '';
+        showStep(2);
+    }
+
+    function renderFastStep2_Subject(container) {
+        container.innerHTML = '<div class="ob-step ob-fast">'
+            + renderProgressDots(2, 3)
+            + '<h2 class="ob-heading">Ta matiere principale</h2>'
+            + '<p class="ob-text">Celle ou tu veux progresser le plus.</p>'
+            + subjectChips('ob-main-subject', false)
+            + '<button class="ob-btn-primary" data-action="onboarding.fastNext2">Continuer</button>'
+            + '</div>';
+        initChipLogic(container);
+    }
+
+    function fastNext2() {
+        _obData.mainSubject = getSelectedOne('ob-main-subject') || 'francais';
+
+        // Build minimal profile and save
+        var profile = window.StudFlow.storage.getUserProfile() || {};
+        profile.identity = profile.identity || {};
+        profile.academic = profile.academic || {};
+        profile.behavior = profile.behavior || {};
+
+        profile.identity.name = _obData.name || '';
+        profile.identity.class = 'terminale';
+        profile.academic.weakSubjects = [_obData.mainSubject];
+        profile.academic.preferredMethod = 'flashcards';
+        profile.behavior.stressLevel = 'medium';
+        profile.behavior.confidence = 'medium';
+        profile.behavior.consistency = 'medium';
+        profile.mainProfile = 'equilibre';
+        profile.profiles = ['equilibre'];
+        profile.completedAt = new Date().toISOString();
+
+        window.StudFlow.storage.updateUserProfile(profile);
+        showStep(3);
+    }
+
+    function renderFastStep3_Go(container) {
+        // No celebration screen. Mark done and launch session IMMEDIATELY.
+        fastComplete();
+    }
+
+    function fastComplete() {
+        // Mark onboarding done
+        var state = loadState();
+        state.completed = true;
+        saveState(state);
+        window.StudFlow.storage.setOnboardingDone();
+
+        // XP for completing onboarding
+        if (window.StudFlow.gamification) {
+            window.StudFlow.gamification.addXP('diagnostic_done');
+        }
+
+        // Launch daily session INSTANTLY — no dashboard, no delay
+        if (window.StudFlow.dailySession) {
+            window.StudFlow.dailySession.show();
+        } else {
+            // Fallback: show dashboard if dailySession not loaded yet
+            window.StudFlow.app.showScreen('dashboard');
+            window.StudFlow.app.updateDashboard();
+        }
+    }
+
+    // ==================== LEGACY STEP 1 — BIENVENUE (kept for compat) ====================
     function renderStep1(container) {
         container.innerHTML = ''
             + '<div class="ob-step ob-welcome">'
@@ -579,7 +673,10 @@
         launchAction: launchAction,
         checkPendingCelebration: checkPendingCelebration,
         complete: complete,
-        skipToDashboard: skipToDashboard
+        skipToDashboard: skipToDashboard,
+        fastNext1: fastNext1,
+        fastNext2: fastNext2,
+        fastComplete: fastComplete
     };
 
 })();

@@ -826,17 +826,22 @@
                     { question: 'Quelle figure ? "Tout Paris etait en emoi." / "L\'Elysee a declare..."', answer: 'METONYMIE dans les deux cas. Le LIEU remplace les HABITANTS/OCCUPANTS. "Paris" = les Parisiens. "L\'Elysee" = le president. '
                         + 'On entend ca tous les jours aux infos : "Moscou repond a Washington", "Bruxelles decide". C\'est de la metonymie mediatique. '
                         + '\uD83D\uDCA1 Le langage journalistique est BOURRE de metonymies. Si tu regardes les infos avec un oeil rhetorique, tu en verras des dizaines chaque jour.' },
-                    { question: 'Quelle figure ? "Les fers des prisonniers" pour "les chaines".', answer: 'METONYMIE. Le MATERIAU ("les fers" = le metal) remplace l\'OBJET fabrique (les chaines). '
-                        + 'Ce n\'est PAS une synecdoque car le fer n\'est pas une PARTIE de la chaine : il est la MATIERE dont elle est faite. '
-                        + '\uD83D\uDCA1 ASTUCE : matiere pour objet = metonymie. "L\'acier" (pour l\'epee), "le plomb" (pour les balles). Le lien est logique, pas partie/tout.' },
+                    { question: 'Quelle figure ? "Les fers des prisonniers" pour "les chaines".', answer: 'C\'est une METONYMIE (et PAS une synecdoque). '
+                        + 'Explication simple : "les fers" = le metal avec lequel on fabrique les chaines. On remplace l\'objet (chaine) par la matiere (fer). '
+                        + 'Pourquoi c\'est PAS une synecdoque : le fer n\'est pas un MORCEAU de la chaine. C\'est le materiau. C\'est une relation matiere → objet, pas partie → tout. '
+                        + 'Exemples du meme type : "l\'acier" pour dire une epee. "Le plomb" pour dire des balles. '
+                        + 'Astuce pour le Bac : si c\'est la matiere qui remplace l\'objet fabrique = toujours metonymie. '
+                        + 'Mots difficiles : "metonymie" = remplacer un mot par un autre qui a un lien logique avec lui. "synecdoque" = remplacer le tout par une partie (ou l\'inverse).' },
                     { question: 'Quelle figure ? "J\'ai mange trois assiettes." / "Finir sa bouteille."', answer: 'METONYMIE (contenant/contenu). L\'assiette (contenant) remplace la nourriture (contenu). La bouteille (contenant) remplace la boisson (contenu). '
                         + 'C\'est le MEME mecanisme que "boire un verre". Le contenant designe le contenu. '
                         + '\uD83D\uDCA1 REGLE D\'OR : contenant pour contenu = TOUJOURS metonymie. C\'est le type de metonymie le plus frequent dans la vie quotidienne.' },
                     // --- SYNECDOQUE ---
-                    { question: 'Quelle figure ? "Une voile a l\'horizon" pour "un bateau".', answer: 'SYNECDOQUE. La voile (une PARTIE du bateau) designe le TOUT (le bateau entier). '
-                        + 'La synecdoque joue EXCLUSIVEMENT sur le rapport PARTIE/TOUT. La voile est physiquement une partie du bateau. '
-                        + '\uD83D\uDCA1 ASTUCE MEMO : SYNecdoque = une partie du SYSteme. Si et SEULEMENT si le lien est partie-pour-tout ou tout-pour-partie, c\'est une synecdoque.' },
-                    { question: 'Quelle figure ? "Vingt tetes casquees s\'avancaient." / "Il n\'a pas de toit."', answer: 'SYNECDOQUE dans les deux cas. "Tetes" (partie du corps) = soldats (tout). "Toit" (partie de la maison) = maison (tout). '
+                    { question: 'Quelle figure ? "Une voile a l\'horizon" pour "un bateau".', answer: 'C\'est une SYNECDOQUE. '
+                        + 'Explication simple : la voile est un MORCEAU du bateau. On utilise un morceau (la voile) pour parler du tout (le bateau entier). C\'est ca une synecdoque : la PARTIE remplace le TOUT. '
+                        + 'Exemples concrets : "Il n\'a pas de toit" = il n\'a pas de maison (le toit = partie de la maison). "Vingt tetes casquees" = vingt soldats (la tete = partie du soldat). '
+                        + 'Astuce pour ne pas confondre : synecdoque = un morceau pour le tout. Metonymie = un lien logique mais PAS un morceau (matiere, lieu, auteur...). '
+                        + 'Mots difficiles : "synecdoque" = figure ou on remplace le tout par une de ses parties (ou l\'inverse). Vient du grec "syn" (ensemble) + "ekdoche" (interpretation).' },
+                    { question: 'Quelle figure ? "Vingt tetes casquees s\'avancaient." / "Il n\'a pas de toit."', answer: 'SYNECDOQUE dans les deux cas. "Tetes" = on prend une partie du corps (la tete) pour parler de la personne entiere (le soldat). "Toit" = on prend une partie de la maison (le toit) pour parler de la maison entiere. A chaque fois, un MORCEAU remplace le TOUT. C\'est la regle de la synecdoque. '
                         + 'Dans les deux cas, une PARTIE physique designe le TOUT. C\'est le critere unique de la synecdoque. '
                         + '\uD83D\uDCA1 Partie du corps pour personne = synecdoque. Partie du batiment pour le batiment = synecdoque. Le lien est PHYSIQUE et PARTIE/TOUT.' },
                     { question: 'Quelle figure ? "La France a gagne la Coupe du monde."', answer: 'SYNECDOQUE (le TOUT pour la PARTIE). "La France" (le pays entier) designe l\'equipe de France (une partie du pays). '

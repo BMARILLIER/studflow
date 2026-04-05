@@ -6,7 +6,7 @@
     var MAX_MESSAGES = 60;
     var PRUNE_TO = 30;
     var MAX_HISTORY = 12;
-    var API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    var API_URL = (window.StudFlow && window.StudFlow.CONFIG && window.StudFlow.CONFIG.GROQ_API_URL) || 'https://api.groq.com/openai/v1/chat/completions';
     var MODEL_PRIMARY = 'llama-3.3-70b-versatile';
     var MODEL_FALLBACK = 'mixtral-8x7b-32768';
     var TIMEOUT_MS = 20000;

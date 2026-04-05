@@ -24,7 +24,8 @@
             import('./subjectData/quizbac1.js'),
             import('./subjectData/quizbac2.js'),
             import('./subjectData/anglais.js'),
-            import('./subjectData/svt.js')
+            import('./subjectData/svt.js'),
+            import('./subjectData/francais2.js')
         ].map(function(p) { return p.catch(function(err) { console.error('[Subjects] Load failed:', err); }); }))
         .then(function() {
             _dataLoaded = true;

@@ -2,6 +2,12 @@
 (function() {
     // PDF.js is now lazy-loaded in js/modules/pdf.js
 
+    // ==================== SHARED CONFIG ====================
+    window.StudFlow = window.StudFlow || {};
+    window.StudFlow.CONFIG = {
+        GROQ_API_URL: 'https://api.groq.com/openai/v1/chat/completions'
+    };
+
     // Etat global
     let appState = {
         apiKey: '',
@@ -785,7 +791,7 @@
         retries = retries || 3;
         for (let attempt = 1; attempt <= retries; attempt++) {
             try {
-                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                const response = await fetch(window.StudFlow.CONFIG.GROQ_API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

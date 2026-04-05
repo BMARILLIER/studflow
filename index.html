@@ -35,22 +35,13 @@
                 <span class="nav-icon" aria-hidden="true">🏠</span> Accueil
             </button>
             <button class="nav-item" data-screen="flashcard" data-action="screen:flashcard">
-                <span class="nav-icon" aria-hidden="true">🎴</span> Cards
-            </button>
-            <button class="nav-item" data-screen="quiz" data-action="screen:quiz">
-                <span class="nav-icon" aria-hidden="true">⚡</span> Quiz
-            </button>
-            <button class="nav-item" data-screen="coach" data-action="screen:coach">
-                <span class="nav-icon" aria-hidden="true">🧠</span> Coach
-            </button>
-            <button class="nav-item" data-screen="stress" data-action="screen:stress">
-                <span class="nav-icon" aria-hidden="true">💆</span> Zen
+                <span class="nav-icon" aria-hidden="true">🎴</span> Reviser
             </button>
             <button class="nav-item" data-screen="focus" data-action="screen:focus">
                 <span class="nav-icon" aria-hidden="true">🎯</span> Focus
             </button>
-            <button class="nav-item" data-screen="bacfrancais" data-action="screen:bacfrancais">
-                <span class="nav-icon" aria-hidden="true">🇫🇷</span> Bac
+            <button class="nav-item" data-screen="coach" data-action="screen:coach">
+                <span class="nav-icon" aria-hidden="true">🧠</span> Coach
             </button>
         </nav>
         <div class="xp-bar-header">
@@ -103,8 +94,8 @@
 
         <!-- Dashboard Screen -->
         <div class="screen" id="screen-dashboard">
-            <!-- XP Card (kept for gamification display) -->
-            <div class="dash-xp-card">
+            <!-- XP bar hidden — streak is the primary metric now -->
+            <div class="dash-xp-card" style="display:none;">
                 <div class="dash-xp-level">1</div>
                 <div class="dash-xp-info">
                     <div class="dash-xp-title">🌱 Debutant — Niveau 1</div>
@@ -114,30 +105,12 @@
             </div>
 
             <!-- Smart Dashboard (rendered dynamically by dashboard.js) -->
-            <div id="smart-dashboard">
-                <div class="skeleton-block" style="height:80px;margin-bottom:1rem;padding:1rem;">
-                    <div class="skeleton-line" style="width:40%"></div>
-                    <div class="skeleton-line" style="width:70%"></div>
-                    <div class="skeleton-line" style="width:55%"></div>
-                </div>
-                <div class="skeleton-block" style="height:120px;margin-bottom:1rem"></div>
-                <div class="skeleton-block" style="height:60px"></div>
-            </div>
+            <div id="smart-dashboard"></div>
 
             <!-- Hidden counters for flashcards/quiz modules -->
             <span id="flashcard-count" style="display:none;">0 cartes</span>
             <span id="quiz-count" style="display:none;">0 questions</span>
             <p id="dashboard-message" style="display:none;"></p>
-
-            <!-- Bottom actions (visible on desktop only, mobile uses tab bar) -->
-            <div class="dash-bottom-actions dash-desktop-only">
-                <button class="new-course-btn" data-action="screen:upload">
-                    + Importer un PDF
-                </button>
-                <button class="new-course-btn secondary" data-action="screen:settings">
-                    ⚙ Parametres
-                </button>
-            </div>
         </div>
 
         <!-- Flashcard Mode Picker Overlay -->
@@ -737,11 +710,11 @@
 
     </main>
 
-    <!-- Bottom Tab Bar -->
+    <!-- Bottom Tab Bar (4 tabs: Reviser, Focus, Coach, Profil) -->
     <nav id="tab-bar" class="tab-bar" style="display:none;" role="navigation" aria-label="Navigation principale">
         <button class="tab-item active" data-tab="dashboard" data-action="screen:dashboard">
             <span class="tab-icon" aria-hidden="true">🏠</span>
-            <span class="tab-label">Dashboard</span>
+            <span class="tab-label">Accueil</span>
         </button>
         <button class="tab-item" data-tab="reviser" data-action="screen:flashcard">
             <span class="tab-icon" aria-hidden="true">🎴</span>
@@ -755,13 +728,9 @@
             <span class="tab-icon" aria-hidden="true">🧠</span>
             <span class="tab-label">Coach</span>
         </button>
-        <button class="tab-item" data-tab="plus" data-action="toggle-more-menu">
-            <span class="tab-icon" aria-hidden="true">☰</span>
-            <span class="tab-label">Plus</span>
-        </button>
     </nav>
 
-    <!-- More Menu Overlay (triggered by Plus tab) -->
+    <!-- More Menu Overlay (hidden — features accessible via dashboard explore drawer) -->
     <div id="tab-more-menu" class="tab-more-menu" style="display:none;" role="menu" aria-label="Autres modules">
         <div class="tab-more-backdrop" data-action="toggle-more-menu"></div>
         <div class="tab-more-sheet">
@@ -770,64 +739,22 @@
                 <button class="tab-more-close" data-action="toggle-more-menu" aria-label="Fermer">&times;</button>
             </div>
             <div class="tab-more-sections">
-                <!-- Section: Reviser -->
                 <div class="tab-more-section">
                     <div class="tab-more-section-label">Reviser</div>
                     <div class="tab-more-grid">
-                        <button data-action="screen:matieres">
-                            <span>📚</span><span>Matieres</span>
-                        </button>
-                        <button data-action="screen:bacfrancais">
-                            <span>🇫🇷</span><span>Bac Francais</span>
-                        </button>
-                        <button data-action="screen:annales">
-                            <span>📜</span><span>Annales</span>
-                        </button>
-                        <button data-action="screen:ds-demain">
-                            <span>📝</span><span>DS demain</span>
-                        </button>
-                        <button data-action="screen:urgence">
-                            <span>🚨</span><span>Urgence</span>
-                        </button>
+                        <button data-action="screen:matieres"><span>📚</span><span>Matieres</span></button>
+                        <button data-action="screen:bacfrancais"><span>🇫🇷</span><span>Bac Francais</span></button>
+                        <button data-action="screen:quiz"><span>⚡</span><span>Quiz</span></button>
+                        <button data-action="screen:annales"><span>📜</span><span>Annales</span></button>
                     </div>
                 </div>
-                <!-- Section: Progresser -->
-                <div class="tab-more-section">
-                    <div class="tab-more-section-label">Progresser</div>
-                    <div class="tab-more-grid">
-                        <button data-action="screen:chrono">
-                            <span>⏱️</span><span>Chrono</span>
-                        </button>
-                        <button data-action="screen:challenges">
-                            <span>⚔️</span><span>Defis amis</span>
-                        </button>
-                        <button data-action="screen:stats">
-                            <span>📊</span><span>Stats</span>
-                        </button>
-                        <button data-action="screen:badges">
-                            <span>🏅</span><span>Badges</span>
-                        </button>
-                    </div>
-                </div>
-                <!-- Section: Outils -->
                 <div class="tab-more-section">
                     <div class="tab-more-section-label">Outils</div>
                     <div class="tab-more-grid">
-                        <button data-action="screen:stress">
-                            <span>💆</span><span>Anti-stress</span>
-                        </button>
-                        <button data-action="screen:planbac">
-                            <span>📅</span><span>Plan Bac</span>
-                        </button>
-                        <button data-action="screen:generators">
-                            <span>⚙️</span><span>Generateurs</span>
-                        </button>
-                        <button data-action="screen:settings">
-                            <span>⚙️</span><span>Parametres</span>
-                        </button>
-                        <button class="admin-only" data-action="screen:admin">
-                            <span>🔐</span><span>Admin</span>
-                        </button>
+                        <button data-action="screen:stress"><span>💆</span><span>Anti-stress</span></button>
+                        <button data-action="screen:stats"><span>📊</span><span>Stats</span></button>
+                        <button data-action="screen:settings"><span>⚙️</span><span>Parametres</span></button>
+                        <button class="admin-only" data-action="screen:admin"><span>🔐</span><span>Admin</span></button>
                     </div>
                 </div>
             </div>
