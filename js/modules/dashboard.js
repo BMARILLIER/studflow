@@ -202,6 +202,7 @@
         if (moduleId && moduleId.indexOf('subj_') === 0) {
             var subjId = moduleId.replace('subj_', '');
             if (window.StudFlow.subjects) {
+                window.StudFlow.app.showScreen('matieres');
                 window.StudFlow.subjects.showSubject(subjId);
             }
             return;
