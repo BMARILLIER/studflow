@@ -607,6 +607,108 @@
         if (el) el.textContent = `${total} cartes`;
     }
 
+    // ==================== SIMPLIFY (Je ne comprends pas) ====================
+    function simplify() {
+        var box = document.getElementById('fc-simplify-box');
+        var btn = document.getElementById('fc-simplify-btn');
+        if (!box) return;
+
+        // Toggle : si deja visible, cacher
+        if (box.style.display !== 'none') {
+            box.style.display = 'none';
+            if (btn) btn.textContent = '\uD83E\uDDE0 Je ne comprends pas';
+            return;
+        }
+
+        var cards = getAllCards();
+        var card = cards[currentIndex];
+        if (!card) return;
+
+        var answer = (card.answer || '').replace(/<[^>]+>/g, '');
+
+        // Extraire les parties si elles existent deja dans la reponse
+        var enGros = '';
+        var motsDifficiles = '';
+        var resteTexte = answer;
+
+        // Chercher "En gros :"
+        var egMatch = answer.match(/En gros\s*[:]\s*([^.]+\.)/i);
+        if (egMatch) enGros = egMatch[1].trim();
+
+        // Chercher "Mots difficiles :" ou "Mot difficile :"
+        var mdMatch = answer.match(/Mots?\s*difficiles?\s*[:]\s*(.+)/i);
+        if (mdMatch) motsDifficiles = mdMatch[1].trim();
+
+        // Construire la version simplifiee
+        var html = '<div class="fc-simple-content">';
+
+        // Reponse simple
+        if (enGros) {
+            html += '<div class="fc-simple-section">'
+                + '<span class="fc-simple-label">Reponse simple :</span>'
+                + '<p class="fc-simple-text">' + escapeSimple(enGros) + '</p>'
+                + '</div>';
+        } else {
+            // Prendre la premiere phrase
+            var firstSentence = answer.split(/\.\s/)[0] + '.';
+            if (firstSentence.length > 150) firstSentence = firstSentence.substring(0, 150) + '...';
+            html += '<div class="fc-simple-section">'
+                + '<span class="fc-simple-label">Reponse simple :</span>'
+                + '<p class="fc-simple-text">' + escapeSimple(firstSentence) + '</p>'
+                + '</div>';
+        }
+
+        // Etapes (extraire les numeros s'il y en a)
+        var steps = answer.match(/\d\)\s*[^.]+\./g);
+        if (!steps) steps = answer.match(/\d\)\s*[^,]+/g);
+        if (steps && steps.length >= 2) {
+            html += '<div class="fc-simple-section">'
+                + '<span class="fc-simple-label">Etapes :</span>';
+            for (var i = 0; i < Math.min(steps.length, 5); i++) {
+                html += '<p class="fc-simple-step">' + escapeSimple(steps[i].trim()) + '</p>';
+            }
+            html += '</div>';
+        }
+
+        // Mots difficiles
+        if (motsDifficiles) {
+            html += '<div class="fc-simple-section">'
+                + '<span class="fc-simple-label">Mots difficiles :</span>'
+                + '<p class="fc-simple-text">' + escapeSimple(motsDifficiles) + '</p>'
+                + '</div>';
+        }
+
+        // Pourquoi c'est important
+        var pourquoi = answer.match(/Pourquoi[^:]*[:]\s*([^.]+\.)/i);
+        if (pourquoi) {
+            html += '<div class="fc-simple-section">'
+                + '<span class="fc-simple-label">Pourquoi :</span>'
+                + '<p class="fc-simple-text">' + escapeSimple(pourquoi[1].trim()) + '</p>'
+                + '</div>';
+        }
+
+        html += '</div>';
+
+        box.innerHTML = html;
+        box.style.display = '';
+        if (btn) btn.textContent = '\u2715 Fermer l\'aide';
+    }
+
+    function escapeSimple(str) {
+        if (!str) return '';
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // Reset simplify box when card changes
+    var _origDisplay = display;
+    display = function() {
+        var box = document.getElementById('fc-simplify-box');
+        var btn = document.getElementById('fc-simplify-btn');
+        if (box) box.style.display = 'none';
+        if (btn) btn.textContent = '\uD83E\uDDE0 Je ne comprends pas';
+        _origDisplay();
+    };
+
     window.StudFlow = window.StudFlow || {};
     window.StudFlow.flashcards = {
         start, display, flip, answer, showResults,
@@ -614,6 +716,7 @@
         shuffleDeck: shuffleDeck,
         showModePicker: showModePicker,
         startMode: startMode,
-        getUserLevel: getUserLevel
+        getUserLevel: getUserLevel,
+        simplify: simplify
     };
 })();

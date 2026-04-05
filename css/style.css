@@ -912,6 +912,36 @@ body.theme-light .math-fallback {
 }
 
 .flashcard-actions { display: flex; gap: 1rem; justify-content: center; }
+
+/* Bouton "Je ne comprends pas" */
+.fc-simplify-btn {
+    display: block; margin: 12px auto 0; padding: 10px 20px;
+    border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+    background: var(--bg-glass); color: var(--text-muted);
+    font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    transition: all 0.2s ease; font-family: 'DM Sans', sans-serif;
+}
+.fc-simplify-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Box explication simplifiee */
+.fc-simplify-box {
+    margin: 12px auto 0; max-width: 600px; padding: 16px 20px;
+    border-radius: 16px; border: 1px solid rgba(52,211,153,0.2);
+    background: rgba(52,211,153,0.06);
+}
+.fc-simple-content { }
+.fc-simple-section { margin-bottom: 10px; }
+.fc-simple-section:last-child { margin-bottom: 0; }
+.fc-simple-label {
+    display: block; font-size: 0.72rem; font-weight: 700;
+    color: var(--mint); text-transform: uppercase; letter-spacing: 0.04em;
+    margin-bottom: 3px;
+}
+.fc-simple-text { font-size: 0.85rem; color: var(--text); margin: 0; line-height: 1.5; }
+.fc-simple-step {
+    font-size: 0.82rem; color: var(--text); margin: 2px 0;
+    padding-left: 12px; border-left: 2px solid var(--mint);
+}
 .flashcard-btn {
     padding: 1rem 2.5rem; border-radius: var(--radius-pill);
     font-weight: 700; font-size: 1rem; border: none; cursor: pointer;
