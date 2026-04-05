@@ -476,6 +476,8 @@
                 + '</div>';
         }
 
+        html += '<p class="subj-guide-hint">\uD83C\uDFAF Choisis ton chapitre pour commencer</p>';
+
         html += '<div class="bac-sections">';
         for (var i = 0; i < subj.sections.length; i++) {
             var s = subj.sections[i];
@@ -507,7 +509,7 @@
                 + '</div>'
                 + '<div class="section-detail-stats">' + statsLine + '</div>'
                 + '</div>'
-                + '<span class="bac-section-arrow">\u2192</span>'
+                + '<span class="bac-section-cta">\uD83C\uDFAF Reviser</span>'
                 + '</div>';
         }
         html += '</div>';

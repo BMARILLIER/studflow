@@ -389,6 +389,7 @@
             + searchBarHTML
             + renderHeroBac(gamStats)
             + renderHeroActions()
+            + renderSubjectGrid()
             + renderSubjectStrip();
 
         // ===== BELOW: engagement + extras =====
@@ -847,6 +848,47 @@
 
         return '<div class="dash-section dash-subjects-strip">'
             + '<div class="dash-subjects-scroll">'
+            + cardsHTML
+            + '</div>'
+            + '</div>';
+    }
+
+    // ==================== SUBJECT GRID (mode guide) ====================
+    function renderSubjectGrid() {
+        var subjects = window.StudFlow.subjects ? window.StudFlow.subjects.getAll() : [];
+        if (subjects.length === 0) return '';
+
+        // Priorite : matieres principales du Bac
+        var priority = ['francais', 'francais2', 'maths', 'philo', 'histgeo', 'svt', 'physique', 'ses', 'anglais'];
+        var sorted = [];
+        for (var p = 0; p < priority.length; p++) {
+            for (var s = 0; s < subjects.length; s++) {
+                if (subjects[s].id === priority[p]) { sorted.push(subjects[s]); break; }
+            }
+        }
+        // Ajouter les restants
+        for (var r = 0; r < subjects.length; r++) {
+            if (priority.indexOf(subjects[r].id) === -1) sorted.push(subjects[r]);
+        }
+
+        var cardsHTML = '';
+        for (var i = 0; i < sorted.length; i++) {
+            var subj = sorted[i];
+            var fcCount = 0;
+            for (var j = 0; j < (subj.sections || []).length; j++) {
+                fcCount += (subj.sections[j].flashcards || []).length;
+            }
+            cardsHTML += '<button class="dash-subj-card" data-action="dashboard.goTo" data-param="subj_' + subj.id + '">'
+                + '<span class="dash-subj-card-icon">' + (subj.icon || '\uD83D\uDCD8') + '</span>'
+                + '<span class="dash-subj-card-name">' + (subj.name || subj.id) + '</span>'
+                + '<span class="dash-subj-card-count">' + fcCount + ' cartes</span>'
+                + '</button>';
+        }
+
+        return '<div class="dash-section dash-subject-grid-section">'
+            + '<h3 class="dash-section-title">\uD83D\uDCDA Choisir une matiere</h3>'
+            + '<p class="dash-section-hint">Choisis ta matiere pour voir les chapitres</p>'
+            + '<div class="dash-subject-grid">'
             + cardsHTML
             + '</div>'
             + '</div>';
