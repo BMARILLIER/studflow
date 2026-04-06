@@ -12741,6 +12741,21 @@ button:active, .tab-item:active, .nav-item:active {
     white-space: nowrap; flex-shrink: 0;
 }
 
+/* ==================== CALM MODE ==================== */
+body.calm-mode * {
+    animation-duration: 0.8s !important;
+    transition-duration: 0.15s !important;
+}
+body.calm-mode .confetti-container { opacity: 0.3; }
+body.calm-mode .toast { animation-duration: 0.3s !important; }
+body.calm-mode .hero-streak-flame { animation: none !important; filter: none !important; }
+body.calm-mode .hero-streak-num { text-shadow: none !important; }
+body.calm-mode .fc-xp-badge { animation: none !important; }
+body.calm-mode .levelup-overlay { backdrop-filter: none; }
+body.calm-mode .levelup-card { animation-duration: 0.3s !important; }
+body.calm-mode .streak-lost-overlay { animation-duration: 0.2s !important; }
+.confetti-calm { width: 8px !important; height: 8px !important; border-radius: 50% !important; }
+
 /* ==================== PUSH PERMISSION BANNER ==================== */
 .push-permission-banner {
     position: fixed; bottom: 80px; left: 12px; right: 12px;
