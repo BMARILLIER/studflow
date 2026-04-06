@@ -1,5 +1,5 @@
-// service-worker.js — StudFlow PWA offline cache
-var CACHE_VERSION = 'studflow-v40';
+// service-worker.js — StudFlow PWA offline cache + push notifications
+var CACHE_VERSION = 'studflow-v41';
 
 // Critical assets: install FAILS if any of these 404
 var CRITICAL_ASSETS = [
@@ -120,6 +120,41 @@ self.addEventListener('fetch', function(event) {
             if (event.request.mode === 'navigate') {
                 return caches.match('/index.html');
             }
+        })
+    );
+});
+
+// ==================== PUSH NOTIFICATIONS ====================
+self.addEventListener('push', function(event) {
+    var data = { title: 'StudFlow', body: 'C\'est l\'heure de r\u00e9viser !' };
+    if (event.data) {
+        try { data = event.data.json(); } catch(e) {
+            data.body = event.data.text() || data.body;
+        }
+    }
+    event.waitUntil(
+        self.registration.showNotification(data.title || 'StudFlow', {
+            body: data.body || 'Lance ta session du jour !',
+            icon: '/icons/icon-192.png',
+            badge: '/icons/icon-192.png',
+            tag: 'studflow-reminder',
+            renotify: true,
+            data: { url: '/#dashboard' }
+        })
+    );
+});
+
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    var url = (event.notification.data && event.notification.data.url) || '/';
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(function(windowClients) {
+            for (var i = 0; i < windowClients.length; i++) {
+                if (windowClients[i].url.indexOf('studflow') !== -1) {
+                    return windowClients[i].focus();
+                }
+            }
+            return clients.openWindow(url);
         })
     );
 });
