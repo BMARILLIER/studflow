@@ -617,7 +617,7 @@
         if (box.style.display !== 'none') {
             box.style.display = 'none';
             if (btn) {
-                btn.textContent = '\uD83D\uDCA1 Explique-moi plus simplement';
+                btn.textContent = '\uD83D\uDCA1 Explique-moi simplement';
                 btn.classList.remove('fc-simplify-btn--active');
             }
             return;
@@ -692,12 +692,12 @@
         if (mdMatch) motsDiff = mdMatch[1].trim();
 
         // ===== CONSTRUIRE LE HTML =====
-        var html = '<div class="fc-simple-header">\uD83D\uDCA1 En plus simple</div>'
+        var html = '<div class="fc-simple-header">\uD83D\uDCA1 Explication simplifi\u00E9e</div>'
             + '<div class="fc-simple-content">';
 
         // Reponse
         html += '<div class="fc-simple-section">'
-            + '<span class="fc-simple-label">\uD83D\uDCCC Reponse</span>'
+            + '<span class="fc-simple-label">\uD83D\uDCCC R\u00E9ponse</span>'
             + '<p class="fc-simple-text fc-simple-main">' + escapeSimple(reponse) + '</p>'
             + '</div>';
 
@@ -722,7 +722,7 @@
         // Pourquoi
         if (pourquoi) {
             html += '<div class="fc-simple-section">'
-                + '<span class="fc-simple-label">\uD83C\uDFAF Pourquoi c\'est utile</span>'
+                + '<span class="fc-simple-label">\uD83C\uDFAF Pourquoi c\u2019est utile</span>'
                 + '<p class="fc-simple-text">' + escapeSimple(pourquoi) + '</p>'
                 + '</div>';
         }
@@ -738,7 +738,7 @@
         html += '</div>';
 
         // Footer
-        html += '<div class="fc-simple-footer">C\'est plus clair maintenant ?</div>';
+        html += '<div class="fc-simple-footer">C\u2019est plus clair maintenant\u00A0?</div>';
 
         box.innerHTML = html;
         box.style.display = '';
@@ -761,7 +761,7 @@
         var btn = document.getElementById('fc-simplify-btn');
         if (box) box.style.display = 'none';
         if (btn) {
-            btn.textContent = '\uD83D\uDCA1 Explique-moi plus simplement';
+            btn.textContent = '\uD83D\uDCA1 Explique-moi simplement';
             btn.classList.remove('fc-simplify-btn--active');
         }
         // Reset interactive
@@ -877,14 +877,14 @@
         if (isCorrect) {
             btn.classList.add('fc-inter-correct');
             feedbackEl.innerHTML = '<div class="fc-inter-win">'
-                + '<strong>\u2705 Bien joue !</strong>'
-                + '<p>Retourne la carte pour voir l\'explication complete.</p>'
+                + '<strong>\u2705 Bien jou\u00E9\u00A0!</strong>'
+                + '<p>Retourne la carte pour voir l\u2019explication compl\u00E8te.</p>'
                 + '</div>';
         } else {
             btn.classList.add('fc-inter-wrong');
             feedbackEl.innerHTML = '<div class="fc-inter-lose">'
-                + '<strong>\u274C Presque !</strong>'
-                + '<p>Regarde l\'explication \uD83D\uDC47</p>'
+                + '<strong>\u274C Presque\u00A0!</strong>'
+                + '<p>Regarde l\u2019explication \uD83D\uDC47</p>'
                 + '</div>';
         }
         feedbackEl.style.display = '';
@@ -893,7 +893,7 @@
         setTimeout(function() {
             var progressMsg = document.createElement('p');
             progressMsg.className = 'fc-inter-progress';
-            progressMsg.textContent = '\uD83D\uDC4D Tu progresses !';
+            progressMsg.textContent = '\uD83D\uDC4D Tu progresses\u00A0!';
             feedbackEl.appendChild(progressMsg);
         }, 1500);
     }
