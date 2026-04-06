@@ -109,14 +109,14 @@
         var toastIcon = amount >= 50 ? '🏆' : amount >= 25 ? '⭐' : '✨';
         showToast(`+${amount} XP`, toastType, toastIcon);
 
-        // Level up!
+        // Level up! — overlay spectaculaire
         if (newLevel.level > oldLevel.level) {
             setTimeout(() => {
                 spawnConfetti();
-                setTimeout(() => {
-                    showToast(`Niveau ${newLevel.level} ! ${newLevel.emoji} ${newLevel.name}`, 'level-up', '🎉');
-                }, 200);
-            }, 500);
+                if (window.StudFlow.sounds) window.StudFlow.sounds.levelUp();
+                // Overlay plein ecran
+                showLevelUpOverlay(newLevel);
+            }, 400);
         }
 
         // Update UI
@@ -265,6 +265,31 @@
         setTimeout(() => {
             if (container.parentNode) container.remove();
         }, 3500);
+    }
+
+    // Level up overlay
+    function showLevelUpOverlay(level) {
+        var overlay = document.createElement('div');
+        overlay.className = 'levelup-overlay';
+        overlay.innerHTML = '<div class="levelup-card">'
+            + '<div class="levelup-emoji">' + level.emoji + '</div>'
+            + '<h2 class="levelup-title">Niveau ' + level.level + '\u00A0!</h2>'
+            + '<p class="levelup-name">' + level.name + '</p>'
+            + '<p class="levelup-msg">Tu avances\u00A0! Continue comme \u00E7a.</p>'
+            + '<button class="levelup-btn" id="levelup-close">Continuer \u2192</button>'
+            + '</div>';
+        document.body.appendChild(overlay);
+        overlay.querySelector('#levelup-close').addEventListener('click', function() {
+            overlay.classList.add('levelup-exit');
+            setTimeout(function() { overlay.remove(); }, 300);
+        });
+        // Auto-close apres 4s
+        setTimeout(function() {
+            if (overlay.parentNode) {
+                overlay.classList.add('levelup-exit');
+                setTimeout(function() { if (overlay.parentNode) overlay.remove(); }, 300);
+            }
+        }, 4000);
     }
 
     // Init — check streak on load

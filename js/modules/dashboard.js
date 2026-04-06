@@ -396,11 +396,14 @@
         // Profil par matière (widget compact)
         var profileWidget = renderStudentProfile();
 
+        // Jauge quotidienne
+        var dailyGaugeHTML = renderDailyGauge();
         // Mini-defi du jour
         var dailyChallengeHTML = renderDailyChallenge(gamStats);
 
         // ===== BELOW: engagement + extras =====
         var belowFold = ''
+            + dailyGaugeHTML
             + dailyChallengeHTML
             + profileWidget
             + revisionPlanHTML
@@ -719,10 +722,26 @@
         var ctaAction = dueCount > 0 ? 'sr' : 'flashcard';
         var ctaLabel = dueCount > 0 ? 'Reviser ' + dueCount + ' carte' + (dueCount > 1 ? 's' : '') : 'Commencer ma session';
 
+        // Streak hero (gros, central, émotionnel)
+        var streakHTML = '';
+        if (streak > 0) {
+            var streakSize = streak >= 7 ? 'streak-fire' : (streak >= 3 ? 'streak-warm' : '');
+            streakHTML = '<div class="hero-streak ' + streakSize + '">'
+                + '<span class="hero-streak-flame">\uD83D\uDD25</span>'
+                + '<span class="hero-streak-num">' + streak + '</span>'
+                + '<span class="hero-streak-label">' + streak + ' jour' + (streak > 1 ? 's' : '') + ' de suite</span>'
+                + '</div>';
+        } else {
+            streakHTML = '<div class="hero-streak hero-streak-zero">'
+                + '<span class="hero-streak-flame">\uD83D\uDD25</span>'
+                + '<span class="hero-streak-label">Lance ta premi\u00E8re session\u00A0!</span>'
+                + '</div>';
+        }
+
         return '<div class="dash-section hero-bac ' + urgencyClass + '">'
+            + streakHTML
             + '<div class="hero-bac-countdown">'
-            + '<span class="hero-bac-fire">\uD83D\uDD25</span>'
-            + '<span class="hero-bac-days">J-' + days + '</span>'
+            + '<span class="hero-bac-days">J\u2212' + days + '</span>'
             + '<span class="hero-bac-label">avant le Bac</span>'
             + '</div>'
             + '<p class="hero-bac-msg">' + msg + '</p>'
@@ -964,6 +983,52 @@
         { icon: '🎯', tip: '"Juste 5 min." Apres 5 min ton cerveau est lance et tu continues.' },
         { icon: '📝', tip: 'Se tester est 2x plus efficace que relire. Les quiz > les cours.' }
     ];
+
+    // ==================== JAUGE QUOTIDIENNE ====================
+    function renderDailyGauge() {
+        var DAILY_TARGET = 10; // cartes par jour
+        var todayKey = new Date().toISOString().slice(0, 10);
+        var data = window.StudFlow.storage.loadData('studflow_daily_gauge', { date: null, count: 0 });
+        if (data.date !== todayKey) {
+            data = { date: todayKey, count: 0 };
+        }
+        var count = data.count || 0;
+        var pct = Math.min(100, Math.round((count / DAILY_TARGET) * 100));
+        var done = count >= DAILY_TARGET;
+
+        var msg = done
+            ? '\u2705 Objectif atteint\u00A0! Bravo\u00A0!'
+            : count === 0
+                ? 'Commence ta journ\u00E9e\u00A0!'
+                : 'Encore ' + (DAILY_TARGET - count) + ' carte' + ((DAILY_TARGET - count) > 1 ? 's' : '');
+
+        return '<div class="dash-section dash-daily-gauge">'
+            + '<div class="gauge-header">'
+            + '<span class="gauge-label">\uD83C\uDFAF Objectif du jour</span>'
+            + '<span class="gauge-count">' + count + '/' + DAILY_TARGET + '</span>'
+            + '</div>'
+            + '<div class="gauge-bar"><div class="gauge-fill' + (done ? ' gauge-done' : '') + '" style="width:' + pct + '%"></div></div>'
+            + '<p class="gauge-msg">' + msg + '</p>'
+            + '</div>';
+    }
+
+    // Incrementer la jauge (appele depuis flashcards)
+    function incrementDailyGauge() {
+        var todayKey = new Date().toISOString().slice(0, 10);
+        var data = window.StudFlow.storage.loadData('studflow_daily_gauge', { date: null, count: 0 });
+        if (data.date !== todayKey) {
+            data = { date: todayKey, count: 0 };
+        }
+        data.count++;
+        window.StudFlow.storage.saveData('studflow_daily_gauge', data);
+
+        // Confetti si objectif atteint
+        if (data.count === 10 && window.StudFlow.gamification) {
+            window.StudFlow.gamification.spawnConfetti();
+            window.StudFlow.gamification.addXP('daily_mission');
+            window.StudFlow.gamification.showToast('Objectif du jour atteint\u00A0!', 'streak', '\uD83C\uDFAF');
+        }
+    }
 
     // ==================== MINI-DÉFI QUOTIDIEN ====================
     function renderDailyChallenge(gamStats) {
@@ -1662,7 +1727,8 @@
         tourNext: tourNext,
         tourSkip: tourSkip,
         dismissBetaBanner: dismissBetaBanner,
-        toggleBetaBanner: toggleBetaBanner
+        toggleBetaBanner: toggleBetaBanner,
+        incrementDailyGauge: incrementDailyGauge
     };
 
 })();

@@ -376,6 +376,11 @@
             else if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
         }
 
+        // Incrementer la jauge quotidienne
+        if (window.StudFlow.dashboard && window.StudFlow.dashboard.incrementDailyGauge) {
+            window.StudFlow.dashboard.incrementDailyGauge();
+        }
+
         if (window.StudFlow.analytics) window.StudFlow.analytics.track('flashcard_review', { correct: !!knew, mode: currentMode });
         window.StudFlow.app.updateStats();
         window.StudFlow.storage.saveAppState(state);
@@ -453,7 +458,25 @@
             endMsg = window.StudFlow.coachEngine.getCoachMessage(profile, { moment: 'end', successRate: percent });
         }
         if (rIcon) rIcon.textContent = percent >= 70 ? '\uD83C\uDF89' : '\uD83D\uDCAA';
-        if (rTitle) rTitle.textContent = endMsg || (percent >= 70 ? 'Excellent !' : 'Continue comme ca !');
+        if (rTitle) rTitle.textContent = endMsg || (percent >= 70 ? 'Excellent\u00A0!' : 'Continue comme \u00E7a\u00A0!');
+
+        // Social proof (percentile simulé)
+        var streak = gamStats ? (gamStats.streak || 0) : 0;
+        var percentile = Math.min(95, Math.max(10, 20 + (streak * 6) + Math.round(percent * 0.5)));
+        var socialEl = document.getElementById('results-social');
+        if (!socialEl) {
+            socialEl = document.createElement('div');
+            socialEl.id = 'results-social';
+            socialEl.className = 'results-social';
+            var rScoreEl = document.getElementById('results-score');
+            if (rScoreEl && rScoreEl.parentNode) rScoreEl.parentNode.appendChild(socialEl);
+        }
+        if (socialEl) {
+            socialEl.textContent = 'Top ' + percentile + '% des \u00E9l\u00E8ves cette semaine';
+            socialEl.style.display = '';
+        }
+
+        var gamStats = window.StudFlow.gamification ? window.StudFlow.gamification.getStats() : {};
 
         // Contextual sub-message
         var subMsg = '';
