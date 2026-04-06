@@ -155,6 +155,31 @@
     }
 
     // ==================== MESSAGE ADAPTATIF ====================
+    // ==================== RECORD PERSONNEL ====================
+    function recordSessionScore(subjectId, correct, total) {
+        if (!subjectId || total === 0) return;
+        var data = load();
+        if (!data.records) data.records = {};
+        var pct = Math.round((correct / total) * 100);
+        var prev = data.records[subjectId] || 0;
+        var isNewRecord = pct > prev;
+        if (isNewRecord) {
+            data.records[subjectId] = pct;
+            save(data);
+        }
+        return { score: pct, previousBest: prev, isNewRecord: isNewRecord };
+    }
+
+    function getRecord(subjectId) {
+        var data = load();
+        return (data.records && data.records[subjectId]) || 0;
+    }
+
+    function getAllRecords() {
+        var data = load();
+        return data.records || {};
+    }
+
     function getAdaptiveMessage(subjectId) {
         var level = subjectId ? getSubjectLevel(subjectId) : getGlobalLevel();
         if (level === 'difficulte') {
@@ -199,6 +224,9 @@
         getWeakQuestions: getWeakQuestions,
         getWeakSubjects: getWeakSubjects,
         getAdaptiveMessage: getAdaptiveMessage,
-        shouldAutoSimplify: shouldAutoSimplify
+        shouldAutoSimplify: shouldAutoSimplify,
+        recordSessionScore: recordSessionScore,
+        getRecord: getRecord,
+        getAllRecords: getAllRecords
     };
 })();

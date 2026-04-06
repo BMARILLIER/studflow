@@ -379,6 +379,14 @@
         if (window.StudFlow.analytics) window.StudFlow.analytics.track('flashcard_review', { correct: !!knew, mode: currentMode });
         window.StudFlow.app.updateStats();
         window.StudFlow.storage.saveAppState(state);
+
+        // REVANCHE : si l'élève se trompe, réinsérer la carte 3 positions plus loin
+        if (!knew && card && !card._revenge) {
+            var revengeCard = { question: card.question, answer: card.answer, mastered: false, _revenge: true };
+            var insertAt = Math.min(currentIndex + 3, cards.length);
+            cards.splice(insertAt, 0, revengeCard);
+        }
+
         currentIndex++;
 
         // Micro-wins + mid-session coach (at key moments only)
@@ -468,6 +476,31 @@
             var icons = { debutant: '\uD83C\uDF31', intermediaire: '\uD83C\uDF3F', avance: '\uD83C\uDF33' };
             levelEl.innerHTML = '<span>' + (icons[level] || '') + ' Niveau : ' + (labels[level] || level) + '</span>';
             levelEl.style.display = '';
+        }
+
+        // Record personnel
+        var subjectId = currentDeck.indexOf('subj-') === 0 ? currentDeck.split('-')[1] : null;
+        if (subjectId && window.StudFlow.studentProfile) {
+            var recordResult = window.StudFlow.studentProfile.recordSessionScore(subjectId, score, total);
+            if (recordResult) {
+                var recordEl = document.getElementById('results-record');
+                if (!recordEl) {
+                    recordEl = document.createElement('div');
+                    recordEl.id = 'results-record';
+                    recordEl.className = 'results-record';
+                    var levelEl2 = document.getElementById('results-level');
+                    if (levelEl2 && levelEl2.parentNode) levelEl2.parentNode.insertBefore(recordEl, levelEl2.nextSibling);
+                }
+                if (recordEl) {
+                    if (recordResult.isNewRecord) {
+                        recordEl.innerHTML = '<span class="record-new">\uD83C\uDFC6 Nouveau record\u00A0! ' + recordResult.score + '% (ancien\u00A0: ' + recordResult.previousBest + '%)</span>';
+                        if (window.StudFlow.sounds) window.StudFlow.sounds.levelUp();
+                    } else {
+                        recordEl.innerHTML = '<span class="record-current">\uD83C\uDFC6 Record\u00A0: ' + recordResult.previousBest + '%</span>';
+                    }
+                    recordEl.style.display = '';
+                }
+            }
         }
 
         // SR mode: custom retry label + extra stats
@@ -939,6 +972,19 @@
         var remainingText = remaining > 0
             ? 'Encore ' + remaining + ' carte' + (remaining > 1 ? 's' : '')
             : 'Derni\u00E8re carte\u00A0!';
+
+        // Son + vibration
+        if (window.StudFlow.sounds) {
+            if (isCorrect) {
+                if (_streak >= 2) {
+                    window.StudFlow.sounds.combo(); // arpege si streak
+                } else {
+                    window.StudFlow.sounds.correct(); // ding simple
+                }
+            } else {
+                window.StudFlow.sounds.wrong(); // buzz
+            }
+        }
 
         // Enregistrer la reponse pour l'adaptation locale
         recordAdaptiveAnswer(isCorrect);

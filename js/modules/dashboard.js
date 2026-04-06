@@ -396,8 +396,12 @@
         // Profil par matière (widget compact)
         var profileWidget = renderStudentProfile();
 
+        // Mini-defi du jour
+        var dailyChallengeHTML = renderDailyChallenge(gamStats);
+
         // ===== BELOW: engagement + extras =====
         var belowFold = ''
+            + dailyChallengeHTML
             + profileWidget
             + revisionPlanHTML
             + dailyGoalHTML
@@ -960,6 +964,33 @@
         { icon: '🎯', tip: '"Juste 5 min." Apres 5 min ton cerveau est lance et tu continues.' },
         { icon: '📝', tip: 'Se tester est 2x plus efficace que relire. Les quiz > les cours.' }
     ];
+
+    // ==================== MINI-DÉFI QUOTIDIEN ====================
+    function renderDailyChallenge(gamStats) {
+        // Choisir un defi basé sur le jour (deterministe)
+        var dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+        var challenges = [
+            { icon: '\uD83D\uDD25', text: 'Fais 3 bonnes r\u00E9ponses d\u2019affil\u00E9e', reward: '+30 XP' },
+            { icon: '\u23F1\uFE0F', text: 'Termine une session en moins de 4 min', reward: '+25 XP' },
+            { icon: '\uD83D\uDCDA', text: 'R\u00E9vise une mati\u00E8re que tu n\u2019as pas touch\u00E9e depuis 3 jours', reward: '+20 XP' },
+            { icon: '\uD83C\uDFAF', text: 'Fais 10 cartes sans utiliser le mode clair', reward: '+35 XP' },
+            { icon: '\uD83D\uDCAA', text: 'R\u00E9ussis 5 cartes d\u2019une mati\u00E8re difficile', reward: '+40 XP' },
+            { icon: '\uD83E\uDDE0', text: 'Termine 2 sessions aujourd\u2019hui', reward: '+50 XP' },
+            { icon: '\u2B50', text: 'Obtiens un score parfait sur une session', reward: '+60 XP' }
+        ];
+        var challenge = challenges[dayOfYear % challenges.length];
+
+        return '<div class="dash-section dash-daily-challenge">'
+            + '<div class="dash-challenge-header">'
+            + '<span class="dash-challenge-icon">' + challenge.icon + '</span>'
+            + '<div class="dash-challenge-info">'
+            + '<h4 class="dash-challenge-title">D\u00E9fi du jour</h4>'
+            + '<p class="dash-challenge-text">' + challenge.text + '</p>'
+            + '</div>'
+            + '<span class="dash-challenge-reward">' + challenge.reward + '</span>'
+            + '</div>'
+            + '</div>';
+    }
 
     // ==================== PROFIL ÉLÈVE ====================
     function renderStudentProfile() {
