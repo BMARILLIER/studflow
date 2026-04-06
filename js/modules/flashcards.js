@@ -613,7 +613,7 @@
         var btn = document.getElementById('fc-simplify-btn');
         if (!box) return;
 
-        // Toggle : si deja visible, cacher
+        // Toggle
         if (box.style.display !== 'none') {
             box.style.display = 'none';
             if (btn) {
@@ -629,72 +629,116 @@
 
         var answer = (card.answer || '').replace(/<[^>]+>/g, '');
 
-        // Extraire les parties si elles existent deja dans la reponse
-        var enGros = '';
-        var motsDifficiles = '';
-        var resteTexte = answer;
+        // ===== EXTRAIRE TOUTES LES SECTIONS =====
 
-        // Chercher "En gros :"
+        // 1. Reponse simple (En gros / premiere phrase)
+        var reponse = '';
         var egMatch = answer.match(/En gros\s*[:]\s*([^.]+\.)/i);
-        if (egMatch) enGros = egMatch[1].trim();
-
-        // Chercher "Mots difficiles :" ou "Mot difficile :"
-        var mdMatch = answer.match(/Mots?\s*difficiles?\s*[:]\s*(.+)/i);
-        if (mdMatch) motsDifficiles = mdMatch[1].trim();
-
-        // Construire la version simplifiee
-        var html = '<div class="fc-simple-header">\uD83D\uDCA1 Voila en plus simple</div>'
-            + '<div class="fc-simple-content">';
-
-        // Reponse simple
-        if (enGros) {
-            html += '<div class="fc-simple-section">'
-                + '<span class="fc-simple-label">Reponse simple :</span>'
-                + '<p class="fc-simple-text">' + escapeSimple(enGros) + '</p>'
-                + '</div>';
+        if (egMatch) {
+            reponse = egMatch[1].trim();
         } else {
-            // Prendre la premiere phrase
-            var firstSentence = answer.split(/\.\s/)[0] + '.';
-            if (firstSentence.length > 150) firstSentence = firstSentence.substring(0, 150) + '...';
-            html += '<div class="fc-simple-section">'
-                + '<span class="fc-simple-label">Reponse simple :</span>'
-                + '<p class="fc-simple-text">' + escapeSimple(firstSentence) + '</p>'
-                + '</div>';
+            reponse = answer.split(/\.\s/)[0] + '.';
+            if (reponse.length > 120) reponse = reponse.substring(0, 117) + '...';
         }
 
-        // Etapes (extraire les numeros s'il y en a)
-        var steps = answer.match(/\d\)\s*[^.]+\./g);
-        if (!steps) steps = answer.match(/\d\)\s*[^,]+/g);
-        if (steps && steps.length >= 2) {
+        // 2. Points cles (numeros 1) 2) 3) ou tirets)
+        var points = [];
+        var numSteps = answer.match(/\d\)\s*[^.]+\./g);
+        if (!numSteps) numSteps = answer.match(/\d\)\s*[^)]+(?=\d\)|$)/g);
+        if (numSteps && numSteps.length >= 2) {
+            for (var s = 0; s < Math.min(numSteps.length, 3); s++) {
+                var pt = numSteps[s].trim();
+                if (pt.length > 80) pt = pt.substring(0, 77) + '...';
+                points.push(pt);
+            }
+        } else {
+            // Extraire des phrases courtes comme points
+            var sentences = answer.split(/\.\s+/);
+            for (var p = 1; p < Math.min(sentences.length, 4); p++) {
+                var sent = sentences[p].trim();
+                if (sent.length > 15 && sent.length < 100 && sent !== reponse.replace(/\.$/, '')) {
+                    points.push(sent + '.');
+                    if (points.length >= 3) break;
+                }
+            }
+        }
+
+        // 3. Exemple concret
+        var exemple = '';
+        var exMatch = answer.match(/Exemple\s*(?:concret\s*)?[:]\s*([^.]+\.)/i);
+        if (!exMatch) exMatch = answer.match(/Exemple\s*[:]\s*([^.]+\.)/i);
+        if (!exMatch) exMatch = answer.match(/Ex\s*[:]\s*([^.]+\.)/i);
+        if (exMatch) {
+            exemple = exMatch[1].trim();
+        } else {
+            // Chercher une phrase avec "comme" ou "par exemple"
+            var commeMatch = answer.match(/(?:comme|par exemple)[^.]+\./i);
+            if (commeMatch) exemple = commeMatch[0].trim();
+        }
+
+        // 4. Pourquoi
+        var pourquoi = '';
+        var pqMatch = answer.match(/Pourquoi[^:]*[:]\s*([^.]+\.)/i);
+        if (pqMatch) pourquoi = pqMatch[1].trim();
+        // Chercher aussi "Astuce Bac :"
+        if (!pourquoi) {
+            var bacMatch = answer.match(/Astuce Bac\s*[:]\s*([^.]+\.)/i);
+            if (bacMatch) pourquoi = bacMatch[1].trim();
+        }
+
+        // 5. Mots difficiles
+        var motsDiff = '';
+        var mdMatch = answer.match(/Mots?\s*difficiles?\s*[:]\s*(.+)/i);
+        if (mdMatch) motsDiff = mdMatch[1].trim();
+
+        // ===== CONSTRUIRE LE HTML =====
+        var html = '<div class="fc-simple-header">\uD83D\uDCA1 En plus simple</div>'
+            + '<div class="fc-simple-content">';
+
+        // Reponse
+        html += '<div class="fc-simple-section">'
+            + '<span class="fc-simple-label">\uD83D\uDCCC Reponse</span>'
+            + '<p class="fc-simple-text fc-simple-main">' + escapeSimple(reponse) + '</p>'
+            + '</div>';
+
+        // Points cles
+        if (points.length > 0) {
             html += '<div class="fc-simple-section">'
-                + '<span class="fc-simple-label">Etapes :</span>';
-            for (var i = 0; i < Math.min(steps.length, 5); i++) {
-                html += '<p class="fc-simple-step">' + escapeSimple(steps[i].trim()) + '</p>';
+                + '<span class="fc-simple-label">\uD83D\uDCCB En ' + points.length + ' points</span>';
+            for (var i = 0; i < points.length; i++) {
+                html += '<p class="fc-simple-step">' + escapeSimple(points[i]) + '</p>';
             }
             html += '</div>';
         }
 
-        // Mots difficiles
-        if (motsDifficiles) {
+        // Exemple
+        if (exemple) {
             html += '<div class="fc-simple-section">'
-                + '<span class="fc-simple-label">Mots difficiles :</span>'
-                + '<p class="fc-simple-text">' + escapeSimple(motsDifficiles) + '</p>'
+                + '<span class="fc-simple-label">\uD83D\uDCA1 Exemple concret</span>'
+                + '<p class="fc-simple-text">' + escapeSimple(exemple) + '</p>'
                 + '</div>';
         }
 
-        // Pourquoi c'est important
-        var pourquoi = answer.match(/Pourquoi[^:]*[:]\s*([^.]+\.)/i);
+        // Pourquoi
         if (pourquoi) {
             html += '<div class="fc-simple-section">'
-                + '<span class="fc-simple-label">Pourquoi :</span>'
-                + '<p class="fc-simple-text">' + escapeSimple(pourquoi[1].trim()) + '</p>'
+                + '<span class="fc-simple-label">\uD83C\uDFAF Pourquoi c\'est utile</span>'
+                + '<p class="fc-simple-text">' + escapeSimple(pourquoi) + '</p>'
+                + '</div>';
+        }
+
+        // Mots difficiles
+        if (motsDiff) {
+            html += '<div class="fc-simple-section">'
+                + '<span class="fc-simple-label">\uD83D\uDD24 Mots difficiles</span>'
+                + '<p class="fc-simple-text fc-simple-vocab">' + escapeSimple(motsDiff) + '</p>'
                 + '</div>';
         }
 
         html += '</div>';
 
         // Footer
-        html += '<div class="fc-simple-footer">C\'est plus clair ?</div>';
+        html += '<div class="fc-simple-footer">C\'est plus clair maintenant ?</div>';
 
         box.innerHTML = html;
         box.style.display = '';
