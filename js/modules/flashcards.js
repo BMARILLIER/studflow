@@ -9,6 +9,36 @@
     let shuffledCards = null;
     let currentMode = 'auto'; // 'learning', 'mix', 'exam', 'auto'
 
+    // ==================== ADAPTIVE DIFFICULTY ====================
+    var _streak = 0;          // réussites consécutives
+    var _failStreak = 0;      // échecs consécutifs
+    var _totalCorrect = 0;
+    var _totalAnswered = 0;
+    var _adaptiveLevel = 'normal'; // 'easy', 'normal', 'hard'
+
+    function recordAdaptiveAnswer(isCorrect) {
+        _totalAnswered++;
+        if (isCorrect) {
+            _totalCorrect++;
+            _streak++;
+            _failStreak = 0;
+        } else {
+            _failStreak++;
+            _streak = 0;
+        }
+        // Adapter le niveau
+        if (_streak >= 3) {
+            _adaptiveLevel = 'hard';
+        } else if (_failStreak >= 2) {
+            _adaptiveLevel = 'easy';
+        } else {
+            _adaptiveLevel = 'normal';
+        }
+    }
+
+    function getAdaptiveLevel() { return _adaptiveLevel; }
+    function resetAdaptive() { _streak = 0; _failStreak = 0; _totalCorrect = 0; _totalAnswered = 0; _adaptiveLevel = 'normal'; }
+
     // ==================== USER LEVEL DETECTION ====================
     function getUserLevel() {
         var sr = window.StudFlow.spacedRepetition;
@@ -171,6 +201,7 @@
         score = 0;
         startTime = Date.now();
         shuffledCards = null;
+        resetAdaptive();
         if (window.StudFlow.combo) window.StudFlow.combo.startSession();
 
         // Mode selection
@@ -824,12 +855,22 @@
         }
         if (wrongFacts.length < 2) return;
 
-        // Construire les choix et melanger
-        var choices = [
-            { text: correctFact, correct: true },
-            { text: wrongFacts[0], correct: false },
-            { text: wrongFacts[1], correct: false }
-        ];
+        // Construire les choix selon le niveau adaptatif
+        var choices = [];
+        if (_adaptiveLevel === 'hard' && wrongFacts.length >= 1) {
+            // Mode difficile : seulement 2 choix (plus dur a deviner)
+            choices = [
+                { text: correctFact, correct: true },
+                { text: wrongFacts[0], correct: false }
+            ];
+        } else {
+            // Mode normal/facile : 3 choix
+            choices = [
+                { text: correctFact, correct: true },
+                { text: wrongFacts[0], correct: false },
+                { text: wrongFacts[1], correct: false }
+            ];
+        }
         for (var i = choices.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var tmp = choices[i]; choices[i] = choices[j]; choices[j] = tmp;
@@ -892,14 +933,18 @@
             ? 'Encore ' + remaining + ' carte' + (remaining > 1 ? 's' : '')
             : 'Derni\u00E8re carte\u00A0!';
 
+        // Enregistrer la reponse pour l'adaptation
+        recordAdaptiveAnswer(isCorrect);
+
         if (isCorrect) {
             btn.classList.add('fc-inter-correct');
+            var xpAmount = _adaptiveLevel === 'hard' ? 15 : 10;
             feedbackEl.innerHTML = '<div class="fc-inter-win">'
                 + '<strong>\u2705 Bien jou\u00E9\u00A0!</strong>'
-                + '<span class="fc-xp-badge">+10 XP</span>'
+                + '<span class="fc-xp-badge">+' + xpAmount + ' XP</span>'
+                + (_adaptiveLevel === 'hard' ? '<p class="fc-adapt-msg">\u2B50 Niveau avanc\u00E9\u00A0!</p>' : '')
                 + '<p>Retourne la carte pour voir l\u2019explication.</p>'
                 + '</div>';
-            // Donner les XP
             if (window.StudFlow.gamification) {
                 window.StudFlow.gamification.addXP('flashcard_correct');
             }
@@ -909,6 +954,23 @@
                 + '<strong>\u274C Presque\u00A0!</strong>'
                 + '<p>Tu vas comprendre juste apr\u00E8s \uD83D\uDC47</p>'
                 + '</div>';
+
+            // Si 2+ echecs consecutifs → ouvrir automatiquement le mode clair
+            if (_failStreak >= 2) {
+                setTimeout(function() {
+                    var adaptNotice = document.createElement('p');
+                    adaptNotice.className = 'fc-adapt-notice';
+                    adaptNotice.innerHTML = '\uD83D\uDCA1 On adapte pour t\u2019aider';
+                    feedbackEl.appendChild(adaptNotice);
+                    // Auto-flip la carte pour montrer la reponse
+                    var flashcard = document.getElementById('flashcard');
+                    if (flashcard && !flashcard.classList.contains('flipped')) {
+                        flashcard.classList.add('flipped');
+                    }
+                    // Auto-ouvrir le mode clair
+                    setTimeout(function() { simplify(); }, 600);
+                }, 800);
+            }
         }
         feedbackEl.style.display = '';
 
