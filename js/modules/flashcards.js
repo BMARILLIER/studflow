@@ -709,9 +709,10 @@
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    // Reset simplify box when card changes
+    // Reset simplify box + build interactive QCM when card changes
     var _origDisplay = display;
     display = function() {
+        // Reset simplify
         var box = document.getElementById('fc-simplify-box');
         var btn = document.getElementById('fc-simplify-btn');
         if (box) box.style.display = 'none';
@@ -719,8 +720,110 @@
             btn.textContent = '\uD83D\uDCA1 Explique-moi plus simplement';
             btn.classList.remove('fc-simplify-btn--active');
         }
+        // Reset interactive
+        var interEl = document.getElementById('fc-interactive');
+        var feedbackEl = document.getElementById('fc-inter-feedback');
+        if (interEl) interEl.style.display = 'none';
+        if (feedbackEl) feedbackEl.style.display = 'none';
+
         _origDisplay();
+
+        // Build QCM after card is displayed
+        buildInteractiveQCM();
     };
+
+    // ==================== INTERACTIVE QCM ====================
+    function buildInteractiveQCM() {
+        var interEl = document.getElementById('fc-interactive');
+        var choicesEl = document.getElementById('fc-inter-choices');
+        if (!interEl || !choicesEl) return;
+
+        var cards = getAllCards();
+        var card = cards[currentIndex];
+        if (!card || !card.answer) return;
+
+        var answer = (card.answer || '').replace(/<[^>]+>/g, '');
+
+        // Extract a key fact from the answer (first sentence or "En gros" line)
+        var enGros = answer.match(/En gros\s*:\s*([^.]+\.)/i);
+        var keyFact = enGros ? enGros[1].trim() : answer.split(/\.\s/)[0] + '.';
+        if (keyFact.length > 100) keyFact = keyFact.substring(0, 97) + '...';
+
+        // Generate 2 wrong answers by shuffling parts from other cards
+        var wrongAnswers = generateWrongAnswers(cards, currentIndex);
+        if (wrongAnswers.length < 2) return; // not enough cards to make QCM
+
+        // Build choices array and shuffle
+        var choices = [
+            { text: keyFact, correct: true },
+            { text: wrongAnswers[0], correct: false },
+            { text: wrongAnswers[1], correct: false }
+        ];
+        // Shuffle
+        for (var i = choices.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = choices[i]; choices[i] = choices[j]; choices[j] = tmp;
+        }
+
+        // Render
+        var html = '';
+        for (var c = 0; c < choices.length; c++) {
+            html += '<button class="fc-inter-choice" data-correct="' + (choices[c].correct ? '1' : '0') + '">'
+                + escapeSimple(choices[c].text)
+                + '</button>';
+        }
+        choicesEl.innerHTML = html;
+        interEl.style.display = '';
+
+        // Wire clicks
+        var btns = choicesEl.querySelectorAll('.fc-inter-choice');
+        for (var b = 0; b < btns.length; b++) {
+            btns[b].addEventListener('click', handleInteractiveChoice);
+        }
+    }
+
+    function generateWrongAnswers(cards, correctIdx) {
+        var wrongs = [];
+        var used = {};
+        var attempts = 0;
+        while (wrongs.length < 2 && attempts < 20) {
+            var randIdx = Math.floor(Math.random() * cards.length);
+            if (randIdx === correctIdx || used[randIdx]) { attempts++; continue; }
+            used[randIdx] = true;
+            var a = (cards[randIdx].answer || '').replace(/<[^>]+>/g, '');
+            var eg = a.match(/En gros\s*:\s*([^.]+\.)/i);
+            var fact = eg ? eg[1].trim() : a.split(/\.\s/)[0] + '.';
+            if (fact.length > 100) fact = fact.substring(0, 97) + '...';
+            if (fact.length > 10) wrongs.push(fact);
+            attempts++;
+        }
+        return wrongs;
+    }
+
+    function handleInteractiveChoice(e) {
+        var btn = e.currentTarget;
+        var isCorrect = btn.getAttribute('data-correct') === '1';
+        var feedbackEl = document.getElementById('fc-inter-feedback');
+        var choicesEl = document.getElementById('fc-inter-choices');
+
+        // Disable all buttons
+        var allBtns = choicesEl.querySelectorAll('.fc-inter-choice');
+        for (var i = 0; i < allBtns.length; i++) {
+            allBtns[i].disabled = true;
+            if (allBtns[i].getAttribute('data-correct') === '1') {
+                allBtns[i].classList.add('fc-inter-correct');
+            }
+        }
+
+        if (isCorrect) {
+            btn.classList.add('fc-inter-correct');
+            feedbackEl.innerHTML = '<span class="fc-inter-win">\u2705 Bien joue ! Retourne la carte pour voir l\'explication.</span>';
+        } else {
+            btn.classList.add('fc-inter-wrong');
+            feedbackEl.innerHTML = '<span class="fc-inter-lose">\u274C Presque ! Retourne la carte pour comprendre.</span>';
+        }
+        feedbackEl.style.display = '';
+    }
 
     window.StudFlow = window.StudFlow || {};
     window.StudFlow.flashcards = {

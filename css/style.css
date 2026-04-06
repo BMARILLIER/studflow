@@ -913,6 +913,42 @@ body.theme-light .math-fallback {
 
 .flashcard-actions { display: flex; gap: 1rem; justify-content: center; }
 
+/* ==================== INTERACTIVE QCM ==================== */
+.fc-interactive { margin: 12px 0 8px; }
+.fc-inter-label {
+    text-align: center; font-size: 0.82rem; color: var(--text-muted);
+    margin: 0 0 10px; font-weight: 500;
+}
+.fc-inter-choices { display: flex; flex-direction: column; gap: 8px; }
+.fc-inter-choice {
+    width: 100%; padding: 12px 16px; border-radius: 14px;
+    background: var(--bg-glass); border: 1.5px solid rgba(255,255,255,0.08);
+    color: var(--text); font-size: 0.85rem; font-weight: 500;
+    text-align: left; cursor: pointer; line-height: 1.4;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s ease;
+}
+.fc-inter-choice:hover:not(:disabled) {
+    border-color: var(--accent); background: rgba(96,165,250,0.06);
+}
+.fc-inter-choice:disabled { cursor: default; opacity: 0.7; }
+.fc-inter-correct {
+    border-color: var(--mint) !important;
+    background: rgba(52,211,153,0.12) !important;
+    color: var(--mint) !important;
+}
+.fc-inter-wrong {
+    border-color: var(--danger) !important;
+    background: rgba(239,68,68,0.1) !important;
+    color: var(--danger) !important;
+}
+.fc-inter-feedback {
+    text-align: center; padding: 10px; margin-top: 8px;
+    border-radius: 12px; font-size: 0.88rem; font-weight: 600;
+}
+.fc-inter-win { color: var(--mint); }
+.fc-inter-lose { color: var(--danger); }
+
 /* Bouton "Mode clair" — premium, engageant, non culpabilisant */
 .fc-simplify-btn {
     display: block; width: 100%; margin: 16px auto 0; padding: 14px 24px;
