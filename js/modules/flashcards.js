@@ -874,28 +874,50 @@
         // Cacher le hint
         if (hintEl) hintEl.style.display = 'none';
 
+        // Messages d'encouragement varies
+        var encouragements = [
+            '\uD83D\uDCAA Continue comme \u00E7a\u00A0!',
+            '\uD83D\uDD25 Tu es en feu\u00A0!',
+            '\uD83D\uDC4D Tu progresses\u00A0!',
+            '\u2B50 Excellent travail\u00A0!',
+            '\uD83C\uDFC6 Tu g\u00E8res\u00A0!',
+            '\uD83E\uDDE0 Ton cerveau carbure\u00A0!'
+        ];
+        var encouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
+
+        // Cartes restantes
+        var cards = getAllCards();
+        var remaining = cards.length - currentIndex - 1;
+        var remainingText = remaining > 0
+            ? 'Encore ' + remaining + ' carte' + (remaining > 1 ? 's' : '')
+            : 'Derni\u00E8re carte\u00A0!';
+
         if (isCorrect) {
             btn.classList.add('fc-inter-correct');
             feedbackEl.innerHTML = '<div class="fc-inter-win">'
                 + '<strong>\u2705 Bien jou\u00E9\u00A0!</strong>'
-                + '<p>Retourne la carte pour voir l\u2019explication compl\u00E8te.</p>'
+                + '<span class="fc-xp-badge">+10 XP</span>'
+                + '<p>Retourne la carte pour voir l\u2019explication.</p>'
                 + '</div>';
+            // Donner les XP
+            if (window.StudFlow.gamification) {
+                window.StudFlow.gamification.addXP('flashcard_correct');
+            }
         } else {
             btn.classList.add('fc-inter-wrong');
             feedbackEl.innerHTML = '<div class="fc-inter-lose">'
                 + '<strong>\u274C Presque\u00A0!</strong>'
-                + '<p>Regarde l\u2019explication \uD83D\uDC47</p>'
+                + '<p>Tu vas comprendre juste apr\u00E8s \uD83D\uDC47</p>'
                 + '</div>';
         }
         feedbackEl.style.display = '';
 
-        // Ajouter un message positif apres un delai
+        // Message d'encouragement + compteur apres un delai
         setTimeout(function() {
-            var progressMsg = document.createElement('p');
-            progressMsg.className = 'fc-inter-progress';
-            progressMsg.textContent = '\uD83D\uDC4D Tu progresses\u00A0!';
-            feedbackEl.appendChild(progressMsg);
-        }, 1500);
+            var extraHtml = '<p class="fc-inter-progress">' + encouragement + '</p>'
+                + '<p class="fc-inter-remaining">' + remainingText + '</p>';
+            feedbackEl.insertAdjacentHTML('beforeend', extraHtml);
+        }, 1200);
     }
 
     window.StudFlow = window.StudFlow || {};

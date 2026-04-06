@@ -971,6 +971,17 @@ body.theme-light .math-fallback {
     color: var(--sun); font-size: 0.85rem; font-weight: 600;
     margin: 8px 0 0; animation: fadeIn 0.5s ease;
 }
+.fc-inter-remaining {
+    color: var(--text-muted); font-size: 0.78rem; font-weight: 500;
+    margin: 4px 0 0; opacity: 0.7; animation: fadeIn 0.5s ease;
+}
+.fc-xp-badge {
+    display: inline-block; margin-left: 8px; padding: 2px 10px;
+    border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+    background: rgba(251,191,36,0.2); color: var(--sun);
+    animation: popIn 0.4s var(--ease-bounce);
+    vertical-align: middle;
+}
 
 /* Bouton "Mode clair" — premium, engageant, non culpabilisant */
 .fc-simplify-btn {
