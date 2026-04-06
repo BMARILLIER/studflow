@@ -535,6 +535,165 @@
                     { question: 'Pourquoi Solal et Ariane echouent-ils ?', options: ['A cause de la guerre', 'Parce que l\'amour absolu, coupe du monde, finit par s\'etouffer', 'A cause de l\'argent', 'A cause de la famille'], correctIndex: 1, explanation: 'Cohen montre que l\'amour isole du monde se detruit : sans projets, sans vie sociale, la passion se transforme en ennui.' },
                     { question: 'Quel procede d\'ecriture Cohen utilise-t-il beaucoup ?', options: ['Le dialogue classique', 'Le monologue interieur', 'Le vers libre', 'Le discours indirect'], correctIndex: 1, explanation: 'Cohen utilise le monologue interieur pour entrer dans la tete des personnages et montrer leurs pensees sans filtre.' }
                 ]
+            },
+
+            // ================================================================
+            // SECTION 13 : LE MALADE IMAGINAIRE — Moliere (1673)
+            // ================================================================
+            {
+                id: 'malade-imaginaire',
+                title: 'Le Malade imaginaire — Moliere',
+                icon: '\uD83E\uDE7A',
+                content: '<h3>Le Malade imaginaire — Moliere (1673)</h3>'
+                    + '<p>Derniere piece de Moliere. Argan, un homme en bonne sante, est PERSUADE d\'etre malade. Les medecins en profitent.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Le Malade imaginaire ?', answer: 'Argan est un homme en BONNE SANTE mais il est persuade d\'etre malade. Il depense une fortune en medecins et en medicaments. Il veut marier sa fille a un medecin pour avoir un docteur GRATUIT a la maison. Moliere se moque des medecins charlatans et de la credulite des patients. En gros : un faux malade exploite par de faux medecins. Mots difficiles : "hypocondriaque" = quelqu\'un qui croit etre malade alors qu\'il ne l\'est pas.' },
+                    { question: 'Pourquoi Moliere se moque des medecins ?', answer: 'Au XVIIe siecle, la medecine est tres PRIMITIVE. Les medecins parlent en latin pour impressionner, prescrivent des saignees et des lavements inutiles, et ne guerissent PERSONNE. Moliere denonce leur ignorance, leur pretention et leur cupidite. En gros : les medecins de l\'epoque sont des charlatans en robes noires qui profitent de la peur des malades. Mots difficiles : "charlatan" = quelqu\'un qui pretend savoir mais ne sait rien. "Saignee" = on enlevait du sang au malade (ca ne marchait pas).' },
+                    { question: 'C\'est qui Toinette dans la piece ?', answer: 'C\'est la SERVANTE d\'Argan. Elle est maligne, drole et courageuse. Elle se deguise en medecin pour prouver a Argan que les vrais medecins sont des incompetents. C\'est elle qui a le plus de bon sens dans la piece. En gros : Toinette = la voix de la raison. Comme souvent chez Moliere, le serviteur est plus intelligent que le maitre.' },
+                    { question: 'Pourquoi cette piece est tragique en dehors du texte ?', answer: 'Moliere joue le role d\'Argan (le malade imaginaire). Ironie cruelle : Moliere est VRAIMENT malade (tuberculose). Il meurt quelques heures apres la 4eme representation, le 17 fevrier 1673. Le faux malade est joue par un vrai malade. En gros : Moliere meurt en jouant un hypocondriaque. C\'est la plus grande ironie du theatre francais.' },
+                    { question: 'Quel type de comique Moliere utilise ?', answer: '4 types de comique : 1) MOTS = jeux de mots, latin ridicule des medecins. 2) GESTES = Argan qui court apres Toinette. 3) SITUATION = Toinette deguisee en medecin. 4) CARACTERE = l\'obsession maladive d\'Argan. En gros : Moliere fait rire de TOUTES les facons possibles. Mots difficiles : "comedie-ballet" = piece melee de musique et de danse (Moliere travaillait avec le compositeur Lully).' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit Le Malade imaginaire ?', options: ['Racine', 'Moliere', 'Corneille', 'Marivaux'], correctIndex: 1, explanation: 'Moliere ecrit et joue Le Malade imaginaire en 1673. C\'est sa derniere piece — il meurt apres la 4eme representation.' },
+                    { question: 'Pourquoi Argan veut marier sa fille a un medecin ?', options: ['Par amour', 'Pour avoir un medecin gratuit a la maison', 'Pour la punir', 'Pour l\'argent du medecin'], correctIndex: 1, explanation: 'Argan veut un gendre medecin pour se faire soigner gratuitement. Il ignore les sentiments de sa fille.' },
+                    { question: 'Que denonce Moliere dans cette piece ?', options: ['La religion', 'La guerre', 'Les medecins charlatans et la credulite', 'La monarchie'], correctIndex: 2, explanation: 'Moliere se moque des medecins incompetents qui profitent de la peur des malades pour s\'enrichir.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 14 : LES FAUSSES CONFIDENCES — Marivaux (1737)
+            // ================================================================
+            {
+                id: 'fausses-confidences',
+                title: 'Les Fausses Confidences — Marivaux',
+                icon: '\uD83C\uDFAD',
+                content: '<h3>Les Fausses Confidences — Marivaux (1737)</h3>'
+                    + '<p>Comedie ou un valet manipule tout le monde pour que son maitre pauvre epouse une femme riche. Les sentiments finissent par etre vrais.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Les Fausses Confidences ?', answer: 'Dorante est un jeune homme PAUVRE mais amoureux d\'Araminte, une veuve RICHE. Son valet Dubois invente des stratagemes et fait de "fausses confidences" (= il dit des secrets inventes) pour que Araminte tombe amoureuse de Dorante. Ca marche. En gros : un valet manipulateur joue les entremetteurs. Les faux secrets creent de vrais sentiments. Mots difficiles : "fausse confidence" = un secret qu\'on raconte expres pour manipuler. "Stratageme" = un plan ruse.' },
+                    { question: 'C\'est qui Dubois ?', answer: 'C\'est l\'ancien valet de Dorante, devenu valet d\'Araminte. Il connait les DEUX camps. Il manipule tout le monde pour que Dorante et Araminte finissent ensemble. C\'est le METTEUR EN SCENE de la piece : il ecrit le scenario et fait jouer les roles aux autres. En gros : Dubois est le personnage le plus intelligent. Sans lui, rien ne se passe.' },
+                    { question: 'C\'est quoi le marivaudage dans cette piece ?', answer: 'Le marivaudage c\'est le jeu de l\'amour : les personnages s\'aiment mais n\'osent PAS le dire. Ils tournent autour du pot, se testent, avancent puis reculent. Dans Les Fausses Confidences, Araminte decouvre petit a petit qu\'elle est amoureuse, mais elle lutte contre ce sentiment (parce que Dorante est pauvre). En gros : le marivaudage = la danse de seduction ou on dit tout SAUF "je t\'aime." Mots difficiles : "marivaudage" = badinage amoureux subtil et raffine, invente par Marivaux.' },
+                    { question: 'Quel est le theme de l\'argent dans cette piece ?', answer: 'Araminte est RICHE. Dorante est PAUVRE. La societe dit qu\'ils ne peuvent PAS se marier (difference de classe). Tout l\'enjeu : l\'amour peut-il vaincre les barrieres sociales ? A la fin, OUI — Araminte choisit l\'amour. En gros : Marivaux critique une societe ou l\'argent decide des mariages, pas les sentiments.' },
+                    { question: 'Pourquoi cette piece est au programme du Bac ?', answer: 'Parce qu\'elle pose des questions profondes sous le rire : 1) Peut-on manipuler les sentiments ? 2) Les faux moyens (mensonges de Dubois) peuvent-ils creer de vrais sentiments ? 3) L\'amour doit-il triompher des conventions sociales ? En gros : sous la comedie legere, il y a une reflexion sur la verite des sentiments et les barrieres de classe.' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit Les Fausses Confidences ?', options: ['Moliere', 'Beaumarchais', 'Marivaux', 'Musset'], correctIndex: 2, explanation: 'Marivaux ecrit Les Fausses Confidences en 1737. C\'est un chef-d\'oeuvre du marivaudage.' },
+                    { question: 'Quel personnage manipule tout le monde ?', options: ['Dorante', 'Araminte', 'Dubois', 'Marton'], correctIndex: 2, explanation: 'Dubois, le valet, orchestre tout pour que Dorante et Araminte finissent ensemble.' },
+                    { question: 'Quel est l\'obstacle entre Dorante et Araminte ?', options: ['La religion', 'La difference de fortune', 'L\'age', 'La guerre'], correctIndex: 1, explanation: 'Dorante est pauvre, Araminte est riche. La societe interdit ce type de mariage.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 15 : LA PEAU DE CHAGRIN — Balzac (1831)
+            // ================================================================
+            {
+                id: 'peau-de-chagrin',
+                title: 'La Peau de chagrin — Balzac',
+                icon: '\uD83D\uDCDC',
+                content: '<h3>La Peau de chagrin — Honore de Balzac (1831)</h3>'
+                    + '<p>Roman fantastique. Un jeune homme trouve une peau magique qui realise tous ses voeux, mais qui retrecit a chaque voeu. Quand elle disparait, il meurt.</p>',
+                flashcards: [
+                    { question: 'De quoi parle La Peau de chagrin ?', answer: 'Raphael de Valentin, un jeune homme ruine et desespere, trouve une peau de CHAGRIN (= peau d\'animal) magique. Elle realise TOUS ses voeux. Mais a chaque voeu, la peau RETRECIT. Quand elle aura disparu, Raphael mourra. Il choisit d\'abord les plaisirs (richesse, fetes). Puis il essaie de ne plus rien desirer pour survivre. Mais c\'est impossible. Il meurt. En gros : tu peux tout avoir, mais chaque desir te rapproche de la mort.' },
+                    { question: 'C\'est quoi le symbole de la peau de chagrin ?', answer: 'La peau represente la VIE. Chaque desir CONSOMME de la vie. Plus tu desires, plus tu vis vite, plus tu meurs tot. C\'est une allegorie : desir = destruction. Balzac pose la question : vaut-il mieux vivre intensement et mourir jeune, ou vivre prudemment et durer ? En gros : la peau de chagrin = ta vie qui se consume a chaque plaisir. Mots difficiles : "chagrin" = ici, peau d\'ane ou de mulet (pas la tristesse). "Allegorie" = une histoire qui represente une idee.' },
+                    { question: 'Pourquoi Raphael ne peut pas arreter de desirer ?', answer: 'Parce que le DESIR est ce qui fait de nous des humains. Sans desir, on ne vit pas, on survit. Raphael essaie de ne plus rien vouloir (il s\'enferme, evite les gens). Mais le desir revient toujours : l\'amour, la faim, la curiosite. En gros : Balzac dit que l\'homme est CONDAMNE a desirer. Renoncer au desir c\'est renoncer a vivre.' },
+                    { question: 'A quel genre appartient ce roman ?', answer: 'C\'est un roman FANTASTIQUE (la peau magique) ET REALISTE (la societe parisienne est decrite avec precision). Balzac melange le surnaturel et le reel. La peau est-elle vraiment magique ou est-ce une metaphore de l\'epuisement ? Balzac laisse le doute. En gros : realisme + fantastique = un genre hybride. Mots difficiles : "fantastique" = genre ou le surnaturel fait irruption dans le reel et cree le doute.' },
+                    { question: 'Pourquoi c\'est au programme du Bac ?', answer: 'Parce que le roman interroge le DESIR (theme philosophique majeur). Il pose la question : est-ce que vouloir toujours plus nous rend heureux ou nous detruit ? C\'est aussi un chef-d\'oeuvre de Balzac qui montre la societe parisienne du XIXe siecle. En gros : desir + societe + fantastique = un roman riche pour le Bac.' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit La Peau de chagrin ?', options: ['Flaubert', 'Balzac', 'Zola', 'Stendhal'], correctIndex: 1, explanation: 'Balzac publie La Peau de chagrin en 1831. Le roman fait partie de La Comedie humaine.' },
+                    { question: 'Que fait la peau de chagrin a chaque voeu ?', options: ['Elle grandit', 'Elle change de couleur', 'Elle retrecit', 'Elle brille'], correctIndex: 2, explanation: 'A chaque voeu exauce, la peau retrecit. Quand elle disparait completement, Raphael meurt.' },
+                    { question: 'Quel est le theme central du roman ?', options: ['La guerre', 'Le desir et ses consequences destructrices', 'La religion', 'Le voyage'], correctIndex: 1, explanation: 'La Peau de chagrin est une reflexion sur le desir : chaque plaisir consomme de la vie.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 16 : GARGANTUA — Rabelais (1534)
+            // ================================================================
+            {
+                id: 'gargantua',
+                title: 'Gargantua — Rabelais',
+                icon: '\uD83C\uDF56',
+                content: '<h3>Gargantua — Francois Rabelais (1534)</h3>'
+                    + '<p>Roman comique et humaniste. L\'histoire d\'un GEANT qui mange, boit et apprend enormement. Sous le rire, Rabelais critique la societe.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Gargantua ?', answer: 'Gargantua est un GEANT. Il nait, mange enormement, recoit une mauvaise education (par coeur, sans reflechir), puis une BONNE education humaniste (reflechir, observer, experimenter). Il fait la guerre contre Picrochole (un roi stupide). A la fin, il fonde l\'abbaye de Theleme (un lieu ideal). En gros : sous le rire et le grotesque, Rabelais defend l\'education humaniste et critique la betise. Mots difficiles : "humanisme" = mouvement de la Renaissance qui met l\'homme au centre et valorise le savoir.' },
+                    { question: 'C\'est quoi l\'abbaye de Theleme ?', answer: 'C\'est un lieu IDEAL invente par Rabelais a la fin du roman. La seule regle : "Fais ce que voudras." Pas de murs, pas d\'horloge, pas de contrainte. Les habitants sont libres, cultives et vertueux. C\'est une UTOPIE : Rabelais imagine un monde ou la liberte rend les gens MEILLEURS (pas pires). En gros : Theleme = le reve humaniste. La liberte totale produit des gens bons. Mots difficiles : "utopie" = lieu ideal qui n\'existe pas. "Fais ce que voudras" = la devise de Theleme.' },
+                    { question: 'Pourquoi Rabelais critique l\'education medievale ?', answer: 'Au debut, Gargantua est eduque par des maitres MEDIEVAUX : il apprend par COEUR sans comprendre, il recite sans reflechir. Il devient BETE. Puis il recoit une education HUMANISTE (Ponocrates) : il observe, reflechit, fait du sport, lit les Anciens. Il devient INTELLIGENT. En gros : Rabelais dit "apprendre par coeur c\'est stupide. Il faut comprendre." Mots difficiles : "scolastique" = l\'education medievale basee sur la repetition. "Humaniste" = education basee sur la reflexion et l\'observation.' },
+                    { question: 'Pourquoi le rire est important chez Rabelais ?', answer: 'Rabelais ecrit dans le prologue : "Mieux est de ris que de larmes ecrire, pour ce que rire est le propre de l\'homme." Le rire est ce qui nous rend HUMAINS. Sous les blagues (pets, banquets enormes, combats ridicules), il y a des idees SERIEUSES. Rabelais utilise le rire pour faire passer ses critiques (contre l\'Eglise, la guerre, l\'education stupide). En gros : le rire n\'est pas superficiel. C\'est une ARME pour critiquer la societe.' },
+                    { question: 'Pourquoi Gargantua est au programme du Bac ?', answer: 'Parce que c\'est un texte FONDATEUR de l\'humanisme francais. Il pose des questions encore actuelles : comment bien eduquer ? La liberte rend-elle meilleur ? Le rire peut-il etre serieux ? C\'est aussi un texte de litterature d\'idees : Rabelais argumente pour l\'education humaniste en racontant une histoire drole. En gros : sous le geant qui mange, il y a un penseur qui reflechit a l\'education et a la liberte.' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit Gargantua ?', options: ['Montaigne', 'Rabelais', 'Ronsard', 'Du Bellay'], correctIndex: 1, explanation: 'Francois Rabelais publie Gargantua en 1534. C\'est un roman comique et humaniste de la Renaissance.' },
+                    { question: 'Quelle est la devise de l\'abbaye de Theleme ?', options: ['Liberte Egalite Fraternite', 'Fais ce que voudras', 'Que sais-je ?', 'Connais-toi toi-meme'], correctIndex: 1, explanation: '"Fais ce que voudras" est la devise de Theleme, l\'utopie de Rabelais ou la liberte rend les gens vertueux.' },
+                    { question: 'Que critique Rabelais dans l\'education de Gargantua ?', options: ['Le sport', 'L\'education humaniste', 'L\'education medievale par coeur', 'Les langues etrangeres'], correctIndex: 2, explanation: 'Rabelais oppose l\'education medievale (par coeur, sans reflexion) a l\'education humaniste (observation, reflexion, experimentation).' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 17 : ALCOOLS — Apollinaire (1913)
+            // ================================================================
+            {
+                id: 'alcools',
+                title: 'Alcools — Apollinaire',
+                icon: '\uD83C\uDF19',
+                content: '<h3>Alcools — Guillaume Apollinaire (1913)</h3>'
+                    + '<p>Recueil poetique REVOLUTIONNAIRE. Apollinaire supprime la ponctuation, melange tradition et modernite.</p>',
+                flashcards: [
+                    { question: 'C\'est quoi Alcools d\'Apollinaire ?', answer: 'Un recueil de poemes publie en 1913. Apollinaire fait un truc FOU : il supprime TOUTE la ponctuation (pas de virgules, pas de points). Il melange des formes anciennes (sonnets, vers reguliers) avec des sujets modernes (la ville, les voitures, la Tour Eiffel). En gros : Apollinaire fait le pont entre la poesie classique et la modernite. Mots difficiles : "vers libre" = vers sans rime ni metre fixe. "Modernite" = ce qui est nouveau, urbain, contemporain.' },
+                    { question: 'De quoi parle "Zone" (premier poeme d\'Alcools) ?', answer: 'Apollinaire se promene dans Paris et melange tout : ses souvenirs d\'enfance, la Tour Eiffel, les rues, les avions, la religion, ses voyages. Il n\'y a PAS d\'ordre logique. Les images se superposent comme dans un reve. Premier vers celebre : "A la fin tu es las de ce monde ancien." En gros : Zone c\'est le manifeste de la modernite. On quitte le monde ancien pour embrasser le nouveau.' },
+                    { question: 'De quoi parle "Le Pont Mirabeau" ?', answer: '"Sous le pont Mirabeau coule la Seine, et nos amours, faut-il qu\'il m\'en souvienne." Apollinaire parle de l\'amour PERDU. L\'eau qui coule = le temps qui passe. Le refrain revient comme les vagues. C\'est un des poemes d\'amour les plus celebres en francais. En gros : l\'amour passe comme l\'eau sous un pont. Ca ne revient pas. Mots difficiles : "refrain" = vers qui se repete. "Lyrisme" = expression des sentiments personnels.' },
+                    { question: 'Pourquoi Apollinaire supprime la ponctuation ?', answer: 'Pour que le lecteur CHOISISSE le rythme. Sans ponctuation, un vers peut se lire de plusieurs facons. Ca cree de l\'ambiguite et de la liberte. Apollinaire dit que la ponctuation est inutile parce que le rythme du vers suffit. En gros : supprimer la ponctuation = liberer la poesie. Le lecteur devient acteur du texte.' },
+                    { question: 'Pourquoi Alcools est au programme du Bac ?', answer: 'Parce que c\'est le recueil qui fait le LIEN entre la poesie traditionnelle et la modernite. Apollinaire garde le lyrisme (sentiments, amour, melancolie) mais invente une forme nouvelle (pas de ponctuation, images surprenantes, sujets urbains). Il influence TOUT le XXe siecle : les surrealistes le considerent comme leur precurseur. En gros : Apollinaire = la charniere entre l\'ancien et le nouveau en poesie.' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit Alcools ?', options: ['Baudelaire', 'Rimbaud', 'Apollinaire', 'Verlaine'], correctIndex: 2, explanation: 'Guillaume Apollinaire publie Alcools en 1913. C\'est un recueil fondateur de la poesie moderne.' },
+                    { question: 'Quelle particularite typographique a Alcools ?', options: ['Tout en majuscules', 'Pas de ponctuation', 'Ecrit a l\'envers', 'En vers de 20 syllabes'], correctIndex: 1, explanation: 'Apollinaire supprime toute la ponctuation du recueil pour liberer le rythme et laisser le lecteur choisir ses pauses.' },
+                    { question: '"Sous le pont Mirabeau coule la Seine" est le debut de quel poeme ?', options: ['Zone', 'Le Pont Mirabeau', 'Nuit rhenane', 'La Chanson du mal-aime'], correctIndex: 1, explanation: 'Le Pont Mirabeau est un poeme lyrique sur l\'amour perdu et le temps qui passe, un des plus celebres de la poesie francaise.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 18 : SIDO + LES VRILLES DE LA VIGNE — Colette
+            // ================================================================
+            {
+                id: 'sido-colette',
+                title: 'Sido + Les Vrilles de la vigne — Colette',
+                icon: '\uD83C\uDF3F',
+                content: '<h3>Sido suivi de Les Vrilles de la vigne — Colette (1930 / 1908)</h3>'
+                    + '<p>Textes autobiographiques. Colette raconte sa mere (Sido), son enfance, et sa quete de liberte.</p>',
+                flashcards: [
+                    { question: 'C\'est quoi Sido de Colette ?', answer: 'C\'est un recit autobiographique (1930) ou Colette raconte sa MERE, surnommee "Sido." Sido est un personnage extraordinaire : elle aime passionnement la nature, les jardins, les animaux. Elle est libre, independante, originale. A travers le portrait de sa mere, Colette parle aussi de son ENFANCE a la campagne. En gros : un livre d\'amour d\'une fille pour sa mere. Mots difficiles : "autobiographique" = l\'auteur raconte sa propre vie.' },
+                    { question: 'C\'est quoi Les Vrilles de la vigne ?', answer: 'Un recueil de textes courts (1908) ou Colette parle de ses sensations, de la nature, de l\'amour, de la liberte. Le titre vient d\'un rossignol qui s\'endort dans une vigne et se reveille prisonnier des vrilles (les tiges). Il chante toute la nuit pour ne plus jamais etre capture. En gros : c\'est un livre sur la LIBERTE. Comme le rossignol, Colette refuse d\'etre enfermee. Mots difficiles : "vrilles" = les tiges enroulees de la vigne qui s\'accrochent a tout.' },
+                    { question: 'Comment Colette ecrit-elle ?', answer: 'Colette ecrit avec ses SENS. Elle decrit les odeurs, les couleurs, les textures, les gouts. Son ecriture est SENSORIELLE et CONCRETE. Elle parle de la nature comme personne : chaque fleur, chaque animal est decrit avec precision et amour. En gros : lire Colette c\'est SENTIR le monde. Ses mots sont des sensations. Mots difficiles : "ecriture sensorielle" = ecriture qui fait appel aux 5 sens.' },
+                    { question: 'Pourquoi Colette est importante en litterature ?', answer: 'Colette est une des premieres femmes a vivre de sa plume et a revendiquer sa LIBERTE (elle divorce, elle voyage, elle vit comme elle veut). Elle ecrit sur le corps, les sensations, la nature avec une franchise rare pour une femme de son epoque. En gros : Colette = la liberte feminine + l\'ecriture des sensations. Mots difficiles : "emancipation" = se liberer des contraintes imposees par la societe.' }
+                ],
+                quiz: [
+                    { question: 'Qui est Sido ?', options: ['La fille de Colette', 'La mere de Colette', 'Une amie de Colette', 'Un personnage invente'], correctIndex: 1, explanation: 'Sido est le surnom de la mere de Colette. Le livre est un portrait amoureux de cette femme passionnee par la nature.' },
+                    { question: 'D\'ou vient le titre Les Vrilles de la vigne ?', options: ['D\'un proverbe', 'D\'un rossignol prisonnier des vrilles qui chante pour rester libre', 'D\'un poeme de Baudelaire', 'D\'une region viticole'], correctIndex: 1, explanation: 'Un rossignol s\'endort dans une vigne et se reveille piege par les vrilles. Il chante pour ne plus jamais se laisser capturer. C\'est l\'image de la liberte.' },
+                    { question: 'Qu\'est-ce qui caracterise l\'ecriture de Colette ?', options: ['Le style abstrait', 'L\'ecriture sensorielle (odeurs, couleurs, textures)', 'Le style scientifique', 'L\'ecriture en vers'], correctIndex: 1, explanation: 'Colette ecrit avec ses sens : elle fait sentir, toucher et voir le monde a travers ses mots.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 19 : MEMOIRES D'HADRIEN — Yourcenar (1951)
+            // ================================================================
+            {
+                id: 'memoires-hadrien',
+                title: 'Memoires d\'Hadrien — Yourcenar',
+                icon: '\uD83C\uDFDB\uFE0F',
+                content: '<h3>Memoires d\'Hadrien — Marguerite Yourcenar (1951)</h3>'
+                    + '<p>Roman historique. L\'empereur romain Hadrien ecrit une longue lettre a son successeur Marc Aurele. Il raconte sa vie et reflechit sur le pouvoir, la mort, l\'amour.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Memoires d\'Hadrien ?', answer: 'L\'empereur romain HADRIEN (76-138) est vieux et malade. Il ecrit une lettre a Marc Aurele (son futur successeur). Il raconte SA vie : ses guerres, ses voyages, son amour pour Antinous (un jeune homme), sa philosophie du pouvoir. C\'est un roman HISTORIQUE ecrit comme une autobiographie fictive. En gros : Yourcenar se met dans la tete d\'un empereur romain et le fait parler. Mots difficiles : "roman historique" = roman situe dans une epoque reelle du passe. "Autobiographie fictive" = un personnage reel raconte sa vie, mais c\'est l\'auteur qui imagine tout.' },
+                    { question: 'Pourquoi Yourcenar choisit Hadrien ?', answer: 'Hadrien est un empereur HUMANISTE : il prefere la paix a la guerre, il voyage dans tout l\'Empire, il aime la culture grecque, il reflechit sur la mort. Il est au SOMMET du pouvoir mais il sait que tout est fragile. Yourcenar dit : "J\'ai choisi un homme qui a presque tout su et qui a tenu le monde dans ses mains." En gros : Hadrien = un homme puissant qui DOUTE. C\'est plus interessant qu\'un empereur sur de lui.' },
+                    { question: 'Comment le roman est-il ecrit ?', answer: 'C\'est une LETTRE de 300 pages. Hadrien ecrit a la premiere personne ("je"). Le ton est intime et philosophique. Yourcenar a fait 20 ans de RECHERCHES pour etre fidele a l\'epoque. Elle mele verite historique et invention romanesque. En gros : on a l\'impression de lire le VRAI journal d\'un empereur romain. Mots difficiles : "recit a la premiere personne" = le narrateur dit "je." "Vraisemblance historique" = ca RESSEMBLE a la verite historique meme si c\'est invente.' },
+                    { question: 'Pourquoi ce roman est au programme du Bac ?', answer: 'Parce qu\'il pose des questions UNIVERSELLES : comment exercer le pouvoir ? Comment accepter la mort ? L\'amour peut-il survivre a la perte ? C\'est aussi un exploit litteraire : Yourcenar, femme du XXe siecle, se glisse dans la peau d\'un homme du IIe siecle et le rend vivant. En gros : c\'est un roman sur le pouvoir, la mort et l\'amour, ecrit avec une precision historique exceptionnelle.' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit Memoires d\'Hadrien ?', options: ['Simone de Beauvoir', 'Marguerite Yourcenar', 'Marguerite Duras', 'George Sand'], correctIndex: 1, explanation: 'Marguerite Yourcenar publie Memoires d\'Hadrien en 1951. Elle est la premiere femme elue a l\'Academie francaise (1980).' },
+                    { question: 'A qui Hadrien ecrit-il sa lettre ?', options: ['A Jules Cesar', 'A Marc Aurele', 'A Auguste', 'A Neron'], correctIndex: 1, explanation: 'Hadrien ecrit a Marc Aurele, son futur successeur, pour lui transmettre son experience du pouvoir.' },
+                    { question: 'Quel est le genre de ce roman ?', options: ['Science-fiction', 'Roman historique sous forme d\'autobiographie fictive', 'Conte philosophique', 'Roman policier'], correctIndex: 1, explanation: 'C\'est un roman historique ecrit comme si Hadrien racontait sa propre vie. Yourcenar invente le recit mais respecte l\'histoire.' }
+                ]
             }
         ]
     });
