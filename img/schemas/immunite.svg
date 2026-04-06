@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" rx="16" fill="#0f172a"/>
+  <text x="200" y="28" text-anchor="middle" fill="#60a5fa" font-family="sans-serif" font-size="16" font-weight="700">Le système immunitaire</text>
+
+  <!-- Microbe -->
+  <circle cx="60" cy="80" r="20" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="2"/>
+  <text x="60" y="84" text-anchor="middle" fill="#ef4444" font-family="sans-serif" font-size="10" font-weight="700">🦠</text>
+  <text x="60" y="55" text-anchor="middle" fill="#ef4444" font-family="sans-serif" font-size="10" font-weight="700">Microbe</text>
+
+  <!-- Arrow -->
+  <text x="110" y="82" fill="#475569" font-family="sans-serif" font-size="14">→</text>
+
+  <!-- Barrier 1: Innée -->
+  <rect x="130" y="50" width="110" height="80" rx="12" fill="rgba(251,191,36,0.08)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="185" y="68" text-anchor="middle" fill="#fbbf24" font-family="sans-serif" font-size="11" font-weight="700">Immunité innée</text>
+  <text x="185" y="82" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="8">RAPIDE (minutes)</text>
+  <text x="185" y="95" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="8">NON spécifique</text>
+  <text x="185" y="108" text-anchor="middle" fill="#fbbf24" font-family="sans-serif" font-size="8">Peau + phagocytes</text>
+  <text x="185" y="120" text-anchor="middle" fill="#fbbf24" font-family="sans-serif" font-size="8">+ inflammation</text>
+
+  <!-- Arrow -->
+  <text x="255" y="92" fill="#475569" font-family="sans-serif" font-size="14">→</text>
+
+  <!-- Barrier 2: Adaptative -->
+  <rect x="270" y="50" width="115" height="80" rx="12" fill="rgba(96,165,250,0.08)" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="327" y="68" text-anchor="middle" fill="#60a5fa" font-family="sans-serif" font-size="11" font-weight="700">Immunité adaptative</text>
+  <text x="327" y="82" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="8">LENTE (5-7 jours)</text>
+  <text x="327" y="95" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="8">SPÉCIFIQUE</text>
+  <text x="327" y="108" text-anchor="middle" fill="#60a5fa" font-family="sans-serif" font-size="8">Lymphocytes T + B</text>
+  <text x="327" y="120" text-anchor="middle" fill="#60a5fa" font-family="sans-serif" font-size="8">+ anticorps</text>
+
+  <!-- Cells -->
+  <circle cx="100" cy="190" r="22" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="100" y="188" text-anchor="middle" fill="#fbbf24" font-family="sans-serif" font-size="8" font-weight="700">Phagocyte</text>
+  <text x="100" y="198" text-anchor="middle" fill="#fbbf24" font-family="sans-serif" font-size="7">(mange)</text>
+
+  <circle cx="200" cy="190" r="22" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="200" y="185" text-anchor="middle" fill="#a78bfa" font-family="sans-serif" font-size="8" font-weight="700">LT CD4+</text>
+  <text x="200" y="196" text-anchor="middle" fill="#a78bfa" font-family="sans-serif" font-size="7">(chef)</text>
+
+  <circle cx="270" cy="190" r="22" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="270" y="185" text-anchor="middle" fill="#ef4444" font-family="sans-serif" font-size="8" font-weight="700">LT CD8+</text>
+  <text x="270" y="196" text-anchor="middle" fill="#ef4444" font-family="sans-serif" font-size="7">(tueur)</text>
+
+  <circle cx="340" cy="190" r="22" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="340" y="185" text-anchor="middle" fill="#34d399" font-family="sans-serif" font-size="8" font-weight="700">LB</text>
+  <text x="340" y="196" text-anchor="middle" fill="#34d399" font-family="sans-serif" font-size="7">(anticorps)</text>
+
+  <!-- Arrows from CD4 -->
+  <line x1="215" y1="180" x2="250" y2="180" stroke="#a78bfa" stroke-width="1" marker-end="url(#arrowhead)"/>
+  <line x1="215" y1="195" x2="320" y2="195" stroke="#a78bfa" stroke-width="1"/>
+
+  <!-- Memory -->
+  <rect x="60" y="235" width="280" height="30" rx="8" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1"/>
+  <text x="200" y="254" text-anchor="middle" fill="#34d399" font-family="sans-serif" font-size="10" font-weight="700">🛡️ Cellules mémoire → réponse rapide la 2ème fois = VACCIN</text>
+
+  <text x="200" y="290" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-size="10">Innée = pompiers | Adaptative = experts qui se souviennent</text>
+</svg>

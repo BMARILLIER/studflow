@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" rx="16" fill="#0f172a"/>
+  <text x="200" y="28" text-anchor="middle" fill="#60a5fa" font-family="sans-serif" font-size="16" font-weight="700">Tectonique des plaques</text>
+
+  <!-- Croute / surface -->
+  <rect x="20" y="80" width="360" height="20" rx="2" fill="rgba(251,191,36,0.2)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="200" y="94" text-anchor="middle" fill="#fbbf24" font-family="sans-serif" font-size="10" font-weight="700">Croûte (lithosphère)</text>
+
+  <!-- Manteau -->
+  <rect x="20" y="100" width="360" height="80" rx="2" fill="rgba(251,146,60,0.1)" stroke="#fb923c" stroke-width="1"/>
+  <text x="200" y="145" text-anchor="middle" fill="#fb923c" font-family="sans-serif" font-size="10" font-weight="600">Manteau (asthénosphère)</text>
+
+  <!-- Convection arrows -->
+  <path d="M100,130 Q100,110 120,110 Q140,110 140,130 Q140,150 120,150 Q100,150 100,130" stroke="#ef4444" stroke-width="1.5" fill="none" marker-end="none"/>
+  <text x="120" y="135" text-anchor="middle" fill="#ef4444" font-family="sans-serif" font-size="7">↻</text>
+  <path d="M260,130 Q260,110 280,110 Q300,110 300,130 Q300,150 280,150 Q260,150 260,130" stroke="#ef4444" stroke-width="1.5" fill="none"/>
+  <text x="280" y="135" text-anchor="middle" fill="#ef4444" font-family="sans-serif" font-size="7">↻</text>
+
+  <!-- Noyau -->
+  <rect x="20" y="180" width="360" height="40" rx="2" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1"/>
+  <text x="200" y="205" text-anchor="middle" fill="#ef4444" font-family="sans-serif" font-size="10" font-weight="600">Noyau (fer-nickel)</text>
+
+  <!-- Divergence (dorsale) -->
+  <line x1="195" y1="60" x2="195" y2="80" stroke="#34d399" stroke-width="2"/>
+  <line x1="205" y1="60" x2="205" y2="80" stroke="#34d399" stroke-width="2"/>
+  <text x="180" y="58" fill="#34d399" font-family="sans-serif" font-size="7">←</text>
+  <text x="210" y="58" fill="#34d399" font-family="sans-serif" font-size="7">→</text>
+  <text x="200" y="50" text-anchor="middle" fill="#34d399" font-family="sans-serif" font-size="9" font-weight="700">Dorsale</text>
+  <text x="200" y="73" text-anchor="middle" fill="#34d399" font-family="sans-serif" font-size="7">(divergence)</text>
+
+  <!-- Subduction -->
+  <path d="M340,80 Q350,80 355,100 Q360,130 350,160" stroke="#a78bfa" stroke-width="2" fill="none"/>
+  <text x="365" y="95" fill="#a78bfa" font-family="sans-serif" font-size="8">↓</text>
+  <text x="350" y="50" fill="#a78bfa" font-family="sans-serif" font-size="9" font-weight="700">Subduction</text>
+  <text x="365" y="73" fill="#a78bfa" font-family="sans-serif" font-size="7">(convergence)</text>
+
+  <!-- Volcan -->
+  <polygon points="330,80 340,55 350,80" fill="rgba(239,68,68,0.3)" stroke="#ef4444" stroke-width="1"/>
+  <text x="340" y="45" text-anchor="middle" fill="#ef4444" font-family="sans-serif" font-size="8">🌋</text>
+
+  <!-- Legend -->
+  <text x="20" y="240" fill="#fbbf24" font-family="sans-serif" font-size="9">🟡 Dorsale = les plaques s'écartent → magma monte</text>
+  <text x="20" y="255" fill="#a78bfa" font-family="sans-serif" font-size="9">🟣 Subduction = une plaque passe sous l'autre → volcans</text>
+  <text x="20" y="270" fill="#ef4444" font-family="sans-serif" font-size="9">🔴 Convection = le manteau chaud monte, le froid descend</text>
+  <text x="200" y="292" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-size="10">Les plaques bougent grâce à la chaleur du manteau</text>
+</svg>
