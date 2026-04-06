@@ -391,15 +391,19 @@
             + searchBarHTML
             + renderHeroBac(gamStats)       // Bloc 1 : streak + CTA session
             + renderDailyGauge()            // Bloc 2 : jauge quotidienne
-            + renderNextStep()              // Bloc 2b : prochaine étape guidée
+            + renderStudyTimer()            // Bloc 2b : temps de révision
+            + renderNextStep()              // Bloc 2c : prochaine étape guidée
             + renderSubjectGrid();          // Bloc 3 : matières
 
         // ===== BELOW : contenu secondaire caché sous "Voir plus" =====
         var profileWidget = renderStudentProfile();
         var dailyChallengeHTML = renderDailyChallenge(gamStats);
 
+        var weeklyHTML = renderWeeklySummary();
+
         var belowFold = ''
             + '<div class="dash-more-content" id="dash-more-content" style="display:none;">'
+            + weeklyHTML
             + dailyChallengeHTML
             + profileWidget
             + renderHeroActions()
@@ -1035,6 +1039,80 @@
         }
     }
 
+    // ==================== RÉSUMÉ HEBDOMADAIRE ====================
+    function renderWeeklySummary() {
+        // Afficher seulement le lundi (ou si pas vu cette semaine)
+        var now = new Date();
+        var dayOfWeek = now.getDay(); // 0=dim, 1=lun
+        var weekKey = now.getFullYear() + '-W' + Math.ceil((now.getDate() + 6 - now.getDay()) / 7);
+        var lastShown = localStorage.getItem('studflow_weekly_shown');
+        if (lastShown === weekKey && dayOfWeek !== 1) return '';
+
+        var gamStats = getGamificationStats();
+        var totalCards = 0;
+        if (window.StudFlow.studentProfile) {
+            var allStats = window.StudFlow.studentProfile.getAllSubjectStats();
+            for (var i = 0; i < allStats.length; i++) totalCards += allStats[i].total;
+        }
+        if (totalCards === 0 && gamStats.xp === 0) return '';
+
+        localStorage.setItem('studflow_weekly_shown', weekKey);
+
+        return '<div class="dash-section dash-weekly">'
+            + '<div class="weekly-header">'
+            + '<span class="weekly-icon">\uD83D\uDCCA</span>'
+            + '<span class="weekly-title">Ta semaine</span>'
+            + '</div>'
+            + '<div class="weekly-stats">'
+            + '<div class="weekly-stat"><span class="weekly-val">' + totalCards + '</span><span class="weekly-label">cartes</span></div>'
+            + '<div class="weekly-stat"><span class="weekly-val">' + (gamStats.streak || 0) + 'j</span><span class="weekly-label">streak</span></div>'
+            + '<div class="weekly-stat"><span class="weekly-val">' + (gamStats.xp || 0) + '</span><span class="weekly-label">XP</span></div>'
+            + '</div>'
+            + '<p class="weekly-msg">\uD83D\uDCAA Continue cette semaine\u00A0!</p>'
+            + '</div>';
+    }
+
+    // ==================== COMPTEUR DE TEMPS ====================
+    function renderStudyTimer() {
+        var todayKey = new Date().toISOString().slice(0, 10);
+        var data = window.StudFlow.storage.loadData('studflow_study_time', { date: null, seconds: 0 });
+        if (data.date !== todayKey) data = { date: todayKey, seconds: 0 };
+        var mins = Math.floor(data.seconds / 60);
+        if (mins === 0) return '';
+        var msg = mins < 5 ? 'Bon d\u00E9but\u00A0!' : mins < 15 ? 'Beau travail\u00A0!' : 'Impressionnant\u00A0!';
+        return '<div class="dash-section dash-study-timer">'
+            + '<span class="study-timer-icon">\u23F1\uFE0F</span>'
+            + '<span class="study-timer-text">' + mins + ' min r\u00E9vis\u00E9es aujourd\u2019hui</span>'
+            + '<span class="study-timer-msg">' + msg + '</span>'
+            + '</div>';
+    }
+
+    function incrementStudyTime(seconds) {
+        var todayKey = new Date().toISOString().slice(0, 10);
+        var data = window.StudFlow.storage.loadData('studflow_study_time', { date: null, seconds: 0 });
+        if (data.date !== todayKey) data = { date: todayKey, seconds: 0 };
+        data.seconds += (seconds || 30);
+        window.StudFlow.storage.saveData('studflow_study_time', data);
+    }
+
+    // ==================== FUN FACT QUOTIDIEN ====================
+    var FUN_FACTS = [
+        '\uD83E\uDDE0 Ton ADN mis bout \u00E0 bout mesurerait 2 fois le diam\u00E8tre du syst\u00E8me solaire.',
+        '\uD83D\uDCDA Tu oublies 80% de ce que tu apprends en 24h sans r\u00E9vision.',
+        '\u26A1 Ton cerveau utilise 20% de ton \u00E9nergie alors qu\u2019il ne fait que 2% de ton poids.',
+        '\uD83D\uDCA4 Tu retiens mieux si tu r\u00E9vises juste avant de dormir.',
+        '\uD83C\uDFB5 La musique sans paroles am\u00E9liore la concentration de 15%.',
+        '\uD83D\uDCA7 Boire 2L d\u2019eau par jour am\u00E9liore la m\u00E9moire de 14%.',
+        '\uD83C\uDFC3 10 min de marche entre 2 sessions = +25% de concentration.',
+        '\u270D\uFE0F \u00C9crire \u00E0 la main active 5x plus de zones du cerveau que taper.',
+        '\uD83D\uDD25 Un streak de 7 jours multiplie par 3 ta r\u00E9tention.',
+        '\uD83C\uDFC6 Se tester est 2x plus efficace que relire ses cours.',
+        '\uD83E\uDDD1\u200D\uD83C\uDFEB Expliquer \u00E0 quelqu\u2019un ce qu\u2019on a appris = la meilleure fa\u00E7on de retenir.',
+        '\uD83C\uDF0D L\u2019espagnol est la 4e langue la plus parl\u00E9e au monde.',
+        '\uD83D\uDCF1 \u00C9teindre les notifs pendant 25 min = le double de productivit\u00E9.',
+        '\uD83E\uDD14 Socrate ne savait qu\u2019une chose : qu\u2019il ne savait rien.'
+    ];
+
     // ==================== PARCOURS GUIDÉ ====================
     function renderNextStep() {
         if (!window.StudFlow.subjects) return '';
@@ -1163,13 +1241,20 @@
     }
 
     function renderDailyTip() {
-        // Pick tip based on day of year (deterministic)
+        // Fun fact quotidien (deterministe par jour)
         var dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-        var tip = DASHBOARD_TIPS[dayOfYear % DASHBOARD_TIPS.length];
-
-        return '<div class="dash-section dash-daily-tip">'
-            + '<div class="dash-tip-icon">' + tip.icon + '</div>'
-            + '<p class="dash-tip-text">' + tip.tip + '</p>'
+        var fact = FUN_FACTS[dayOfYear % FUN_FACTS.length];
+        // Fallback aux anciens tips si FUN_FACTS vide
+        if (!fact && DASHBOARD_TIPS.length > 0) {
+            var tip = DASHBOARD_TIPS[dayOfYear % DASHBOARD_TIPS.length];
+            return '<div class="dash-section dash-daily-tip">'
+                + '<div class="dash-tip-icon">' + tip.icon + '</div>'
+                + '<p class="dash-tip-text">' + tip.tip + '</p>'
+                + '</div>';
+        }
+        return '<div class="dash-section dash-fun-fact">'
+            + '<span class="fun-fact-label">Le savais-tu\u00A0?</span>'
+            + '<p class="fun-fact-text">' + (fact || '') + '</p>'
             + '</div>';
     }
 
@@ -1805,7 +1890,8 @@
         tourSkip: tourSkip,
         dismissBetaBanner: dismissBetaBanner,
         toggleBetaBanner: toggleBetaBanner,
-        incrementDailyGauge: incrementDailyGauge
+        incrementDailyGauge: incrementDailyGauge,
+        incrementStudyTime: incrementStudyTime
     };
 
 })();

@@ -55,6 +55,21 @@
     function init() {
         var theme = get();
         applyTheme(theme);
+        // Mode nuit automatique apres 21h
+        checkNightMode();
+    }
+
+    function checkNightMode() {
+        var hour = new Date().getHours();
+        var userSet = localStorage.getItem(STORAGE_KEY);
+        // Seulement si l'utilisateur n'a pas choisi manuellement
+        if (userSet) return;
+        if (hour >= 21 || hour < 7) {
+            // Apres 21h ou avant 7h : mode sombre (deja par defaut) + filtre bleu
+            document.body.classList.add('night-mode');
+        } else {
+            document.body.classList.remove('night-mode');
+        }
     }
 
     // Apply immediately to avoid flash

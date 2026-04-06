@@ -12818,6 +12818,48 @@ button:active, .tab-item:active, .nav-item:active {
     left: 22px; background: #fff;
 }
 
+/* ==================== WEEKLY SUMMARY ==================== */
+.dash-weekly {
+    padding: 14px 16px; text-align: center;
+    background: linear-gradient(135deg, rgba(52,211,153,0.06), rgba(34,211,238,0.06));
+    border: 1px solid rgba(52,211,153,0.15); border-radius: 16px;
+}
+.weekly-header { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+.weekly-icon { font-size: 1.2rem; }
+.weekly-title { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.weekly-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 8px; }
+.weekly-stat { text-align: center; }
+.weekly-val { display: block; font-size: 1.3rem; font-weight: 800; font-family: 'Fraunces', serif; color: var(--mint); }
+.weekly-label { display: block; font-size: 0.7rem; color: var(--text-muted); }
+.weekly-msg { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
+
+/* ==================== STUDY TIMER ==================== */
+.dash-study-timer {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; text-align: center; justify-content: center;
+}
+.study-timer-icon { font-size: 1rem; }
+.study-timer-text { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.study-timer-msg { font-size: 0.78rem; color: var(--mint); font-weight: 500; }
+
+/* ==================== FUN FACT ==================== */
+.dash-fun-fact {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(96,165,250,0.04), rgba(167,139,250,0.04));
+    border-radius: 14px; border: 1px solid rgba(96,165,250,0.08);
+}
+.fun-fact-label {
+    display: block; font-size: 0.72rem; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;
+}
+.fun-fact-text { font-size: 0.85rem; color: var(--text); margin: 0; line-height: 1.5; }
+
+/* ==================== NIGHT MODE ==================== */
+body.night-mode {
+    filter: sepia(10%) brightness(0.92);
+}
+body.night-mode .br-halo-core { filter: brightness(0.85); }
+
 /* ==================== NEXT STEP (parcours guidé) ==================== */
 .dash-next-step {
     padding: 14px 16px; cursor: pointer;

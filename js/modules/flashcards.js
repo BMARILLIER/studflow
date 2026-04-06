@@ -376,9 +376,10 @@
             else if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
         }
 
-        // Incrementer la jauge quotidienne
-        if (window.StudFlow.dashboard && window.StudFlow.dashboard.incrementDailyGauge) {
-            window.StudFlow.dashboard.incrementDailyGauge();
+        // Incrementer la jauge quotidienne + temps de revision
+        if (window.StudFlow.dashboard) {
+            if (window.StudFlow.dashboard.incrementDailyGauge) window.StudFlow.dashboard.incrementDailyGauge();
+            if (window.StudFlow.dashboard.incrementStudyTime) window.StudFlow.dashboard.incrementStudyTime(30);
         }
 
         if (window.StudFlow.analytics) window.StudFlow.analytics.track('flashcard_review', { correct: !!knew, mode: currentMode });
