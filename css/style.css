@@ -914,40 +914,63 @@ body.theme-light .math-fallback {
 .flashcard-actions { display: flex; gap: 1rem; justify-content: center; }
 
 /* ==================== INTERACTIVE QCM ==================== */
-.fc-interactive { margin: 12px 0 8px; }
+.fc-interactive { margin: 16px 0 12px; }
 .fc-inter-label {
-    text-align: center; font-size: 0.82rem; color: var(--text-muted);
-    margin: 0 0 10px; font-weight: 500;
+    text-align: center; font-size: 0.9rem; color: var(--text);
+    margin: 0 0 12px; font-weight: 600;
 }
-.fc-inter-choices { display: flex; flex-direction: column; gap: 8px; }
+.fc-inter-hint {
+    text-align: center; font-size: 0.78rem; color: var(--text-muted);
+    margin: 10px 0 0; opacity: 0.6; font-style: italic;
+}
+.fc-inter-choices { display: flex; flex-direction: column; gap: 10px; }
 .fc-inter-choice {
-    width: 100%; padding: 12px 16px; border-radius: 14px;
-    background: var(--bg-glass); border: 1.5px solid rgba(255,255,255,0.08);
-    color: var(--text); font-size: 0.85rem; font-weight: 500;
-    text-align: left; cursor: pointer; line-height: 1.4;
+    width: 100%; padding: 14px 18px; border-radius: 16px;
+    background: var(--bg-glass); border: 2px solid rgba(255,255,255,0.08);
+    color: var(--text); font-size: 0.88rem; font-weight: 500;
+    text-align: left; cursor: pointer; line-height: 1.5;
     font-family: 'DM Sans', sans-serif;
     transition: all 0.2s ease;
 }
 .fc-inter-choice:hover:not(:disabled) {
-    border-color: var(--accent); background: rgba(96,165,250,0.06);
+    border-color: var(--accent); background: rgba(96,165,250,0.08);
+    transform: translateX(4px);
 }
 .fc-inter-choice:disabled { cursor: default; opacity: 0.7; }
+.fc-inter-letter {
+    display: inline-block; width: 24px; height: 24px; line-height: 24px;
+    text-align: center; border-radius: 8px; font-weight: 700; font-size: 0.75rem;
+    background: rgba(255,255,255,0.08); margin-right: 8px;
+    vertical-align: middle;
+}
 .fc-inter-correct {
     border-color: var(--mint) !important;
-    background: rgba(52,211,153,0.12) !important;
-    color: var(--mint) !important;
+    background: rgba(52,211,153,0.15) !important;
 }
+.fc-inter-correct .fc-inter-letter { background: var(--mint); color: #000; }
 .fc-inter-wrong {
     border-color: var(--danger) !important;
     background: rgba(239,68,68,0.1) !important;
-    color: var(--danger) !important;
 }
+.fc-inter-wrong .fc-inter-letter { background: var(--danger); color: #fff; }
 .fc-inter-feedback {
-    text-align: center; padding: 10px; margin-top: 8px;
-    border-radius: 12px; font-size: 0.88rem; font-weight: 600;
+    text-align: center; padding: 14px; margin-top: 12px;
+    border-radius: 14px; font-size: 0.9rem;
 }
-.fc-inter-win { color: var(--mint); }
-.fc-inter-lose { color: var(--danger); }
+.fc-inter-win {
+    color: var(--mint);
+    background: rgba(52,211,153,0.08); border-radius: 14px; padding: 12px;
+}
+.fc-inter-win p { font-size: 0.82rem; margin: 6px 0 0; font-weight: 400; opacity: 0.8; }
+.fc-inter-lose {
+    color: var(--danger);
+    background: rgba(239,68,68,0.06); border-radius: 14px; padding: 12px;
+}
+.fc-inter-lose p { font-size: 0.82rem; margin: 6px 0 0; font-weight: 400; opacity: 0.8; }
+.fc-inter-progress {
+    color: var(--sun); font-size: 0.85rem; font-weight: 600;
+    margin: 8px 0 0; animation: fadeIn 0.5s ease;
+}
 
 /* Bouton "Mode clair" — premium, engageant, non culpabilisant */
 .fc-simplify-btn {
