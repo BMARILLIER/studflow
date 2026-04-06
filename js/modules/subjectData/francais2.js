@@ -373,6 +373,168 @@
                     { question: 'Quel poeme d\'Eluard a ete largue sur la France occupee ?', options: ['Capitale de la douleur', 'Liberte', 'L\'Amour la poesie', 'Les Yeux fertiles'], correctIndex: 1, explanation: '"Liberte" (1942) a ete imprime par la RAF et largue par avion sur la France occupee comme acte de Resistance.' },
                     { question: 'A quel age Rimbaud arrete-t-il d\'ecrire ?', options: ['15 ans', '20 ans', '30 ans', '40 ans'], correctIndex: 1, explanation: 'Rimbaud ecrit toute son oeuvre entre 15 et 20 ans, puis abandonne la poesie pour devenir negociant en Afrique.' }
                 ]
+            },
+            // ================================================================
+            // SECTION 8 : ON NE BADINE PAS AVEC L'AMOUR — Musset (1834)
+            // ================================================================
+            {
+                id: 'on-ne-badine-pas',
+                title: 'On ne badine pas avec l\'amour — Musset',
+                icon: '\uD83D\uDC94',
+                content: '<h3>On ne badine pas avec l\'amour — Alfred de Musset (1834)</h3>'
+                    + '<p>Piece de theatre romantique. Deux jeunes gens qui s\'aiment jouent avec les sentiments. Ca finit MAL.</p>'
+                    + '<h4>L\'histoire</h4>'
+                    + '<ul>'
+                    + '<li>Perdican et Camille se retrouvent apres des annees. Ils s\'aiment mais Camille refuse l\'amour (elle veut entrer au couvent)</li>'
+                    + '<li>Perdican, vexe, fait semblant d\'aimer Rosette (une paysanne) pour rendre Camille jalouse</li>'
+                    + '<li>Camille finit par avouer son amour. Mais Rosette, qui aimait vraiment Perdican, meurt de chagrin</li>'
+                    + '</ul>'
+                    + '<h4>Themes</h4>'
+                    + '<ul>'
+                    + '<li><strong>Le jeu amoureux</strong> : on ne joue PAS avec les sentiments — le titre est la lecon</li>'
+                    + '<li><strong>L\'orgueil</strong> : Perdican et Camille sont trop fiers pour avouer ce qu\'ils ressentent</li>'
+                    + '<li><strong>L\'innocence sacrifiee</strong> : Rosette, la seule sincere, est la victime</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'De quoi parle On ne badine pas avec l\'amour ?', answer: 'Perdican et Camille s\'aiment mais sont trop FIERS pour le dire. Camille refuse l\'amour (elle veut le couvent). Perdican, vexe, drague Rosette (une paysanne) pour la rendre jalouse. Camille finit par craquer. Mais Rosette, qui aimait vraiment, meurt de chagrin. En gros : deux orgueilleux jouent avec les sentiments et une innocente en meurt. Le titre dit tout : on ne JOUE PAS avec l\'amour.' },
+                    { question: 'C\'est qui Rosette dans la piece ?', answer: 'C\'est une jeune paysanne, soeur de lait de Camille. Elle est SINCERE et naive. Perdican l\'utilise pour rendre Camille jalouse — il fait semblant de l\'aimer. Mais Rosette, elle, l\'aime VRAIMENT. Quand elle decouvre la verite, elle meurt de chagrin. En gros : Rosette est la victime innocente du jeu cruel des autres. C\'est le personnage le plus tragique de la piece.' },
+                    { question: 'Pourquoi Camille refuse l\'amour ?', answer: 'Au couvent, les religieuses lui ont appris que l\'amour entre hommes et femmes finit TOUJOURS mal : les hommes trompent, mentent, font souffrir. Camille a PEUR de souffrir. Elle prefere renoncer a l\'amour plutot que risquer d\'etre blessee. En gros : Camille se protege en fuyant l\'amour. Mais en fuyant, elle cause exactement la souffrance qu\'elle voulait eviter.' },
+                    { question: 'Que dit Perdican dans son celebre monologue sur l\'amour ?', answer: 'Perdican defend l\'amour contre le cynisme de Camille. Il dit en gros : oui, l\'amour fait souffrir, oui les gens se trompent. Mais une seule larme sincere, un seul moment d\'amour vrai, ca vaut TOUTE la souffrance du monde. Mieux vaut souffrir en aimant que ne rien ressentir. En gros : l\'amour imparfait vaut mieux que l\'absence d\'amour. C\'est le discours le plus celebre de la piece.' },
+                    { question: 'Pourquoi c\'est un "proverbe dramatique" ?', answer: 'Musset a invente ce genre : une piece courte, inspiree d\'un proverbe (ici : "on ne badine pas avec l\'amour" = on ne joue pas avec les sentiments). Le proverbe EST la lecon morale de la piece. C\'est du "theatre dans un fauteuil" = ecrit pour etre LU, pas joue. En gros : le titre est la morale. Le genre = proverbe mis en scene. Mots difficiles : "badiner" = plaisanter, jouer, ne pas prendre au serieux.' },
+                    { question: 'C\'est quoi le romantisme dans cette piece ?', answer: 'Le romantisme c\'est : 1) Les SENTIMENTS au centre (amour, orgueil, souffrance). 2) Le melange de COMIQUE et de TRAGIQUE (la piece commence en comedie et finit en tragedie). 3) La NATURE comme decor (campagne, chateau). 4) Le conflit entre IDEAL et REALITE. En gros : Musset est romantique mais desabuse — il montre que l\'amour est beau mais dangereux.' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit On ne badine pas avec l\'amour ?', options: ['Hugo', 'Musset', 'Marivaux', 'Racine'], correctIndex: 1, explanation: 'Alfred de Musset ecrit cette piece en 1834. C\'est un "proverbe dramatique" romantique.' },
+                    { question: 'Pourquoi Rosette meurt-elle ?', options: ['Elle est tuee par Perdican', 'Elle tombe malade', 'Elle meurt de chagrin en decouvrant qu\'elle a ete utilisee', 'Elle se noie'], correctIndex: 2, explanation: 'Rosette meurt de douleur quand elle comprend que Perdican ne l\'aimait pas vraiment et l\'utilisait pour rendre Camille jalouse.' },
+                    { question: 'Quel est le theme principal de la piece ?', options: ['La politique', 'Le danger de jouer avec les sentiments', 'La religion', 'La guerre'], correctIndex: 1, explanation: 'Le titre dit tout : "on ne badine pas" = on ne joue pas. L\'amour n\'est pas un jeu, il a des consequences reelles.' },
+                    { question: 'Que signifie "badiner" ?', options: ['Pleurer', 'Jouer, plaisanter, ne pas prendre au serieux', 'Danser', 'Prier'], correctIndex: 1, explanation: 'Badiner = traiter quelque chose a la legere, plaisanter. "On ne badine pas avec l\'amour" = on ne joue pas avec les sentiments.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 9 : MANON LESCAUT — Abbe Prevost (1731)
+            // ================================================================
+            {
+                id: 'manon-lescaut',
+                title: 'Manon Lescaut — Abbe Prevost',
+                icon: '\uD83D\uDC83',
+                content: '<h3>Manon Lescaut — Abbe Prevost (1731)</h3>'
+                    + '<p>Roman d\'amour et de passion. Un jeune noble tombe amoureux d\'une fille legere et perd TOUT pour elle.</p>'
+                    + '<h4>L\'histoire</h4>'
+                    + '<ul>'
+                    + '<li>Le Chevalier des Grieux, jeune noble, rencontre Manon Lescaut et tombe follement amoureux</li>'
+                    + '<li>Manon aime des Grieux mais a besoin de LUXE et d\'ARGENT — elle le trompe avec des hommes riches</li>'
+                    + '<li>Des Grieux triche, vole, ment pour garder Manon. Il abandonne sa famille, ses etudes, son honneur</li>'
+                    + '<li>Manon est deportee en Amerique. Des Grieux la suit. Elle meurt dans le desert</li>'
+                    + '</ul>'
+                    + '<h4>Themes</h4>'
+                    + '<ul>'
+                    + '<li><strong>La passion destructrice</strong> : l\'amour fait tout perdre a des Grieux (famille, honneur, morale)</li>'
+                    + '<li><strong>L\'argent et l\'amour</strong> : Manon aime des Grieux mais ne peut pas vivre sans luxe</li>'
+                    + '<li><strong>La chute morale</strong> : un bon jeune homme devient tricheur et voleur par amour</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'De quoi parle Manon Lescaut ?', answer: 'Des Grieux, un jeune noble serieux, tombe amoureux fou de Manon. Probleme : Manon aime le LUXE et trompe des Grieux avec des hommes riches. Des Grieux perd TOUT pour elle : sa famille, ses etudes, son honneur. Il triche et vole pour la garder. A la fin, Manon est deportee en Amerique. Des Grieux la suit. Elle meurt dans le desert. En gros : un amour passion qui detruit tout. Mots difficiles : "passion" = sentiment si fort qu\'il rend aveugle et fait perdre la raison.' },
+                    { question: 'C\'est qui Manon Lescaut ?', answer: 'C\'est une jeune femme belle et charmante. Elle aime VRAIMENT des Grieux, mais elle a un DEFAUT : elle ne peut pas vivre sans argent et sans luxe. Alors elle le trompe avec des hommes riches. Elle n\'est pas mechante — elle est FAIBLE face a la tentation. En gros : Manon est attachante mais immorale. Elle aime l\'amour ET l\'argent, et ne peut renoncer a aucun des deux.' },
+                    { question: 'Pourquoi des Grieux est un personnage tragique ?', answer: 'Au debut, c\'est un jeune homme PARFAIT : noble, intelligent, promis a une belle carriere. Mais sa passion pour Manon le fait SOMBRER : il abandonne ses etudes, renie sa famille, triche aux cartes, vole. L\'amour le transforme en criminel. En gros : des Grieux montre que la passion peut detruire meme les meilleurs. C\'est la chute morale d\'un homme bien. Mots difficiles : "chute morale" = passer du bien au mal. "Dechéance" = perte progressive de tout ce qu\'on avait.' },
+                    { question: 'Pourquoi Manon Lescaut est au programme du Bac ?', answer: 'Parce que ce roman pose LA grande question : la passion est-elle compatible avec la morale ? Des Grieux fait des choses HORRIBLES (vol, triche) mais par AMOUR. Est-ce que l\'amour excuse tout ? Prevost ne juge pas — il laisse le lecteur decider. Aussi : le personnage de Manon interroge la place des femmes et de l\'argent au XVIIIe siecle. En gros : passion vs morale + la condition feminine au XVIIIe.' },
+                    { question: 'Comment le roman est-il raconte ?', answer: 'C\'est des Grieux qui raconte SA version de l\'histoire a un homme qu\'il rencontre (le Marquis de Renoncour). C\'est un RECIT ENCHASSE (une histoire dans une histoire). On n\'a que le point de vue de des Grieux — on ne sait jamais ce que Manon pense vraiment. En gros : on entend seulement le version du heros. Manon reste un mystere. Mots difficiles : "recit enchasse" = un personnage raconte son histoire a un autre personnage (mise en abyme).' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit Manon Lescaut ?', options: ['Voltaire', 'Rousseau', 'L\'Abbe Prevost', 'Laclos'], correctIndex: 2, explanation: 'L\'Abbe Prevost publie Manon Lescaut en 1731, comme partie de ses Memoires d\'un homme de qualite.' },
+                    { question: 'Pourquoi des Grieux perd-il tout ?', options: ['A cause de la guerre', 'Par passion pour Manon', 'A cause de son pere', 'Par ambition politique'], correctIndex: 1, explanation: 'Sa passion pour Manon le pousse a abandonner famille, etudes et honneur, et a commettre des actes immoraux pour la garder.' },
+                    { question: 'Comment Manon meurt-elle ?', options: ['Empoisonnee', 'Guillotinee', 'Elle meurt d\'epuisement dans le desert en Amerique', 'De maladie a Paris'], correctIndex: 2, explanation: 'Deportee en Amerique, Manon meurt d\'epuisement dans le desert. Des Grieux l\'avait suivie par amour.' },
+                    { question: 'Quel est le theme central du roman ?', options: ['La revolution', 'La passion destructrice', 'L\'education', 'Le voyage'], correctIndex: 1, explanation: 'Manon Lescaut explore la passion qui detruit : l\'amour fait perdre a des Grieux sa morale, sa famille et sa liberte.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 10 : DISCOURS DE LA SERVITUDE VOLONTAIRE — La Boetie (1576)
+            // ================================================================
+            {
+                id: 'servitude-volontaire',
+                title: 'Discours de la servitude volontaire — La Boetie',
+                icon: '\u270A',
+                content: '<h3>Discours de la servitude volontaire — Etienne de La Boetie (1576)</h3>'
+                    + '<p>Texte politique. La Boetie pose UNE question : pourquoi les peuples ACCEPTENT-ils d\'etre domines ?</p>'
+                    + '<h4>La these</h4>'
+                    + '<ul>'
+                    + '<li>Le tyran n\'a de pouvoir que celui que le peuple lui DONNE</li>'
+                    + '<li>Si le peuple refuse d\'obeir, le tyran tombe TOUT SEUL</li>'
+                    + '<li>Les gens obeissent par HABITUDE, par peur, ou parce qu\'ils y trouvent des avantages</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'De quoi parle le Discours de la servitude volontaire ?', answer: 'La Boetie pose UNE question : pourquoi les gens se laissent dominer par UN SEUL homme alors qu\'ils sont des MILLIONS ? Sa reponse : c\'est le peuple qui DONNE le pouvoir au tyran. Si tout le monde refusait d\'obeir, le tyran tomberait TOUT SEUL, sans violence. En gros : la tyrannie n\'existe que parce que les gens l\'acceptent. Mots difficiles : "servitude volontaire" = se soumettre de son plein gre (= par choix, meme si c\'est inconscient). "Tyran" = dirigeant qui abuse de son pouvoir.' },
+                    { question: 'Pourquoi les gens obeissent selon La Boetie ?', answer: '3 raisons : 1) L\'HABITUDE = on nait sous la domination, on n\'imagine rien d\'autre. 2) La PEUR = on a peur des consequences si on desobeit. 3) L\'INTERET = certains profitent du systeme (les courtisans, les proches du pouvoir). En gros : on obeit parce qu\'on ne connait rien d\'autre, qu\'on a peur, ou qu\'on y gagne quelque chose.' },
+                    { question: 'C\'est quoi la solution de La Boetie ?', answer: 'Pas la violence. Pas la revolution. Juste ARRETER D\'OBEIR. Si personne ne sert le tyran, il n\'a plus de pouvoir. Le peuple n\'a meme pas besoin de se battre — juste de ne RIEN faire. "Soyez resolus a ne plus servir, et vous voila libres." En gros : la desobeissance passive suffit. Le pouvoir du tyran repose sur notre obeissance. Mots difficiles : "desobeissance civile" = refuser d\'obeir a une loi ou un pouvoir qu\'on juge injuste, de facon non-violente.' },
+                    { question: 'Pourquoi ce texte est important pour le Bac ?', answer: 'Parce qu\'il pose la question de la LIBERTE politique : sommes-nous libres si nous acceptons notre soumission ? Il fait le lien entre litterature et politique. La Boetie a 18 ans quand il l\'ecrit ! Ce texte a influence Gandhi (desobeissance non-violente) et Martin Luther King. En gros : un texte du XVIe siecle qui parle encore aujourd\'hui. Mots difficiles : "rhetorique" = l\'art de convaincre par le discours. La Boetie utilise des questions, des exemples historiques et des images fortes.' },
+                    { question: 'C\'est qui La Boetie ?', answer: 'Etienne de La Boetie (1530-1563). Ami intime de Montaigne (qui l\'appelle "parce que c\'etait lui, parce que c\'etait moi"). Il ecrit le Discours a 18 ANS. Il meurt a 32 ans. Montaigne publie le texte apres sa mort. En gros : un genie precoce qui a ecrit un texte fondateur de la pensee politique a l\'age d\'un lyceen. Mots difficiles : "humaniste" = penseur de la Renaissance qui met l\'homme au centre de la reflexion.' }
+                ],
+                quiz: [
+                    { question: 'Quelle est la these du Discours de la servitude volontaire ?', options: ['Le tyran est tout-puissant', 'Le peuple donne son pouvoir au tyran et peut le reprendre en cessant d\'obeir', 'La revolution violente est necessaire', 'Le peuple est naturellement soumis'], correctIndex: 1, explanation: 'La Boetie dit que le tyran n\'a de pouvoir que celui que le peuple lui donne. Cesser d\'obeir = liberte.' },
+                    { question: 'A quel age La Boetie ecrit-il ce texte ?', options: ['30 ans', '25 ans', '18 ans', '40 ans'], correctIndex: 2, explanation: 'La Boetie ecrit le Discours a 18 ans, ce qui rend ce texte d\'autant plus impressionnant.' },
+                    { question: 'Qui etait le meilleur ami de La Boetie ?', options: ['Voltaire', 'Rousseau', 'Montaigne', 'Rabelais'], correctIndex: 2, explanation: 'Montaigne et La Boetie avaient une amitie legendaire. Montaigne en parle dans les Essais : "Parce que c\'etait lui, parce que c\'etait moi."' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 11 : LES CAHIERS DE DOUAI — Rimbaud (1870)
+            // ================================================================
+            {
+                id: 'cahiers-douai',
+                title: 'Les Cahiers de Douai — Rimbaud',
+                icon: '\uD83D\uDD25',
+                content: '<h3>Les Cahiers de Douai — Arthur Rimbaud (1870)</h3>'
+                    + '<p>22 poemes ecrits par Rimbaud a 15-16 ans. Il fugue de chez lui et envoie ses poemes a des poetes parisiens.</p>'
+                    + '<h4>Contexte</h4>'
+                    + '<ul>'
+                    + '<li>Rimbaud a 15 ans. Il vit a Charleville (Ardennes). Il etouffe.</li>'
+                    + '<li>Il fugue plusieurs fois et ecrit des poemes pendant ses voyages</li>'
+                    + '<li>Il envoie 2 cahiers de poemes a Paul Demeny (un poete) — d\'ou le nom "Cahiers de Douai"</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'C\'est quoi les Cahiers de Douai ?', answer: '22 poemes ecrits par Rimbaud entre 15 et 16 ans. Il fugue de chez lui (il etouffe a Charleville) et ecrit pendant ses voyages. Il envoie 2 cahiers de poemes a un ami poete (Paul Demeny). C\'est un ado REBELLE et GENIE qui reinvente la poesie. En gros : un lyceen qui ecrit les plus beaux poemes de la langue francaise entre deux fugues. Mots difficiles : "fugue" = partir de chez soi sans permission.' },
+                    { question: 'Quels sont les themes des Cahiers de Douai ?', answer: '1) La REVOLTE = contre la famille, l\'ecole, la societe, la guerre (guerre de 1870). 2) La LIBERTE = le voyage, la route, l\'evasion. 3) La NATURE = les paysages traverses pendant ses fugues. 4) La SENSUALITE = eveil des sens, premiers desirs. 5) La CRITIQUE SOCIALE = il denonce l\'Eglise, la bourgeoisie, la guerre. En gros : un ado qui veut tout casser et tout reinventer.' },
+                    { question: 'C\'est quoi le poeme "Ma Boheme" ?', answer: 'Rimbaud raconte ses fugues : il marche sur les routes, dort a la belle etoile, ecrit des poemes sous les etoiles. Il est pauvre mais LIBRE et HEUREUX. Le ton est joyeux et leger. C\'est un hymne a la liberte et a la poesie vagabonde. Citation : "Je m\'en allais, les poings dans mes poches crevees." En gros : la liberte vaut plus que le confort. La misere peut etre poetique.' },
+                    { question: 'C\'est quoi le poeme "Le Dormeur du val" ?', answer: 'On voit un soldat allonge dans un beau paysage vert. Il semble dormir paisiblement. Derniere phrase : "Il a deux trous rouges au cote droit." Il est MORT. C\'est un poeme ANTI-GUERRE. Rimbaud oppose la beaute de la nature a l\'horreur de la guerre. La chute (le dernier vers) est un choc. En gros : un faux poeme paisible qui revele l\'horreur de la guerre en une seule phrase.' },
+                    { question: 'C\'est quoi le poeme "Sensation" ?', answer: '"Par les soirs bleus d\'ete, j\'irai dans les sentiers..." Rimbaud imagine un voyage en pleine nature. Il ressent avec TOUS ses sens : toucher (herbe aux pieds), vue (soirs bleus), odorat. C\'est un poeme court (2 quatrains) mais d\'une intensite sensorielle folle. En gros : un poeme sur le bonheur de sentir le monde avec son corps. La nature = la liberte = le bonheur.' },
+                    { question: 'Pourquoi Rimbaud est un genie precoce ?', answer: 'Il ecrit les Cahiers de Douai a 15-16 ans. A 17 ans, il ecrit Le Bateau ivre (un des plus grands poemes francais). A 20 ans, il ARRETE d\'ecrire pour toujours et part en Afrique. Toute son oeuvre tient en 4 ans. Il meurt a 37 ans. En gros : tout ce qu\'il a ecrit, il l\'a fait entre 15 et 20 ans. Et c\'est parmi les plus grands textes de la langue francaise.' }
+                ],
+                quiz: [
+                    { question: 'A quel age Rimbaud ecrit-il les Cahiers de Douai ?', options: ['20 ans', '25 ans', '15-16 ans', '30 ans'], correctIndex: 2, explanation: 'Rimbaud ecrit ces 22 poemes entre 15 et 16 ans, pendant ses fugues de Charleville.' },
+                    { question: 'Quelle est la chute du "Dormeur du val" ?', options: ['Le soldat se reveille', 'Le soldat est mort (deux trous rouges)', 'Le soldat rentre chez lui', 'Le soldat pleure'], correctIndex: 1, explanation: 'Le dernier vers revele que le soldat qui semblait dormir est en fait mort : "Il a deux trous rouges au cote droit."' },
+                    { question: 'A quel age Rimbaud arrete-t-il d\'ecrire ?', options: ['15 ans', '20 ans', '30 ans', '40 ans'], correctIndex: 1, explanation: 'Rimbaud arrete la poesie a 20 ans et part en Afrique. Toute son oeuvre tient en 4-5 ans.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 12 : BELLE DU SEIGNEUR — Albert Cohen (1968)
+            // ================================================================
+            {
+                id: 'belle-du-seigneur',
+                title: 'Belle du Seigneur — Albert Cohen',
+                icon: '\uD83D\uDC8D',
+                content: '<h3>Belle du Seigneur — Albert Cohen (1968)</h3>'
+                    + '<p>Grand roman d\'amour du XXe siecle. L\'histoire d\'une passion ABSOLUE qui finit par se detruire elle-meme.</p>'
+                    + '<h4>L\'histoire</h4>'
+                    + '<ul>'
+                    + '<li>Solal, un homme seduisant et brillant, tombe amoureux d\'Ariane, une femme mariee</li>'
+                    + '<li>Ils vivent une passion totale, coupee du monde, dans un isolement dore</li>'
+                    + '<li>Mais la passion, privee de vie sociale, de projets, de realite, finit par s\'ETOUFFER</li>'
+                    + '<li>Incapables de supporter la routine de l\'amour, ils se suicident ensemble</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'De quoi parle Belle du Seigneur ?', answer: 'Solal seduit Ariane (une femme mariee). Ils vivent une passion TOTALE. Ils s\'isolent du monde pour vivre leur amour. Mais a force de ne vivre QUE pour l\'amour, sans travail, sans amis, sans projets, la passion s\'eteint. Ils finissent par se suicider. En gros : l\'amour absolu, coupe de la realite, finit par se detruire. Mots difficiles : "passion absolue" = amour total, exclusif, qui occupe toute la vie.' },
+                    { question: 'Pourquoi leur amour echoue ?', answer: 'Parce qu\'ils veulent un amour PARFAIT et PERMANENT. Mais l\'amour a besoin de vie autour de lui : du travail, des amis, des projets. Enfermes a deux, ils s\'ennuient. Ils se regardent et voient leurs defauts. La routine tue la passion. En gros : Cohen montre que l\'amour ne suffit pas a remplir une vie. L\'amour sans le monde = l\'asphyxie.' },
+                    { question: 'C\'est qui Solal ?', answer: 'Un homme d\'origine juive, brillant, seduisant, qui travaille a la Societe des Nations (l\'ancetre de l\'ONU). Il seduit les femmes avec une facilite deconcertante. Mais il cherche un amour VRAI, pas juste physique. Avec Ariane, il croit l\'avoir trouve. Mais il decouvre que meme l\'amour vrai ne protege pas de l\'ennui et de la mort. En gros : Solal est un seducteur qui cherche l\'amour absolu — et le trouve, et le perd.' },
+                    { question: 'Pourquoi Belle du Seigneur est un grand roman ?', answer: 'Parce que Cohen decortique l\'amour avec une HONNETETE brutale. Il montre tout : la seduction (brillante), la passion (exaltante), et la CHUTE (l\'ennui, la routine, la laideur). Il utilise le monologue interieur (on entre dans la tete des personnages). Le style est unique : phrases tres longues, droles et tragiques en meme temps. En gros : c\'est le roman qui dit la verite sur l\'amour, sans mensonge romantique.' },
+                    { question: 'Comment Cohen ecrit-il ?', answer: 'Son style est UNIQUE : 1) Monologue interieur = on entend les pensees des personnages en direct (comme un flux de conscience). 2) Phrases TRES longues (parfois des pages entieres sans point). 3) Melange de comique et de tragique. 4) Ironie mordante. En gros : Cohen ecrit comme on pense — en desordre, en exces, drole et douloureux en meme temps. Mots difficiles : "monologue interieur" = technique qui reproduit les pensees d\'un personnage sans filtre. "Flux de conscience" = les pensees s\'enchainent librement.' }
+                ],
+                quiz: [
+                    { question: 'Qui a ecrit Belle du Seigneur ?', options: ['Proust', 'Camus', 'Albert Cohen', 'Duras'], correctIndex: 2, explanation: 'Albert Cohen publie Belle du Seigneur en 1968. C\'est considere comme un des plus grands romans d\'amour du XXe siecle.' },
+                    { question: 'Pourquoi Solal et Ariane echouent-ils ?', options: ['A cause de la guerre', 'Parce que l\'amour absolu, coupe du monde, finit par s\'etouffer', 'A cause de l\'argent', 'A cause de la famille'], correctIndex: 1, explanation: 'Cohen montre que l\'amour isole du monde se detruit : sans projets, sans vie sociale, la passion se transforme en ennui.' },
+                    { question: 'Quel procede d\'ecriture Cohen utilise-t-il beaucoup ?', options: ['Le dialogue classique', 'Le monologue interieur', 'Le vers libre', 'Le discours indirect'], correctIndex: 1, explanation: 'Cohen utilise le monologue interieur pour entrer dans la tete des personnages et montrer leurs pensees sans filtre.' }
+                ]
             }
         ]
     });
