@@ -777,6 +777,11 @@
             btn.textContent = '\u2715 Fermer';
             btn.classList.add('fc-simplify-btn--active');
         }
+        // Enregistrer l'utilisation du mode clair dans le profil
+        var subjectId = currentDeck.indexOf('subj-') === 0 ? currentDeck.split('-')[1] : null;
+        if (window.StudFlow.studentProfile) {
+            window.StudFlow.studentProfile.recordModeClairUsed(subjectId);
+        }
     }
 
     function escapeSimple(str) {
@@ -915,16 +920,18 @@
         // Cacher le hint
         if (hintEl) hintEl.style.display = 'none';
 
-        // Messages d'encouragement varies
-        var encouragements = [
-            '\uD83D\uDCAA Continue comme \u00E7a\u00A0!',
-            '\uD83D\uDD25 Tu es en feu\u00A0!',
-            '\uD83D\uDC4D Tu progresses\u00A0!',
-            '\u2B50 Excellent travail\u00A0!',
-            '\uD83C\uDFC6 Tu g\u00E8res\u00A0!',
-            '\uD83E\uDDE0 Ton cerveau carbure\u00A0!'
-        ];
-        var encouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
+        // Message adaptatif selon le profil par matière
+        var encouragement;
+        if (window.StudFlow.studentProfile) {
+            encouragement = window.StudFlow.studentProfile.getAdaptiveMessage(subjectId);
+        } else {
+            var defaultMsgs = [
+                '\uD83D\uDCAA Continue comme \u00E7a\u00A0!',
+                '\uD83D\uDC4D Tu progresses\u00A0!',
+                '\uD83D\uDD25 Tu es en feu\u00A0!'
+            ];
+            encouragement = defaultMsgs[Math.floor(Math.random() * defaultMsgs.length)];
+        }
 
         // Cartes restantes
         var cards = getAllCards();
@@ -933,8 +940,16 @@
             ? 'Encore ' + remaining + ' carte' + (remaining > 1 ? 's' : '')
             : 'Derni\u00E8re carte\u00A0!';
 
-        // Enregistrer la reponse pour l'adaptation
+        // Enregistrer la reponse pour l'adaptation locale
         recordAdaptiveAnswer(isCorrect);
+
+        // Enregistrer dans le profil permanent (par matière)
+        var cards = getAllCards();
+        var card = cards[currentIndex];
+        var subjectId = currentDeck.indexOf('subj-') === 0 ? currentDeck.split('-')[1] : null;
+        if (window.StudFlow.studentProfile && card) {
+            window.StudFlow.studentProfile.recordAnswer(subjectId, card.question, isCorrect, card.answer);
+        }
 
         if (isCorrect) {
             btn.classList.add('fc-inter-correct');

@@ -12705,6 +12705,26 @@ button:active, .tab-item:active, .nav-item:active {
     white-space: nowrap; flex-shrink: 0;
 }
 
+/* ==================== STUDENT PROFILE WIDGET ==================== */
+.dash-student-profile { padding-top: 4px; }
+.dash-profile-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 8px;
+}
+.dash-profile-item {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 10px 6px; border-radius: 12px; text-align: center;
+    background: var(--bg-glass); border: 1px solid rgba(255,255,255,0.05);
+}
+.dash-profile-emoji { font-size: 1.2rem; }
+.dash-profile-name { font-size: 0.7rem; font-weight: 600; color: var(--text); }
+.dash-profile-rate { font-size: 0.72rem; font-weight: 700; }
+.profile-weak { border-color: rgba(251,191,36,0.3); }
+.profile-weak .dash-profile-rate { color: var(--sun); }
+.profile-ok .dash-profile-rate { color: var(--text-muted); }
+.profile-strong { border-color: rgba(52,211,153,0.3); }
+.profile-strong .dash-profile-rate { color: var(--mint); }
+
 /* ==================== DASHBOARD SEARCH BAR ==================== */
 .dash-search-bar { padding: 0 0 8px; }
 .dash-search-input {

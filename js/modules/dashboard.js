@@ -393,8 +393,12 @@
             + renderSubjectGrid()
             + renderSubjectStrip();
 
+        // Profil par matière (widget compact)
+        var profileWidget = renderStudentProfile();
+
         // ===== BELOW: engagement + extras =====
         var belowFold = ''
+            + profileWidget
             + revisionPlanHTML
             + dailyGoalHTML
             + renderImportedCard()
@@ -956,6 +960,42 @@
         { icon: '🎯', tip: '"Juste 5 min." Apres 5 min ton cerveau est lance et tu continues.' },
         { icon: '📝', tip: 'Se tester est 2x plus efficace que relire. Les quiz > les cours.' }
     ];
+
+    // ==================== PROFIL ÉLÈVE ====================
+    function renderStudentProfile() {
+        if (!window.StudFlow.studentProfile) return '';
+        var stats = window.StudFlow.studentProfile.getAllSubjectStats();
+        if (stats.length === 0) return '';
+
+        var html = '<div class="dash-section dash-student-profile">'
+            + '<h3 class="dash-section-title">Ton niveau par mati\u00E8re</h3>'
+            + '<div class="dash-profile-grid">';
+
+        // Noms lisibles
+        var names = {
+            'francais': 'Fran\u00E7ais', 'francais2': 'Bac Fr', 'philo': 'Philo',
+            'maths': 'Maths', 'histgeo': 'Hist-G\u00E9o', 'svt': 'SVT', 'histoire': 'Histoire',
+            'physique': 'Physique', 'ses': 'SES', 'anglais': 'Anglais',
+            'figures': 'Figures', 'espagnol': 'Espagnol'
+        };
+        var levelEmoji = { 'difficulte': '\uD83D\uDCA1', 'moyen': '\uD83D\uDC4D', 'alaise': '\uD83D\uDD25' };
+        var levelClass = { 'difficulte': 'profile-weak', 'moyen': 'profile-ok', 'alaise': 'profile-strong' };
+
+        for (var i = 0; i < Math.min(stats.length, 6); i++) {
+            var s = stats[i];
+            var name = names[s.id] || s.id;
+            var emoji = levelEmoji[s.level] || '\uD83D\uDC4D';
+            var cls = levelClass[s.level] || 'profile-ok';
+            html += '<div class="dash-profile-item ' + cls + '">'
+                + '<span class="dash-profile-emoji">' + emoji + '</span>'
+                + '<span class="dash-profile-name">' + name + '</span>'
+                + '<span class="dash-profile-rate">' + s.rate + '%</span>'
+                + '</div>';
+        }
+
+        html += '</div></div>';
+        return html;
+    }
 
     function renderDailyTip() {
         // Pick tip based on day of year (deterministic)
