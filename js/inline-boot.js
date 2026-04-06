@@ -53,6 +53,7 @@
         'fc:dont-know':         function() { StudFlow.flashcards.answer(false); },
         'fc:easy':              function() { StudFlow.flashcards.answer('easy'); },
         'fc:simplify':          function() { StudFlow.flashcards.simplify(); },
+        'settings:calmToggle':  function(t) { if (StudFlow.calmMode) { StudFlow.calmMode.setManual(t.checked); } },
         'fc:shuffle':           function() { StudFlow.flashcards.shuffleDeck(); },
         'fc:create-form':       function() { StudFlow.flashcards.showCreateForm(); },
         'fc:create':            function() { StudFlow.flashcards.createCard(); },

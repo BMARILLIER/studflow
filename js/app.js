@@ -116,6 +116,11 @@
             if (toggle && window.StudFlow.analytics) {
                 toggle.checked = window.StudFlow.analytics.hasConsent();
             }
+            // Init calm mode toggle
+            var calmToggle = document.getElementById('calm-mode-toggle');
+            if (calmToggle && window.StudFlow.calmMode) {
+                calmToggle.checked = window.StudFlow.calmMode.isActive();
+            }
         }
         // Update header visibility
         const hideChrome = (screenId === 'home' || screenId === 'diagnostic' || screenId === 'onboarding');

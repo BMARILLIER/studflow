@@ -1023,47 +1023,37 @@
         if (isCorrect) {
             btn.classList.add('fc-inter-correct');
             var xpAmount = _adaptiveLevel === 'hard' ? 15 : 10;
+            // UN SEUL feedback : résultat + XP + compteur
             feedbackEl.innerHTML = '<div class="fc-inter-win">'
                 + '<strong>\u2705 Bien jou\u00E9\u00A0!</strong>'
                 + '<span class="fc-xp-badge">+' + xpAmount + ' XP</span>'
-                + (_adaptiveLevel === 'hard' ? '<p class="fc-adapt-msg">\u2B50 Niveau avanc\u00E9\u00A0!</p>' : '')
-                + '<p>Retourne la carte pour voir l\u2019explication.</p>'
+                + '<p class="fc-inter-remaining">' + remainingText + '</p>'
                 + '</div>';
             if (window.StudFlow.gamification) {
                 window.StudFlow.gamification.addXP('flashcard_correct');
             }
         } else {
             btn.classList.add('fc-inter-wrong');
+            // UN SEUL feedback : résultat + instruction + compteur
             feedbackEl.innerHTML = '<div class="fc-inter-lose">'
                 + '<strong>\u274C Presque\u00A0!</strong>'
-                + '<p>Tu vas comprendre juste apr\u00E8s \uD83D\uDC47</p>'
+                + '<p>Retourne la carte \uD83D\uDC47</p>'
+                + '<p class="fc-inter-remaining">' + remainingText + '</p>'
                 + '</div>';
 
-            // Si 2+ echecs consecutifs → ouvrir automatiquement le mode clair
+            // Si 2+ echecs → auto mode clair
             if (_failStreak >= 2) {
                 setTimeout(function() {
-                    var adaptNotice = document.createElement('p');
-                    adaptNotice.className = 'fc-adapt-notice';
-                    adaptNotice.innerHTML = '\uD83D\uDCA1 On adapte pour t\u2019aider';
-                    feedbackEl.appendChild(adaptNotice);
-                    // Auto-flip la carte pour montrer la reponse
                     var flashcard = document.getElementById('flashcard');
                     if (flashcard && !flashcard.classList.contains('flipped')) {
                         flashcard.classList.add('flipped');
                     }
-                    // Auto-ouvrir le mode clair
                     setTimeout(function() { simplify(); }, 600);
                 }, 800);
             }
         }
         feedbackEl.style.display = '';
 
-        // Message d'encouragement + compteur apres un delai
-        setTimeout(function() {
-            var extraHtml = '<p class="fc-inter-progress">' + encouragement + '</p>'
-                + '<p class="fc-inter-remaining">' + remainingText + '</p>';
-            feedbackEl.insertAdjacentHTML('beforeend', extraHtml);
-        }, 1200);
     }
 
     window.StudFlow = window.StudFlow || {};

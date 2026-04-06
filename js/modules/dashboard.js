@@ -385,27 +385,25 @@
             + '<div id="dash-search-results" class="dash-search-results"></div>'
             + '</div>';
 
+        // ===== ABOVE THE FOLD : 3 blocs essentiels =====
         var aboveFold = ''
             + logoHTML
             + searchBarHTML
-            + renderHeroBac(gamStats)
-            + renderHeroActions()
-            + renderSubjectGrid()
-            + renderSubjectStrip();
+            + renderHeroBac(gamStats)       // Bloc 1 : streak + CTA session
+            + renderDailyGauge()            // Bloc 2 : jauge quotidienne
+            + renderNextStep()              // Bloc 2b : prochaine étape guidée
+            + renderSubjectGrid();          // Bloc 3 : matières
 
-        // Profil par matière (widget compact)
+        // ===== BELOW : contenu secondaire caché sous "Voir plus" =====
         var profileWidget = renderStudentProfile();
-
-        // Jauge quotidienne
-        var dailyGaugeHTML = renderDailyGauge();
-        // Mini-defi du jour
         var dailyChallengeHTML = renderDailyChallenge(gamStats);
 
-        // ===== BELOW: engagement + extras =====
         var belowFold = ''
-            + dailyGaugeHTML
+            + '<div class="dash-more-content" id="dash-more-content" style="display:none;">'
             + dailyChallengeHTML
             + profileWidget
+            + renderHeroActions()
+            + renderSubjectStrip()
             + revisionPlanHTML
             + dailyGoalHTML
             + renderImportedCard()
@@ -413,12 +411,19 @@
             + dailyMissionHTML
             + srBlockHTML
             + missionsWidgetHTML
-            + renderChronoCard()
-            + renderDailyTip();
+            + renderDailyTip()
+            + '</div>';
 
-        var primaryHTML = aboveFold + belowFold;
+        // Bouton "Voir plus"
+        var seeMoreHTML = '<div class="dash-section dash-see-more">'
+            + '<button class="dash-see-more-btn" data-action="dashboard.toggleMore">'
+            + 'Voir plus \u25BC'
+            + '</button>'
+            + '</div>';
 
-        // ===== EXPLORE BUTTON (replaces cluttered collapsible) =====
+        var primaryHTML = aboveFold + seeMoreHTML + belowFold;
+
+        // ===== EXPLORE BUTTON =====
         var exploreHTML = '<div class="dash-section dash-explore-row">'
             + '<button class="dash-explore-btn" data-action="dashboard.openExplore">'
             + '<span>\uD83D\uDD0D Explorer tous les outils</span>'
@@ -1030,6 +1035,70 @@
         }
     }
 
+    // ==================== PARCOURS GUIDÉ ====================
+    function renderNextStep() {
+        if (!window.StudFlow.subjects) return '';
+        var subjects = window.StudFlow.subjects.getAll();
+        if (subjects.length === 0) return '';
+
+        // Trouver la prochaine section non visitée
+        var nextSubj = null;
+        var nextSection = null;
+        var nextSectionIdx = -1;
+
+        for (var i = 0; i < subjects.length; i++) {
+            var subj = subjects[i];
+            var prog = window.StudFlow.subjects.getProgress(subj.id);
+            if (!prog) continue;
+            for (var j = 0; j < (subj.sections || []).length; j++) {
+                if (prog.visited.indexOf(subj.sections[j].id) === -1) {
+                    nextSubj = subj;
+                    nextSection = subj.sections[j];
+                    nextSectionIdx = j;
+                    break;
+                }
+            }
+            if (nextSection) break;
+        }
+
+        // Si le profil élève indique des matières faibles, prioriser celles-la
+        if (window.StudFlow.studentProfile) {
+            var weak = window.StudFlow.studentProfile.getWeakSubjects();
+            if (weak.length > 0) {
+                for (var w = 0; w < weak.length; w++) {
+                    var weakSubj = null;
+                    for (var s = 0; s < subjects.length; s++) {
+                        if (subjects[s].id === weak[w].id) { weakSubj = subjects[s]; break; }
+                    }
+                    if (!weakSubj) continue;
+                    var wProg = window.StudFlow.subjects.getProgress(weakSubj.id);
+                    for (var k = 0; k < (weakSubj.sections || []).length; k++) {
+                        if (!wProg || wProg.visited.indexOf(weakSubj.sections[k].id) === -1) {
+                            nextSubj = weakSubj;
+                            nextSection = weakSubj.sections[k];
+                            nextSectionIdx = k;
+                            break;
+                        }
+                    }
+                    if (nextSection && nextSubj.id === weak[w].id) break;
+                }
+            }
+        }
+
+        if (!nextSubj || !nextSection) return '';
+
+        return '<div class="dash-section dash-next-step" data-action="subjects.openSection" data-param="' + nextSubj.id + '" data-param2="' + nextSectionIdx + '">'
+            + '<div class="next-step-content">'
+            + '<span class="next-step-icon">\u27A1\uFE0F</span>'
+            + '<div class="next-step-text">'
+            + '<span class="next-step-label">Prochaine \u00E9tape</span>'
+            + '<strong class="next-step-title">' + (nextSubj.icon || '') + ' ' + nextSection.title + '</strong>'
+            + '</div>'
+            + '<span class="next-step-arrow">\u2192</span>'
+            + '</div>'
+            + '</div>';
+    }
+
     // ==================== MINI-DÉFI QUOTIDIEN ====================
     function renderDailyChallenge(gamStats) {
         // Choisir un defi basé sur le jour (deterministe)
@@ -1185,8 +1254,16 @@
 
     // ==================== TOGGLE MORE ====================
     function toggleMore() {
-        // Legacy — kept for compatibility
-        openExplore();
+        var content = document.getElementById('dash-more-content');
+        var btn = document.querySelector('.dash-see-more-btn');
+        if (!content) { openExplore(); return; }
+        if (content.style.display === 'none') {
+            content.style.display = '';
+            if (btn) btn.textContent = 'Voir moins \u25B2';
+        } else {
+            content.style.display = 'none';
+            if (btn) btn.textContent = 'Voir plus \u25BC';
+        }
     }
 
     function openExplore() {
