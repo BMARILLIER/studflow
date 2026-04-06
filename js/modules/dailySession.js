@@ -20,9 +20,48 @@
     var _customTitle = null;   // custom title for showWithItems mode
 
     // ==================== BUILD SESSION ====================
+    // Message d'intro basé sur le profil
+    var _sessionIntro = '';
+
+    function getSessionIntro() { return _sessionIntro; }
+
     function getDailySession() {
+        // Split: 60% flashcards, 30% quiz, 10% erreurs du profil
+        var errorTarget = Math.max(1, Math.round(TARGET_ITEMS * 0.1));
         var fcTarget = Math.round(TARGET_ITEMS * FC_RATIO);
-        var qzTarget = TARGET_ITEMS - fcTarget;
+        var qzTarget = TARGET_ITEMS - fcTarget - errorTarget;
+
+        // 0. Erreurs mémorisées dans le profil élève (priorité)
+        var profileErrors = [];
+        if (window.StudFlow.studentProfile) {
+            var weakQs = window.StudFlow.studentProfile.getWeakQuestions(errorTarget + 2);
+            for (var e = 0; e < Math.min(weakQs.length, errorTarget); e++) {
+                var err = weakQs[e];
+                if (err.question && err.answer) {
+                    profileErrors.push({
+                        type: 'fc',
+                        data: { question: err.question, answer: err.answer, _errorReview: true },
+                        done: false, correct: null
+                    });
+                }
+            }
+        }
+
+        // Déterminer le message d'intro selon le profil
+        _sessionIntro = '';
+        if (window.StudFlow.studentProfile) {
+            var weakSubjects = window.StudFlow.studentProfile.getWeakSubjects();
+            if (weakSubjects.length > 0) {
+                _sessionIntro = '\uD83D\uDCA1 Aujourd\u2019hui on travaille les notions o\u00F9 tu bloques';
+            } else {
+                var globalStats = window.StudFlow.studentProfile.getGlobalStats();
+                if (globalStats.level === 'alaise') {
+                    _sessionIntro = '\uD83D\uDD25 Tu g\u00E8res\u00A0! On monte le niveau';
+                } else {
+                    _sessionIntro = '\uD83C\uDFAF Ta session personnalis\u00E9e est pr\u00EAte';
+                }
+            }
+        }
 
         // 1. Get SR due flashcards (priority)
         var srCards = [];
@@ -49,6 +88,8 @@
         for (var j = 0; j < quizItems.length; j++) {
             items.push({ type: 'quiz', data: quizItems[j], done: false, correct: null });
         }
+        // Ajouter les erreurs du profil
+        items = items.concat(profileErrors);
 
         // 5. Interleave: alternate fc and quiz for variety
         items = interleave(items);
@@ -639,6 +680,11 @@
             + '<span class="ds-counter">' + progress + '</span>'
             + '</div>';
 
+        // Message d'intro à la première carte
+        if (_currentIndex === 0 && _sessionIntro) {
+            html += '<div class="ds-session-intro">' + _sessionIntro + '</div>';
+        }
+
         // Adaptive message (show after 3+ items done)
         html += getAdaptiveMessage();
 
@@ -1198,6 +1244,7 @@
         quickChallenge: quickChallenge,
         shareScore: shareScore,
         renderDashboardButton: renderDashboardButton,
+        getSessionIntro: getSessionIntro,
         hasSessionToday: hasSessionToday,
         getSessionCount: getSessionCount
     };
