@@ -694,6 +694,155 @@
                     { question: 'A qui Hadrien ecrit-il sa lettre ?', options: ['A Jules Cesar', 'A Marc Aurele', 'A Auguste', 'A Neron'], correctIndex: 1, explanation: 'Hadrien ecrit a Marc Aurele, son futur successeur, pour lui transmettre son expérience du pouvoir.' },
                     { question: 'Quel est le genre de ce roman ?', options: ['Science-fiction', 'Roman historique sous forme d\'autobiographie fictive', 'Conte philosophique', 'Roman policier'], correctIndex: 1, explanation: 'C\'est un roman historique ecrit comme si Hadrien racontait sa propre vie. Yourcenar invente le recit mais respecte l\'histoire.' }
                 ]
+            },
+
+            // ================================================================
+            // SECTION 20 : PHÈDRE — Racine (1677)
+            // ================================================================
+            {
+                id: 'phedre',
+                title: 'Ph\u00E8dre \u2014 Racine',
+                icon: '\uD83D\uDC94',
+                content: '<h3>Ph\u00E8dre \u2014 Jean Racine (1677)</h3>'
+                    + '<p>Trag\u00E9die classique. Ph\u00E8dre aime son beau-fils Hippolyte. Elle sait que c\u2019est mal. Elle ne peut pas s\u2019en emp\u00EAcher.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Ph\u00E8dre ?', answer: 'Ph\u00E8dre est l\u2019\u00E9pouse de Th\u00E9s\u00E9e (roi d\u2019Ath\u00E8nes). Elle tombe amoureuse de son BEAU-FILS Hippolyte. C\u2019est un amour INTERDIT et IMPOSSIBLE. Quand Th\u00E9s\u00E9e revient, Ph\u00E8dre accuse faussement Hippolyte de l\u2019avoir agress\u00E9e. Hippolyte meurt. Ph\u00E8dre se suicide de culpabilit\u00E9. En gros : la passion d\u00E9truit tout le monde. Personne ne gagne.' },
+                    { question: 'Pourquoi Ph\u00E8dre est un personnage tragique ?', answer: 'Elle SAIT que son amour est mal. Elle LUTTE contre. Mais elle ne PEUT PAS r\u00E9sister. La passion est plus forte que sa volont\u00E9. Elle dit : "Ce n\u2019est plus une ardeur dans mes veines cach\u00E9e, c\u2019est V\u00E9nus tout enti\u00E8re \u00E0 sa proie attach\u00E9e." En gros : Ph\u00E8dre est VICTIME de sa passion. Elle n\u2019a pas choisi. C\u2019est la FATALIT\u00C9. Mots difficiles : "fatalit\u00E9" = destin qu\u2019on ne peut pas \u00E9viter.' },
+                    { question: 'Qu\u2019est-ce que l\u2019aveu de Ph\u00E8dre ?', answer: 'Ph\u00E8dre avoue son amour \u00E0 Hippolyte (Acte II, sc\u00E8ne 5). C\u2019est LA sc\u00E8ne la plus c\u00E9l\u00E8bre du th\u00E9\u00E2tre fran\u00E7ais. Elle essaie de se retenir mais les mots sortent malgr\u00E9 elle. Elle dit parler de Th\u00E9s\u00E9e mais d\u00E9crit Hippolyte. Hippolyte est HORRIFI\u00C9. En gros : elle avoue l\u2019inavouable. La parole lib\u00E8re et d\u00E9truit en m\u00EAme temps.' },
+                    { question: 'Pourquoi Ph\u00E8dre est au programme du Bac ?', answer: 'Parce que c\u2019est LE chef-d\u2019\u0153uvre de la trag\u00E9die classique. \u00C7a montre : 1) La PASSION qui d\u00E9truit (th\u00E8me universel). 2) La FATALIT\u00C9 (on ne choisit pas qui on aime). 3) La beaut\u00E9 de la LANGUE de Racine (vers musicaux). 4) Le fonctionnement de la CATHARSIS (on pleure avec Ph\u00E8dre). En gros : la pi\u00E8ce pose LA question : peut-on lutter contre ses passions ?' }
+                ],
+                quiz: [
+                    { question: 'Ph\u00E8dre est amoureuse de :', options: ['Th\u00E9s\u00E9e', 'Hippolyte (son beau-fils)', 'Jupiter', 'Un serviteur'], correctIndex: 1, explanation: 'Ph\u00E8dre aime Hippolyte, le fils de son mari Th\u00E9s\u00E9e. C\u2019est un amour interdit.' },
+                    { question: 'Ph\u00E8dre est une trag\u00E9die de :', options: ['Corneille', 'Racine', 'Moli\u00E8re', 'Hugo'], correctIndex: 1, explanation: 'Racine \u00E9crit Ph\u00E8dre en 1677. C\u2019est le sommet de la trag\u00E9die classique.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 21 : DOM JUAN — Molière (1665)
+            // ================================================================
+            {
+                id: 'dom-juan',
+                title: 'Dom Juan \u2014 Moli\u00E8re',
+                icon: '\uD83C\uDFAD',
+                content: '<h3>Dom Juan \u2014 Moli\u00E8re (1665)</h3>'
+                    + '<p>Com\u00E9die. Dom Juan est un s\u00E9ducteur qui ne croit en rien. Il d\u00E9fie Dieu, la morale et les hommes.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Dom Juan ?', answer: 'Dom Juan est un noble qui s\u00E9duit les femmes, les abandonne, se moque de la religion et d\u00E9fie tout le monde. Son valet Sganarelle essaie de le raisonner. \u00C0 la fin, une statue de pierre (le Commandeur) l\u2019invite \u00E0 d\u00EEner et l\u2019entra\u00EEne en enfer. En gros : un homme qui refuse toutes les r\u00E8gles et finit puni par le surnaturel.' },
+                    { question: 'Pourquoi Dom Juan est un personnage fascinant ?', answer: 'Il est LIBRE (il refuse toutes les conventions). Il est INTELLIGENT (il argumente mieux que tout le monde). Il est COURAGEUX (il n\u2019a peur de rien, m\u00EAme pas de Dieu). MAIS il est aussi CRUEL (il d\u00E9truit les femmes qu\u2019il s\u00E9duit) et HYPOCRITE (\u00E0 la fin il fait semblant d\u2019\u00EAtre religieux). En gros : Dom Juan fascine parce qu\u2019il est \u00E0 la fois admirable et d\u00E9testable.' },
+                    { question: 'C\u2019est quoi la sc\u00E8ne du pauvre ?', answer: 'Dom Juan rencontre un ermite (homme religieux tr\u00E8s pauvre). Il lui propose de l\u2019argent SI le pauvre jure (= blasph\u00E8me). Le pauvre REFUSE malgr\u00E9 sa mis\u00E8re. Dom Juan lui donne l\u2019argent quand m\u00EAme "pour l\u2019amour de l\u2019humanit\u00E9" (pas de Dieu). En gros : le pauvre a plus de COURAGE moral que Dom Juan. Cette sc\u00E8ne a \u00E9t\u00E9 CENSUR\u00C9E \u00E0 l\u2019\u00E9poque.' },
+                    { question: 'Pourquoi cette pi\u00E8ce est au Bac ?', answer: 'Parce qu\u2019elle pose des questions profondes : 1) Peut-on vivre SANS r\u00E8gles ? 2) La LIBERT\u00C9 absolue m\u00E8ne-t-elle au bonheur ou \u00E0 la destruction ? 3) Qu\u2019est-ce que l\u2019HYPOCRISIE ? 4) La PUNITION surnaturelle est-elle juste ? En gros : Dom Juan = la libert\u00E9 pouss\u00E9e \u00E0 l\u2019extr\u00EAme et ses cons\u00E9quences.' }
+                ],
+                quiz: [
+                    { question: 'Comment Dom Juan meurt-il ?', options: ['Empoisonn\u00E9', 'En duel', 'Emmen\u00E9 en enfer par une statue', 'De vieillesse'], correctIndex: 2, explanation: 'La statue du Commandeur (qu\u2019il avait tu\u00E9) l\u2019entra\u00EEne en enfer. C\u2019est le ch\u00E2timent divin.' },
+                    { question: 'Le valet de Dom Juan s\u2019appelle :', options: ['Figaro', 'Scapin', 'Sganarelle', 'Arlequin'], correctIndex: 2, explanation: 'Sganarelle est le valet qui essaie de raisonner son ma\u00EEtre, sans succ\u00E8s.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 22 : LE ROUGE ET LE NOIR — Stendhal (1830)
+            // ================================================================
+            {
+                id: 'rouge-et-noir',
+                title: 'Le Rouge et le Noir \u2014 Stendhal',
+                icon: '\uD83D\uDCD5',
+                content: '<h3>Le Rouge et le Noir \u2014 Stendhal (1830)</h3>'
+                    + '<p>Roman d\u2019apprentissage. Julien Sorel, fils de paysan, veut grimper dans la soci\u00E9t\u00E9.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Le Rouge et le Noir ?', answer: 'Julien Sorel est un fils de PAYSAN, intelligent et ambitieux. Il r\u00EAve de gloire. Il devient pr\u00E9cepteur chez M. de R\u00EAnal et s\u00E9duit sa femme (Mme de R\u00EAnal). Puis il monte \u00E0 Paris et s\u00E9duit Mathilde de La Mole (une noble). Mais quand Mme de R\u00EAnal le d\u00E9nonce, il lui tire dessus. Il est condamn\u00E9 \u00E0 mort. En gros : un jeune ambitieux qui monte par la s\u00E9duction et tombe par la passion.' },
+                    { question: 'C\u2019est quoi le "rouge" et le "noir" ?', answer: 'Plusieurs interpr\u00E9tations : ROUGE = l\u2019arm\u00E9e (gloire militaire, Napol\u00E9on). NOIR = l\u2019\u00C9glise (carri\u00E8re religieuse). Julien h\u00E9site entre les deux voies pour monter dans la soci\u00E9t\u00E9. Autre lecture : rouge = passion, sang. Noir = mort, deuil. En gros : le titre symbolise les deux chemins de l\u2019ambition et le conflit int\u00E9rieur de Julien.' },
+                    { question: 'Pourquoi Julien est un personnage important ?', answer: 'C\u2019est le mod\u00E8le du H\u00C9ROS AMBITIEUX. N\u00E9 pauvre, il veut devenir quelqu\u2019un. Il est INTELLIGENT mais HYPOCRITE (il joue un r\u00F4le pour plaire). Il AIME sinc\u00E8rement mais utilise l\u2019amour comme OUTIL social. \u00C0 la fin, en prison, il comprend que le vrai bonheur \u00E9tait l\u2019amour simple avec Mme de R\u00EAnal. En gros : l\u2019ambition d\u00E9truit ce qui compte vraiment.' },
+                    { question: 'Pourquoi c\u2019est au programme du Bac ?', answer: 'Parce que Stendhal analyse la PSYCHOLOGIE de Julien avec une pr\u00E9cision chirurgicale. On entre dans sa t\u00EAte. Le roman critique aussi la SOCI\u00C9T\u00C9 de la Restauration (hypocrisie, in\u00E9galit\u00E9s de classe). Th\u00E8mes au Bac : ambition, amour, hypocrisie sociale, roman d\u2019apprentissage. En gros : Stendhal invente le roman PSYCHOLOGIQUE moderne.' }
+                ],
+                quiz: [
+                    { question: 'Julien Sorel est :', options: ['Un noble', 'Un fils de paysan ambitieux', 'Un roi', 'Un militaire'], correctIndex: 1, explanation: 'Julien est fils d\u2019un charpentier. Il veut s\u2019\u00E9lever dans la soci\u00E9t\u00E9 par l\u2019intelligence et la s\u00E9duction.' },
+                    { question: 'Le Rouge et le Noir est \u00E9crit par :', options: ['Balzac', 'Flaubert', 'Stendhal', 'Zola'], correctIndex: 2, explanation: 'Stendhal publie Le Rouge et le Noir en 1830. C\u2019est un roman d\u2019apprentissage et d\u2019analyse psychologique.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 23 : LES CONTEMPLATIONS — Hugo (1856)
+            // ================================================================
+            {
+                id: 'contemplations',
+                title: 'Les Contemplations \u2014 Hugo',
+                icon: '\uD83D\uDCD6',
+                content: '<h3>Les Contemplations \u2014 Victor Hugo (1856)</h3>'
+                    + '<p>Recueil po\u00E9tique divis\u00E9 en deux par la mort de sa fille L\u00E9opoldine.</p>',
+                flashcards: [
+                    { question: 'De quoi parlent Les Contemplations ?', answer: 'C\u2019est un recueil de po\u00E8mes divis\u00E9 en 2 parties : "AUTREFOIS" (1830-1843) = bonheur, jeunesse, amour. "AUJOURD\u2019HUI" (1843-1856) = deuil, tristesse, r\u00E9flexion sur la mort. La COUPURE = la mort de sa fille L\u00E9opoldine, noy\u00E9e le 4 septembre 1843. En gros : c\u2019est le journal intime d\u2019un p\u00E8re qui passe du bonheur au deuil.' },
+                    { question: 'C\u2019est quoi "Demain, d\u00E8s l\u2019aube" ?', answer: 'Un des po\u00E8mes les plus c\u00E9l\u00E8bres de la langue fran\u00E7aise. Hugo marche pour aller sur la tombe de sa fille. On croit que c\u2019est un po\u00E8me d\u2019amour ("je partirai, j\u2019irai par la for\u00EAt, j\u2019irai par la montagne") mais la derni\u00E8re strophe r\u00E9v\u00E8le qu\u2019il va au cimeti\u00E8re. En gros : un po\u00E8me qui te trompe. Tu crois que c\u2019est un voyage vers l\u2019amour, c\u2019est un voyage vers la mort.' },
+                    { question: 'Pourquoi ce recueil est au programme ?', answer: 'Parce que c\u2019est le sommet du LYRISME romantique. Hugo transforme sa douleur personnelle en po\u00E9sie UNIVERSELLE. Tout le monde peut se reconna\u00EEtre dans son deuil. Il montre que la po\u00E9sie peut EXPRIMER ce que les mots ordinaires ne peuvent pas dire. En gros : Hugo prouve que la souffrance d\u2019un seul homme peut toucher l\u2019humanit\u00E9 enti\u00E8re.' },
+                    { question: 'C\u2019est quoi le lyrisme dans ce recueil ?', answer: 'Le LYRISME c\u2019est exprimer ses sentiments personnels en po\u00E9sie. Hugo parle de LUI : son amour, sa joie, son deuil, sa col\u00E8re contre Dieu, sa r\u00E9volte face \u00E0 la mort. Il utilise le "je" partout. Mais ce "je" devient universel : "Quand je vous parle de moi, je vous parle de vous." En gros : lyrisme = le po\u00E8te dit "je" et le lecteur se reconna\u00EEt. Mots difficiles : "lyrisme" = expression des sentiments personnels en po\u00E9sie.' }
+                ],
+                quiz: [
+                    { question: 'Les Contemplations sont divis\u00E9es par :', options: ['La R\u00E9volution', 'La mort de L\u00E9opoldine', 'L\u2019exil de Hugo', 'Un voyage'], correctIndex: 1, explanation: 'La noyade de L\u00E9opoldine en 1843 s\u00E9pare "Autrefois" (bonheur) et "Aujourd\u2019hui" (deuil).' },
+                    { question: '"Demain, d\u00E8s l\u2019aube" parle :', options: ['D\u2019un voyage amoureux', 'D\u2019une visite sur la tombe de sa fille', 'D\u2019une bataille', 'D\u2019un lever de soleil'], correctIndex: 1, explanation: 'Le po\u00E8me semble parler d\u2019amour mais la chute r\u00E9v\u00E8le que Hugo va au cimeti\u00E8re sur la tombe de L\u00E9opoldine.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 24 : L'ÉTRANGER — Camus (1942)
+            // ================================================================
+            {
+                id: 'etranger-camus',
+                title: 'L\u2019\u00C9tranger \u2014 Camus',
+                icon: '\u2600\uFE0F',
+                content: '<h3>L\u2019\u00C9tranger \u2014 Albert Camus (1942)</h3>'
+                    + '<p>Roman philosophique. Meursault ne ressent rien. Il tue un homme. La soci\u00E9t\u00E9 le condamne.</p>',
+                flashcards: [
+                    { question: 'De quoi parle L\u2019\u00C9tranger ?', answer: 'Meursault apprend que sa m\u00E8re est morte. Il ne pleure PAS. Le lendemain, il va \u00E0 la plage, il se baigne, il drague. Quelques jours plus tard, il tue un Arabe sur la plage. \u00C0 cause du SOLEIL. Au proc\u00E8s, on le condamne \u00E0 mort non pas pour le meurtre mais parce qu\u2019il N\u2019A PAS PLEUR\u00C9 \u00E0 l\u2019enterrement de sa m\u00E8re. En gros : la soci\u00E9t\u00E9 condamne Meursault parce qu\u2019il ne JOUE PAS le jeu des \u00E9motions.' },
+                    { question: 'C\u2019est quoi l\u2019absurde chez Camus ?', answer: 'L\u2019ABSURDE c\u2019est le d\u00E9calage entre ce que l\u2019homme VEUT (que la vie ait un sens) et ce que le monde DONNE (rien, silence, indiff\u00E9rence). Meursault vit dans l\u2019absurde : il ne cherche pas de sens, il vit au jour le jour. La soci\u00E9t\u00E9 ne supporte pas quelqu\u2019un qui refuse de donner du sens aux choses. En gros : l\u2019absurde = la vie n\u2019a pas de sens donn\u00E9 \u00E0 l\u2019avance.' },
+                    { question: 'Pourquoi le roman est \u00E9crit au pass\u00E9 compos\u00E9 ?', answer: 'Le pass\u00E9 compos\u00E9 cr\u00E9e un effet de D\u00C9TACHEMENT. "Maman est morte." Pas "ma m\u00E8re mourut" (litt\u00E9raire) ni "ma m\u00E8re est morte" (emotionnel). "Maman est morte. Aujourd\u2019hui." = plat, neutre, presque indiff\u00E9rent. En gros : le pass\u00E9 compos\u00E9 refl\u00E8te l\u2019absence d\u2019\u00E9motion de Meursault. La forme MIME le fond.' },
+                    { question: 'Pourquoi c\u2019est au programme du Bac ?', answer: 'Parce que c\u2019est LE roman de l\u2019absurde. Il pose des questions fondamentales : 1) Doit-on MENTIR sur ses \u00E9motions pour \u00EAtre accept\u00E9 ? 2) La soci\u00E9t\u00E9 a-t-elle le droit de JUGER nos sentiments ? 3) Comment VIVRE si la vie n\u2019a pas de sens ? En gros : Camus dit que la soci\u00E9t\u00E9 punit ceux qui refusent de jouer la com\u00E9die des \u00E9motions.' }
+                ],
+                quiz: [
+                    { question: 'La premi\u00E8re phrase de L\u2019\u00C9tranger est :', options: ['"Il faisait beau."', '"Aujourd\u2019hui, maman est morte."', '"Je m\u2019appelle Meursault."', '"Le soleil \u00E9tait terrible."'], correctIndex: 1, explanation: '"Aujourd\u2019hui, maman est morte." C\u2019est l\u2019une des premi\u00E8res phrases les plus c\u00E9l\u00E8bres de la litt\u00E9rature.' },
+                    { question: 'Meursault est condamn\u00E9 surtout parce qu\u2019il :', options: ['A tu\u00E9 un homme', 'N\u2019a pas pleur\u00E9 \u00E0 l\u2019enterrement de sa m\u00E8re', 'A vol\u00E9 de l\u2019argent', 'A menti au tribunal'], correctIndex: 1, explanation: 'Le proc\u00E8s se concentre plus sur son absence d\u2019\u00E9motion que sur le meurtre. La soci\u00E9t\u00E9 condamne son indiff\u00E9rence.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 25 : MES FORÊTS — Hélène Dorion (2021)
+            // ================================================================
+            {
+                id: 'mes-forets',
+                title: 'Mes for\u00EAts \u2014 H\u00E9l\u00E8ne Dorion',
+                icon: '\uD83C\uDF32',
+                content: '<h3>Mes for\u00EAts \u2014 H\u00E9l\u00E8ne Dorion (2021)</h3>'
+                    + '<p>Recueil po\u00E9tique contemporain. La for\u00EAt comme m\u00E9taphore de l\u2019int\u00E9riorit\u00E9, du temps et de l\u2019\u00E9cologie.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Mes for\u00EAts ?', answer: 'C\u2019est un recueil de po\u00E8mes o\u00F9 la FOR\u00CAT est une m\u00E9taphore. Mes for\u00EAts = mes souvenirs, mes pens\u00E9es, mon int\u00E9riorit\u00E9. Dorion explore le lien entre l\u2019humain et la nature. Les arbres repr\u00E9sentent le TEMPS qui passe, les RACINES = le pass\u00E9, les BRANCHES = l\u2019avenir. En gros : la for\u00EAt c\u2019est une image de la vie int\u00E9rieure.' },
+                    { question: 'Pourquoi c\u2019est au programme du Bac ?', answer: 'Parce que c\u2019est une \u0153uvre CONTEMPORAINE (2021) qui traite de sujets actuels : 1) Le rapport HOMME-NATURE (\u00E9cologie). 2) L\u2019INT\u00C9RIORIT\u00C9 (connaissance de soi). 3) Le TEMPS (m\u00E9moire, transmission). 4) La place de la PO\u00C9SIE aujourd\u2019hui. C\u2019est la seule \u0153uvre du XXIe si\u00E8cle au programme. En gros : Dorion montre que la po\u00E9sie est toujours VIVANTE et PERTINENTE.' },
+                    { question: 'C\u2019est qui H\u00E9l\u00E8ne Dorion ?', answer: 'Po\u00E8te QU\u00C9B\u00C9COISE n\u00E9e en 1958. Elle \u00E9crit une po\u00E9sie m\u00E9ditative, contemplative, li\u00E9e \u00E0 la nature. Son \u00E9criture est SIMPLE et PROFONDE (phrases courtes, images de la nature). Elle a re\u00E7u de nombreux prix. En gros : une po\u00E8te vivante qui prouve que la po\u00E9sie parle encore aux gens aujourd\u2019hui.' },
+                    { question: 'C\u2019est quoi la "for\u00EAt" comme m\u00E9taphore ?', answer: 'La for\u00EAt chez Dorion c\u2019est PLUSIEURS choses en m\u00EAme temps : 1) La M\u00C9MOIRE (les arbres gardent la trace du temps dans leurs cernes). 2) L\u2019INT\u00C9RIORIT\u00C9 (se perdre en for\u00EAt = explorer son \u00E2me). 3) La FRAGILI\u00C9 de la nature (d\u00E9forestation, disparition). 4) La TRANSMISSION (les racines = les anc\u00EAtres). En gros : "mes for\u00EAts" = mes souvenirs, mon monde int\u00E9rieur, mon lien avec la Terre.' },
+                    { question: 'Comment Dorion \u00E9crit-elle ?', answer: 'Son style est : 1) MINIMALISTE = phrases courtes, peu de mots. 2) M\u00C9DITATIF = elle invite \u00E0 RALENTIR et r\u00E9fl\u00E9chir. 3) SENSORIEL = elle \u00E9crit avec les sens (toucher de l\u2019\u00E9corce, bruit du vent). 4) Vers LIBRES = pas de rime, pas de m\u00E8tre fixe. En gros : lire Dorion c\u2019est comme marcher lentement en for\u00EAt. Chaque mot est un pas.' }
+                ],
+                quiz: [
+                    { question: 'Mes for\u00EAts a \u00E9t\u00E9 \u00E9crit en :', options: ['1857', '1942', '2001', '2021'], correctIndex: 3, explanation: 'H\u00E9l\u00E8ne Dorion publie Mes for\u00EAts en 2021. C\u2019est la seule \u0153uvre du XXIe si\u00E8cle au programme du Bac.' },
+                    { question: 'La for\u00EAt chez Dorion symbolise :', options: ['La guerre', 'L\u2019int\u00E9riorit\u00E9, la m\u00E9moire et le lien \u00E0 la nature', 'L\u2019argent', 'La politique'], correctIndex: 1, explanation: 'La for\u00EAt est une m\u00E9taphore multiple : m\u00E9moire, int\u00E9riorit\u00E9, \u00E9cologie, transmission.' },
+                    { question: 'H\u00E9l\u00E8ne Dorion est :', options: ['Fran\u00E7aise', 'Qu\u00E9b\u00E9coise', 'Belge', 'Suisse'], correctIndex: 1, explanation: 'H\u00E9l\u00E8ne Dorion est une po\u00E8te qu\u00E9b\u00E9coise n\u00E9e en 1958.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 26 : MADAME BOVARY — Flaubert (1857)
+            // ================================================================
+            {
+                id: 'madame-bovary',
+                title: 'Madame Bovary \u2014 Flaubert',
+                icon: '\uD83D\uDC90',
+                content: '<h3>Madame Bovary \u2014 Gustave Flaubert (1857)</h3>'
+                    + '<p>Roman r\u00E9aliste. Emma r\u00EAve d\u2019une vie romantique. La r\u00E9alit\u00E9 la d\u00E9\u00E7oit. Elle se d\u00E9truit.</p>',
+                flashcards: [
+                    { question: 'De quoi parle Madame Bovary ?', answer: 'Emma Bovary est mari\u00E9e \u00E0 Charles, un m\u00E9decin de campagne ennuyeux. Elle a lu trop de ROMANS D\u2019AMOUR et r\u00EAve d\u2019une vie passionn\u00E9e, de bals, de voyages. La r\u00E9alit\u00E9 est m\u00E9diocre. Elle prend des AMANTS et d\u00E9pense de l\u2019argent qu\u2019elle n\u2019a pas. Cribl\u00E9e de dettes, d\u00E9\u00E7ue par tout, elle se SUICIDE \u00E0 l\u2019arsenic. En gros : une femme qui confond les romans et la vie r\u00E9elle. La d\u00E9sillusion la tue.' },
+                    { question: 'C\u2019est quoi le "bovarysme" ?', answer: 'C\u2019est un mot invent\u00E9 \u00E0 partir du roman. \u00C7a d\u00E9signe le fait de se cr\u00E9er une vie IMAGINAIRE et de souffrir parce que la r\u00E9alit\u00E9 ne correspond pas. Emma bovaryse : elle r\u00EAve de passion mais vit dans l\u2019ennui. En gros : bovarysme = confondre ses r\u00EAves avec la r\u00E9alit\u00E9 et souffrir de la diff\u00E9rence.' },
+                    { question: 'Pourquoi Flaubert est important ?', answer: 'Flaubert invente le STYLE IMPERSONNEL : l\u2019auteur ne dit JAMAIS ce qu\u2019il pense. Il montre, il ne juge pas. Il cherche le "MOT JUSTE" (le seul mot parfait pour chaque id\u00E9e). Il ma\u00EEtrise le discours indirect libre. Madame Bovary a \u00E9t\u00E9 poursuivi en justice pour "immoralit\u00E9" en 1857. En gros : Flaubert = la perfection du style r\u00E9aliste.' },
+                    { question: 'Pourquoi c\u2019est au Bac ?', answer: 'Parce que c\u2019est LE roman r\u00E9aliste par excellence. Il montre : 1) La diff\u00E9rence entre R\u00CAVE et R\u00C9ALIT\u00C9. 2) La condition des FEMMES au XIXe si\u00E8cle (enferm\u00E9es dans le mariage). 3) La m\u00E9diocrit\u00E9 de la BOURGEOISIE. 4) La puissance du STYLE (chaque phrase est travaill\u00E9e). En gros : un roman qui critique la soci\u00E9t\u00E9 avec une pr\u00E9cision chirurgicale.' }
+                ],
+                quiz: [
+                    { question: 'Emma Bovary se suicide :', options: ['\u00C0 l\u2019arsenic', 'En se noyant', 'Par pendaison', 'Elle ne meurt pas'], correctIndex: 0, explanation: 'Emma s\u2019empoisonne \u00E0 l\u2019arsenic, cribl\u00E9e de dettes et d\u00E9\u00E7ue par tous ses amants.' },
+                    { question: 'Le "bovarysme" c\u2019est :', options: ['L\u2019amour du travail', 'Confondre ses r\u00EAves avec la r\u00E9alit\u00E9', 'La peur du mariage', 'L\u2019ambition sociale'], correctIndex: 1, explanation: 'Le bovarysme est le fait de se cr\u00E9er une vie imaginaire et de souffrir du d\u00E9calage avec le r\u00E9el.' }
+                ]
             }
         ]
     });
