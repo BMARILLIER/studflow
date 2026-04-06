@@ -70,7 +70,7 @@
         }
 
         container.innerHTML = ''
-            + '<p class="br-intro">Relache les epaules. Concentre-toi sur la forme.</p>'
+            + '<p class="br-intro">Rel\u00E2che tes \u00E9paules. Suis le mouvement de la forme.</p>'
             + '<div class="br-modes">' + modesHTML + '</div>'
             + '<p class="br-desc">' + MODES[_currentMode].desc + '</p>'
             + '<div class="br-halo-container">'
