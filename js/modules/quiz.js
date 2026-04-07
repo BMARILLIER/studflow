@@ -361,6 +361,39 @@
             rRetry.onclick = function() { start(currentDeck); };
         }
 
+        // "Encore 1 carte" button
+        var encoreBtn = document.getElementById('results-encore');
+        if (encoreBtn) {
+            if (sessionQuestions.length > 0) {
+                encoreBtn.style.display = '';
+                encoreBtn.textContent = 'Encore 1 question';
+                encoreBtn.onclick = function() {
+                    currentIndex = Math.floor(Math.random() * sessionQuestions.length);
+                    score = 0;
+                    startTime = Date.now();
+                    selectedAnswer = null;
+                    var picker = document.getElementById('quiz-deck-picker');
+                    var qContent = document.getElementById('quiz-content');
+                    if (picker) picker.style.display = 'none';
+                    if (qContent) qContent.style.display = '';
+                    window.StudFlow.app.showScreen('quiz');
+                    displayQuestion();
+                };
+            } else {
+                encoreBtn.style.display = 'none';
+            }
+        }
+
+        // Streak display
+        var streakEl = document.getElementById('results-streak');
+        var gamStats = window.StudFlow.gamification ? window.StudFlow.gamification.getStats() : {};
+        if (streakEl && gamStats.streak > 1) {
+            streakEl.textContent = '\uD83D\uDD25 ' + gamStats.streak + ' jours de suite';
+            streakEl.style.display = '';
+        } else if (streakEl) {
+            streakEl.style.display = 'none';
+        }
+
         if (window.StudFlow.combo) window.StudFlow.combo.endSession();
         if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('quiz_complete');
         if (window.StudFlow.stats) window.StudFlow.stats.recordActivity('quiz');
@@ -486,13 +519,37 @@
         if (btn) { btn.textContent = '\u2715 Fermer'; btn.classList.add('fc-simplify-btn--active'); }
     }
 
-    // Show simplify button after answer, reset on new question
+    // ==================== MICRO EXPLAIN ====================
+    function quizMicroExplain() {
+        var box = document.getElementById('quiz-micro-box');
+        var btn = document.getElementById('quiz-micro-btn');
+        if (!box) return;
+        if (box.style.display !== 'none') {
+            box.style.display = 'none';
+            if (btn) { btn.textContent = '\u26A1 Explique-moi vite'; btn.classList.remove('micro-explain-btn--active'); }
+            return;
+        }
+        var me = window.StudFlow.microExplain;
+        if (!me) return;
+        var q = sessionQuestions[currentIndex];
+        if (!q) return;
+        var data = me.build({ question: q.question, answer: q.explanation || '', explanation: q.explanation || '' });
+        box.innerHTML = me.renderHTML(data);
+        box.style.display = '';
+        if (btn) { btn.textContent = '\u2715 Fermer'; btn.classList.add('micro-explain-btn--active'); }
+    }
+
+    // Show simplify/micro buttons after answer, reset on new question
     var _origDisplayQuestion = displayQuestion;
     displayQuestion = function() {
         var box = document.getElementById('quiz-simplify-box');
         var btn = document.getElementById('quiz-simplify-btn');
         if (box) box.style.display = 'none';
         if (btn) { btn.style.display = 'none'; btn.textContent = '\uD83D\uDCA1 Explique-moi simplement'; btn.classList.remove('fc-simplify-btn--active'); }
+        var mBox = document.getElementById('quiz-micro-box');
+        var mBtn = document.getElementById('quiz-micro-btn');
+        if (mBox) mBox.style.display = 'none';
+        if (mBtn) { mBtn.style.display = 'none'; mBtn.textContent = '\u26A1 Explique-moi vite'; mBtn.classList.remove('micro-explain-btn--active'); }
         _origDisplayQuestion();
     };
 
@@ -501,6 +558,8 @@
         _origSubmitAnswer();
         var btn = document.getElementById('quiz-simplify-btn');
         if (btn) btn.style.display = '';
+        var mBtn = document.getElementById('quiz-micro-btn');
+        if (mBtn) mBtn.style.display = '';
     };
 
     window.StudFlow = window.StudFlow || {};
@@ -515,6 +574,7 @@
         createQuestion: createQuestion,
         updateCount: updateCount,
         getAllQuestions: getAllQuestions,
-        simplify: quizSimplify
+        simplify: quizSimplify,
+        microExplain: quizMicroExplain
     };
 })();

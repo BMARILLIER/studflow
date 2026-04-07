@@ -58,11 +58,17 @@
 
         // Flush dirty on reconnect — reset retry state, use cooldown to avoid spam
         window.addEventListener('online', function() {
-            log('online event, dirty=' + _dirty + ', disabled=' + _syncDisabled);
+            log('online event, dirty=' + _dirty + ', disabled=' + _syncDisabled + ', pulled=' + _pulled);
             _retryCount = 0;
+            _syncing = false; // force-reset in case stuck from failed request
             if (_syncDisabled) {
                 _syncDisabled = false;
                 log('sync re-enabled after reconnect');
+            }
+            // Allow pull retry if previous pull failed
+            if (!_pulled && isEnabled()) {
+                log('pull retry after reconnect');
+                try { pull(); } catch(e) { log('pull retry error:', e.message); }
             }
             if (_dirty && isEnabled()) {
                 setSyncState('waiting');
@@ -184,6 +190,7 @@
                 _syncing = false;
                 if (r.error) {
                     log('push error:', r.error.message);
+                    setSyncState('error');
                     scheduleRetry();
                     return;
                 }
@@ -197,6 +204,7 @@
             })
             .catch(function(err) {
                 _syncing = false;
+                setSyncState('error');
                 log('push failed:', err.message);
                 scheduleRetry();
             });
@@ -206,12 +214,15 @@
 
     function pull() {
         if (!isEnabled()) return Promise.resolve();
-        // Anti double-pull: skip if already pulled this session
+        // Anti double-pull: skip if already pulled successfully this session
         if (_pulled) {
             log('pull skipped (already pulled)');
             return Promise.resolve();
         }
-        _pulled = true;
+        if (_syncing) {
+            log('pull skipped (sync in progress)');
+            return Promise.resolve();
+        }
         _syncing = true;
         setSyncState('syncing');
         log('pull start');
@@ -230,11 +241,13 @@
                 if (r.error) {
                     // No row yet = first login, push local state
                     if (r.error.code === 'PGRST116') {
+                        _pulled = true;
                         log('no server row, pushing local');
                         return pushNow();
                     }
                     log('pull error:', r.error.message);
                     setSyncState('error');
+                    // Don't set _pulled — allow retry on reconnect
                     return;
                 }
                 var serverData = r.data.data;
@@ -242,12 +255,14 @@
 
                 if (!serverData || typeof serverData !== 'object') {
                     // Server empty, push local
+                    _pulled = true;
                     _dirty = true;
                     log('server data empty, pushing');
                     return pushNow();
                 }
 
                 merge(serverData, serverTs);
+                _pulled = true;
                 _lastSyncAt = new Date().toISOString();
                 saveMeta();
                 setSyncState('ok');
@@ -263,7 +278,7 @@
                 _syncing = false;
                 log('pull failed:', err.message);
                 setSyncState('error');
-                // Non-fatal: local data still works
+                // Don't set _pulled — allow retry on reconnect
             });
     }
 

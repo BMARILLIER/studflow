@@ -453,6 +453,10 @@
             else if (currentIndex === 3 && score >= 2) {
                 toast('Bon debut.', 'xp', '\uD83D\uDCAA');
             }
+            // Micro-win: 5 items done with good rate
+            else if (currentIndex === 5 && rate >= 60) {
+                toast('Tu progresses !', 'xp', '\uD83D\uDCAA');
+            }
             // Tension positive: 2 items left
             else if (remaining === 2) {
                 toast('Encore 2 et c\'est boucle.', 'xp', '\uD83C\uDFAF');
@@ -595,6 +599,35 @@
 
             var srExtra2 = document.getElementById('results-sr-extra');
             if (srExtra2) srExtra2.style.display = 'none';
+        }
+
+        // "Encore 1 carte" button
+        var encoreBtn = document.getElementById('results-encore');
+        if (encoreBtn) {
+            var allCards = getAllCards();
+            if (allCards.length > 0) {
+                encoreBtn.style.display = '';
+                encoreBtn.onclick = function() {
+                    // Pick a random card and show it
+                    currentIndex = Math.floor(Math.random() * allCards.length);
+                    score = 0;
+                    startTime = Date.now();
+                    window.StudFlow.app.showScreen('flashcards');
+                    display();
+                };
+            } else {
+                encoreBtn.style.display = 'none';
+            }
+        }
+
+        // Streak display
+        var streakEl = document.getElementById('results-streak');
+        var gamStats2 = window.StudFlow.gamification ? window.StudFlow.gamification.getStats() : {};
+        if (streakEl && gamStats2.streak > 1) {
+            streakEl.textContent = '\uD83D\uDD25 ' + gamStats2.streak + ' jours de suite';
+            streakEl.style.display = '';
+        } else if (streakEl) {
+            streakEl.style.display = 'none';
         }
 
         if (window.StudFlow.combo) window.StudFlow.combo.endSession();
@@ -887,7 +920,28 @@
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    // Reset simplify box + build interactive QCM when card changes
+    // ==================== MICRO EXPLAIN ====================
+    function microExplain() {
+        var box = document.getElementById('fc-micro-box');
+        var btn = document.getElementById('fc-micro-btn');
+        if (!box) return;
+        if (box.style.display !== 'none') {
+            box.style.display = 'none';
+            if (btn) { btn.textContent = '\u26A1 Explique-moi vite'; btn.classList.remove('micro-explain-btn--active'); }
+            return;
+        }
+        var me = window.StudFlow.microExplain;
+        if (!me) return;
+        var cards = getAllCards();
+        var card = cards[currentIndex];
+        if (!card) return;
+        var data = me.build(card);
+        box.innerHTML = me.renderHTML(data);
+        box.style.display = '';
+        if (btn) { btn.textContent = '\u2715 Fermer'; btn.classList.add('micro-explain-btn--active'); }
+    }
+
+    // Reset simplify box + micro box + build interactive QCM when card changes
     var _origDisplay = display;
     display = function() {
         // Reset simplify
@@ -898,6 +952,11 @@
             btn.textContent = '\uD83D\uDCA1 Explique-moi simplement';
             btn.classList.remove('fc-simplify-btn--active');
         }
+        // Reset micro explain
+        var mBox = document.getElementById('fc-micro-box');
+        var mBtn = document.getElementById('fc-micro-btn');
+        if (mBox) mBox.style.display = 'none';
+        if (mBtn) { mBtn.textContent = '\u26A1 Explique-moi vite'; mBtn.classList.remove('micro-explain-btn--active'); }
         // Reset interactive
         var interEl = document.getElementById('fc-interactive');
         var feedbackEl = document.getElementById('fc-inter-feedback');
@@ -1020,8 +1079,9 @@
 
         // Message adaptatif selon le profil par matière
         var encouragement;
+        var subjectIdLocal = currentDeck.indexOf('subj-') === 0 ? currentDeck.split('-')[1] : null;
         if (window.StudFlow.studentProfile) {
-            encouragement = window.StudFlow.studentProfile.getAdaptiveMessage(subjectId);
+            encouragement = window.StudFlow.studentProfile.getAdaptiveMessage(subjectIdLocal);
         } else {
             var defaultMsgs = [
                 '\uD83D\uDCAA Continue comme \u00E7a\u00A0!',
@@ -1106,6 +1166,7 @@
         showModePicker: showModePicker,
         startMode: startMode,
         getUserLevel: getUserLevel,
-        simplify: simplify
+        simplify: simplify,
+        microExplain: microExplain
     };
 })();

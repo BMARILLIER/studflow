@@ -213,6 +213,8 @@
                 &#x1F4A1; Explique-moi simplement
             </button>
             <div class="fc-simplify-box" id="fc-simplify-box" style="display:none;"></div>
+            <button class="micro-explain-btn" id="fc-micro-btn" data-action="fc:micro">&#9889; Explique-moi vite</button>
+            <div class="micro-explain-box" id="fc-micro-box" style="display:none;"></div>
         </div>
 
         <!-- Quiz Screen -->
@@ -267,6 +269,8 @@
                     &#x1F4A1; Explique-moi simplement
                 </button>
                 <div class="fc-simplify-box" id="quiz-simplify-box" style="display:none"></div>
+                <button class="micro-explain-btn" id="quiz-micro-btn" data-action="quiz:micro" style="display:none">&#9889; Explique-moi vite</button>
+                <div class="micro-explain-box" id="quiz-micro-box" style="display:none"></div>
             </div>
         </div>
 
@@ -399,12 +403,16 @@
                 <div class="results-stats-sr" id="results-sr-extra" style="display:none"></div>
                 <div id="results-level" class="results-level" style="display:none;"></div>
 
+                <div id="results-streak" class="results-streak" style="display:none;"></div>
                 <div class="results-actions">
                     <button class="result-btn secondary" data-action="screen:dashboard">
                         Tableau de bord
                     </button>
                     <button class="result-btn primary" id="results-retry">
                         Recommencer
+                    </button>
+                    <button class="result-btn encore-btn" id="results-encore" style="display:none;">
+                        Encore 1 carte
                     </button>
                 </div>
                 <div class="results-share">
@@ -638,6 +646,8 @@
                 <!-- Groq key input hidden during beta -->
                 <input type="hidden" id="groq-api-input">
                 <div class="api-status" id="groq-status"></div>
+                <p style="color:var(--text-muted);font-size:0.78rem;margin-top:8px;">Votre cle est stockee localement sur cet appareil.</p>
+                <button class="breathing-btn secondary" data-action="groq:clear" style="font-size:0.82rem;margin-top:6px;padding:8px 14px;">Effacer ma cle</button>
             </div>
 
             <!-- Data management (RGPD) -->
