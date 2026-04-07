@@ -218,6 +218,32 @@
             optionsContainer.appendChild(btn);
         });
 
+        // TTS button
+        var qEl = document.getElementById('quiz-question');
+        var ttsBtn = document.getElementById('quiz-tts-btn');
+        if (!ttsBtn && qEl) {
+            ttsBtn = document.createElement('button');
+            ttsBtn.id = 'quiz-tts-btn';
+            ttsBtn.className = 'tts-btn';
+            ttsBtn.setAttribute('aria-label', 'Lire a voix haute');
+            ttsBtn.textContent = '\uD83D\uDD0A';
+            qEl.parentElement.insertBefore(ttsBtn, qEl);
+        }
+        if (ttsBtn) {
+            ttsBtn.classList.remove('tts-active');
+            ttsBtn.onclick = function() {
+                var tts = window.StudFlow.tts;
+                if (!tts) return;
+                var speaking = tts.toggle(q.question);
+                ttsBtn.classList.toggle('tts-active', speaking);
+            };
+        }
+        // TTS auto
+        var tts = window.StudFlow.tts;
+        if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
+            tts.speak(q.question);
+        }
+
         document.getElementById('quiz-feedback').className = 'quiz-feedback';
         document.getElementById('quiz-feedback').textContent = '';
         var submitBtn = document.getElementById('quiz-submit');

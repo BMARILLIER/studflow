@@ -309,6 +309,40 @@
         if (elScore) elScore.textContent = `${score} \u2713`;
         if (elCard) elCard.classList.remove('flipped');
 
+        // TTS button
+        var ttsBtn = document.getElementById('fc-tts-btn');
+        if (!ttsBtn && elQ) {
+            ttsBtn = document.createElement('button');
+            ttsBtn.id = 'fc-tts-btn';
+            ttsBtn.className = 'tts-btn';
+            ttsBtn.setAttribute('aria-label', 'Lire a voix haute');
+            ttsBtn.textContent = '\uD83D\uDD0A';
+            ttsBtn.onclick = function() {
+                var tts = window.StudFlow.tts;
+                if (!tts) return;
+                var speaking = tts.toggle(card.question);
+                ttsBtn.classList.toggle('tts-active', speaking);
+            };
+            var fcFront = elQ.parentElement;
+            if (fcFront) fcFront.insertBefore(ttsBtn, fcFront.firstChild);
+        }
+        if (ttsBtn) {
+            ttsBtn.classList.remove('tts-active');
+            ttsBtn.onclick = function() {
+                var tts = window.StudFlow.tts;
+                if (!tts) return;
+                var flipped = elCard && elCard.classList.contains('flipped');
+                var text = flipped ? card.answer : card.question;
+                var speaking = tts.toggle(text);
+                ttsBtn.classList.toggle('tts-active', speaking);
+            };
+        }
+        // TTS auto
+        var tts = window.StudFlow.tts;
+        if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
+            tts.speak(card.question);
+        }
+
         // Confidence badge for AI-generated cards
         var badgeEl = document.getElementById('fc-confidence-badge');
         if (badgeEl) {
