@@ -23,11 +23,25 @@
         speechSynthesis.addEventListener('voiceschanged', _pickVoice);
     }
 
+    function _clean(text) {
+        if (!text) return '';
+        return text
+            .replace(/Question\s*:/gi, '')
+            .replace(/R[eé]ponse\s*:/gi, '')
+            .replace(/En gros\s*:/gi, 'En gros, ')
+            .replace(/Mots?\s*difficiles?\s*:/gi, '')
+            .replace(/<[^>]+>/g, '')
+            .replace(/\n{2,}/g, '. ')
+            .replace(/\s{2,}/g, ' ')
+            .trim()
+            .substring(0, 300);
+    }
+
     function speak(text) {
         if (!_supported || !text) return;
         speechSynthesis.cancel();
         _pickVoice();
-        var u = new SpeechSynthesisUtterance(text);
+        var u = new SpeechSynthesisUtterance(_clean(text));
         if (_voice) u.voice = _voice;
         u.lang = 'fr-FR';
         u.rate = 0.95;
