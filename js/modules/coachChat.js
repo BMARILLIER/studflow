@@ -740,9 +740,27 @@
     }
 
     // ==================== ACTIONS ====================
+    var MODULE_LAUNCHERS = {
+        flashcards: function() { if (window.StudFlow.flashcards) window.StudFlow.flashcards.start(); },
+        flashcard:  function() { if (window.StudFlow.flashcards) window.StudFlow.flashcards.start(); },
+        quiz:       function() { if (window.StudFlow.quiz) window.StudFlow.quiz.start(); },
+        focus:      function() { if (window.StudFlow.focus) window.StudFlow.focus.show(); },
+        stress:     function() { if (window.StudFlow.stress) window.StudFlow.stress.show(); },
+        breathing:  function() { window.StudFlow.app.showScreen('breathing'); },
+        planbac:    function() { if (window.StudFlow.planbac) window.StudFlow.planbac.show(); },
+        stats:      function() { window.StudFlow.app.showScreen('stats'); },
+        confiance:  function() { window.StudFlow.app.showScreen('confiance'); },
+        generators: function() { window.StudFlow.app.showScreen('generators'); },
+        urgence:    function() { window.StudFlow.app.showScreen('urgence'); },
+        premium:    function() { window.StudFlow.app.showScreen('premium'); }
+    };
+
     function executeAction(type, target) {
         if (type === 'module' && target) {
-            if (window.StudFlow.app && window.StudFlow.app.showScreen) {
+            var launcher = MODULE_LAUNCHERS[target];
+            if (launcher) {
+                try { launcher(); } catch(e) { console.error('[coachChat] launcher error:', target, e); }
+            } else if (window.StudFlow.app && window.StudFlow.app.showScreen) {
                 window.StudFlow.app.showScreen(target);
             }
         }
