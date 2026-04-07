@@ -370,17 +370,9 @@
     function flip() {
         var el = document.getElementById('flashcard');
         if (el) el.classList.toggle('flipped');
-        // TTS: always read the now-visible face
+        // TTS: stop any ongoing speech on flip, user must click button to listen
         var tts = window.StudFlow.tts;
-        if (tts && tts.getAudioMode && tts.getAudioMode() !== 'off') {
-            tts.stop();
-            var cards = getAllCards();
-            var card = cards[currentIndex];
-            if (card) {
-                var isFlipped = el && el.classList.contains('flipped');
-                tts.speak(isFlipped ? card.answer : card.question);
-            }
-        }
+        if (tts) tts.stop();
     }
 
     function answer(knew) {
