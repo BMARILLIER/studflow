@@ -54,7 +54,7 @@ function copyIIFEScripts() {
 
 export default defineConfig({
     plugins: [preserveStaticRefs(), copyIIFEScripts()],
-    publicDir: false,
+    publicDir: 'public',
     build: {
         rollupOptions: {
             output: {
