@@ -280,6 +280,7 @@
         });
 
         var feedback = document.getElementById('quiz-feedback');
+        var tts = window.StudFlow.tts;
         if (isCorrect) {
             score++;
             state.streak = (state.streak || 0) + 1;
@@ -290,6 +291,10 @@
             if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('quiz_correct');
             if (window.StudFlow.combo) window.StudFlow.combo.hit();
             else if (window.StudFlow.sounds) window.StudFlow.sounds.correct();
+            // TTS: just say "Correct" on success
+            if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
+                tts.speak('Correct');
+            }
         } else {
             state.streak = 0;
             feedback.className = 'quiz-feedback wrong';
@@ -298,6 +303,10 @@
             else { feedback.textContent = wrongMsg; }
             if (window.StudFlow.combo) window.StudFlow.combo.miss();
             else if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
+            // TTS: read explanation on wrong answer
+            if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
+                tts.speak(q.explanation || 'La bonne reponse etait ' + q.options[q.correctIndex]);
+            }
         }
 
         window.StudFlow.app.updateStats();

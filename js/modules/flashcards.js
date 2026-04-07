@@ -317,12 +317,6 @@
             ttsBtn.className = 'tts-btn';
             ttsBtn.setAttribute('aria-label', 'Lire a voix haute');
             ttsBtn.textContent = '\uD83D\uDD0A';
-            ttsBtn.onclick = function() {
-                var tts = window.StudFlow.tts;
-                if (!tts) return;
-                var speaking = tts.toggle(card.question);
-                ttsBtn.classList.toggle('tts-active', speaking);
-            };
             var fcFront = elQ.parentElement;
             if (fcFront) fcFront.insertBefore(ttsBtn, fcFront.firstChild);
         }
@@ -331,15 +325,17 @@
             ttsBtn.onclick = function() {
                 var tts = window.StudFlow.tts;
                 if (!tts) return;
-                var flipped = elCard && elCard.classList.contains('flipped');
-                var text = flipped ? card.answer : card.question;
+                tts.stop();
+                var isFlipped = elCard && elCard.classList.contains('flipped');
+                var text = isFlipped ? card.answer : card.question;
                 var speaking = tts.toggle(text);
                 ttsBtn.classList.toggle('tts-active', speaking);
             };
         }
-        // TTS auto
+        // TTS auto: read question on display
         var tts = window.StudFlow.tts;
         if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
+            tts.stop();
             tts.speak(card.question);
         }
 
@@ -374,6 +370,17 @@
     function flip() {
         var el = document.getElementById('flashcard');
         if (el) el.classList.toggle('flipped');
+        // TTS: read the now-visible face
+        var tts = window.StudFlow.tts;
+        if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
+            tts.stop();
+            var cards = getAllCards();
+            var card = cards[currentIndex];
+            if (card) {
+                var isFlipped = el && el.classList.contains('flipped');
+                tts.speak(isFlipped ? card.answer : card.question);
+            }
+        }
     }
 
     function answer(knew) {
