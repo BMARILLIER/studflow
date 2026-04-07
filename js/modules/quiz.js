@@ -444,6 +444,56 @@
         if (el) el.textContent = total + ' questions';
     }
 
+    // ==================== SIMPLIFY (explique-moi) ====================
+    function escapeQuizSimple(str) {
+        if (!str) return '';
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function quizSimplify() {
+        var box = document.getElementById('quiz-simplify-box');
+        var btn = document.getElementById('quiz-simplify-btn');
+        if (!box) return;
+        if (box.style.display !== 'none') {
+            box.style.display = 'none';
+            if (btn) { btn.textContent = '\uD83D\uDCA1 Explique-moi simplement'; btn.classList.remove('fc-simplify-btn--active'); }
+            return;
+        }
+        var q = sessionQuestions[currentIndex];
+        if (!q) return;
+        var explanation = q.explanation || '';
+        var correct = q.options ? q.options[q.correctIndex] || '' : '';
+
+        var html = '<div class="fc-simple-header">\uD83D\uDCA1 Explication simplifi\u00E9e</div><div class="fc-simple-content">';
+        html += '<div class="fc-simple-section"><span class="fc-simple-label">\uD83D\uDCCC Bonne r\u00E9ponse</span>'
+            + '<p class="fc-simple-text fc-simple-main">' + escapeQuizSimple(correct) + '</p></div>';
+        if (explanation) {
+            html += '<div class="fc-simple-section"><span class="fc-simple-label">\uD83C\uDFAF Pourquoi</span>'
+                + '<p class="fc-simple-text">' + escapeQuizSimple(explanation) + '</p></div>';
+        }
+        html += '</div>';
+        box.innerHTML = html;
+        box.style.display = '';
+        if (btn) { btn.textContent = '\u2715 Fermer'; btn.classList.add('fc-simplify-btn--active'); }
+    }
+
+    // Show simplify button after answer, reset on new question
+    var _origDisplayQuestion = displayQuestion;
+    displayQuestion = function() {
+        var box = document.getElementById('quiz-simplify-box');
+        var btn = document.getElementById('quiz-simplify-btn');
+        if (box) box.style.display = 'none';
+        if (btn) { btn.style.display = 'none'; btn.textContent = '\uD83D\uDCA1 Explique-moi simplement'; btn.classList.remove('fc-simplify-btn--active'); }
+        _origDisplayQuestion();
+    };
+
+    var _origSubmitAnswer = submitAnswer;
+    submitAnswer = function() {
+        _origSubmitAnswer();
+        var btn = document.getElementById('quiz-simplify-btn');
+        if (btn) btn.style.display = '';
+    };
+
     window.StudFlow = window.StudFlow || {};
     window.StudFlow.quiz = {
         start: start,
@@ -455,6 +505,7 @@
         showCreateForm: showCreateForm,
         createQuestion: createQuestion,
         updateCount: updateCount,
-        getAllQuestions: getAllQuestions
+        getAllQuestions: getAllQuestions,
+        simplify: quizSimplify
     };
 })();

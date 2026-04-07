@@ -59,6 +59,7 @@
         'fc:create':            function() { StudFlow.flashcards.createCard(); },
         'flashcards.startMode': function(p) { StudFlow.flashcards.startMode(p); },
         'flashcards.showModePicker': function(p) { StudFlow.flashcards.showModePicker(p || 'all'); },
+        'quiz:simplify':        function() { StudFlow.quiz.simplify(); },
         'quiz:create-form':     function() { StudFlow.quiz.showCreateForm(); },
         'quiz:create':          function() { StudFlow.quiz.createQuestion(); },
         'quiz:launch-deck':     function(target) { var deck = target.getAttribute('data-param') || 'all'; StudFlow.quiz.launchQuiz(deck); },
