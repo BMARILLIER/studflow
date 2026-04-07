@@ -370,9 +370,9 @@
     function flip() {
         var el = document.getElementById('flashcard');
         if (el) el.classList.toggle('flipped');
-        // TTS: read the now-visible face
+        // TTS: always read the now-visible face
         var tts = window.StudFlow.tts;
-        if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
+        if (tts && tts.getAudioMode && tts.getAudioMode() !== 'off') {
             tts.stop();
             var cards = getAllCards();
             var card = cards[currentIndex];
