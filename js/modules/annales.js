@@ -708,6 +708,670 @@
                     "Eviter les jugements de valeur : rester dans l'analyse historique et geographique."
                 ]
             }
+        },
+
+        // ==================== SES ====================
+
+        // --- 2024 ---
+        {
+            id: 'ses-2024-01',
+            title: "A l'aide de vos connaissances et du dossier documentaire, vous montrerez que la croissance economique se heurte a des limites ecologiques.",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'SES',
+            type: 'epreuve composee',
+            corrige: {
+                introduction: "La croissance economique, mesuree par le PIB, est un objectif central des politiques economiques. Cependant, elle repose sur l'exploitation de ressources naturelles limitees et genere des externalites negatives sur l'environnement. Problematique : en quoi la croissance economique se heurte-t-elle a des limites ecologiques ?",
+                parties: [
+                    {
+                        titre: "I. La croissance repose sur l'exploitation de ressources naturelles epuisables",
+                        contenu: "Le capital naturel (ressources fossiles, minerais, sols, eau douce) est un facteur de production. Les ressources NON RENOUVELABLES (petrole, gaz, charbon) s'epuisent. Le rapport Meadows (1972) : si la croissance continue au meme rythme, les ressources s'epuiseront. Notion de soutenabilite faible (on peut substituer du capital technique au capital naturel) vs soutenabilite forte (le capital naturel est irremplacable)."
+                    },
+                    {
+                        titre: "II. La croissance genere des externalites negatives environnementales",
+                        contenu: "La production et la consommation generent des EXTERNALITES NEGATIVES : pollution de l'air (gaz a effet de serre → rechauffement climatique), pollution des eaux, deforestation, perte de biodiversite. Le changement climatique : consequence directe de la croissance industrielle. Tragédie des biens communs (Hardin, 1968) : les ressources partagees sont surexploitees car personne n'a interet a les preserver individuellement."
+                    },
+                    {
+                        titre: "III. Les politiques environnementales pour concilier croissance et ecologie",
+                        contenu: "Instruments : la reglementation (normes d'emission), la taxation (taxe carbone = internaliser les externalites), le marche des droits a polluer (marche europeen du carbone). Croissance verte : innovation technologique (energies renouvelables, economie circulaire). Limites : l'effet rebond (les gains d'efficacite sont compenses par l'augmentation de la consommation). Debat : faut-il une croissance verte ou une decroissance ?"
+                    }
+                ],
+                conclusion: "La croissance economique se heurte a des limites ecologiques majeures : epuisement des ressources et degradation de l'environnement. Des politiques publiques tentent de concilier croissance et ecologie, mais le debat reste ouvert entre partisans de la croissance verte et de la decroissance.",
+                conseils: [
+                    "Utiliser les documents fournis ET vos connaissances personnelles (auteurs, mecanismes).",
+                    "Definir les termes cles des l'introduction : croissance, limites ecologiques, capital naturel.",
+                    "Mobiliser les concepts : externalites, biens communs, soutenabilite faible/forte."
+                ]
+            }
+        },
+        {
+            id: 'ses-2024-02',
+            title: "Comment l'ecole contribue-t-elle a la mobilite sociale ?",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'SES',
+            type: 'dissertation',
+            corrige: {
+                introduction: "L'ecole republicaine repose sur l'ideal meritocratique : chacun peut s'elever socialement grace a ses efforts et ses diplomes. Pourtant, les enquetes montrent que l'origine sociale reste un facteur determinant de la reussite scolaire. Problematique : dans quelle mesure l'ecole favorise-t-elle la mobilite sociale ?",
+                parties: [
+                    {
+                        titre: "I. L'ecole est un facteur de mobilite sociale ascendante",
+                        contenu: "Democratisation scolaire : acces massif au lycee et aux etudes superieures depuis les annees 1960. Le diplome reste le premier facteur d'insertion professionnelle. Tables de mobilite : une partie des enfants d'ouvriers deviennent cadres. L'ecole transmet un capital humain (connaissances, competences) qui permet la mobilite."
+                    },
+                    {
+                        titre: "II. Mais l'ecole reproduit aussi les inegalites sociales",
+                        contenu: "Bourdieu et Passeron (Les Heritiers, 1964) : l'ecole valorise le CAPITAL CULTUREL des classes superieures (langage, codes, references). Les enfants de cadres reussissent mieux non pas parce qu'ils sont plus intelligents, mais parce que l'ecole parle LEUR langage. Orientation differenciee : les enfants d'ouvriers sont surrepresentes en filiere professionnelle. Boudon : meme a niveau scolaire egal, les familles font des choix differents (autocensure des milieux populaires)."
+                    },
+                    {
+                        titre: "III. Les politiques scolaires peuvent-elles reduire la reproduction ?",
+                        contenu: "Education prioritaire (ZEP/REP) : donner plus a ceux qui ont moins. Bourses, internats d'excellence. Limites : les inegalites se sont deplacees (de l'acces au diplome a la qualite du diplome : grandes ecoles vs universites). Paradoxe d'Anderson : avoir un diplome superieur a celui de ses parents ne garantit plus une position sociale superieure (inflation des diplomes)."
+                    }
+                ],
+                conclusion: "L'ecole contribue a la mobilite sociale mais de facon imparfaite. Si elle offre des opportunites, elle reproduit aussi les inegalites par des mecanismes culturels et des choix d'orientation differencies. L'enjeu est de faire de la meritocratie une realite et non un mythe.",
+                conseils: [
+                    "Mobiliser Bourdieu (capital culturel, reproduction) ET Boudon (choix rationnels, paradoxe d'Anderson).",
+                    "Utiliser les tables de mobilite si elles sont dans le dossier documentaire.",
+                    "Des exemples concrets (orientation, grandes ecoles vs universites) enrichissent l'analyse."
+                ]
+            }
+        },
+
+        // --- 2023 ---
+        {
+            id: 'ses-2023-01',
+            title: "Quels sont les sources et les defis de la croissance economique ?",
+            year: 2023,
+            serie: 'Generale',
+            matiere: 'SES',
+            type: 'dissertation',
+            corrige: {
+                introduction: "La croissance economique, augmentation soutenue du PIB, est un objectif majeur des politiques economiques. Elle repose sur des facteurs identifies (travail, capital, progres technique) mais fait face a des defis contemporains. Problematique : quels sont les facteurs de la croissance et quelles difficultes rencontre-t-elle ?",
+                parties: [
+                    {
+                        titre: "I. Les sources traditionnelles de la croissance",
+                        contenu: "Le modele de Solow : la croissance vient de l'accumulation de capital (investissement), du facteur travail (quantite et qualite) et du progres technique (residuel de Solow). Le progres technique est le moteur principal de la croissance a long terme. Capital humain (Gary Becker) : l'education et la formation augmentent la productivite."
+                    },
+                    {
+                        titre: "II. Le role central de l'innovation",
+                        contenu: "Schumpeter : l'innovation est le moteur du capitalisme (destruction creatrice). Les innovations de rupture (machine a vapeur, Internet, IA) transforment l'economie. Le role des institutions (Acemoglu et Robinson) : droits de propriete, Etat de droit, stabilite politique favorisent l'innovation. Le role des depenses de R&D (recherche et developpement) publiques et privees."
+                    },
+                    {
+                        titre: "III. Les defis contemporains de la croissance",
+                        contenu: "Les limites ecologiques (epuisement des ressources, rechauffement climatique). Les inegalites : la croissance ne profite pas a tous (Piketty : les inegalites de patrimoine augmentent). La stagnation seculaire (Hansen, Larry Summers) : la croissance ralentit dans les pays developpes. Le defi demographique : vieillissement de la population."
+                    }
+                ],
+                conclusion: "La croissance repose sur l'accumulation de facteurs et surtout sur l'innovation, mais elle fait face a des defis ecologiques, sociaux et demographiques majeurs. L'enjeu est de trouver un modele de croissance soutenable et inclusif.",
+                conseils: [
+                    "Definir le PIB et ses limites des l'introduction (il ne mesure pas le bien-etre).",
+                    "Mobiliser Solow, Schumpeter, Romer (croissance endogene) selon les documents.",
+                    "Ne pas oublier les defis : c'est souvent la partie la mieux notee."
+                ]
+            }
+        },
+
+        // ==================== HGGSP ====================
+
+        // --- 2024 ---
+        {
+            id: 'hggsp-2024-01',
+            title: "La conquete spatiale : enjeux diplomatiques et strategiques",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'HGGSP',
+            type: 'dissertation',
+            corrige: {
+                introduction: "Depuis Spoutnik (1957), l'espace est un enjeu de puissance. La course spatiale, d'abord bipolaire (USA-URSS), s'est elargie a de nouveaux acteurs etatiques et prives. Problematique : en quoi la conquete spatiale est-elle un revelateur des rapports de puissance et des enjeux strategiques contemporains ?",
+                parties: [
+                    {
+                        titre: "I. La course spatiale, vitrine de la rivalite Est-Ouest (1957-1991)",
+                        contenu: "Spoutnik (1957) et le choc americain. Gagarine (1961), premier homme dans l'espace. Apollo 11 (1969), premier homme sur la Lune. L'espace comme outil de PRESTIGE et de DISSUASION. Les satellites militaires (renseignement, communication, guidage). Le traite de l'espace (1967) : interdiction des armes nucleaires dans l'espace."
+                    },
+                    {
+                        titre: "II. De nouveaux acteurs et de nouveaux enjeux (depuis 1991)",
+                        contenu: "La Chine : puissance spatiale majeure (station Tiangong, face cachee de la Lune). L'Inde : Chandrayaan (2023), a moindre cout. Le New Space : SpaceX (Musk), Blue Origin (Bezos) — privatisation de l'acces a l'espace. Enjeux : satellites Internet (Starlink), tourisme spatial, exploitation des ressources asteroidales. La cooperation internationale : ISS (1998-2030), mais tensions croissantes."
+                    },
+                    {
+                        titre: "III. L'espace, nouveau terrain de conflits ?",
+                        contenu: "Militarisation : creation de la Space Force americaine (2019), commandement spatial francais. Armes antisatellites (tests chinois, russes, indiens). Debris spatiaux : menace pour tous. Gouvernance : le traite de 1967 est insuffisant face aux nouveaux enjeux (appropriation des ressources, militarisation). L'espace comme bien commun ou terrain de conquete ?"
+                    }
+                ],
+                conclusion: "La conquete spatiale, d'abord instrument de la guerre froide, est devenue un enjeu multidimensionnel (economique, militaire, diplomatique). L'emergence de nouveaux acteurs et la militarisation posent la question de la gouvernance de l'espace. Ouverture : l'espace sera-t-il le terrain de la cooperation ou de la confrontation au XXIe siecle ?",
+                conseils: [
+                    "Ne pas se limiter a la guerre froide : les correcteurs attendent une analyse jusqu'a l'actualite.",
+                    "Citer des acteurs precis (SpaceX, Tiangong, Artemis) pour montrer la maitrise du sujet.",
+                    "Penser aux enjeux de gouvernance : le droit de l'espace est un angle valorise."
+                ]
+            }
+        },
+        {
+            id: 'hggsp-2024-02',
+            title: "Etude de document : la memoire de la guerre d'Algerie",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'HGGSP',
+            type: 'etude de document',
+            corrige: {
+                introduction: "Presenter le document (nature, auteur, date, contexte). La guerre d'Algerie (1954-1962) est une memoire DIVISEE en France : longtemps occultee, elle fait l'objet de controverses et de reconnaissances tardives. Annoncer le plan d'analyse.",
+                parties: [
+                    {
+                        titre: "I. Une memoire longtemps occultee",
+                        contenu: "Apres 1962 : SILENCE officiel. On parle d' 'evenements' et non de 'guerre.' Les appelés ne parlent pas. Les pieds-noirs et les harkis sont marginalisés. Ce n'est qu'en 1999 que le terme 'guerre d'Algerie' est officiellement reconnu par le Parlement francais."
+                    },
+                    {
+                        titre: "II. Des memoires plurielles et conflictuelles",
+                        contenu: "Memoire des APPELES (jeunes soldats envoyes malgre eux). Memoire des PIEDS-NOIRS (Francais d'Algerie, deracines). Memoire des HARKIS (abandonnes par la France, camps de transit). Memoire ALGERIENNE (colonisation, repression, independance). Memoire REPUBLICAINE (la torture, le 17 octobre 1961). Chaque groupe a sa version, ses blessures, ses revendications."
+                    },
+                    {
+                        titre: "III. Vers une reconnaissance officielle ?",
+                        contenu: "Loi de 2005 sur les 'aspects positifs de la colonisation' (retiree apres polemique). Reconnaissance par Macron de l'assassinat de Maurice Audin (2018) et d'Ali Boumendjel (2021). Commission Stora (2021) : recommandations pour la reconciliation memorielle. Mais : pas d'excuses officielles, tensions persistantes entre la France et l'Algerie."
+                    }
+                ],
+                conclusion: "La memoire de la guerre d'Algerie illustre la difficulte des societes a faire face a un passe douloureux. Entre silence, memoires concurrentes et reconnaissance tardive, le travail de memoire reste inacheve. Ouverture : comment transmettre cette memoire aux nouvelles generations ?",
+                conseils: [
+                    "En etude de document : TOUJOURS partir du document, le citer, puis elargir avec vos connaissances.",
+                    "Distinguer clairement memoire (subjective, plurielle) et histoire (objective, critique).",
+                    "Montrer que les enjeux memoriels sont aussi des enjeux POLITIQUES (relations franco-algeriennes)."
+                ]
+            }
+        },
+
+        // --- 2023 ---
+        {
+            id: 'hggsp-2023-01',
+            title: "L'environnement : un enjeu geopolitique mondial",
+            year: 2023,
+            serie: 'Generale',
+            matiere: 'HGGSP',
+            type: 'dissertation',
+            corrige: {
+                introduction: "L'environnement est devenu un enjeu geopolitique majeur depuis la fin du XXe siecle. Le rechauffement climatique, l'epuisement des ressources et la perte de biodiversite engagent des rapports de force entre Etats. Problematique : en quoi les questions environnementales sont-elles devenues des enjeux de puissance et de cooperation ?",
+                parties: [
+                    {
+                        titre: "I. L'environnement, source de tensions geopolitiques",
+                        contenu: "Les RESSOURCES comme source de conflits : eau (Nil, Jourdain, Tigre-Euphrate), petrole (Moyen-Orient, Arctique), terres rares (Chine = 60% de la production mondiale). Conflits lies au changement climatique : secheresses → migrations → instabilite (Sahel, Syrie). Inegalites Nord-Sud : les pays riches polluent, les pays pauvres subissent."
+                    },
+                    {
+                        titre: "II. La cooperation internationale : avancees et limites",
+                        contenu: "Sommet de Rio (1992) : prise de conscience mondiale, developpement durable. Protocole de Kyoto (1997) : reduction des emissions, mais USA non signataires. COP21 Paris (2015) : accord universel, objectif +1.5/+2°C, mais engagements volontaires et insuffisants. Limites : les interets nationaux freinent la cooperation (Chine, USA, pays petroliers). Le droit international de l'environnement reste faible (pas de sanctions)."
+                    },
+                    {
+                        titre: "III. L'environnement, un outil de soft power et d'influence",
+                        contenu: "Les pays scandinaves et l'Allemagne utilisent la transition ecologique comme image de marque. Greta Thunberg et les mouvements citoyens : une diplomatie 'par le bas.' Le greenwashing : instrumentalisation de l'ecologie par les Etats et les entreprises. La Chine : premier pollueur mais aussi premier investisseur dans les renouvelables — strategie de puissance."
+                    }
+                ],
+                conclusion: "L'environnement est un enjeu geopolitique complet : source de conflits, objet de cooperation fragile et instrument de puissance. Le defi est de passer d'une logique de rapports de force a une gouvernance mondiale efficace. Ouverture : la crise climatique peut-elle devenir le ciment d'une solidarite internationale ?",
+                conseils: [
+                    "Croiser les echelles : mondiale (COP), regionale (UE, Arctique), locale (conflits d'usage).",
+                    "Utiliser des exemples precis et dates : COP21, barrage de la Renaissance, Accords de Paris.",
+                    "Ne pas etre seulement descriptif : ANALYSER les rapports de force derriere les discours ecologiques."
+                ]
+            }
+        },
+
+        // ==================== SVT ====================
+
+        // --- 2024 ---
+        {
+            id: 'svt-2024-01',
+            title: "Genetique et evolution : les mecanismes de la diversite genetique",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'SVT',
+            type: 'exercice 1',
+            corrige: {
+                introduction: "La diversite genetique est le fondement de l'evolution. Elle resulte de mecanismes qui modifient l'ADN (mutations) et brassent les combinaisons genetiques (meiose, fecondation). Montrer comment ces mecanismes produisent la diversite du vivant.",
+                parties: [
+                    {
+                        titre: "I. Les mutations, source premiere de diversite",
+                        contenu: "Les MUTATIONS = modifications de la sequence d'ADN. Types : substitution (un nucleotide remplace un autre), insertion, deletion. Causes : erreurs de replication, agents mutagenes (UV, tabac, radiations). Les mutations sont ALEATOIRES et RARES. Elles peuvent etre neutres (pas d'effet), deleteres (nocives) ou benefiques (avantage selectif). C'est la matiere premiere de l'evolution."
+                    },
+                    {
+                        titre: "II. Le brassage genetique lors de la reproduction sexuee",
+                        contenu: "La MEIOSE produit des gametes (cellules sexuelles) UNIQUES. Brassage INTERCHROMOSOMIQUE : les chromosomes homologues se repartissent aleatoirement (2^23 = 8 millions de combinaisons possibles chez l'humain). Brassage INTRACHROMOSOMIQUE : crossing-over (echange de portions entre chromosomes homologues). La FECONDATION : rencontre aleatoire de deux gametes → combinaison unique."
+                    },
+                    {
+                        titre: "III. La selection naturelle oriente l'evolution",
+                        contenu: "Darwin : les individus les mieux adaptes survivent et se reproduisent davantage (selection naturelle). Les mutations avantageuses sont selectionnees et se repandent dans la population. Derive genetique : dans les petites populations, le hasard peut fixer ou eliminer des alleles. L'evolution = mutations + selection naturelle + derive genetique."
+                    }
+                ],
+                conclusion: "La diversite genetique resulte des mutations (innovation) et du brassage genetique lors de la reproduction sexuee (recombinaison). La selection naturelle et la derive genetique orientent l'evolution des populations. Ces mecanismes expliquent la biodiversite du vivant.",
+                conseils: [
+                    "Faire des SCHEMAS : meiose avec crossing-over, repartition des chromosomes. Ca rapporte des points.",
+                    "Distinguer brassage inter- et intrachromosomique : les deux sont attendus.",
+                    "Utiliser le vocabulaire precis : allele, locus, homozygote/heterozygote, phenotype/genotype."
+                ]
+            }
+        },
+        {
+            id: 'svt-2024-02',
+            title: "Le reflexe myotatique : un exemple de commande nerveuse du mouvement",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'SVT',
+            type: 'exercice 2',
+            corrige: {
+                introduction: "Le reflexe myotatique (ex : reflexe rotulien) est un reflexe MONOSYNAPTIQUE : un stimulus provoque une contraction musculaire involontaire. C'est un modele d'etude de la communication nerveuse.",
+                parties: [
+                    {
+                        titre: "I. Le circuit du reflexe myotatique",
+                        contenu: "RECEPTEUR : le fuseau neuromusculaire (dans le muscle) detecte l'etirement. VOIE AFFERENTE : le neurone sensitif transmet le message nerveux vers la moelle epiniere. CENTRE NERVEUX : la moelle epiniere (pas le cerveau = c'est involontaire). VOIE EFFERENTE : le motoneurone transmet l'ordre de contraction. EFFECTEUR : le muscle se contracte. C'est un ARC REFLEXE : stimulus → recepteur → nerf sensitif → moelle → motoneurone → muscle."
+                    },
+                    {
+                        titre: "II. Le message nerveux",
+                        contenu: "Le message nerveux est ELECTRIQUE le long du neurone : potentiel d'action (signal tout-ou-rien). Frequence des potentiels d'action = intensite du stimulus. A la SYNAPSE, le message devient CHIMIQUE : le neurotransmetteur (acetylcholine) est libere dans la fente synaptique. Il se fixe sur les recepteurs du neurone post-synaptique et declenche un nouveau potentiel d'action."
+                    },
+                    {
+                        titre: "III. Innervation reciproque",
+                        contenu: "Quand le muscle extenseur se contracte (reflexe), le muscle flechisseur antagoniste se RELACHE. C'est l'innervation reciproque : un interneurone inhibiteur dans la moelle epiniere inhibe le motoneurone du muscle antagoniste. Cela permet un mouvement coordonne."
+                    }
+                ],
+                conclusion: "Le reflexe myotatique illustre les principes fondamentaux de la communication nerveuse : nature electrique du message, transmission chimique a la synapse, integration par le centre nerveux. C'est un reflexe simple mais qui revele la complexite du systeme nerveux.",
+                conseils: [
+                    "SCHEMA OBLIGATOIRE : l'arc reflexe avec fleches (stimulus → recepteur → nerf → centre → nerf → effecteur).",
+                    "Distinguer message ELECTRIQUE (le long du neurone) et CHIMIQUE (a la synapse).",
+                    "Ne pas confondre reflexe (involontaire, moelle epiniere) et mouvement volontaire (cerveau)."
+                ]
+            }
+        },
+
+        // ==================== MATHS ====================
+
+        // --- 2024 ---
+        {
+            id: 'maths-2024-01',
+            title: "Suites et fonctions : etude d'une suite definie par recurrence",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'Mathematiques',
+            type: 'exercice',
+            corrige: {
+                introduction: "Exercice classique du Bac : etudier une suite definie par u(n+1) = f(u(n)), demontrer sa convergence et trouver sa limite. Les outils : recurrence, monotonie, theoreme de convergence monotone.",
+                parties: [
+                    {
+                        titre: "Methode : etudier une suite definie par recurrence",
+                        contenu: "1) CALCULER les premiers termes (u0, u1, u2, u3) pour conjecturer le comportement. 2) DEMONTRER par recurrence les proprietes (ex : 0 < u(n) < 2 pour tout n). 3) ETUDIER la monotonie (u(n+1) - u(n) ou u(n+1)/u(n)). 4) CONCLURE : suite croissante et majoree → elle CONVERGE (theoreme de convergence monotone). 5) TROUVER la limite L : si u(n) → L alors L = f(L). Resoudre l'equation."
+                    },
+                    {
+                        titre: "La demonstration par recurrence",
+                        contenu: "Etape 1 — INITIALISATION : verifier que la propriete est vraie pour n = 0. Etape 2 — HEREDITE : supposer P(n) vraie (hypothese de recurrence) et montrer que P(n+1) est vraie. Etape 3 — CONCLUSION : par le principe de recurrence, P(n) est vraie pour tout n ≥ 0. Piege : ne JAMAIS oublier l'initialisation (beaucoup d'eleves perdent des points)."
+                    },
+                    {
+                        titre: "Theoreme de convergence monotone",
+                        contenu: "Toute suite CROISSANTE et MAJOREE converge. Toute suite DECROISSANTE et MINOREE converge. C'est LE theoreme a utiliser pour prouver la convergence d'une suite definie par recurrence. Attention : il dit que la suite converge, mais ne donne PAS la valeur de la limite. Pour la trouver : passer a la limite dans la relation de recurrence."
+                    }
+                ],
+                conclusion: "Les suites par recurrence sont un classique du Bac. La methode est toujours la meme : calculer, conjecturer, demontrer par recurrence, etudier la monotonie, conclure sur la convergence, trouver la limite.",
+                conseils: [
+                    "TOUJOURS rediger la recurrence en 3 etapes : initialisation, heredite, conclusion.",
+                    "Calculer u0 a u3 pour avoir une intuition AVANT de demontrer.",
+                    "Le theoreme de convergence monotone est votre meilleur ami pour les suites bornees."
+                ]
+            }
+        },
+        {
+            id: 'maths-2024-02',
+            title: "Probabilites : loi binomiale et loi normale",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'Mathematiques',
+            type: 'exercice',
+            corrige: {
+                introduction: "Exercice de probabilites : reconnaitre une loi binomiale, calculer des probabilites, puis approcher par une loi normale. Utilisation de la calculatrice attendue.",
+                parties: [
+                    {
+                        titre: "Reconnaitre et utiliser la loi binomiale B(n, p)",
+                        contenu: "La loi binomiale s'applique quand : n epreuves INDEPENDANTES, chaque epreuve a 2 issues (succes/echec), la probabilite de succes p est CONSTANTE. X suit B(n, p) → P(X = k) = C(n,k) × p^k × (1-p)^(n-k). Esperance E(X) = n×p. Variance V(X) = n×p×(1-p). Ecart-type = racine(V). Utiliser la calculatrice pour les calculs (binomPdf, binomCdf)."
+                    },
+                    {
+                        titre: "Approximation par la loi normale",
+                        contenu: "Quand n est GRAND (n×p ≥ 5 et n×(1-p) ≥ 5), on peut approcher B(n,p) par la loi normale N(mu, sigma) avec mu = n×p et sigma = racine(n×p×(1-p)). Loi normale : courbe en cloche, symetrique. Regle des 95% : P(mu - 2sigma < X < mu + 2sigma) ≈ 0.95. Intervalle de fluctuation : [p - 1.96×racine(p(1-p)/n) ; p + 1.96×racine(p(1-p)/n)]."
+                    },
+                    {
+                        titre: "Prise de decision et intervalle de confiance",
+                        contenu: "Intervalle de FLUCTUATION : on connait p, on regarde si la frequence observee est dans l'intervalle. Si elle sort → on rejette l'hypothese. Intervalle de CONFIANCE : on ne connait PAS p, on l'estime a partir d'un echantillon. IC au niveau 95% : [f - 1/racine(n) ; f + 1/racine(n)] (formule simplifiee). Attention : ne pas confondre fluctuation (on connait p) et confiance (on estime p)."
+                    }
+                ],
+                conclusion: "Les probabilites au Bac combinent calculs (binomiale) et raisonnement (prise de decision). Maitriser la calculatrice est indispensable. La loi normale apparait comme approximation de la binomiale pour les grands echantillons.",
+                conseils: [
+                    "Verifier les conditions d'application AVANT d'utiliser une loi (independance, n×p ≥ 5).",
+                    "Montrer les etapes de calcul meme si vous utilisez la calculatrice.",
+                    "Bien distinguer intervalle de fluctuation (on connait p) et intervalle de confiance (on estime p)."
+                ]
+            }
+        },
+
+        // ==================== PHYSIQUE-CHIMIE ====================
+
+        // --- 2024 ---
+        {
+            id: 'physchim-2024-01',
+            title: "Mouvements et interactions : etude du mouvement d'un projectile",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'Physique-Chimie',
+            type: 'exercice',
+            corrige: {
+                introduction: "Exercice classique : etudier le mouvement d'un projectile (balle, ballon, satellite) en appliquant les lois de Newton. Decomposition du mouvement en composantes horizontale et verticale.",
+                parties: [
+                    {
+                        titre: "I. Appliquer la deuxieme loi de Newton",
+                        contenu: "Somme des forces = m × a (vecteur). Identifier les forces : POIDS P = m×g (vertical, vers le bas). Si on neglige les frottements : seul le poids agit. Projeter sur les axes : axe Ox (horizontal) : ax = 0 (mouvement uniforme). Axe Oy (vertical) : ay = -g (mouvement uniformement accelere). Le mouvement est PARABOLIQUE."
+                    },
+                    {
+                        titre: "II. Equations horaires du mouvement",
+                        contenu: "Vitesse : Vx(t) = V0×cos(alpha) et Vy(t) = V0×sin(alpha) - g×t. Position : x(t) = V0×cos(alpha)×t et y(t) = V0×sin(alpha)×t - (1/2)×g×t². Pour trouver l'equation de la trajectoire : eliminer t entre x(t) et y(t). On obtient y = f(x), une PARABOLE."
+                    },
+                    {
+                        titre: "III. Exploitation : portee, hauteur maximale, duree",
+                        contenu: "HAUTEUR MAXIMALE : quand Vy = 0 → t = V0×sin(alpha)/g. PORTEE : quand y = 0 (retour au sol) → t = 2×V0×sin(alpha)/g puis x = V0²×sin(2alpha)/g. PORTEE MAXIMALE : pour alpha = 45°. Application numerique : remplacer les valeurs, verifier les unites, arrondir au bon nombre de chiffres significatifs."
+                    }
+                ],
+                conclusion: "L'etude du mouvement d'un projectile est un exercice fondamental qui mobilise la 2e loi de Newton, les equations horaires et l'analyse vectorielle. La methode est toujours : forces → acceleration → vitesse → position.",
+                conseils: [
+                    "TOUJOURS faire un schema avec les axes, les forces, le vecteur vitesse initiale.",
+                    "Verifier les UNITES a chaque etape (SI : m, s, kg, N).",
+                    "Ne pas oublier les CONDITIONS INITIALES (position et vitesse a t=0)."
+                ]
+            }
+        },
+        {
+            id: 'physchim-2024-02',
+            title: "Chimie organique : reactions acido-basiques et titrage",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'Physique-Chimie',
+            type: 'exercice',
+            corrige: {
+                introduction: "Exercice de chimie : etudier une reaction acido-basique, realiser un titrage et exploiter les resultats pour determiner une concentration.",
+                parties: [
+                    {
+                        titre: "I. Les reactions acido-basiques",
+                        contenu: "Un ACIDE = espece qui cede un proton H+. Une BASE = espece qui capte un proton H+. Couples acide/base : HA/A⁻ (ex : CH3COOH/CH3COO⁻). Reaction : HA + B⁻ → A⁻ + HB. Le pH mesure l'acidite : pH < 7 acide, pH = 7 neutre, pH > 7 basique. pH = -log[H3O+]."
+                    },
+                    {
+                        titre: "II. Le titrage : methode et exploitation",
+                        contenu: "PRINCIPE : on verse une solution de concentration connue (titrant) dans une solution de concentration inconnue (titre). A l'EQUIVALENCE : les reactifs sont dans les proportions stochiometriques → n(acide) = n(base). Formule a l'equivalence : Ca × Va = Cb × Vb. REPERAGE : changement de couleur de l'indicateur colore OU point d'inflexion sur la courbe pH = f(V)."
+                    },
+                    {
+                        titre: "III. Calculs et resultats",
+                        contenu: "1) Reperer le volume a l'equivalence Ve sur la courbe. 2) Appliquer la relation a l'equivalence : Ca = Cb × Vb / Va (ou l'inverse selon ce qu'on cherche). 3) Verifier la coherence (ordre de grandeur). 4) Incertitude : reperer l'incertitude sur Ve et propager. Chiffres significatifs : adapter au nombre de CS des donnees."
+                    }
+                ],
+                conclusion: "Le titrage acido-basique est une methode precise pour determiner une concentration inconnue. La methode est toujours : reperer l'equivalence, appliquer la relation stochiometrique, calculer. La maitrise de la verrerie et de la precision est essentielle.",
+                conseils: [
+                    "Connaitre par coeur la relation a l'equivalence : na = nb (quantites de matiere egales).",
+                    "Sur la courbe, l'equivalence = le point d'inflexion (methode des tangentes).",
+                    "Ne pas confondre concentration (mol/L) et quantite de matiere (mol)."
+                ]
+            }
+        },
+
+        // ==================== ESPAGNOL ====================
+
+        // --- 2024 ---
+        {
+            id: 'esp-2024-01',
+            title: "Identidades e intercambios : la inmigracion y la busqueda de una vida mejor",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'Espagnol',
+            type: 'expression ecrite',
+            corrige: {
+                introduction: "Ce sujet s'inscrit dans l'axe 'Identidades e intercambios.' Le dossier documentaire porte sur l'immigration latino-americaine vers les Etats-Unis ou l'Europe. L'expression ecrite demande de discuter les enjeux de l'immigration : espoir d'une vie meilleure vs difficultes d'integration.",
+                parties: [
+                    {
+                        titre: "I. Comprendre les documents et identifier l'axe",
+                        contenu: "Presenter chaque document : nature (articulo, foto, testimonio), theme, source. Relier a l'axe 'Identidades e intercambios' : l'immigration pose la question de l'IDENTITE (qui suis-je dans un nouveau pays ?) et des ECHANGES entre cultures. Vocabulaire cle : inmigracion, frontera, sueno, integracion, identidad, mestizaje, desarraigo (deracinement)."
+                    },
+                    {
+                        titre: "II. Methode de l'expression ecrite",
+                        contenu: "INTRODUCTION : presenter le theme en 2-3 phrases. 'El tema de la inmigracion es central en el mundo hispanico. Millones de personas cruzan fronteras en busca de una vida mejor.' DEVELOPPEMENT : 2-3 paragraphes avec arguments + exemples. Utiliser les CONNECTEURS : primero, ademas, sin embargo, por otra parte, en conclusion. CONCLUSION : resumer + avis personnel. 'En mi opinion, la inmigracion es un fenomeno complejo que enriquece las sociedades pero plantea desafios importantes.'"
+                    },
+                    {
+                        titre: "III. Arguments et exemples a mobiliser",
+                        contenu: "POUR l'immigration : enrichissement culturel (mestizaje), dynamisme economique, droit a une vie meilleure. DIFFICULTES : discrimination, separation des familles, danger du voyage (pateras, mur USA-Mexique), clandestinite, perte d'identite. EXEMPLES : les 'dreamers' aux USA (enfants d'immigres sans papiers), les pateras vers les Canaries, le film Diarios de motocicleta (prise de conscience des inegalites). REFERENCES CULTURELLES : le 'sueno americano', le deracinement (desarraigo), la nostalgia."
+                    }
+                ],
+                conclusion: "L'immigration est un theme central de la civilisation hispanique. Au Bac, il faut montrer la complexite du sujet (pas de reponse simpliste) et utiliser un vocabulaire riche et des references culturelles precises.",
+                conseils: [
+                    "TOUJOURS relier le sujet a un AXE du programme et le NOMMER explicitement.",
+                    "Utiliser au moins 3-4 connecteurs logiques (primero, sin embargo, ademas, en conclusion).",
+                    "Donner votre avis personnel en conclusion avec 'En mi opinion' ou 'Desde mi punto de vista'.",
+                    "Eviter les fautes classiques : ser/estar, por/para, concordance des temps."
+                ]
+            }
+        },
+        {
+            id: 'esp-2024-02',
+            title: "Arte y poder : Guernica de Picasso y el arte comprometido",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'Espagnol',
+            type: 'comprehension et expression',
+            corrige: {
+                introduction: "Sujet sur l'axe 'Arte y poder.' Le dossier peut contenir un extrait sur Guernica de Picasso, un texte sur Garcia Lorca ou un article sur le street art politique en Amerique latine. L'enjeu : comment l'art peut-il etre un outil de resistance face au pouvoir ?",
+                parties: [
+                    {
+                        titre: "I. Comprendre le lien entre art et pouvoir",
+                        contenu: "L'art peut SERVIR le pouvoir : propagande, glorification du regime (muralisme officiel, art stalinien). L'art peut RESISTER au pouvoir : denoncer l'injustice, temoigner de l'horreur, donner une voix aux opprimes. Guernica (1937) : Picasso peint le bombardement d'une ville basque par les nazis allies de Franco. C'est un CRI contre la guerre. L'art engage (arte comprometido) = l'artiste prend position."
+                    },
+                    {
+                        titre: "II. Exemples d'art engage dans le monde hispanique",
+                        contenu: "PICASSO : Guernica = symbole universel anti-guerre. Noir, blanc, gris. Corps dechires, cheval, taureau. GARCIA LORCA : poete et dramaturge assassine par les franquistes en 1936. La casa de Bernarda Alba = critique de l'oppression des femmes. DIEGO RIVERA : muralisme mexicain, fresques monumentales sur les murs publics, art SOCIAL (l'ouvrier, le paysan, la revolution). STREET ART latino-americain : les murs des villes comme espaces d'expression politique (Chile, Colombia, Argentina)."
+                    },
+                    {
+                        titre: "III. Rediger l'expression ecrite",
+                        contenu: "Question type : 'Piensas que el arte puede cambiar la sociedad ?' Structure : INTRO : 'El arte siempre ha tenido una relacion estrecha con el poder.' ARGUMENT 1 : 'Por un lado, el arte puede denunciar las injusticias...' (ex : Guernica). ARGUMENT 2 : 'Ademas, el arte da voz a los que no la tienen...' (ex : street art). NUANCE : 'Sin embargo, el arte solo no puede cambiar el mundo...' CONCLUSION : 'En conclusion, el arte es un arma pacifica que contribuye a despertar las conciencias.'"
+                    }
+                ],
+                conclusion: "L'axe 'Arte y poder' est l'un des plus riches du programme. Il permet de mobiliser des references culturelles fortes (Picasso, Lorca, Rivera) et de developper une reflexion personnelle sur le role de l'artiste dans la societe.",
+                conseils: [
+                    "Apprendre par coeur 3-4 references culturelles avec dates et details (Guernica 1937, Lorca 1936, Rivera).",
+                    "Varier les TEMPS verbaux : present pour l'analyse, passe (preterito) pour les faits historiques.",
+                    "Montrer que vous comprenez la NUANCE : l'art n'est pas toujours de resistance, il peut aussi servir le pouvoir.",
+                    "Vocabulaire essentiel : compromiso (engagement), denunciar, censurar, libertad de expresion, arma pacifica."
+                ]
+            }
+        },
+
+        // --- 2023 ---
+        {
+            id: 'esp-2023-01',
+            title: "Territorio y memoria : la memoria historica en Espana",
+            year: 2023,
+            serie: 'Generale',
+            matiere: 'Espagnol',
+            type: 'expression ecrite',
+            corrige: {
+                introduction: "Sujet sur l'axe 'Territorio y memoria.' La memoire historique en Espagne est un theme central : guerre civile (1936-1939), dictature de Franco (1939-1975), transition democratique et loi de memoire historique. Le dossier peut contenir des temoignages, des articles sur les fosses communes ou des textes sur la loi de 2007.",
+                parties: [
+                    {
+                        titre: "I. La guerre civile et la dictature : une memoire douloureuse",
+                        contenu: "Guerre civile (1936-1939) : republicains vs nationalistes (Franco). Environ 500 000 morts. Dictature de Franco (1939-1975) : 36 ans sans liberte, repression, censure, langues regionales interdites. Des milliers de republicains dans des FOSSES COMMUNES non identifiees. Apres la mort de Franco : la transition democratique se fait dans le SILENCE. Le 'Pacte de l'oubli' (pacto del olvido) : on decide de ne pas parler du passe pour avancer."
+                    },
+                    {
+                        titre: "II. La loi de memoire historique et ses enjeux",
+                        contenu: "Loi de Memoire Historique (2007, Zapatero) : reconnait les victimes des deux camps, ordonne le retrait des symboles franquistes. Loi de Memoire Democratique (2022, Sanchez) : va plus loin, cree une banque ADN pour identifier les fosses communes, interdit la glorification du franquisme. Exhumation de Franco du Valle de los Caidos (2019) : acte symbolique fort. Debat : certains veulent 'tourner la page', d'autres exigent justice et verite."
+                    },
+                    {
+                        titre: "III. Comment en parler a l'ecrit",
+                        contenu: "Vocabulaire : la guerra civil, la dictadura, la represion, la memoria historica, las fosas comunes (fosses communes), los desaparecidos, el pacto del olvido, la reconciliacion. Phrases-types : 'Espana tuvo que enfrentarse a su pasado doloroso' (l'Espagne a du faire face a son passe douloureux). 'La memoria historica es esencial para que las victimas no sean olvidadas' (pour que les victimes ne soient pas oubliees). 'Sin embargo, algunos piensan que es mejor mirar hacia el futuro' (certains pensent qu'il vaut mieux regarder vers l'avenir)."
+                    }
+                ],
+                conclusion: "La memoire historique espagnole est un sujet sensible et frequent au Bac. Il faut montrer la complexite : le silence d'apres-guerre, le reveil memoriel tardif, les lois recentes. C'est un sujet parfait pour l'axe 'Territorio y memoria' car il lie un territoire (l'Espagne) a sa memoire collective.",
+                conseils: [
+                    "Dates essentielles a connaitre : 1936-1939 (guerre), 1939-1975 (Franco), 1978 (Constitution), 2007 (loi memoire), 2019 (exhumation de Franco).",
+                    "Ne pas prendre parti : montrer les DEUX positions (ceux qui veulent se souvenir et ceux qui veulent avancer).",
+                    "Utiliser l'imparfait pour decrire la dictature et le passe simple (indefinido) pour les evenements ponctuels.",
+                    "Si possible, citer une oeuvre : El laberinto del fauno (Del Toro), La voz dormida (Dulce Chacon)."
+                ]
+            }
+        },
+        {
+            id: 'esp-2023-02',
+            title: "Espacio privado y publico : el papel de la mujer en la sociedad hispana",
+            year: 2023,
+            serie: 'Generale',
+            matiere: 'Espagnol',
+            type: 'expression ecrite',
+            corrige: {
+                introduction: "Sujet sur l'axe 'Espacio privado y espacio publico.' Le role des femmes dans le monde hispanique a beaucoup evolue : de l'enfermement domestique sous Franco aux mouvements feministes actuels. Le dossier peut contenir des textes sur le feminisme, la violence de genre ou l'emancipation des femmes latino-americaines.",
+                parties: [
+                    {
+                        titre: "I. La femme enfermee dans l'espace prive",
+                        contenu: "Sous FRANCO : la femme est relegue au foyer (ama de casa). Elle ne peut pas travailler, ouvrir un compte bancaire ou voyager sans l'autorisation de son mari. L'Eglise renforce ce modele : la femme = mere et epouse. En LITTERATURE : La casa de Bernarda Alba (Lorca) = l'enfermement des femmes par une mere tyrannique. Como agua para chocolate (Esquivel) = une femme mexicaine prisonniere des traditions."
+                    },
+                    {
+                        titre: "II. L'emancipation et l'irruption dans l'espace public",
+                        contenu: "Apres Franco : les femmes espagnoles obtiennent l'egalite juridique (Constitution de 1978). Droit de vote, droit au divorce (1981), droit a l'avortement (1985). Le FEMINISME hispanique : le mouvement 'Ni una menos' (Argentine, 2015) contre les feminicides, le mouvement du 8 mars (dia de la mujer). Figures : Rigoberta Menchu (Guatemala, Prix Nobel de la paix 1992), les Madres de la Plaza de Mayo (Argentine)."
+                    },
+                    {
+                        titre: "III. Rediger sur ce sujet",
+                        contenu: "Vocabulaire : igualdad de genero, feminismo, machismo, violencia de genero, emancipacion, luchar por los derechos, el techo de cristal (plafond de verre). Question type : 'La igualdad entre hombres y mujeres es una realidad en el mundo hispanico ?' STRUCTURE : constater les progres (lois, mouvements) → nuancer (inegalites persistantes, feminicides) → conclure (beaucoup reste a faire). Phrase de conclusion : 'A pesar de los avances, queda mucho camino por recorrer para alcanzar una verdadera igualdad.'"
+                    }
+                ],
+                conclusion: "Le role des femmes est un sujet transversal qui touche a la famille, la politique, le travail, la culture. Au Bac, il faut montrer l'evolution historique (avant/apres) et les enjeux actuels. C'est un sujet ou les references culturelles (Lorca, Esquivel, Almodovar) font la difference.",
+                conseils: [
+                    "Relier explicitement a l'axe : 'Este tema se relaciona con el eje Espacio privado y publico porque...'",
+                    "Utiliser le contraste avant/apres : 'Antes, las mujeres no podian... Hoy, pueden...'",
+                    "Citer au moins UNE oeuvre litteraire ou cinematographique (Lorca, Esquivel, Almodovar).",
+                    "Vocabulaire piege : 'mujer' (femme) ≠ 'esposa' (epouse). 'Genero' = genre (social), 'sexo' = sexe (biologique)."
+                ]
+            }
+        },
+
+        // ==================== HLP ====================
+
+        // --- 2024 ---
+        {
+            id: 'hlp-2024-01',
+            title: "L'education forme-t-elle ou deforme-t-elle l'individu ?",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'HLP',
+            type: 'essai philosophique',
+            corrige: {
+                introduction: "L'education est universellement valorisee comme un moyen de developper l'individu. Pourtant, des penseurs comme Rousseau ou Nietzsche ont denonce ses effets deformants : conformisme, repression de la singularite, formatage social. Problematique : l'education libere-t-elle l'individu ou le moule-t-elle selon des normes qui lui sont etrangeres ?",
+                parties: [
+                    {
+                        titre: "I. L'education forme l'individu : de l'animal a l'humain",
+                        contenu: "Kant : 'L'homme est la seule creature qui doive etre eduquee.' Sans education, l'homme reste un etre de pulsions. L'education transmet des SAVOIRS (lire, compter, raisonner), des VALEURS (respect, justice, solidarite) et une CULTURE (langue, histoire, arts). Condorcet : l'instruction publique emancipe le citoyen et fonde la democratie. Montaigne : 'Mieux vaut une tete bien faite qu'une tete bien pleine' — l'education doit former le jugement, pas gaver de connaissances."
+                    },
+                    {
+                        titre: "II. L'education peut deformer : conformisme et violence symbolique",
+                        contenu: "Rousseau (Emile, 1762) : la societe CORROMPT l'enfant naturellement bon. L'education traditionnelle impose des prejuges, des conventions, des desirs artificiels. Bourdieu : l'ecole exerce une 'violence symbolique' — elle impose la culture des classes dominantes comme si c'etait LA culture universelle. Les enfants des milieux populaires sont donc structurellement desavantages. Nietzsche : l'education produit des 'animaux domestiques', des etres dociles qui n'osent plus penser par eux-memes. Foucault (Surveiller et punir) : l'ecole est une institution disciplinaire qui normalise les corps et les esprits."
+                    },
+                    {
+                        titre: "III. Former sans deformer : l'ideal d'une education emancipatrice",
+                        contenu: "Montaigne : l'education doit 'essayer' (tester, explorer) et non imposer. Laisser l'eleve douter et chercher. Rousseau : l'education NEGATIVE — ne pas enseigner, mais laisser l'enfant apprendre par l'experience. Freire (Pedagogie des opprimes, 1970) : l'education doit etre un outil de LIBERATION, pas de domestication. L'eleve n'est pas un vase a remplir mais un sujet qui construit son savoir. Rabelais (Gargantua) : l'education humaniste allie le corps et l'esprit, le savoir et le plaisir."
+                    }
+                ],
+                conclusion: "L'education est ambivalente : elle peut former (developper la raison, la liberte, la culture) ou deformer (imposer le conformisme, reproduire les inegalites). L'enjeu est de penser une education qui emancipe sans formater — qui fait des individus LIBRES et non des individus CONFORMES. Ouverture : l'ecole actuelle est-elle du cote de la formation ou de la deformation ?",
+                conseils: [
+                    "Mobiliser Rousseau, Kant et Montaigne — les trois incontournables sur l'education en HLP.",
+                    "Le piege : ne pas etre seulement POUR ou CONTRE l'education. Montrer la tension.",
+                    "Utiliser des exemples litteraires : Gargantua (Rabelais), Emile (Rousseau), Les Heritiers (Bourdieu).",
+                    "Le terme 'deformer' est fort : bien le definir (imposer une forme exterieure, nier la singularite)."
+                ]
+            }
+        },
+        {
+            id: 'hlp-2024-02',
+            title: "Interpretation litteraire : Primo Levi, Si c'est un homme (1947), extrait",
+            year: 2024,
+            serie: 'Generale',
+            matiere: 'HLP',
+            type: 'interpretation litteraire',
+            corrige: {
+                introduction: "Presenter l'auteur : Primo LEVI (1919-1987), chimiste italien, deporte a Auschwitz en 1944. Si c'est un homme (1947) = temoignage sur la deshumanisation dans les camps nazis. Le titre pose LA question : quand est-on encore un homme ? Annoncer les axes d'interpretation.",
+                parties: [
+                    {
+                        titre: "I. Le temoignage comme devoir et comme acte d'humanite",
+                        contenu: "Levi ecrit pour TEMOIGNER : 'Je voudrais que chacun de mes lecteurs puisse sentir.' Il ecrit aussi pour COMPRENDRE : comment des hommes ont pu faire ca a d'autres hommes ? L'ecriture est SOBRE, precise, scientifique (Levi est chimiste). Pas de pathos, pas de cris — c'est cette retenue qui rend le texte si puissant. Ecrire = resister a l'effacement. Les nazis voulaient que personne ne sache. Temoigner, c'est les vaincre."
+                    },
+                    {
+                        titre: "II. La deshumanisation : comment on cesse d'etre un homme",
+                        contenu: "Dans le camp, tout est fait pour DETRUIRE l'humanite du detenu : le numero tatoue remplace le NOM. L'uniforme raye remplace les VETEMENTS personnels. La faim permanente reduit l'homme a un CORPS souffrant. Le travail force epuise jusqu'a la mort. Le froid, la salete, la violence quotidienne. Levi montre que la deshumanisation est un PROCESSUS : on ne devient pas 'non-humain' d'un coup, on est lentement prive de tout ce qui fait l'humanite."
+                    },
+                    {
+                        titre: "III. Ce qui reste d'humain : la dignite irrecductible",
+                        contenu: "Malgre tout, certains gestes restent HUMAINS : partager un morceau de pain, se souvenir d'un poeme (Levi recite Dante a un camarade), garder une forme de solidarite. Le chapitre 'Le chant d'Ulysse' : Levi essaie de se souvenir d'un passage de Dante pour le reciter a un compagnon. Ce moment de CULTURE au milieu de l'horreur = preuve que l'homme ne peut pas etre totalement detruit. La question du titre ('Si c'est un homme') n'a pas de reponse definitive : c'est au lecteur de decider."
+                    }
+                ],
+                conclusion: "Si c'est un homme est a la fois un temoignage, une reflexion philosophique et une oeuvre litteraire. Levi montre que la deshumanisation est possible mais que quelque chose d'humain RESISTE. Le texte pose la question fondamentale de l'humanite en question — exactement le theme du programme HLP. Ouverture : Levi s'est suicide en 1987. Peut-on survivre a l'indicible ?",
+                conseils: [
+                    "En interpretation litteraire : CITER le texte entre guillemets a chaque idee.",
+                    "Ne pas raconter le texte mais l'ANALYSER : que veut dire l'auteur ? Comment le dit-il ?",
+                    "Lier a la problematique HLP 'L'humanite en question' : la Shoah est l'epreuve ultime de l'humanite.",
+                    "Le style de Levi (sobre, precis, sans pathos) est un CHOIX — l'analyser comme tel."
+                ]
+            }
+        },
+
+        // --- 2023 ---
+        {
+            id: 'hlp-2023-01',
+            title: "Le progres technique rend-il l'homme plus humain ?",
+            year: 2023,
+            serie: 'Generale',
+            matiere: 'HLP',
+            type: 'essai philosophique',
+            corrige: {
+                introduction: "Le progres technique a transforme la condition humaine : medecine, transports, communication. Pourtant, les deux guerres mondiales ont montre que la technique pouvait servir la barbarie. Problematique : le progres technique est-il au service de l'humanite ou menace-t-il ce qui nous rend humains ?",
+                parties: [
+                    {
+                        titre: "I. Le progres technique humanise : il libere l'homme de la necessite",
+                        contenu: "La technique libere l'homme du travail penible (machines, automatisation). La medecine allonge l'esperance de vie (de 30 ans au Moyen Age a 80 ans aujourd'hui). L'imprimerie (Gutenberg, 1450) democratise le savoir. Internet donne acces a la connaissance universelle. Les Lumieres (Condorcet) : le progres technique = progres de l'humanite. La technique est ce qui distingue l'homme de l'animal (Aristote : l'homme est un 'animal technique')."
+                    },
+                    {
+                        titre: "II. Le progres technique peut deshumaniser",
+                        contenu: "La bombe atomique (Hiroshima, 1945) : la science au service de la destruction de masse. Les camps de concentration : la mort INDUSTRIALISEE (trains, chambres a gaz = logistique technique). Heidegger : la technique moderne transforme la nature et l'homme en RESSOURCES a exploiter ('arraisonnement'). L'alienation par la technique (Marx) : l'ouvrier a la chaine perd le sens de son travail. Les reseaux sociaux : addiction, surveillance, manipulation."
+                    },
+                    {
+                        titre: "III. Le transhumanisme : depasser l'humain ou le perdre ?",
+                        contenu: "Le TRANSHUMANISME veut utiliser la technologie pour ameliorer l'homme : implants cerebraux (Neuralink), modification genetique (CRISPR), IA. POUR : guerir des maladies incurables, augmenter les capacites, vivre plus longtemps. CONTRE : creer des inegalites (seuls les riches y auront acces), perdre ce qui fait l'humanite (la vulnerabilite, la mort, les limites). Jonas (Le Principe responsabilite, 1979) : nous avons le devoir de preserver les conditions d'une vie authentiquement humaine pour les generations futures."
+                    }
+                ],
+                conclusion: "Le progres technique est ambivalent : il peut humaniser (liberer, soigner, eduquer) ou deshumaniser (detruire, aliener, formater). L'enjeu n'est pas la technique elle-meme mais l'USAGE qu'on en fait. Le transhumanisme radicalise la question : jusqu'ou peut-on modifier l'homme sans le perdre ? Ouverture : avons-nous besoin d'une ethique de la technique ?",
+                conseils: [
+                    "Ne pas etre naif (tout progres est bon) ni catastrophiste (la technique est le mal). Montrer la TENSION.",
+                    "Mobiliser Heidegger (arraisonnement), Jonas (principe responsabilite), Arendt (condition de l'homme moderne).",
+                    "Exemples concrets : bombe atomique, camps, IA, reseaux sociaux — du XXe au XXIe siecle.",
+                    "Le transhumanisme est un sujet d'actualite tres apprecie des correcteurs HLP."
+                ]
+            }
+        },
+        {
+            id: 'hlp-2023-02',
+            title: "Interpretation litteraire : Montaigne, Essais, 'Des Cannibales' (I, 31)",
+            year: 2023,
+            serie: 'Generale',
+            matiere: 'HLP',
+            type: 'interpretation litteraire',
+            corrige: {
+                introduction: "Presenter l'auteur : Michel de MONTAIGNE (1533-1592), humaniste de la Renaissance, inventeur du genre de l'essai. 'Des Cannibales' (Essais, livre I, chapitre 31) : Montaigne rencontre des Indiens du Bresil et renverse le regard — ce ne sont pas eux les 'barbares', mais NOUS. Annoncer les axes.",
+                parties: [
+                    {
+                        titre: "I. Le renversement du regard : qui est le vrai barbare ?",
+                        contenu: "Montaigne decrit les Tupinambas du Bresil, reputes 'cannibales.' Au lieu de les condamner, il les OBSERVE avec curiosite et respect. Il renverse le jugement : 'Chacun appelle barbarie ce qui n'est pas de son usage.' Les Europeens qui torturent et massacrent au nom de la religion sont-ils moins barbares que les cannibales ? Montaigne montre que le 'sauvage' n'est pas celui qu'on croit."
+                    },
+                    {
+                        titre: "II. La critique de l'ethnocentrisme",
+                        contenu: "L'ETHNOCENTRISME = juger les autres cultures a partir de la sienne, comme si la notre etait superieure. Montaigne le deconstruit : les Tupinambas ont des lois, une morale, une poesie, un courage. Leur societe est plus egale et plus proche de la nature que la notre. La 'civilisation' europeenne est pleine de cruaute, d'hypocrisie et d'injustice. Lien avec Levi-Strauss (XXe siecle) : 'Le barbare, c'est celui qui croit a la barbarie des autres.'"
+                    },
+                    {
+                        titre: "III. L'humanisme de Montaigne : tous les hommes sont egaux",
+                        contenu: "Montaigne applique le doute sceptique ('Que sais-je ?') : comment etre SUR que nos coutumes sont meilleures ? Il defend une vision UNIVERSALISTE de l'homme : derriere les differences culturelles, l'humanite est UNE. Ce texte est un des fondements de la pensee ANTICOLONIALE. Il annonce les Lumieres (Voltaire, Diderot) et la Declaration des droits de l'homme. Le style de Montaigne : personnel ('je'), digressif, conversationnel — il pense en ecrivant."
+                    }
+                ],
+                conclusion: "'Des Cannibales' est un texte fondateur de la pensee critique. Montaigne montre que la barbarie n'est pas la ou on croit, que le regard sur l'Autre revele nos propres prejuges. Ce texte est d'une actualite frappante : il invite a la TOLERANCE et a la remise en question de soi. Ouverture : a l'heure de la mondialisation, savons-nous mieux regarder l'Autre qu'au XVIe siecle ?",
+                conseils: [
+                    "CITER Montaigne : 'Chacun appelle barbarie ce qui n'est pas de son usage' — la phrase cle a connaitre.",
+                    "Definir 'ethnocentrisme' et montrer comment Montaigne le deconstruit AVANT que le mot n'existe.",
+                    "Faire le lien avec le programme HLP : 'La recherche de soi' passe par la rencontre de l'Autre.",
+                    "Le style de Montaigne (personnel, digressif) est un CHOIX philosophique : penser librement, sans dogme."
+                ]
+            }
         }
     ];
 

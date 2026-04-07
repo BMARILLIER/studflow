@@ -137,7 +137,115 @@
                     { question: 'Qu\u2019est-ce qui fait perdre des points ?', answer: 'Les pi\u00E8ges courants : 1) R\u00C9CITER un texte (voix monotone, pas de contact visuel). 2) D\u00C9PASSER le temps (le jury coupe \u00E0 5 min). 3) Ne pas r\u00E9pondre aux questions (se fermer). 4) Pas de lien avec le programme (hors sujet). 5) Pas de projet d\u2019orientation (\u00AB je sais pas ce que je veux faire \u00BB). En gros : pr\u00E9paration insuffisante = mauvaise note. M\u00EAme un \u00E9l\u00E8ve moyen peut avoir 16 s\u2019il a BIEN PR\u00C9PAR\u00C9.' }
                 ],
                 quiz: [
-                    { question: 'Ce qui fait perdre le plus de points :', options: ['Avoir un blanc', 'R\u00E9citer un texte appris par coeur', 'Parler un peu vite', 'Avoir un plan en 2 parties au lieu de 3'], correctIndex: 1, explanation: 'R\u00E9citer sans naturel est tr\u00E8s p\u00E9nalis\u00E9. Le jury veut une r\u00E9flexion personnelle, pas une r\u00E9citation.' }
+                    { question: 'Ce qui fait perdre le plus de points :', options: ['Avoir un blanc', 'Réciter un texte appris par coeur', 'Parler un peu vite', 'Avoir un plan en 2 parties au lieu de 3'], correctIndex: 1, explanation: 'Réciter sans naturel est très pénalisé. Le jury veut une réflexion personnelle, pas une récitation.' },
+                    { question: 'Le jury évalue sur :', options: ['3 critères', '5 critères', '10 critères', '2 critères'], correctIndex: 1, explanation: '5 critères : qualité orale, argumentation, connaissances, interaction, projet d\'orientation.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 7 : LE PROJET D'ORIENTATION (5 dernières minutes)
+            // ================================================================
+            {
+                id: 'projet-orientation',
+                title: 'Le projet d\'orientation',
+                icon: '🧭',
+                content: '<h3>Les 5 dernières minutes : ton avenir</h3>'
+                    + '<ul>'
+                    + '<li>Le jury te pose des questions sur TON PROJET après le Bac</li>'
+                    + '<li>C\'est noté : il faut le préparer sérieusement</li>'
+                    + '<li>Pas besoin d\'avoir un plan de carrière parfait, mais il faut montrer que tu y as réfléchi</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'C\'est quoi exactement la partie "projet d\'orientation" ?', answer: 'C\'est les 5 DERNIÈRES MINUTES du Grand Oral. Le jury te demande :\n— Qu\'est-ce que tu veux faire après le Bac ?\n— Pourquoi tu as choisi ces spécialités ?\n— Quel lien entre ta question et ton projet ?\n\nEn gros : tu dois montrer que tes choix de spécialités ont un SENS dans ton parcours. Pas besoin d\'avoir tout planifié, mais il faut avoir RÉFLÉCHI.' },
+                    { question: 'Comment relier sa question à son projet ?', answer: 'Exemples concrets :\n— Question sur CRISPR (SVT) + projet médecine → "Cette question m\'a passionné car je veux devenir médecin et la thérapie génique sera au cœur de la médecine de demain."\n— Question sur les algorithmes (Maths) + projet école d\'ingé → "Les maths appliquées à l\'IA me motivent pour intégrer une école d\'ingénieurs."\n\nEn gros : montre que ta question N\'EST PAS un hasard, elle fait partie de ton CHEMIN.' },
+                    { question: 'Et si on ne sait pas encore ce qu\'on veut faire ?', answer: 'C\'est OK. Le jury ne demande PAS un plan de carrière parfait. Tu peux dire :\n— "Je suis attiré par le domaine de... même si je n\'ai pas encore choisi de formation précise."\n— "J\'hésite entre... et... mais dans les deux cas, mes spécialités m\'ont aidé à comprendre..."\n— "Ce qui me motive, c\'est de travailler dans un domaine lié à..."\n\nEn gros : montre que tu RÉFLÉCHIS à ton avenir. L\'honnêteté est mieux notée qu\'un discours inventé.' },
+                    { question: 'Quelles questions le jury peut poser sur l\'orientation ?', answer: 'Questions fréquentes :\n1) "Pourquoi avez-vous choisi ces spécialités ?"\n2) "Que voulez-vous faire après le Bac ?"\n3) "Quel lien entre votre question et votre projet ?"\n4) "Qu\'est-ce qui vous plaît dans ce domaine ?"\n5) "Avez-vous fait des stages, des recherches, des lectures sur ce métier ?"\n\nEn gros : prépare 2-3 phrases pour chaque question. Pas besoin de réciter, juste d\'avoir réfléchi.' },
+                    { question: 'Comment montrer sa motivation ?', answer: 'Le jury veut voir que tu es SINCÈRE. Ce qui marche :\n— Parler d\'une expérience PERSONNELLE ("J\'ai fait un stage en...", "J\'ai lu un article sur...")\n— Montrer de la CURIOSITÉ ("Ce qui m\'intrigue, c\'est...")\n— Être HONNÊTE sur ses doutes ("Je ne sais pas encore exactement, mais...")\n\nCe qui ne marche PAS :\n— Réciter un discours tout fait\n— Dire "parce que ça paye bien"\n— Dire "je sais pas du tout"\n\nEn gros : motivation = tu as réfléchi + tu es curieux + tu es sincère.' },
+                    { question: 'Exemples de liens spécialité → orientation', answer: 'Maths + Physique → Ingénieur, chercheur, data scientist\nSVT + Physique → Médecin, pharmacien, chercheur en bio\nSES + HGGSP → Sciences Po, droit, journalisme\nMaths + SES → École de commerce, finance, économiste\nSVT + Maths → Vétérinaire, agronome, biostatisticien\nPhilo + Littérature → Professeur, éditeur, journaliste\nArts + Humanités → Architecte, designer, conservateur\n\nEn gros : chaque combinaison de spécialités ouvre des portes. Le jury veut que tu le montres.' }
+                ],
+                quiz: [
+                    { question: 'La partie orientation dure :', options: ['2 minutes', '5 minutes', '10 minutes', '15 minutes'], correctIndex: 1, explanation: 'Les 5 dernières minutes du Grand Oral sont consacrées au projet d\'orientation de l\'élève.' },
+                    { question: 'Si tu ne sais pas quel métier tu veux faire, il faut :', options: ['Inventer un projet', 'Dire honnêtement que tu réfléchis en montrant tes centres d\'intérêt', 'Dire "je ne sais pas" et se taire', 'Refuser de répondre'], correctIndex: 1, explanation: 'L\'honnêteté est valorisée. Montre que tu as réfléchi, même si tu n\'as pas de certitude.' },
+                    { question: 'Le jury attend surtout :', options: ['Un plan de carrière précis', 'De la sincérité et de la réflexion', 'Le nom d\'une école', 'Un CV complet'], correctIndex: 1, explanation: 'Le jury évalue ta capacité à réfléchir sur toi-même et à relier tes choix scolaires à ton avenir.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 8 : LE SUPPORT VISUEL
+            // ================================================================
+            {
+                id: 'support-visuel',
+                title: 'Le support visuel',
+                icon: '📊',
+                content: '<h3>Créer un bon support pendant les 20 min de préparation</h3>'
+                    + '<ul>'
+                    + '<li>Tu as 20 minutes SEUL pour préparer un support à donner au jury</li>'
+                    + '<li>Ce support est un BONUS, pas une obligation</li>'
+                    + '<li>Tu ne peux PAS le lire pendant ta présentation</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'C\'est quoi exactement le support ?', answer: 'Pendant les 20 min de préparation (seul dans une salle), tu peux créer un DOCUMENT à donner au jury. C\'est une feuille (ou plusieurs) avec un schéma, un graphique, un tableau, un plan.\n\nATTENTION : tu ne peux PAS le lire pendant l\'oral. C\'est le jury qui le regarde. Toi, tu parles SANS NOTES.\n\nEn gros : c\'est un aide pour le jury, pas pour toi. Mais un bon support montre ta rigueur.' },
+                    { question: 'Qu\'est-ce qu\'on peut mettre sur le support ?', answer: 'OUI :\n— Un SCHÉMA (ex : cycle cellulaire, circuit électrique)\n— Un GRAPHIQUE (ex : courbe de données, histogramme)\n— Un TABLEAU (ex : comparaison de 2 théories)\n— Un PLAN numéroté (I, II, III avec sous-parties)\n— Une FRISE chronologique\n— Une FORMULE clé\n\nNON :\n— Un texte rédigé (le jury pensera que tu lis)\n— Un copié-collé du cours\n— Un support trop chargé (illisible)\n\nEn gros : visuel > texte. Simple > compliqué.' },
+                    { question: 'Comment organiser ses 20 min de préparation ?', answer: '0-5 min : RELIS ta question. Note tes idées principales. Vérifie ton plan (intro, parties, conclusion).\n\n5-12 min : CRÉE ton support. Un schéma clair OU un plan structuré. Pas trop de détails.\n\n12-18 min : RÉPÈTE dans ta tête. Chronomètre mentalement tes 5 min.\n\n18-20 min : RESPIRE. Relis ton support une dernière fois.\n\nEn gros : ne passe pas 20 min sur le support. C\'est un bonus, pas le cœur de l\'épreuve.' },
+                    { question: 'Exemple de bon support pour SVT', answer: 'Question : "Comment CRISPR peut-il guérir les maladies génétiques ?"\n\nSupport :\n— Un SCHÉMA du mécanisme CRISPR-Cas9 (ADN → guide ARN → coupure → réparation)\n— Un TABLEAU : "Maladies ciblées / Résultats des essais cliniques"\n— Le PLAN : I. Le principe de CRISPR  II. Les applications thérapeutiques  III. Les limites éthiques\n\nEn gros : le schéma aide le jury à VOIR ce que tu expliques à l\'oral.' },
+                    { question: 'Exemple de bon support pour Maths', answer: 'Question : "Comment les suites géométriques modélisent-elles la croissance d\'un virus ?"\n\nSupport :\n— Un GRAPHIQUE : courbe exponentielle vs courbe réelle du COVID\n— La FORMULE : Un = U0 × q^n avec les valeurs appliquées\n— Le PLAN : I. Le modèle mathématique  II. Application au cas réel  III. Les limites du modèle\n\nEn gros : un graphique bien fait vaut 100 mots. Le jury apprécie la rigueur visuelle.' }
+                ],
+                quiz: [
+                    { question: 'Le support visuel est :', options: ['Obligatoire', 'Facultatif mais recommandé', 'Interdit', 'Noté séparément'], correctIndex: 1, explanation: 'Le support n\'est pas obligatoire mais il montre ta rigueur et aide le jury à suivre ton raisonnement.' },
+                    { question: 'Pendant l\'oral, le support est :', options: ['Lu par l\'élève', 'Donné au jury (l\'élève ne le lit pas)', 'Affiché au tableau', 'Gardé par l\'élève'], correctIndex: 1, explanation: 'Le support est remis au jury. L\'élève parle SANS le lire. C\'est un aide pour le jury, pas pour l\'élève.' },
+                    { question: 'Le meilleur type de support est :', options: ['Un texte rédigé complet', 'Un schéma ou graphique clair', 'Une page de notes', 'Un résumé du cours'], correctIndex: 1, explanation: 'Un support visuel (schéma, graphique, tableau) est bien plus efficace qu\'un texte rédigé.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 9 : AMÉNAGEMENTS DYS / TSA / ANXIÉTÉ
+            // ================================================================
+            {
+                id: 'amenagements',
+                title: 'Aménagements et conseils adaptés',
+                icon: '💜',
+                content: '<h3>Si tu as un PAP, un PPS ou de l\'anxiété</h3>'
+                    + '<ul>'
+                    + '<li>Tu as DROIT à des aménagements officiels</li>'
+                    + '<li>L\'anxiété se gère avec de la préparation et des techniques simples</li>'
+                    + '<li>Être différent n\'est PAS un handicap à l\'oral</li>'
+                    + '</ul>',
+                flashcards: [
+                    { question: 'Quels aménagements pour les élèves dys au Grand Oral ?', answer: 'Si tu as un PAP (Plan d\'Accompagnement Personnalisé) ou un PPS (Projet Personnalisé de Scolarisation), tu peux avoir :\n\n— TIERS-TEMPS : +6 min 40 s de préparation (soit ~27 min au lieu de 20)\n— Support adapté : possibilité de police plus grande sur ton support\n— Bienveillance du jury : ils sont informés de ton aménagement\n\nEn gros : fais la demande AVANT l\'épreuve via ton établissement. C\'est ton DROIT, pas une faveur.\n\nMots difficiles : PAP = plan pour les troubles de l\'apprentissage. PPS = plan pour les situations de handicap reconnu (MDPH).' },
+                    { question: 'Conseils spécifiques pour les élèves dyslexiques', answer: '1) Ton PLAN doit être très SIMPLE : 2 parties max, pas de sous-parties compliquées.\n2) Utilise des MOTS-CLÉS sur ton support, pas des phrases longues.\n3) RÉPÈTE à l\'oral (pas à l\'écrit). Ce qui compte c\'est ce que tu DIS, pas ce que tu écris.\n4) Prépare des PHRASES DE TRANSITION courtes et apprises par cœur ("Passons maintenant à...").\n5) Le jury ne note PAS l\'orthographe de ton support.\n\nEn gros : l\'oral est souvent PLUS FACILE que l\'écrit pour les dys. Tu peux très bien réussir.' },
+                    { question: 'Conseils spécifiques pour les élèves TSA (autisme)', answer: '1) Le REGARD : tu n\'es pas obligé de fixer le jury dans les yeux. Regarde leur front ou le haut de leur tête. C\'est suffisant.\n2) Les GESTES : pas besoin de gesticuler. Reste calme, les mains posées ou le long du corps.\n3) Le SCRIPT : prépare un plan TRÈS structuré. Les jurys apprécient la rigueur logique, c\'est une force.\n4) Les QUESTIONS imprévues : prépare 5-6 questions probables avec des réponses-types.\n5) PRÉVIENS le jury si tu as besoin d\'un moment pour réfléchir avant de répondre.\n\nEn gros : ta rigueur et ta logique sont des ATOUTS à l\'oral. Utilise-les.' },
+                    { question: 'Comment gérer l\'anxiété avant le Grand Oral ?', answer: 'AVANT l\'épreuve :\n— Technique 4-7-8 : inspire 4s, retiens 7s, expire 8s. Fais-le 3 fois.\n— Prépare un RITUEL (un geste, un mot, un objet rassurant).\n— Arrive 15 min en avance pour t\'habituer au lieu.\n\nPENDANT l\'épreuve :\n— Commence par ta phrase d\'accroche APPRISE PAR CŒUR (ça lance la machine).\n— Parle LENTEMENT (le stress accélère tout).\n— Si tu sens la panique : pause de 3 secondes + respiration.\n\nEn gros : l\'anxiété est NORMALE. 80% des élèves sont stressés. Le jury le sait et ne pénalise pas le stress.' },
+                    { question: 'Comment s\'entraîner quand on est anxieux ou neuroatypique ?', answer: '1) Commence par parler SEUL devant un miroir (pas de public).\n2) Puis enregistre-toi en AUDIO (sans vidéo, moins stressant).\n3) Puis présente à UNE personne de confiance (parent, ami proche).\n4) Puis à 2 personnes.\n5) Puis en CONDITIONS RÉELLES (debout, chrono, 2 personnes assises).\n\nÉchelle progressive = moins de stress. Ne saute pas d\'étape.\n\nPour les TSA : fais toujours les répétitions dans le MÊME lieu, à la MÊME heure. La routine aide.\n\nEn gros : on s\'habitue au stress petit à petit. 10 répétitions minimum.' },
+                    { question: 'Que dit la loi sur les aménagements aux examens ?', answer: 'Article D. 351-27 du Code de l\'éducation :\n— Tout élève en situation de handicap ou avec un trouble de l\'apprentissage a DROIT à des aménagements.\n— La demande se fait via le médecin scolaire ou la MDPH.\n— Le chef d\'établissement transmet au rectorat.\n— Délai : faire la demande AVANT le 31 décembre de l\'année de Terminale (ou dès que possible).\n\nAménagements possibles : tiers-temps, secrétaire, salle séparée, pauses.\n\nEn gros : c\'est un DROIT. Fais la demande le plus tôt possible. Ne laisse personne te dire que "c\'est pas la peine".' }
+                ],
+                quiz: [
+                    { question: 'Le tiers-temps donne combien de temps de préparation en plus ?', options: ['5 minutes', '6 min 40 s', '10 minutes', '20 minutes'], correctIndex: 1, explanation: '1/3 de 20 min = 6 min 40 s. Tu as donc environ 27 min de préparation au lieu de 20.' },
+                    { question: 'Pour un élève TSA, le regard vers le jury :', options: ['Est obligatoire dans les yeux', 'Peut être dirigé vers le front ou le haut de la tête', 'N\'est pas du tout nécessaire', 'Doit durer au moins 10 secondes'], correctIndex: 1, explanation: 'Regarder le front ou le haut de la tête suffit. Le jury ne remarque pas la différence et cela reste confortable.' },
+                    { question: 'La demande d\'aménagement doit être faite :', options: ['Le jour de l\'examen', 'Le plus tôt possible, avant le 31 décembre', 'Après les résultats', 'Uniquement par un médecin'], correctIndex: 1, explanation: 'La demande doit être anticipée. Avant le 31 décembre de l\'année de Terminale est recommandé.' }
+                ]
+            },
+
+            // ================================================================
+            // SECTION 10 : EXEMPLES DE PLANS COMPLETS
+            // ================================================================
+            {
+                id: 'exemples-plans',
+                title: 'Exemples de plans complets',
+                icon: '📋',
+                content: '<h3>Des modèles de plans pour t\'inspirer</h3>'
+                    + '<p>Voici des plans testés et validés par des enseignants. Adapte-les à TON sujet.</p>',
+                flashcards: [
+                    { question: 'Plan type pour une question scientifique', answer: 'Question exemple : "Comment les vaccins ARNm ont-ils révolutionné la lutte contre les pandémies ?"\n\nACCROCHE : "En décembre 2020, le premier vaccin ARNm de l\'histoire a été injecté. Moins d\'un an après le début de la pandémie."\n\nI. Le principe de l\'ARN messager\n— Différence avec un vaccin classique\n— Comment l\'ARNm donne des instructions aux cellules\n\nII. La révolution : rapidité et adaptabilité\n— Développement en 11 mois (vs 10 ans habituellement)\n— Possibilité de modifier la séquence rapidement\n\nIII. Limites et enjeux éthiques\n— Conservation (chaîne du froid)\n— Accès inégal dans le monde\n— Méfiance du public\n\nCONCLUSION : L\'ARNm ouvre la voie à des traitements contre le cancer et d\'autres maladies.\n\nEn gros : Constat → Explication → Application → Limites. C\'est le plan scientifique classique.' },
+                    { question: 'Plan type pour une question de sciences humaines (SES/HGGSP)', answer: 'Question exemple : "L\'école réduit-elle ou reproduit-elle les inégalités sociales ?"\n\nACCROCHE : "En France, un enfant de cadre a 5 fois plus de chances d\'obtenir un diplôme du supérieur qu\'un enfant d\'ouvrier."\n\nI. L\'école comme outil de réduction des inégalités\n— Instruction obligatoire et gratuite (Jules Ferry, 1882)\n— Méritocratie : les diplômes ouvrent des portes\n— Exemple : les bourses, les ZEP\n\nII. L\'école comme machine de reproduction sociale\n— Bourdieu : le capital culturel favorise les classes supérieures\n— Les codes implicites de l\'école (langage, comportement)\n— Exemple : orientation Bac pro vs Bac général selon l\'origine sociale\n\nIII. Pistes pour une école plus égalitaire\n— Mixité sociale, accompagnement personnalisé\n— Limites : le problème dépasse l\'école (logement, emploi des parents)\n\nCONCLUSION : L\'école seule ne peut pas tout résoudre, mais elle reste le meilleur levier.\n\nEn gros : Thèse → Antithèse → Dépassement. Le plan dialectique classique des sciences humaines.' },
+                    { question: 'Plan type pour une question croisée (2 spécialités)', answer: 'Question exemple (Maths + Physique) : "Comment les modèles mathématiques permettent-ils de prédire le changement climatique ?"\n\nACCROCHE : "Le GIEC utilise des équations mathématiques pour prédire qu\'en 2100, la température pourrait augmenter de 2 à 4°C."\n\nI. Les modèles climatiques : la physique\n— Effet de serre, bilan radiatif, transferts thermiques\n— Données : température, CO2, niveau des mers\n\nII. La modélisation : les mathématiques\n— Équations différentielles pour simuler l\'évolution\n— Suites et fonctions exponentielles (croissance du CO2)\n— Probabilités et scénarios (optimiste, médian, pessimiste)\n\nIII. Limites et responsabilités\n— Incertitudes des modèles (variables chaotiques)\n— Du modèle à la décision politique\n\nCONCLUSION : Les maths et la physique donnent des outils de prévision, mais agir reste une décision humaine.\n\nEn gros : Spé 1 → Spé 2 → Croisement et limites. Montre que les 2 disciplines s\'éclairent mutuellement.' },
+                    { question: 'Comment adapter ces plans à MA question ?', answer: 'Méthode en 4 étapes :\n\n1) CHOISIS un plan-type qui correspond à ton sujet :\n— Scientifique → Constat / Explication / Limites\n— Sciences humaines → Thèse / Antithèse / Dépassement\n— Croisé → Spé 1 / Spé 2 / Croisement\n\n2) REMPLACE les exemples par ceux de TON programme\n\n3) CHERCHE une accroche percutante (chiffre, citation, anecdote)\n\n4) TESTE : présente ton plan à quelqu\'un. S\'il comprend ta question et tes 3 parties en 1 minute, c\'est bon.\n\nEn gros : ne réinvente pas la roue. Prends un modèle, adapte-le, et entraîne-toi.' },
+                    { question: 'Comment conclure en 1 minute ?', answer: 'Structure de la conclusion en 3 phrases :\n\n1) RÉSUMÉ : "Nous avons vu que... [rappel des 2-3 parties]"\n2) RÉPONSE : "Pour répondre à la question, ... [ta réponse claire]"\n3) OUVERTURE : "Cela nous amène à nous demander... [question plus large]"\n\nExemple :\n"Nous avons vu que les vaccins ARNm représentent une avancée majeure par leur rapidité et leur adaptabilité, mais qu\'ils posent des questions d\'accès et de confiance. Pour répondre à la question : oui, ils ont révolutionné la lutte contre les pandémies. Cela nous amène à nous demander si cette technologie pourra un jour vaincre le cancer."\n\nEn gros : résumé + réponse + ouverture. 3 phrases, 1 minute, c\'est terminé.' }
+                ],
+                quiz: [
+                    { question: 'Le plan dialectique (thèse/antithèse/dépassement) est adapté pour :', options: ['Les questions scientifiques', 'Les questions de sciences humaines (SES, HGGSP, Philo)', 'Les questions de maths uniquement', 'Les questions fermées'], correctIndex: 1, explanation: 'Le plan dialectique est idéal pour les sciences humaines car il permet de confronter deux points de vue et de les dépasser.' },
+                    { question: 'Une bonne accroche peut être :', options: ['Un résumé du plan', 'Un chiffre choc, une citation ou une anecdote', 'La définition d\'un mot', 'Le nom de ta spécialité'], correctIndex: 1, explanation: 'L\'accroche doit capter l\'attention : un chiffre frappant, une citation marquante ou une anecdote personnelle.' },
+                    { question: 'La conclusion doit contenir :', options: ['De nouvelles idées', 'Un résumé, une réponse claire et une ouverture', 'Juste "merci"', 'Un exemple supplémentaire'], correctIndex: 1, explanation: 'La conclusion en 3 temps : rappel des idées, réponse à la question, ouverture vers une question plus large.' },
+                    { question: 'Pour une question croisant 2 spécialités, le plan idéal est :', options: ['Thèse / Antithèse', 'Spé 1 / Spé 2 / Croisement et limites', 'Chronologique', 'Un seul bloc sans parties'], correctIndex: 1, explanation: 'Le plan croisé montre au jury que tu maîtrises les deux spécialités ET que tu sais les relier. C\'est très valorisé.' }
                 ]
             }
         ]

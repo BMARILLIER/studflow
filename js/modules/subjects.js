@@ -27,7 +27,11 @@
             import('./subjectData/svt.js'),
             import('./subjectData/francais2.js'),
             import('./subjectData/espagnol.js'),
-            import('./subjectData/grandoral.js')
+            import('./subjectData/grandoral.js'),
+            import('./subjectData/hggsp.js'),
+            import('./subjectData/nsi.js'),
+            import('./subjectData/hlp.js'),
+            import('./subjectData/emc.js')
         ].map(function(p) { return p.catch(function(err) { console.error('[Subjects] Load failed:', err); }); }))
         .then(function() {
             _dataLoaded = true;
