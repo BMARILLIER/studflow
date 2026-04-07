@@ -227,23 +227,26 @@
         }
 
         // Build adaptive session from profile + real stats
-        if (!srMode && window.StudFlow.sessionSettings) {
-            var profile = window.StudFlow.storage.getUserProfile();
-            var allPool = currentMode !== 'auto' && deck !== 'custom' ? buildModeDeck(currentDeck) : getAllCards();
-            // Gather real stats
-            var realStats = {};
-            var sr = window.StudFlow.spacedRepetition;
-            if (sr) {
-                realStats.recentAccuracy = sr.getRetentionRate();
-                realStats.streak = window.StudFlow.gamification ? window.StudFlow.gamification.getStats().streak : 0;
+        try {
+            if (!srMode && window.StudFlow.sessionSettings) {
+                var profile = window.StudFlow.storage.getUserProfile();
+                var allPool = currentMode !== 'auto' && deck !== 'custom' ? buildModeDeck(currentDeck) : getAllCards();
+                var realStats = {};
+                var sr = window.StudFlow.spacedRepetition;
+                if (sr) {
+                    realStats.recentAccuracy = sr.getRetentionRate();
+                    realStats.streak = window.StudFlow.gamification ? window.StudFlow.gamification.getStats().streak : 0;
+                }
+                shuffledCards = window.StudFlow.sessionSettings.buildAdaptiveSession(profile, realStats, allPool, null);
+                if (!shuffledCards || shuffledCards.length === 0) {
+                    shuffledCards = (currentMode !== 'auto' && deck !== 'custom') ? buildModeDeck(currentDeck) : null;
+                }
+            } else if (!srMode && currentMode !== 'auto' && deck !== 'custom') {
+                shuffledCards = buildModeDeck(currentDeck);
             }
-            shuffledCards = window.StudFlow.sessionSettings.buildAdaptiveSession(profile, realStats, allPool, null);
-            if (!shuffledCards || shuffledCards.length === 0) {
-                // Fallback to mode-aware deck
-                shuffledCards = (currentMode !== 'auto' && deck !== 'custom') ? buildModeDeck(currentDeck) : null;
-            }
-        } else if (!srMode && currentMode !== 'auto' && deck !== 'custom') {
-            shuffledCards = buildModeDeck(currentDeck);
+        } catch(e) {
+            console.error('[flashcards] session build error:', e);
+            shuffledCards = null;
         }
 
         // Coach message at session start
