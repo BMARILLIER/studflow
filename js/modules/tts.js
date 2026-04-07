@@ -25,21 +25,40 @@
 
     function isSupported() { return _supported; }
 
+    var _voiceEN = null;
+
     function _pickVoice() {
         var voices = speechSynthesis.getVoices();
         var best = null;
         var bestScore = -1;
+        var bestEN = null;
+        var bestENScore = -1;
         for (var i = 0; i < voices.length; i++) {
             var v = voices[i];
-            if (!v.lang || !v.lang.startsWith('fr')) continue;
+            if (!v.lang) continue;
             var s = 1;
-            if (v.lang === 'fr-FR') s += 2;
             if (v.localService === false) s += 3;
             if (/premium|enhanced|natural/i.test(v.name)) s += 4;
-            if (s > bestScore) { bestScore = s; best = v; }
+            if (v.lang.startsWith('fr')) {
+                if (v.lang === 'fr-FR') s += 2;
+                if (s > bestScore) { bestScore = s; best = v; }
+            }
+            if (v.lang.startsWith('en')) {
+                if (v.lang === 'en-US' || v.lang === 'en-GB') s += 2;
+                if (s > bestENScore) { bestENScore = s; bestEN = v; }
+            }
         }
         if (best) _voice = best;
         else if (!_voice && voices.length > 0) _voice = voices[0];
+        if (bestEN) _voiceEN = bestEN;
+    }
+
+    function _detectLang(text) {
+        if (!text) return 'fr';
+        // Common English words / patterns
+        var en = (text.match(/\b(the|is|are|was|were|have|has|been|will|would|could|should|this|that|with|from|they|their|which|about|into|because|however|therefore|although|whether|through|between|without|before|after|during|since|while|often|always|never|usually|sometimes|already|also|very|much|many|more|most|other|another|each|every|both|either|neither)\b/gi) || []).length;
+        var fr = (text.match(/\b(les|des|une|est|sont|dans|pour|avec|sur|par|mais|pas|que|qui|cette|tout|nous|vous|leur|aussi|peut|fait|entre|comme|plus|bien|meme|autre|quand|encore|alors|donc|tres|etre|avoir|faire|dire|aller|voir|sans|chez|vers|selon|depuis|pendant|avant|apres|toujours|jamais|souvent|deja|parce|cependant|toutefois)\b/gi) || []).length;
+        return en > fr ? 'en' : 'fr';
     }
 
     if (_supported) {
@@ -114,11 +133,17 @@
     function _doSpeak(text) {
         speechSynthesis.cancel();
         _pickVoice();
-        var formatted = formatForSpeech(text);
+        var lang = _detectLang(text);
+        var formatted = lang === 'fr' ? formatForSpeech(text) : cleanText(text);
         _lastTextSpoken = formatted;
         var u = new SpeechSynthesisUtterance(formatted);
-        if (_voice) u.voice = _voice;
-        u.lang = 'fr-FR';
+        if (lang === 'en' && _voiceEN) {
+            u.voice = _voiceEN;
+            u.lang = 'en-US';
+        } else {
+            if (_voice) u.voice = _voice;
+            u.lang = 'fr-FR';
+        }
         u.rate = 0.85;
         u.pitch = 1;
         u.onstart = function() { _setSpeaking(true); };
