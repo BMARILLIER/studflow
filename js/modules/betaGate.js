@@ -117,9 +117,8 @@
     // ---- Error messages ----
 
     var ERROR_MESSAGES = {
-        invalid_token: "Ce lien d'invitation n'est pas valide.",
-        token_revoked: "Ce lien d'invitation a \u00e9t\u00e9 r\u00e9voqu\u00e9.",
-        token_used:    "Ce lien d'invitation est d\u00e9j\u00e0 utilis\u00e9 par un autre compte.",
+        invalid_email: "Adresse email invalide.",
+        not_on_list:   "Ton email n\u2019est pas dans la liste des testeurs. Contacte l\u2019\u00e9quipe StudFlow si tu penses que c\u2019est une erreur.",
         beta_full:     "B\u00eata compl\u00e8te \u2014 les " + BETA_LIMIT + " places de test sont d\u00e9j\u00e0 utilis\u00e9es.",
         network:       "Connexion Internet requise pour activer votre acc\u00e8s b\u00eata.",
         unknown:       "Une erreur est survenue. Veuillez r\u00e9essayer."
@@ -143,29 +142,12 @@
         var container = document.getElementById('betagate-content');
         if (!container) return;
 
-        var token = getInviteToken();
-
-        // No token in URL → dead end
-        if (!token) {
-            container.innerHTML =
-                '<div class="beta-gate">' +
-                    '<div class="beta-gate-card">' +
-                        '<div class="beta-gate-icon">🔒</div>' +
-                        '<h1 class="beta-gate-title">Acc\u00e8s b\u00eata requis</h1>' +
-                        '<p class="beta-gate-msg">StudFlow est en b\u00eata ferm\u00e9e. ' +
-                            'Tu as besoin d\u2019un lien d\u2019invitation pour acc\u00e9der \u00e0 l\u2019application.</p>' +
-                    '</div>' +
-                '</div>';
-            return;
-        }
-
-        // Token present → show email form
         container.innerHTML =
             '<div class="beta-gate">' +
                 '<div class="beta-gate-card">' +
                     '<div class="beta-gate-icon">✨</div>' +
                     '<h1 class="beta-gate-title">Bienvenue en b\u00eata !</h1>' +
-                    '<p class="beta-gate-msg">Entre ton email pour activer ton acc\u00e8s.</p>' +
+                    '<p class="beta-gate-msg">Entre ton email pour activer ton acc\u00e8s testeur.</p>' +
                     '<form id="beta-gate-form" class="beta-gate-form">' +
                         '<input type="email" id="beta-gate-email" class="beta-gate-input" ' +
                             'placeholder="ton.email@exemple.com" required autocomplete="email">' +
@@ -183,11 +165,11 @@
         var form = document.getElementById('beta-gate-form');
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            handleSubmit(token);
+            handleSubmit();
         });
     }
 
-    function handleSubmit(token) {
+    function handleSubmit() {
         var emailInput = document.getElementById('beta-gate-email');
         var consentBox = document.getElementById('beta-gate-consent');
         var errorDiv   = document.getElementById('beta-gate-error');
@@ -196,17 +178,11 @@
 
         // Client-side validation
         if (!validateEmail(email)) {
-            showFormError(errorDiv, 'Adresse email invalide.');
+            showFormError(errorDiv, ERROR_MESSAGES.invalid_email);
             return;
         }
         if (!consentBox.checked) {
             showFormError(errorDiv, 'Tu dois accepter les conditions.');
-            return;
-        }
-
-        // Token format validation (hex or ref-hex)
-        if (!token || !/^(ref-)?[a-f0-9]{8,}$/i.test(token)) {
-            showFormError(errorDiv, ERROR_MESSAGES.invalid_token);
             return;
         }
 
@@ -223,10 +199,10 @@
         errorDiv.style.display = 'none';
 
         // Call Supabase RPC
-        activateOnServer(token, email)
+        checkEmailOnServer(email)
             .then(function(result) {
                 if (result.ok) {
-                    unlock(email, token);
+                    unlock(email, '');
                     // Show welcome screen on first activation
                     window.StudFlow.app.showScreen('betawelcome');
                     showWelcome();
@@ -246,7 +222,7 @@
             });
     }
 
-    function activateOnServer(token, email) {
+    function checkEmailOnServer(email) {
         var sb = window.StudFlow.sb;
         if (!sb || !sb.isAvailable()) {
             return Promise.reject(new Error('Supabase not available'));
@@ -256,7 +232,7 @@
             return Promise.reject(new Error('Supabase client not initialized'));
         }
         return sb.withTimeout(
-            client.rpc('beta_activate', { p_token: token, p_email: email })
+            client.rpc('beta_check_email', { p_email: email })
                 .then(function(res) {
                     if (res.error) throw res.error;
                     return res.data; // { ok: true } or { ok: false, code: '...' }

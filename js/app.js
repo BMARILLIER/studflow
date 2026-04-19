@@ -929,7 +929,6 @@
 
         // Beta panels in settings (only if unlocked)
         if (window.StudFlow.betaGate && window.StudFlow.betaGate.isUnlocked()) {
-            window.StudFlow.betaGate.showReferralPanel();
             if (window.StudFlow.analytics && window.StudFlow.analytics.renderBetaPanel) {
                 window.StudFlow.analytics.renderBetaPanel();
             }
