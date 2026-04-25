@@ -62,6 +62,9 @@
 
         if (window.StudFlow.combo) window.StudFlow.combo.startSession();
         if (window.StudFlow.analytics) window.StudFlow.analytics.track('quiz_start', { deck: currentDeck });
+        if (window.StudFlow.usageLogger) {
+            window.StudFlow.usageLogger.log('session_start', { mode: 'quiz', deck: currentDeck });
+        }
         window.StudFlow.app.showScreen('quiz');
         // Hide picker, show quiz content
         var picker = document.getElementById('quiz-deck-picker');
@@ -291,6 +294,10 @@
             if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('quiz_correct');
             if (window.StudFlow.combo) window.StudFlow.combo.hit();
             else if (window.StudFlow.sounds) window.StudFlow.sounds.correct();
+            if (window.StudFlow.microFeedback) {
+                var correctEl = document.querySelectorAll('.quiz-option')[q.correctIndex];
+                if (correctEl) window.StudFlow.microFeedback.success(correctEl);
+            }
             // TTS: just say "Correct" on success
             if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
                 tts.speak('Correct');
@@ -303,6 +310,14 @@
             else { feedback.textContent = wrongMsg; }
             if (window.StudFlow.combo) window.StudFlow.combo.miss();
             else if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
+            if (window.StudFlow.errorNotebook) {
+                window.StudFlow.errorNotebook.record({
+                    question: q.question,
+                    correctAnswer: q.options[q.correctIndex],
+                    userAnswer: q.options[selectedAnswer],
+                    type: 'quiz'
+                });
+            }
             // TTS: read explanation on wrong answer
             if (tts && tts.isAutoEnabled && tts.isAutoEnabled()) {
                 tts.speak(q.explanation || 'La bonne reponse etait ' + q.options[q.correctIndex]);

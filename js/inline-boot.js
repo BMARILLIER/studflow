@@ -37,6 +37,15 @@
         'screen:weekly-report': function() { if (StudFlow.weeklyReport) StudFlow.weeklyReport.show(); },
         'screen:errors':        function() { if (StudFlow.errorNotebook) StudFlow.errorNotebook.show(); },
         'screen:badges':        function() { if (StudFlow.badges) StudFlow.badges.show(); },
+        'screen:leaderboard':   function() { StudFlow.app.showScreen('leaderboard'); },
+        'dailyPath.launch':     function(target) { if (StudFlow.dailyPath) StudFlow.dailyPath.launch(Number(target.getAttribute('data-param'))); },
+        'flashcards.confidence':function() { if (StudFlow.flashcards) StudFlow.flashcards.start('all', 'confidence'); },
+        'rituelJour.flip':      function(target) { if (StudFlow.rituelJour) StudFlow.rituelJour.flip(Number(target.getAttribute('data-param'))); },
+        'miniSujet.open':       function(target) { if (StudFlow.miniSujet) StudFlow.miniSujet.openForDeck(target.getAttribute('data-param')); },
+        'miniSujet.reveal':     function(target) { if (StudFlow.miniSujet) StudFlow.miniSujet.reveal(Number(target.getAttribute('data-param'))); },
+        'screen:adminusage':    function() { StudFlow.app.showScreen('adminusage'); },
+        'screen:minisujet':     function() { var c = document.getElementById('minisujet-content'); if (c) c.innerHTML = ''; StudFlow.app.showScreen('minisujet'); },
+        'focusWeakness.launch': function() { if (StudFlow.focusWeakness) StudFlow.focusWeakness.launch(); },
         'screen:exam':          function() { if (StudFlow.examMode) StudFlow.examMode.show(); },
         'screen:stats':         function() { if (StudFlow.stats) StudFlow.stats.show(); },
         'screen:missions':      function() { if (StudFlow.missions) StudFlow.missions.show(); },
@@ -483,6 +492,12 @@
         if (StudFlow.cloud) StudFlow.cloud.init();
         if (StudFlow.auth) StudFlow.auth.init();
         if (StudFlow.roles) StudFlow.roles.init();
+        // Enforce bac|brevet choice if beta is unlocked and track is NULL in DB.
+        if (StudFlow.trackPicker) {
+            StudFlow.trackPicker.enforce().catch(function(err) {
+                console.error('[boot] track enforce failed:', err);
+            });
+        }
         if (StudFlow.analytics) StudFlow.analytics.init();
         if (StudFlow.feedback && StudFlow.feedback.init) StudFlow.feedback.init();
         if (StudFlow.notifications && StudFlow.notifications.init) StudFlow.notifications.init();
@@ -494,6 +509,7 @@
             if (screenId === 'settings') {
                 if (StudFlow.auth) StudFlow.auth.refreshUI();
                 if (StudFlow.premium) StudFlow.premium.renderSettings();
+                if (StudFlow.notifications && StudFlow.notifications.renderSettings) StudFlow.notifications.renderSettings();
                 if (typeof initSettingsStripe === 'function') initSettingsStripe();
             }
             if (screenId === 'coach') {
@@ -525,6 +541,11 @@
             if (screenId === 'premium') { if (StudFlow.premium) StudFlow.premium.renderPremiumScreen(); }
             if (screenId === 'home') { if (StudFlow.home) StudFlow.home.render(); }
             if (screenId === 'missions') { if (StudFlow.missions) StudFlow.missions.renderMain(); }
+            if (screenId === 'leaderboard') { if (StudFlow.leaderboard) StudFlow.leaderboard.render(); }
+            if (screenId === 'adminusage') { if (StudFlow.adminUsage) StudFlow.adminUsage.render(); }
+            if (screenId === 'minisujet' && !document.getElementById('minisujet-content').innerHTML.trim()) {
+                if (StudFlow.miniSujet && StudFlow.miniSujet.renderHub) StudFlow.miniSujet.renderHub();
+            }
             if (screenId === 'matieres') { if (StudFlow.subjects) StudFlow.subjects.renderHub(); }
             if (screenId === 'timeline') { if (StudFlow.timeline) StudFlow.timeline.renderMain(); }
             if (screenId === 'feedback') { if (StudFlow.feedback) StudFlow.feedback.render(); }

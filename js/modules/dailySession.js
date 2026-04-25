@@ -1171,12 +1171,18 @@
         var btnClass = done ? 'ds-launch ds-launch-done' : 'ds-launch';
         var btnText = done ? '↻ Refaire une session' : '▶ Lancer ma session';
 
+        var countdownHTML = '';
+        if (!done && window.StudFlow.countdown) {
+            countdownHTML = '<p class="ds-launch-sub" style="margin-top:0.15rem;">' + window.StudFlow.countdown.renderBadge() + '</p>';
+        }
+
         return '<div class="dash-section ' + btnClass + '" data-action="dailySession.show">'
             + '<div class="ds-launch-content">'
             + '<div class="ds-launch-icon">🚀</div>'
             + '<div class="ds-launch-text">'
             + '<h3 class="ds-launch-title">' + btnText + '</h3>'
             + '<p class="ds-launch-sub">' + subtitle + '</p>'
+            + countdownHTML
             + '</div>'
             + '</div>'
             + '<div class="ds-launch-meta">~10 min · ' + TARGET_ITEMS + ' items</div>'

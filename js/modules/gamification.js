@@ -47,6 +47,19 @@
 
     const CONFETTI_COLORS = ['#60a5fa', '#22d3ee', '#34D399', '#a78bfa', '#FBBF24', '#93c5fd', '#38BDF8'];
 
+    // Streak milestones: day => { message, bonusXP, confetti }
+    const STREAK_MILESTONES = {
+        3:   { message: '3 jours ! Tu prends le rythme 🌱',            bonusXP: 50,   confetti: false },
+        7:   { message: '1 SEMAINE ! Tu es inarretable 🔥',            bonusXP: 100,  confetti: true },
+        14:  { message: '2 SEMAINES ! C\'est une habitude maintenant 💪', bonusXP: 200,  confetti: true },
+        30:  { message: '1 MOIS ! Tu es une LEGENDE 👑',               bonusXP: 500,  confetti: true },
+        50:  { message: '50 JOURS ! Machine de guerre 🏆',             bonusXP: 750,  confetti: true },
+        100: { message: '100 JOURS !!! IMMORTEL(LE) 🌟🌟🌟',          bonusXP: 1500, confetti: true }
+    };
+
+    const MAX_STREAK_FREEZES = 2;
+    const FREEZE_EARN_INTERVAL = 7; // earn 1 freeze every 7 streak days
+
     function getStats() {
         return window.StudFlow.storage.loadData('gamification', {
             xp: 0,
@@ -89,11 +102,24 @@
         return Math.min(100, Math.round((inLevel / levelRange) * 100));
     }
 
+    // Variable XP multiplier (dopamine surprise)
+    function rollXPMultiplier() {
+        var roll = Math.random();
+        if (roll < 0.70) return { mult: 1, label: null };
+        if (roll < 0.90) return { mult: 1.5, label: 'Bonus XP ! x1.5 💫', type: 'xp-big' };
+        if (roll < 0.98) return { mult: 2, label: 'SUPER BONUS x2 ! 🔥', type: 'xp-big' };
+        return { mult: 3, label: 'MEGA BONUS x3 !!! ⚡⚡⚡', type: 'xp-big' };
+    }
+
     function addXP(action) {
-        const amount = XP_ACTIONS[action] || 0;
-        if (amount === 0) return;
+        const baseAmount = XP_ACTIONS[action] || 0;
+        if (baseAmount === 0) return;
+
+        var multiplier = rollXPMultiplier();
+        var amount = Math.round(baseAmount * multiplier.mult);
 
         const stats = getStats();
+        const oldXP = stats.xp;
         const oldLevel = getCurrentLevel(stats.xp);
         stats.xp += amount;
         stats.totalActions++;
@@ -109,6 +135,13 @@
         var toastIcon = amount >= 50 ? '🏆' : amount >= 25 ? '⭐' : '✨';
         showToast(`+${amount} XP`, toastType, toastIcon);
 
+        // Show multiplier toast if bonus hit
+        if (multiplier.label) {
+            setTimeout(function() {
+                showToast(multiplier.label, multiplier.type, '🎰');
+            }, 400);
+        }
+
         // Level up! — overlay spectaculaire
         if (newLevel.level > oldLevel.level) {
             setTimeout(() => {
@@ -117,6 +150,22 @@
                 // Overlay plein ecran
                 showLevelUpOverlay(newLevel);
             }, 400);
+        } else {
+            // Nudge discret au passage de 80% vers le niveau suivant (pas au level-up)
+            const next = getNextLevel(stats.xp);
+            if (next.level > newLevel.level) {
+                const range = next.xpNeeded - newLevel.xpNeeded;
+                const needed = next.xpNeeded - stats.xp;
+                if (range > 0 && needed > 0) {
+                    const oldProgress = (oldXP - newLevel.xpNeeded) / range;
+                    const newProgress = (stats.xp - newLevel.xpNeeded) / range;
+                    if (oldProgress < 0.8 && newProgress >= 0.8) {
+                        setTimeout(function() {
+                            showToast('Plus que ' + needed + ' XP pour niveau ' + next.level + ' ' + next.emoji, 'xp', '⚡');
+                        }, 800);
+                    }
+                }
+            }
         }
 
         // Update UI
@@ -124,14 +173,31 @@
 
         // Event bus
         if (window.StudFlow.events) {
-            window.StudFlow.events.emit('xp:gained', { action: action, amount: amount, totalXP: stats.xp });
+            window.StudFlow.events.emit('xp:gained', { action: action, amount: amount, totalXP: stats.xp, multiplier: multiplier.mult });
             if (newLevel.level > oldLevel.level) {
                 window.StudFlow.events.emit('level:up', { level: newLevel.level, name: newLevel.name });
             }
         }
     }
 
+    // Joker mensuel gratuit : +1 freeze chaque 1er usage d'un nouveau mois Paris.
+    // Ne remplace pas les freezes classiques — s'y ajoute.
+    function grantMonthlyJokerIfDue() {
+        var p = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
+        var month = p.getFullYear() + '-' + String(p.getMonth() + 1).padStart(2, '0');
+        var last = localStorage.getItem('studflow_joker_monthly_month');
+        if (last === month) return false;
+        var freezes = getStreakFreezes();
+        localStorage.setItem('studflow_streak_freezes', String(freezes + 1));
+        localStorage.setItem('studflow_joker_monthly_month', month);
+        setTimeout(function() {
+            showToast('Joker mensuel offert ! ❄️', 'streak', '🎁');
+        }, 1500);
+        return true;
+    }
+
     function checkStreak(stats) {
+        grantMonthlyJokerIfDue();
         const today = new Date().toDateString();
         if (stats.lastActiveDate !== today) {
             const yesterday = new Date();
@@ -145,11 +211,27 @@
                     }, 1200);
                 }
             } else if (stats.lastActiveDate !== null) {
-                stats.streak = 1;
+                // Missed a day — try to use a streak freeze
+                var freezes = getStreakFreezes();
+                if (freezes > 0) {
+                    useStreakFreeze();
+                    stats.streak++;
+                    setTimeout(function() {
+                        showToast('Streak freeze utilise ! ❄️ Il t\'en reste ' + getStreakFreezes(), 'streak', '❄️');
+                    }, 800);
+                } else {
+                    stats.streak = 1;
+                }
             } else {
                 stats.streak = 1;
             }
             stats.lastActiveDate = today;
+
+            // Earn streak freeze every 7 days
+            earnStreakFreeze(stats.streak);
+
+            // Check streak milestones
+            checkStreakMilestone(stats);
 
             // Event bus — streak updated
             if (window.StudFlow.events) {
@@ -159,6 +241,82 @@
             // Daily login XP
             stats.xp += XP_ACTIONS.daily_login;
         }
+    }
+
+    // --- Streak Freeze ---
+    function getStreakFreezes() {
+        var val = localStorage.getItem('studflow_streak_freezes');
+        return val !== null ? parseInt(val, 10) : 0;
+    }
+
+    function useStreakFreeze() {
+        var freezes = getStreakFreezes();
+        if (freezes > 0) {
+            localStorage.setItem('studflow_streak_freezes', String(freezes - 1));
+            return true;
+        }
+        return false;
+    }
+
+    function earnStreakFreeze(currentStreak) {
+        if (currentStreak <= 0) return;
+        // Earn a freeze at every multiple of FREEZE_EARN_INTERVAL
+        if (currentStreak % FREEZE_EARN_INTERVAL === 0) {
+            var freezes = getStreakFreezes();
+            if (freezes < MAX_STREAK_FREEZES) {
+                localStorage.setItem('studflow_streak_freezes', String(freezes + 1));
+                setTimeout(function() {
+                    showToast('Streak freeze gagne ! ❄️ (' + (freezes + 1) + '/' + MAX_STREAK_FREEZES + ')', 'streak', '❄️');
+                }, 2000);
+            }
+        }
+    }
+
+    // --- Streak Milestones ---
+    function getAchievedMilestones() {
+        var raw = localStorage.getItem('studflow_streak_milestones');
+        return raw ? JSON.parse(raw) : [];
+    }
+
+    function saveAchievedMilestones(arr) {
+        localStorage.setItem('studflow_streak_milestones', JSON.stringify(arr));
+    }
+
+    function checkStreakMilestone(stats) {
+        var milestone = STREAK_MILESTONES[stats.streak];
+        if (!milestone) return;
+
+        var achieved = getAchievedMilestones();
+        if (achieved.indexOf(stats.streak) !== -1) return; // already triggered
+
+        // Mark as achieved
+        achieved.push(stats.streak);
+        saveAchievedMilestones(achieved);
+
+        // Award bonus XP
+        stats.xp += milestone.bonusXP;
+
+        // Show celebration after a delay so it doesn't collide with streak toast
+        setTimeout(function() {
+            showToast(milestone.message, 'xp-big', '🎉');
+            showToast('+' + milestone.bonusXP + ' XP bonus !', 'xp-big', '🏅');
+            if (milestone.confetti) {
+                spawnConfetti();
+            }
+        }, 1800);
+    }
+
+    // --- Streak Danger Level ---
+    function getStreakDangerLevel() {
+        var stats = getStats();
+        var today = new Date().toDateString();
+        if (stats.lastActiveDate === today) return 'safe';
+
+        var hour = new Date().getHours();
+        if (hour >= 23) return 'critical';
+        if (hour >= 21) return 'danger';
+        if (hour >= 18) return 'warning';
+        return 'safe';
     }
 
     function updateXPDisplay() {
@@ -304,6 +462,8 @@
     window.StudFlow.gamification = {
         addXP, getStats, getCurrentLevel, getNextLevel, getLevelProgress,
         updateXPDisplay, showToast, spawnConfetti, init,
-        XP_ACTIONS, LEVELS
+        XP_ACTIONS, LEVELS,
+        getStreakFreezes, useStreakFreeze, earnStreakFreeze, grantMonthlyJokerIfDue,
+        checkStreakMilestone, getStreakDangerLevel
     };
 })();

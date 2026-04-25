@@ -185,6 +185,34 @@
         return newCards.concat(reviewedCards);
     }
 
+    // Mode confiance : filtre le pool pour ne garder que les cartes connues
+    // (SR reps >= 1) et limite a 6 cartes. Pool = deck courant (all, subj-*, ...).
+    function buildConfidenceDeck() {
+        var sr = window.StudFlow.spacedRepetition;
+        if (!sr || !sr.getMasteredCardIds) return [];
+        var savedShuffle = shuffledCards;
+        shuffledCards = null;
+        var pool = getAllCards();
+        shuffledCards = savedShuffle;
+        if (!pool.length) return [];
+
+        var mastered = sr.getMasteredCardIds();
+        var filtered = [];
+        for (var i = 0; i < pool.length; i++) {
+            var c = pool[i];
+            if (!c || !c.question) continue;
+            var id = sr.cardId(c.question, c.answer);
+            if (mastered[id]) {
+                filtered.push({ question: c.question, answer: c.answer, mastered: false });
+            }
+        }
+        for (var j = filtered.length - 1; j > 0; j--) {
+            var k = Math.floor(Math.random() * (j + 1));
+            var tmp = filtered[j]; filtered[j] = filtered[k]; filtered[k] = tmp;
+        }
+        return filtered.slice(0, 6);
+    }
+
     // ==================== CORE ====================
     function shuffleDeck() {
         shuffledCards = shuffle(getAllCards());
@@ -195,7 +223,9 @@
         }
     }
 
-    function start(deck, mode) {
+    var currentLevelFilter = null;
+
+    function start(deck, mode, opts) {
         currentDeck = deck || 'all';
         currentIndex = 0;
         score = 0;
@@ -210,6 +240,9 @@
         } else {
             currentMode = 'auto';
         }
+
+        // Level filter (optionnel) : 'facile' | 'moyen' | 'difficile' | null
+        currentLevelFilter = (opts && opts.level && opts.level !== 'all') ? opts.level : null;
 
         // SR mode handling
         if (deck === 'sr' && window.StudFlow.spacedRepetition) {
@@ -226,9 +259,27 @@
             srCards = [];
         }
 
+        // Mode confiance : session courte uniquement sur cartes deja connues
+        if (currentMode === 'confidence') {
+            shuffledCards = buildConfidenceDeck();
+            if (!shuffledCards.length) {
+                if (window.StudFlow.gamification) {
+                    window.StudFlow.gamification.showToast('Fais d\'abord quelques sessions pour debloquer ce mode.', 'xp', '💪');
+                }
+                return;
+            }
+            if (window.StudFlow.gamification) {
+                setTimeout(function() {
+                    window.StudFlow.gamification.showToast('Mode confiance : que des cartes que tu sais deja.', 'xp', '😌');
+                }, 500);
+            }
+        }
+
         // Build adaptive session from profile + real stats
         try {
-            if (!srMode && window.StudFlow.sessionSettings) {
+            if (currentMode === 'confidence') {
+                // deja construit, on court-circuite la logique adaptative
+            } else if (!srMode && window.StudFlow.sessionSettings) {
                 var profile = window.StudFlow.storage.getUserProfile();
                 var allPool = currentMode !== 'auto' && deck !== 'custom' ? buildModeDeck(currentDeck) : getAllCards();
                 var realStats = {};
@@ -249,6 +300,15 @@
             shuffledCards = null;
         }
 
+        // Applique le filtre de niveau (facile/moyen/difficile) s'il est defini.
+        // Post-build, compatible avec tous les modes.
+        if (currentLevelFilter && shuffledCards && shuffledCards.length > 0) {
+            var filteredByLevel = shuffledCards.filter(function(c) {
+                return c && c.level === currentLevelFilter;
+            });
+            if (filteredByLevel.length > 0) shuffledCards = filteredByLevel;
+        }
+
         // Coach message at session start
         if (window.StudFlow.coachEngine && window.StudFlow.gamification) {
             var p = window.StudFlow.storage.getUserProfile();
@@ -262,6 +322,10 @@
 
         // Show mode indicator
         updateModeIndicator();
+
+        if (window.StudFlow.usageLogger) {
+            window.StudFlow.usageLogger.log('session_start', { mode: 'flashcards', deck: currentDeck });
+        }
 
         window.StudFlow.app.showScreen('flashcard');
         display();
@@ -311,6 +375,47 @@
         }
         if (elScore) elScore.textContent = `${score} \u2713`;
         if (elCard) elCard.classList.remove('flipped');
+
+        // Level badge (affiche seulement si card.level est defini)
+        var levelBadge = document.getElementById('fc-level-badge');
+        if (!levelBadge && elCard) {
+            levelBadge = document.createElement('span');
+            levelBadge.id = 'fc-level-badge';
+            levelBadge.className = 'fc-level-badge';
+            elCard.appendChild(levelBadge);
+        }
+        if (levelBadge) {
+            if (card.level) {
+                var lvlLabels = { facile: '🟢 Facile', moyen: '🟡 Moyen', difficile: '🔴 Difficile' };
+                levelBadge.textContent = lvlLabels[card.level] || card.level;
+                levelBadge.setAttribute('data-level', card.level);
+                levelBadge.style.display = '';
+            } else {
+                levelBadge.style.display = 'none';
+            }
+        }
+
+        // Pitfalls structures (optionnels, affiches sous la reponse au dos)
+        var pitfallsEl = document.getElementById('fc-pitfalls');
+        var fcBackFace = elA && elA.parentElement;
+        if (!pitfallsEl && fcBackFace) {
+            pitfallsEl = document.createElement('div');
+            pitfallsEl.id = 'fc-pitfalls';
+            pitfallsEl.className = 'fc-pitfalls';
+            fcBackFace.appendChild(pitfallsEl);
+        }
+        if (pitfallsEl) {
+            if (card.pitfalls && card.pitfalls.length) {
+                var itemsHtml = '';
+                for (var pi = 0; pi < card.pitfalls.length; pi++) {
+                    itemsHtml += '<li>' + String(card.pitfalls[pi]).replace(/[&<>]/g, function(ch){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[ch];}) + '</li>';
+                }
+                pitfallsEl.innerHTML = '<div class="fc-pitfalls-title">⚠️ Pieges frequents</div><ul>' + itemsHtml + '</ul>';
+                pitfallsEl.style.display = '';
+            } else {
+                pitfallsEl.style.display = 'none';
+            }
+        }
 
         // TTS button
         var ttsBtn = document.getElementById('fc-tts-btn');
@@ -406,10 +511,20 @@
             if (window.StudFlow.gamification) window.StudFlow.gamification.addXP('flashcard_correct');
             if (window.StudFlow.combo) window.StudFlow.combo.hit();
             else if (window.StudFlow.sounds) window.StudFlow.sounds.correct();
+            if (window.StudFlow.microFeedback) {
+                window.StudFlow.microFeedback.success(document.getElementById('flashcard'));
+            }
         } else {
             state.streak = 0;
             if (window.StudFlow.combo) window.StudFlow.combo.miss();
             else if (window.StudFlow.sounds) window.StudFlow.sounds.wrong();
+            if (window.StudFlow.errorNotebook && card) {
+                window.StudFlow.errorNotebook.record({
+                    question: card.question,
+                    correctAnswer: card.answer,
+                    type: 'fc'
+                });
+            }
         }
 
         // Incrementer la jauge quotidienne + temps de revision
@@ -472,10 +587,55 @@
         }
 
         if (currentIndex >= cards.length) {
-            showResults();
+            if (knew) offerOneMore();
+            else showResults();
         } else {
             display();
         }
+    }
+
+    // Bouton "Encore 1 carte" — propose d'etendre la session apres une bonne
+    // derniere reponse. Non bloquant : l'utilisateur peut toujours voir ses
+    // resultats.
+    function offerOneMore() {
+        var existing = document.getElementById('fc-encore-prompt');
+        if (existing) existing.remove();
+
+        var overlay = document.createElement('div');
+        overlay.id = 'fc-encore-prompt';
+        overlay.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:100;padding:1rem;';
+        overlay.innerHTML = ''
+          + '<div style="background:var(--bg-elev,#1a1d2e);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.5rem;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);">'
+          +   '<div style="font-size:2rem;margin-bottom:0.5rem;">🎯</div>'
+          +   '<h3 style="margin:0 0 0.5rem;font-size:1.1rem;">Bien joue !</h3>'
+          +   '<p style="color:var(--text-muted);margin:0 0 1.25rem;font-size:0.9rem;">Tu es dans le flow. Une derniere carte ?</p>'
+          +   '<button id="fc-encore-yes" class="new-course-btn" style="width:100%;padding:0.8rem;margin-bottom:0.5rem;font-weight:600;">+ Encore 1 carte</button>'
+          +   '<button id="fc-encore-no" style="width:100%;padding:0.6rem;background:none;border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:var(--text-muted);cursor:pointer;">Voir mes resultats</button>'
+          + '</div>';
+        document.body.appendChild(overlay);
+
+        document.getElementById('fc-encore-yes').onclick = function() {
+            overlay.remove();
+            if (extendSessionByOne()) display();
+            else showResults();
+        };
+        document.getElementById('fc-encore-no').onclick = function() {
+            overlay.remove();
+            showResults();
+        };
+    }
+
+    function extendSessionByOne() {
+        if (!shuffledCards) shuffledCards = getAllCards().slice();
+        var saved = shuffledCards;
+        shuffledCards = null;
+        var freshPool = getAllCards();
+        shuffledCards = saved;
+        if (!freshPool.length) return false;
+        if (freshPool.length === 1 && freshPool[0] && freshPool[0].question === 'Pas encore de flashcards') return false;
+        var pick = freshPool[Math.floor(Math.random() * freshPool.length)];
+        shuffledCards.push({ question: pick.question, answer: pick.answer, mastered: false });
+        return true;
     }
 
     function showResults() {

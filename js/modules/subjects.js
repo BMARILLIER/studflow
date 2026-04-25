@@ -7,13 +7,27 @@
     var _dataLoaded = false;
     var _dataLoading = null;
 
-    // ==================== LAZY LOADER ====================
-    // Subject data modules are large (~1.3 MB total). Load on first access.
-    function ensureDataLoaded() {
-        if (_dataLoaded) return Promise.resolve();
-        if (_dataLoading) return _dataLoading;
+    // ==================== EXAM LEVEL ====================
+    function getExamLevel() {
+        var profile = window.StudFlow.storage ? window.StudFlow.storage.getUserProfile() : null;
+        if (profile && profile.identity && profile.identity.examLevel) return profile.identity.examLevel;
+        // Derive from class if examLevel not explicitly set
+        if (profile && profile.identity && profile.identity.class === '3eme') return 'brevet';
+        return 'bac';
+    }
 
-        _dataLoading = Promise.all([
+    // ==================== LAZY LOADER ====================
+    // Subject data modules are large. Load on first access based on exam level.
+    var _bacLoaded = false;
+    var _bacLoading = null;
+    var _brevetLoaded = false;
+    var _brevetLoading = null;
+
+    function ensureBacDataLoaded() {
+        if (_bacLoaded) return Promise.resolve();
+        if (_bacLoading) return _bacLoading;
+
+        _bacLoading = Promise.all([
             import('./subjectData/philo.js'),
             import('./subjectData/histgeo.js'),
             import('./subjectData/maths.js'),
@@ -32,21 +46,60 @@
             import('./subjectData/nsi.js'),
             import('./subjectData/hlp.js'),
             import('./subjectData/emc.js')
-        ].map(function(p) { return p.catch(function(err) { console.error('[Subjects] Load failed:', err); }); }))
+        ].map(function(p) { return p.catch(function(err) { console.error('[Subjects] Bac load failed:', err); }); }))
         .then(function() {
-            _dataLoaded = true;
-            _dataLoading = null;
+            _bacLoaded = true;
+            _bacLoading = null;
         });
+
+        return _bacLoading;
+    }
+
+    function ensureBrevetDataLoaded() {
+        if (_brevetLoaded) return Promise.resolve();
+        if (_brevetLoading) return _brevetLoading;
+
+        _brevetLoading = Promise.all([
+            import('./subjectData/brevet_francais.js'),
+            import('./subjectData/brevet_maths.js'),
+            import('./subjectData/brevet_histgeo.js'),
+            import('./subjectData/brevet_sciences.js'),
+            import('./subjectData/brevet_emc.js')
+        ].map(function(p) { return p.catch(function(err) { console.error('[Subjects] Brevet load failed:', err); }); }))
+        .then(function() {
+            _brevetLoaded = true;
+            _brevetLoading = null;
+        });
+
+        return _brevetLoading;
+    }
+
+    function ensureDataLoaded() {
+        if (_dataLoaded) return Promise.resolve();
+        if (_dataLoading) return _dataLoading;
+
+        var level = getExamLevel();
+        if (level === 'brevet') {
+            _dataLoading = ensureBrevetDataLoaded().then(function() {
+                _dataLoaded = true;
+                _dataLoading = null;
+            });
+        } else {
+            _dataLoading = ensureBacDataLoaded().then(function() {
+                _dataLoaded = true;
+                _dataLoading = null;
+            });
+        }
 
         return _dataLoading;
     }
 
     // ==================== SECTION INTROS ====================
     var SECTION_INTROS = {
-        heavy_fc: "Ce chapitre contient {fc_count} concepts cles. Maitrise-les et tu gagnes des points faciles au Bac.",
+        heavy_fc: "Ce chapitre contient {fc_count} concepts cles. Maitrise-les et tu gagnes des points faciles au {exam}.",
         heavy_quiz: "Ici c'est l'entrainement. {quiz_count} questions pour tester tes connaissances.",
         balanced: "{fc_count} fiches + {quiz_count} quiz. Apprends d'abord, teste-toi ensuite.",
-        small: "Petit chapitre mais essentiel. Chaque point compte au Bac."
+        small: "Petit chapitre mais essentiel. Chaque point compte au {exam}."
     };
 
     var STUDY_METHODS = [
@@ -57,7 +110,7 @@
     ];
 
     var MOTIVATION_HOOKS = [
-        "Ce sujet tombe regulierement au Bac. Le maitriser = points quasi garantis.",
+        "Ce sujet tombe regulierement a l'examen. Le maitriser = points quasi garantis.",
         "80% des eleves ne maitrisent pas cette partie. Toi, tu vas faire la difference.",
         "C'est le genre de chapitre ou 15 min de revision changent tout.",
         "Les correcteurs adorent quand tu maitrises ce sujet. Ca montre que tu as compris.",
@@ -81,9 +134,11 @@
 
     function buildIntroHTML(subjectId, sectionIndex, fcCount, qzCount) {
         var introType = getIntroType(fcCount, qzCount);
+        var examLabel = getExamLevel() === 'brevet' ? 'Brevet' : 'Bac';
         var introText = SECTION_INTROS[introType]
             .replace('{fc_count}', fcCount)
-            .replace('{quiz_count}', qzCount);
+            .replace('{quiz_count}', qzCount)
+            .replace('{exam}', examLabel);
 
         var hookIdx = (subjectId + sectionIndex).toString().length % MOTIVATION_HOOKS.length;
         var methodIdx = (subjectId.length + sectionIndex) % STUDY_METHODS.length;
@@ -115,12 +170,31 @@
         }
     }
 
+    // Returns true if the current exam level is allowed to access this subject.
+    function _canAccess(subj) {
+        if (!subj) return false;
+        var level = getExamLevel();
+        if (subj.exam) return subj.exam === level;
+        // Subjects without exam tag are legacy bac subjects
+        return level === 'bac';
+    }
+
     function getAll() {
+        return SUBJECT_ORDER.map(function(id) { return registry[id]; }).filter(_canAccess);
+    }
+
+    // Get all subjects regardless of exam level (for admin/debug)
+    function getAllUnfiltered() {
         return SUBJECT_ORDER.map(function(id) { return registry[id]; }).filter(Boolean);
     }
 
     function getById(id) {
-        return registry[id] || null;
+        var subj = registry[id] || null;
+        if (subj && !_canAccess(subj)) {
+            console.warn('[subjects] access denied:', id, 'exam=', subj.exam, 'user=', getExamLevel());
+            return null;
+        }
+        return subj;
     }
 
     // ==================== QUERY API (flashcards / quiz) ====================
@@ -162,19 +236,50 @@
         return { subjectId: subjectId, sectionId: sectionId };
     }
 
-    function getFlashcardsByDeck(deckId) {
+    // Conserve les champs optionnels (level, pitfalls) pour que les cartes
+    // marquees les portent dans la session. Les cartes sans ces champs
+    // continuent de fonctionner comme avant.
+    // Heuristique de niveau quand le champ `level` est absent :
+    // position dans la section (1/3 facile, 1/3 moyen, 1/3 difficile).
+    // Les cartes deja taggees explicitement gardent leur niveau.
+    function _inferLevel(index, total) {
+        if (!total || total <= 0) return 'moyen';
+        var pct = index / total;
+        if (pct < 1/3) return 'facile';
+        if (pct < 2/3) return 'moyen';
+        return 'difficile';
+    }
+
+    function _projectCard(f, index, total) {
+        var c = { question: f.question, answer: f.answer, mastered: false };
+        c.level = f.level || _inferLevel(index || 0, total || 0);
+        if (f.pitfalls && f.pitfalls.length) c.pitfalls = f.pitfalls;
+        return c;
+    }
+
+    function _effectiveLevel(f, index, total) {
+        return f.level || _inferLevel(index, total);
+    }
+
+    function _matchLevel(f, lvl, index, total) {
+        if (!lvl || lvl === 'all') return true;
+        return _effectiveLevel(f, index, total) === lvl;
+    }
+
+    function getFlashcardsByDeck(deckId, levelFilter) {
         var p = parseDeckId(deckId);
         var subj = registry[p.subjectId];
         if (!subj) return [];
+        if (!_canAccess(subj)) return [];
 
-        // No section specified → return all flashcards for this subject
         if (!p.sectionId) {
             var all = [];
             for (var i = 0; i < subj.sections.length; i++) {
                 var fc = subj.sections[i].flashcards;
-                if (fc) {
-                    for (var k = 0; k < fc.length; k++) {
-                        all.push({ question: fc[k].question, answer: fc[k].answer, mastered: false });
+                if (!fc) continue;
+                for (var k = 0; k < fc.length; k++) {
+                    if (_matchLevel(fc[k], levelFilter, k, fc.length)) {
+                        all.push(_projectCard(fc[k], k, fc.length));
                     }
                 }
             }
@@ -182,19 +287,61 @@
         }
 
         var section = null;
-        for (var i = 0; i < subj.sections.length; i++) {
-            if (subj.sections[i].id === p.sectionId) { section = subj.sections[i]; break; }
+        for (var si = 0; si < subj.sections.length; si++) {
+            if (subj.sections[si].id === p.sectionId) { section = subj.sections[si]; break; }
         }
         if (!section || !section.flashcards) return [];
-        return section.flashcards.map(function(f) {
-            return { question: f.question, answer: f.answer, mastered: false };
-        });
+        var out = [];
+        var total = section.flashcards.length;
+        for (var ci = 0; ci < section.flashcards.length; ci++) {
+            if (_matchLevel(section.flashcards[ci], levelFilter, ci, total)) {
+                out.push(_projectCard(section.flashcards[ci], ci, total));
+            }
+        }
+        return out;
+    }
+
+    // Retourne le mini-sujet d'une section (ou null).
+    function getMiniSujet(deckId) {
+        var p = parseDeckId(deckId);
+        var subj = registry[p.subjectId];
+        if (!subj || !_canAccess(subj) || !p.sectionId) return null;
+        for (var i = 0; i < subj.sections.length; i++) {
+            if (subj.sections[i].id === p.sectionId) {
+                var s = subj.sections[i];
+                return s.miniSujet || null;
+            }
+        }
+        return null;
+    }
+
+    // Liste tous les decks qui ont un mini-sujet (pour lister au user).
+    function getAllMiniSujets() {
+        var out = [];
+        for (var i = 0; i < SUBJECT_ORDER.length; i++) {
+            var subj = registry[SUBJECT_ORDER[i]];
+            if (!subj || !_canAccess(subj) || !subj.sections) continue;
+            for (var j = 0; j < subj.sections.length; j++) {
+                var s = subj.sections[j];
+                if (s.miniSujet) {
+                    out.push({
+                        deckId: 'subj-' + subj.id + '-' + s.id,
+                        subjectName: subj.name,
+                        subjectIcon: subj.icon,
+                        sectionTitle: s.title,
+                        miniSujet: s.miniSujet
+                    });
+                }
+            }
+        }
+        return out;
     }
 
     function getQuizByDeck(deckId) {
         var p = parseDeckId(deckId);
         var subj = registry[p.subjectId];
         if (!subj) return [];
+        if (!_canAccess(subj)) return [];
 
         // No section specified → return all quiz for this subject
         if (!p.sectionId) {
@@ -268,6 +415,9 @@
         ensureDataLoaded().then(function() { renderHub(); });
     }
 
+    // Subjects with limited content — show "en construction" badge
+    var THIN_SUBJECTS = ['nsi', 'hlp', 'hggsp'];
+
     function renderSubjectCard(subj) {
         var prog = getProgress(subj.id);
         var visitedCount = prog.visited.length;
@@ -284,6 +434,12 @@
         var isLocked = subj.id !== 'francais' && window.StudFlow.premium && !window.StudFlow.premium.hasAccess('matieres_premium');
         var lockClass = isLocked ? ' prem-lock-overlay locked' : '';
 
+        // "En construction" badge for thin subjects
+        var thinBadge = '';
+        if (THIN_SUBJECTS.indexOf(subj.id) !== -1) {
+            thinBadge = '<span class="bac-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;font-size:0.7rem;">En construction</span>';
+        }
+
         return '<div class="bac-section-card' + lockClass + '" data-action="subjects.showSubject" data-param="' + subj.id + '">'
             + '<div class="bac-section-icon" style="background: var(--' + subj.color + ')">' + subj.icon + '</div>'
             + '<div class="bac-section-info">'
@@ -293,6 +449,7 @@
             + '<span class="matieres-progress-text">' + visitedCount + '/' + totalSections + '</span>'
             + '</div>'
             + '<div class="bac-section-badges">'
+            + thinBadge
             + '<span class="bac-badge">' + fcCount + ' flashcards</span>'
             + '<span class="bac-badge">' + qzCount + ' quiz</span>'
             + '</div>'
@@ -310,10 +467,11 @@
         var picker = window.StudFlow.subjectPicker;
         var hasFilter = picker && picker.isCompleted();
 
+        var examLabel = getExamLevel() === 'brevet' ? 'Brevet' : 'Bac';
         var html = '<button class="back-btn" data-action="screen:dashboard">\u2190 Retour</button>'
             + '<div class="bac-header">'
             + '<h2>Matieres</h2>'
-            + '<p>Tout pour reussir le bac — choisis ta matiere</p>'
+            + '<p>Tout pour reussir le ' + examLabel.toLowerCase() + ' — choisis ta matiere</p>'
             + '</div>';
 
         if (hasFilter) {
@@ -597,10 +755,13 @@
         register: register,
         getAll: getAll,
         getById: getById,
+        getExamLevel: getExamLevel,
         getAllFlashcards: getAllFlashcards,
         getAllQuiz: getAllQuiz,
         getFlashcardsByDeck: getFlashcardsByDeck,
         getQuizByDeck: getQuizByDeck,
+        getMiniSujet: getMiniSujet,
+        getAllMiniSujets: getAllMiniSujets,
         showHub: showHub,
         renderHub: renderHub,
         renderMain: renderMain,
@@ -608,7 +769,12 @@
         openSection: openSection,
         getProgress: getProgress,
         markVisited: markVisited,
-        preload: ensureDataLoaded
+        preload: ensureDataLoaded,
+        reloadForExamLevel: function() {
+            _dataLoaded = false;
+            _dataLoading = null;
+            return ensureDataLoaded();
+        }
     };
 
 })();

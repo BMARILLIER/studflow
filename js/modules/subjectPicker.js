@@ -1,8 +1,9 @@
-// subjectPicker.js — Choix des specialites Bac General
+// subjectPicker.js — Choix des specialites Bac General / Matieres Brevet
 (function() {
 
     var STORAGE_KEY = 'specialties';
 
+    // ==================== BAC CONFIG ====================
     var TRONC_COMMUN = ['philo', 'histgeo', 'anglais'];
 
     var SPECIALTIES = [
@@ -13,6 +14,21 @@
     ];
 
     var MAX_SPECIALTIES = 2;
+
+    // ==================== BREVET CONFIG ====================
+    var BREVET_SUBJECTS = [
+        'brevet_francais', 'brevet_maths', 'brevet_histgeo',
+        'brevet_sciences', 'brevet_emc'
+    ];
+
+    function getExamLevel() {
+        if (window.StudFlow.subjects && window.StudFlow.subjects.getExamLevel) {
+            return window.StudFlow.subjects.getExamLevel();
+        }
+        var profile = window.StudFlow.storage ? window.StudFlow.storage.getUserProfile() : null;
+        if (profile && profile.identity && profile.identity.class === '3eme') return 'brevet';
+        return 'bac';
+    }
 
     // ==================== PERSISTENCE ====================
     function loadData() {
@@ -41,14 +57,20 @@
     }
 
     function getTroncCommun() {
+        if (getExamLevel() === 'brevet') return BREVET_SUBJECTS.slice();
         return TRONC_COMMUN.slice();
     }
 
     function getAllUserSubjects() {
+        if (getExamLevel() === 'brevet') return BREVET_SUBJECTS.slice();
         return TRONC_COMMUN.concat(getSpecialties());
     }
 
     function isSubjectActive(subjectId) {
+        // Brevet: all brevet subjects are always active
+        if (getExamLevel() === 'brevet') {
+            return BREVET_SUBJECTS.indexOf(subjectId) !== -1;
+        }
         // Bac francais is always available
         if (subjectId === 'francais') return true;
         // If picker not completed, all subjects are active
@@ -62,6 +84,15 @@
 
     // ==================== UI ====================
     function show() {
+        // Brevet: no specialty picker needed, auto-complete and go to dashboard
+        if (getExamLevel() === 'brevet') {
+            if (!isCompleted()) {
+                save([]);
+            }
+            window.StudFlow.app.showScreen('dashboard');
+            if (window.StudFlow.app.updateDashboard) window.StudFlow.app.updateDashboard();
+            return;
+        }
         window.StudFlow.app.showScreen('subject-picker');
         render();
     }
@@ -170,6 +201,8 @@
     // ==================== DASHBOARD CTA ====================
     function renderDashboardCTA() {
         if (isCompleted()) return '';
+        // Brevet users don't need specialty picker
+        if (getExamLevel() === 'brevet') return '';
         return '<div class="dash-section dash-diag-cta" data-action="screen:subject-picker">'
             + '<div class="dash-diag-content">'
             + '<div class="dash-diag-icon">\uD83C\uDF93</div>'

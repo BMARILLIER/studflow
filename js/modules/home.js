@@ -54,8 +54,8 @@
     function renderHero() {
         return '<section class="landing-hero">'
             + '<div class="landing-hero-inner">'
-            + '<h1 class="landing-h1">Reussis ton bac<br><span>sans stress.</span></h1>'
-            + '<p class="landing-sub">Un coach qui t\'aide a reviser, rester concentre et gerer la pression.</p>'
+            + '<h1 class="landing-h1">Reussis ton brevet & ton bac<br><span>sans stress.</span></h1>'
+            + '<p class="landing-sub">Un coach qui t\'aide a reviser, rester concentre et gerer la pression. College ou lycee, on s\'adapte.</p>'
             + '<div class="landing-hero-actions">'
             + '<button class="landing-btn-primary" data-action="home.goToDiagnostic">Commencer gratuitement</button>'
             + '<button class="landing-btn-ghost" data-action="home.goToDashboard">J\'ai deja un compte</button>'
@@ -98,7 +98,7 @@
             + '<div class="landing-step">'
             + '<div class="landing-step-icon">\uD83D\uDCA8</div>'
             + '<h3>Anti-stress integre</h3>'
-            + '<p>Respiration guidee, mode Jour du Bac, messages rassurants. Pour reviser sans pression.</p>'
+            + '<p>Respiration guidee, mode Jour d\'examen, messages rassurants. Pour reviser sans pression.</p>'
             + '</div>'
             + '</div>'
             + '</section>';
@@ -191,7 +191,7 @@
         return '<section class="landing-section landing-cta-final home-animate">'
             + '<div class="landing-cta-box">'
             + '<h2>Commence aujourd\'hui.</h2>'
-            + '<p>10 min/jour. Flashcards, quiz, coach. Ton Bac, a ton rythme.</p>'
+            + '<p>10 min/jour. Flashcards, quiz, coach. Ton examen, a ton rythme.</p>'
             + '<button class="landing-btn-primary large" data-action="home.goToDiagnostic">Acceder gratuitement</button>'
             + '<p class="landing-cta-sub">Gratuit \u2022 Sans inscription \u2022 100% local</p>'
             + '</div>'

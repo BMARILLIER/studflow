@@ -196,6 +196,19 @@
         return count;
     }
 
+    // Cartes "connues" = au moins une bonne reponse consecutive (reps >= 1).
+    // Retourne un objet {id: true} pour lookup rapide.
+    function getMasteredCardIds() {
+        var state = loadState();
+        var out = {};
+        for (var id in state.cards) {
+            if (state.cards.hasOwnProperty(id) && state.cards[id].reps >= 1) {
+                out[id] = true;
+            }
+        }
+        return out;
+    }
+
     function getSessionStats() {
         var state = loadState();
         return state.stats;
@@ -244,6 +257,7 @@
         getDueCount: getDueCount,
         getRetentionRate: getRetentionRate,
         getMasteredCount: getMasteredCount,
+        getMasteredCardIds: getMasteredCardIds,
         getSessionStats: getSessionStats,
         renderDashboardBlock: renderDashboardBlock,
         startSession: startSession

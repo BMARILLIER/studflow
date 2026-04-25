@@ -7,6 +7,22 @@
     var PREFS_KEY = 'studflow_notif_prefs';
     var ACTIVE_HOURS_KEY = 'studflow_active_hours';
     var DEFAULT_REMIND_HOUR = 18; // fallback 18h
+    var LAST_NOTIF_DAY_KEY = 'studflow_notif_last_day';
+
+    var _reminderTimer = null;
+    var _streakTimer = null;
+
+    // ==================== DAILY CAP (1 notif max / jour Paris) ====================
+    function parisToday() {
+        var p = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
+        return p.getFullYear() + '-' + String(p.getMonth() + 1).padStart(2, '0') + '-' + String(p.getDate()).padStart(2, '0');
+    }
+    function hasNotifiedToday() {
+        return localStorage.getItem(LAST_NOTIF_DAY_KEY) === parisToday();
+    }
+    function markNotifiedToday() {
+        try { localStorage.setItem(LAST_NOTIF_DAY_KEY, parisToday()); } catch (e) {}
+    }
 
     // ==================== PREFERENCES ====================
     function getDefaultPrefs() {
@@ -15,8 +31,24 @@
             streakAlerts: true,
             revisionAlerts: true,
             quietStart: 23,
-            quietEnd: 7
+            quietEnd: 7,
+            preferredHour: null // null = heure auto (smart), sinon 0-23
         };
+    }
+
+    function getEffectiveRemindHour() {
+        var prefs = getPreferences();
+        if (typeof prefs.preferredHour === 'number' && prefs.preferredHour >= 0 && prefs.preferredHour <= 23) {
+            return prefs.preferredHour;
+        }
+        return getSmartRemindHour();
+    }
+
+    function setPreferredHour(hour) {
+        if (hour !== null && (typeof hour !== 'number' || hour < 0 || hour > 23)) return false;
+        setPreferences({ preferredHour: hour });
+        if (isEnabled()) scheduleDailyReminder();
+        return true;
     }
 
     function getPreferences() {
@@ -210,6 +242,7 @@
     // ==================== STREAK DANGER ====================
     function checkStreakDanger() {
         if (!isEnabled()) return;
+        if (hasNotifiedToday()) return;
         var prefs = getPreferences();
         if (!prefs.streakAlerts) return;
         if (isInQuietHours()) return;
@@ -228,12 +261,13 @@
         // Urgent notification
         if (Notification.permission === 'granted') {
             new Notification('StudFlow', {
-                body: 'Ta serie de ' + streakInfo.streak + ' jours va mourir ! Plus que quelques heures \u26A0\uFE0F',
+                body: 'Ta serie de ' + streakInfo.streak + ' jours : une petite session si tu en as envie.',
                 icon: '/icons/icon-192.png',
                 badge: '/icons/icon-192.png',
-                tag: 'studflow-streak-danger',
-                renotify: true
+                tag: 'studflow-daily',
+                renotify: false
             });
+            markNotifiedToday();
         }
     }
 
@@ -341,22 +375,18 @@
 
     // ==================== SCHEDULE ====================
     function scheduleDailyReminder() {
+        if (_reminderTimer) { clearTimeout(_reminderTimer); _reminderTimer = null; }
         if (!isEnabled()) return;
 
-        var remindHour = getSmartRemindHour();
-
-        // Calculate ms until next reminder time
+        var remindHour = getEffectiveRemindHour();
         var now = new Date();
         var next = new Date();
         next.setHours(remindHour, 0, 0, 0);
-        if (now >= next) {
-            next.setDate(next.getDate() + 1);
-        }
+        if (now >= next) next.setDate(next.getDate() + 1);
         var ms = next.getTime() - now.getTime();
 
-        setTimeout(function() {
+        _reminderTimer = setTimeout(function() {
             showReminder();
-            // Re-schedule for next day
             scheduleDailyReminder();
         }, ms);
     }
@@ -364,6 +394,7 @@
     function showReminder() {
         if (!isEnabled() || Notification.permission !== 'granted') return;
         if (isInQuietHours()) return;
+        if (hasNotifiedToday()) return; // cap 1/jour
 
         // Don't show if user was active in the last 2 hours
         var lastActive = localStorage.getItem('studflow_last_active');
@@ -379,8 +410,9 @@
             icon: '/icons/icon-192.png',
             badge: '/icons/icon-192.png',
             tag: 'studflow-daily',
-            renotify: true
+            renotify: false
         });
+        markNotifiedToday();
     }
 
     // ==================== HELPERS ====================
@@ -417,6 +449,59 @@
         }
     });
 
+    // ==================== SETTINGS UI ====================
+    function renderSettings() {
+        var slot = document.getElementById('notif-settings-content');
+        if (!slot) return;
+
+        var prefs = getPreferences();
+        var enabled = isEnabled();
+        var supported = 'Notification' in window;
+        var blocked = supported && Notification.permission === 'denied';
+        var hourVal = (typeof prefs.preferredHour === 'number') ? prefs.preferredHour : '';
+
+        var hoursOpts = '<option value="">Automatique (selon tes horaires)</option>';
+        for (var h = 6; h <= 23; h++) {
+            hoursOpts += '<option value="' + h + '"' + (hourVal === h ? ' selected' : '') + '>' + h + 'h</option>';
+        }
+
+        var status = !supported
+            ? '<p style="color:var(--text-muted);font-size:0.82rem;">Notifications non supportees par ce navigateur.</p>'
+            : blocked
+                ? '<p style="color:var(--text-muted);font-size:0.82rem;">Notifications bloquees dans les parametres du navigateur.</p>'
+                : '';
+
+        slot.innerHTML = status
+            + '<label class="settings-toggle-row">'
+            +   '<span>🔔 Rappel quotidien</span>'
+            +   '<input type="checkbox" id="notif-enabled-toggle"' + (enabled ? ' checked' : '') + (supported && !blocked ? '' : ' disabled') + '>'
+            + '</label>'
+            + '<p style="color:var(--text-muted);font-size:0.78rem;margin:4px 0 12px;">1 notification max par jour. Tu peux desactiver quand tu veux.</p>'
+            + '<label style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:0.9rem;margin-top:8px;">'
+            +   '<span>Heure du rappel</span>'
+            +   '<select id="notif-hour-select" style="padding:6px 10px;border-radius:8px;background:var(--bg-glass);color:inherit;border:1px solid rgba(255,255,255,0.12);min-width:180px;">' + hoursOpts + '</select>'
+            + '</label>';
+
+        var toggle = document.getElementById('notif-enabled-toggle');
+        if (toggle) {
+            toggle.addEventListener('change', function(e) {
+                if (e.target.checked) {
+                    if (Notification.permission === 'granted') enable();
+                    else askPermission();
+                } else {
+                    disable();
+                }
+            });
+        }
+        var sel = document.getElementById('notif-hour-select');
+        if (sel) {
+            sel.addEventListener('change', function(e) {
+                var v = e.target.value;
+                setPreferredHour(v === '' ? null : parseInt(v, 10));
+            });
+        }
+    }
+
     // ==================== EXPOSE ====================
     window.StudFlow = window.StudFlow || {};
     window.StudFlow.notifications = {
@@ -429,6 +514,9 @@
         isEnabled: isEnabled,
         getPreferences: getPreferences,
         setPreferences: setPreferences,
+        setPreferredHour: setPreferredHour,
+        getEffectiveRemindHour: getEffectiveRemindHour,
+        renderSettings: renderSettings,
         checkStreakDanger: checkStreakDanger
     };
 })();

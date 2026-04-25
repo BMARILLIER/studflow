@@ -146,8 +146,8 @@
             + '<div class="ob-logo-icon"></div>'
             + '<span class="ob-logo-text">Stud<span>Flow</span></span>'
             + '</div>'
-            + '<h1 class="ob-title">Reussis ton bac<br><span>sans stress.</span></h1>'
-            + '<p class="ob-subtitle">StudFlow te guide chaque jour avec un coaching personnalise, des methodes simples et zero pression.</p>'
+            + '<h1 class="ob-title">Reussis tes examens<br><span>sans stress.</span></h1>'
+            + '<p class="ob-subtitle">StudFlow te guide chaque jour avec un coaching personnalise, des methodes simples et zero pression. Brevet ou Bac, on s\'adapte a toi.</p>'
             + '<div class="ob-features">'
             + '<div class="ob-feature"><span>🎯</span> Diagnostic personnalise</div>'
             + '<div class="ob-feature"><span>🧠</span> Methodes qui marchent</div>'
@@ -232,7 +232,7 @@
         return vals.length > 0 ? vals[0] : '';
     }
 
-    var SUBJECTS_LIST = [
+    var SUBJECTS_LIST_BAC = [
         { id: 'maths', label: 'Maths' },
         { id: 'francais', label: 'Francais' },
         { id: 'philo', label: 'Philo' },
@@ -243,9 +243,28 @@
         { id: 'anglais', label: 'Anglais' }
     ];
 
+    var SUBJECTS_LIST_BREVET = [
+        { id: 'maths', label: 'Maths' },
+        { id: 'francais', label: 'Francais' },
+        { id: 'histgeo', label: 'Hist-Geo' },
+        { id: 'physique', label: 'Physique-Chimie' },
+        { id: 'svt', label: 'SVT' },
+        { id: 'emc', label: 'EMC' },
+        { id: 'anglais', label: 'Anglais' },
+        { id: 'techno', label: 'Technologie' }
+    ];
+
+    var SUBJECTS_LIST = SUBJECTS_LIST_BAC;
+
+    function getSubjectsList() {
+        var cls = _obData.class || 'terminale';
+        return cls === '3eme' ? SUBJECTS_LIST_BREVET : SUBJECTS_LIST_BAC;
+    }
+
     function subjectChips(containerId, multi) {
+        var list = getSubjectsList();
         return '<div class="ob-chips' + (multi ? ' ob-multi' : '') + '" id="' + containerId + '">'
-            + SUBJECTS_LIST.map(function(s) {
+            + list.map(function(s) {
                 return '<button class="ob-chip" data-val="' + s.id + '">' + s.label + '</button>';
             }).join('')
             + '</div>';
@@ -272,10 +291,13 @@
     function renderOB_Strong(container) {
         _obData.class = getSelectedOne('ob-class') || 'terminale';
 
+        var examLabel = _obData.class === '3eme' ? 'brevet' : 'bac';
+
         container.innerHTML = '<div class="ob-step ob-prefs">'
             + renderProgressDots(2, 7)
             + '<h2 class="ob-heading">Tes points forts</h2>'
             + '<p class="ob-text">Dans quelles matieres tu te sens a l\'aise ?</p>'
+            + (_obData.class === '3eme' ? '<p class="ob-reassure" style="color:var(--accent);">Mode Brevet active !</p>' : '')
             + subjectChips('ob-strong', true)
             + '<p class="ob-reassure">Choisis ce qui te semble le plus naturel.</p>'
             + '<button class="ob-btn-primary" data-action="onboarding.nextOB" data-param="3">Continuer</button>'
@@ -446,6 +468,7 @@
         profile.optional = profile.optional || {};
 
         profile.identity.class = _obData.class || 'terminale';
+        profile.identity.examLevel = (_obData.class === '3eme') ? 'brevet' : 'bac';
         profile.academic.strongSubjects = _obData.strongSubjects || [];
         profile.academic.weakSubjects = _obData.weakSubjects || [];
         profile.behavior.stressLevel = _obData.stress || 'medium';

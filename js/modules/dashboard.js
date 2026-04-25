@@ -9,12 +9,12 @@
         "Pas besoin d'etre parfait. Juste regulier. Et t'es la.",
         "Y'a des milliers d'eleves qui revisent en meme temps que toi. T'es pas seul(e).",
         "La motivation c'est un mythe. L'habitude c'est la vraie arme.",
-        "Chaque carte que tu maitrises = un neurone de plus pret pour le Bac.",
+        "Chaque carte que tu maitrises = un neurone de plus pret pour l'examen.",
         "T'as le droit de faire une pause. Revenir frais c'est pas tricher.",
         "Les premiers de la classe? Ils sont juste reguliers. Comme toi.",
         "Aujourd'hui tu plantes. En juin tu recoltes.",
         "10 min > 0 min. Toujours.",
-        "Le Bac c'est un marathon, pas un sprint. Et t'es en train de courir.",
+        "L'examen c'est un marathon, pas un sprint. Et t'es en train de courir.",
         "Fun fact: tu retiens 80% de plus quand tu revises le soir. Bien joue.",
         "Tu geres. Un module a la fois.",
         "Le plus dur c'etait d'ouvrir l'appli. C'est fait."
@@ -215,6 +215,8 @@
         }
     }
 
+    // switchExam removed: track is locked per user via trackPicker + beta_testers.track.
+
     // ==================== HELPERS ====================
     function getProfile() {
         return window.StudFlow.storage.getUserProfile();
@@ -385,11 +387,52 @@
             + '<div id="dash-search-results" class="dash-search-results"></div>'
             + '</div>';
 
+        // Exam-level toggle removed: track is now locked per user (see trackPicker).
+
         // ===== ABOVE THE FOLD : 3 blocs essentiels =====
+        var dailyChallengeAboveHTML = window.StudFlow.dailyChallenges
+            ? window.StudFlow.dailyChallenges.renderCard()
+            : renderDailyChallenge(gamStats);
+
+        var rituelHTML = (window.StudFlow.rituelJour && window.StudFlow.rituelJour.renderCard)
+            ? window.StudFlow.rituelJour.renderCard() : '';
+
+        var dailyPathHTML = (window.StudFlow.dailyPath && window.StudFlow.dailyPath.renderCard)
+            ? window.StudFlow.dailyPath.renderCard() : '';
+
+        var radarHTML = (window.StudFlow.radarMastery && window.StudFlow.radarMastery.renderCard)
+            ? window.StudFlow.radarMastery.renderCard() : '';
+
+        var focusWeaknessHTML = (window.StudFlow.focusWeakness && window.StudFlow.focusWeakness.renderCard)
+            ? window.StudFlow.focusWeakness.renderCard() : '';
+
+        // Mode confiance : petit bouton rassurant, visible seulement si cartes
+        // deja connues dispo (sinon masque pour ne pas frustrer)
+        var confidenceBtnHTML = '';
+        if (window.StudFlow.spacedRepetition && window.StudFlow.spacedRepetition.getMasteredCount
+            && window.StudFlow.spacedRepetition.getMasteredCount() >= 3) {
+            confidenceBtnHTML = '<div class="dash-section" style="padding:0;">'
+              + '<button data-action="flashcards.confidence" style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(129,140,248,0.3);background:linear-gradient(135deg,rgba(129,140,248,0.10),rgba(167,139,250,0.10));color:inherit;cursor:pointer;font:inherit;text-align:left;">'
+              +   '<span style="font-size:1.4rem;flex-shrink:0;">😌</span>'
+              +   '<span style="flex:1;min-width:0;">'
+              +     '<span style="display:block;font-weight:600;font-size:0.95rem;">Mode confiance</span>'
+              +     '<span style="display:block;color:var(--text-muted);font-size:0.78rem;margin-top:1px;">6 cartes deja connues, session courte</span>'
+              +   '</span>'
+              +   '<span style="color:var(--text-muted);font-size:1.1rem;flex-shrink:0;">›</span>'
+              + '</button>'
+              + '</div>';
+        }
+
         var aboveFold = ''
             + logoHTML
             + searchBarHTML
+            + rituelHTML                     // Bloc 0 : rituel du jour (habitude)
+            + dailyPathHTML                  // Bloc 0a : parcours guide
+            + confidenceBtnHTML              // Bloc 0b : mode confiance (optionnel)
+            + focusWeaknessHTML              // Bloc 0c : focus sur faiblesse #1 (si dispo)
+            + radarHTML                      // Bloc 0d : radar de maitrise
             + renderHeroBac(gamStats)       // Bloc 1 : streak + CTA session
+            + dailyChallengeAboveHTML        // Bloc 1b : defi du jour
             + renderDailyGauge()            // Bloc 2 : jauge quotidienne
             + renderStudyTimer()            // Bloc 2b : temps de révision
             + renderNextStep()              // Bloc 2c : prochaine étape guidée
@@ -397,14 +440,12 @@
 
         // ===== BELOW : contenu secondaire caché sous "Voir plus" =====
         var profileWidget = renderStudentProfile();
-        var dailyChallengeHTML = renderDailyChallenge(gamStats);
 
         var weeklyHTML = renderWeeklySummary();
 
         var belowFold = ''
             + '<div class="dash-more-content" id="dash-more-content" style="display:none;">'
             + weeklyHTML
-            + dailyChallengeHTML
             + profileWidget
             + renderHeroActions()
             + renderSubjectStrip()
@@ -692,13 +733,25 @@
 
     // ==================== HERO BAC (countdown + CTA + stats) ====================
     function renderHeroBac(gamStats) {
-        // Countdown
+        // Detect exam level
+        var examLevel = (window.StudFlow.subjects && window.StudFlow.subjects.getExamLevel) ? window.StudFlow.subjects.getExamLevel() : 'bac';
+        var examLabel = examLevel === 'brevet' ? 'Brevet' : 'Bac';
+
+        // Countdown - Brevet: June 26 2026, Bac: June 18
         var now = new Date();
-        var bacDate = new Date(now.getFullYear(), 5, 18); // June 18
-        if (now > new Date(now.getFullYear(), 6, 5)) {
-            bacDate = new Date(now.getFullYear() + 1, 5, 18);
+        var examDate;
+        if (examLevel === 'brevet') {
+            examDate = new Date(now.getFullYear(), 5, 26); // June 26
+            if (now > new Date(now.getFullYear(), 6, 5)) {
+                examDate = new Date(now.getFullYear() + 1, 5, 26);
+            }
+        } else {
+            examDate = new Date(now.getFullYear(), 5, 18); // June 18
+            if (now > new Date(now.getFullYear(), 6, 5)) {
+                examDate = new Date(now.getFullYear() + 1, 5, 18);
+            }
         }
-        var days = Math.max(0, Math.ceil((bacDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
+        var days = Math.max(0, Math.ceil((examDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
 
         // Urgency
         var urgencyClass = 'hero-calm';
@@ -711,7 +764,7 @@
             msg = '10 min maintenant = des points en plus en juin.';
         } else if (days <= 90) {
             urgencyClass = 'hero-soon';
-            msg = 'Le Bac approche. Chaque jour compte.';
+            msg = 'Le ' + examLabel + ' approche. Chaque jour compte.';
         }
 
         // Stats
@@ -732,26 +785,81 @@
         var ctaLabel = dueCount > 0 ? 'Reviser ' + dueCount + ' carte' + (dueCount > 1 ? 's' : '') : 'Commencer ma session';
 
         // Streak hero (gros, central, émotionnel)
+        var jokers = (window.StudFlow.gamification && window.StudFlow.gamification.getStreakFreezes)
+            ? window.StudFlow.gamification.getStreakFreezes() : 0;
+        var jokerLine = jokers > 0
+            ? '<span class="hero-streak-jokers" style="display:block;margin-top:4px;font-size:0.78rem;color:var(--text-muted);font-weight:500;">❄️ ' + jokers + ' joker' + (jokers > 1 ? 's' : '') + ' en réserve</span>'
+            : '';
         var streakHTML = '';
         if (streak > 0) {
             var streakSize = streak >= 7 ? 'streak-fire' : (streak >= 3 ? 'streak-warm' : '');
             streakHTML = '<div class="hero-streak ' + streakSize + '">'
                 + '<span class="hero-streak-flame">\uD83D\uDD25</span>'
                 + '<span class="hero-streak-num">' + streak + '</span>'
-                + '<span class="hero-streak-label">' + streak + ' jour' + (streak > 1 ? 's' : '') + ' de suite</span>'
+                + '<span class="hero-streak-label">' + streak + ' jour' + (streak > 1 ? 's' : '') + ' de suite' + jokerLine + '</span>'
                 + '</div>';
         } else {
             streakHTML = '<div class="hero-streak hero-streak-zero">'
                 + '<span class="hero-streak-flame">\uD83D\uDD25</span>'
-                + '<span class="hero-streak-label">Lance ta premi\u00E8re session\u00A0!</span>'
+                + '<span class="hero-streak-label">Lance ta premi\u00E8re session\u00A0!' + jokerLine + '</span>'
                 + '</div>';
+        }
+
+        // ===== STREAK DANGER INDICATOR =====
+        var streakDangerHTML = '';
+        if (streak > 0) {
+            var todayKey = new Date().toDateString();
+            var dailyData = window.StudFlow.storage.loadData('dailyDashboard', { date: null });
+            var hasSessionToday = dailyData.date === todayKey && (dailyData.objectivesCompleted || []).length > 0;
+
+            // Also check daily mission as fallback
+            if (!hasSessionToday) {
+                var dmState = window.StudFlow.storage.loadData('studflow_daily_mission', null);
+                if (dmState && dmState.completed && dmState.date === todayKey) {
+                    hasSessionToday = true;
+                }
+            }
+
+            if (!hasSessionToday) {
+                var nowHour = new Date().getHours();
+                var nowMin = new Date().getMinutes();
+                var dangerCSS = '<style>'
+                    + '.streak-warning{background:linear-gradient(135deg,#fef3cd,#fff3cd);border:1px solid #ffc107;border-radius:12px;padding:10px 14px;margin:8px 0;text-align:center;font-size:0.9em;animation:streakPulseSlow 3s ease-in-out infinite}'
+                    + '.streak-danger{background:linear-gradient(135deg,#ffe0cc,#ffd6b3);border:1px solid #ff8c00;border-radius:12px;padding:10px 14px;margin:8px 0;text-align:center;font-size:0.9em;animation:streakPulseMed 2s ease-in-out infinite}'
+                    + '.streak-critical{background:linear-gradient(135deg,#ffcccc,#ff9999);border:1px solid #ff3333;border-radius:12px;padding:12px 14px;margin:8px 0;text-align:center;font-size:0.95em;font-weight:600;animation:streakPulseFast 1s ease-in-out infinite}'
+                    + '@keyframes streakPulseSlow{0%,100%{opacity:1}50%{opacity:0.85}}'
+                    + '@keyframes streakPulseMed{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.9;transform:scale(1.01)}}'
+                    + '@keyframes streakPulseFast{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.85;transform:scale(1.02)}}'
+                    + '</style>';
+
+                if (nowHour >= 23) {
+                    var minsLeft = 60 - nowMin;
+                    streakDangerHTML = dangerCSS
+                        + '<div class="streak-critical">'
+                        + '\uD83D\uDC80 DERNIERE CHANCE ! Ta serie de ' + streak + 'j expire dans ' + minsLeft + ' minute' + (minsLeft > 1 ? 's' : '') + ' !'
+                        + '</div>';
+                } else if (nowHour >= 21) {
+                    var hLeft = 23 - nowHour;
+                    var hLabel = hLeft > 0 ? hLeft + 'h' : '';
+                    streakDangerHTML = dangerCSS
+                        + '<div class="streak-danger">'
+                        + '\uD83D\uDD25 ATTENTION ! Plus que ' + hLabel + ' pour sauver ta serie de ' + streak + 'j !'
+                        + '</div>';
+                } else if (nowHour >= 18) {
+                    streakDangerHTML = dangerCSS
+                        + '<div class="streak-warning">'
+                        + '\u26A0\uFE0F Ta serie de ' + streak + 'j est en danger ! Fais 1 session pour la garder.'
+                        + '</div>';
+                }
+            }
         }
 
         return '<div class="dash-section hero-bac ' + urgencyClass + '">'
             + streakHTML
+            + streakDangerHTML
             + '<div class="hero-bac-countdown">'
             + '<span class="hero-bac-days">J\u2212' + days + '</span>'
-            + '<span class="hero-bac-label">avant le Bac</span>'
+            + '<span class="hero-bac-label">avant le ' + examLabel + '</span>'
             + '</div>'
             + '<p class="hero-bac-msg">' + msg + '</p>'
             + '<button class="hero-bac-cta" data-action="dashboard.goTo" data-param="' + ctaAction + '">'
@@ -1179,28 +1287,103 @@
 
     // ==================== MINI-DÉFI QUOTIDIEN ====================
     function renderDailyChallenge(gamStats) {
-        // Choisir un defi basé sur le jour (deterministe)
-        var dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+        // Day-of-week based challenges (0=Sun, 1=Mon, ..., 6=Sat)
+        var now = new Date();
+        var dayOfWeek = now.getDay();
+        var todayKey = now.toDateString();
         var challenges = [
-            { icon: '\uD83D\uDD25', text: 'Fais 3 bonnes r\u00E9ponses d\u2019affil\u00E9e', reward: '+30 XP' },
-            { icon: '\u23F1\uFE0F', text: 'Termine une session en moins de 4 min', reward: '+25 XP' },
-            { icon: '\uD83D\uDCDA', text: 'R\u00E9vise une mati\u00E8re que tu n\u2019as pas touch\u00E9e depuis 3 jours', reward: '+20 XP' },
-            { icon: '\uD83C\uDFAF', text: 'Fais 10 cartes sans utiliser le mode clair', reward: '+35 XP' },
-            { icon: '\uD83D\uDCAA', text: 'R\u00E9ussis 5 cartes d\u2019une mati\u00E8re difficile', reward: '+40 XP' },
-            { icon: '\uD83E\uDDE0', text: 'Termine 2 sessions aujourd\u2019hui', reward: '+50 XP' },
-            { icon: '\u2B50', text: 'Obtiens un score parfait sur une session', reward: '+60 XP' }
+            { icon: '\uD83C\uDF1F', text: 'Session libre 10 min', action: 'focus', type: 'free', reward: 'XP x2' },        // Sunday
+            { icon: '\uD83C\uDFB4', text: '10 flashcards en 5 min', action: 'flashcard', type: 'speed', reward: 'XP x2' },  // Monday
+            { icon: '\uD83E\uDDE0', text: 'Quiz 15 questions', action: 'quiz', type: 'quiz', reward: 'XP x2' },              // Tuesday
+            { icon: '\uD83D\uDCDA', text: 'Revise 3 sections', action: 'flashcard', type: 'sections', reward: 'XP x2' },     // Wednesday
+            { icon: '\uD83D\uDD25', text: 'Combo x5 minimum', action: 'flashcard', type: 'combo', reward: 'XP x2' },         // Thursday
+            { icon: '\u26A1', text: '20 flashcards speed run', action: 'flashcard', type: 'speedrun', reward: 'XP x2' },      // Friday
+            { icon: '\uD83C\uDFC6', text: 'Quiz parfait (0 erreur)', action: 'quiz', type: 'perfect', reward: 'XP x2' }       // Saturday
         ];
-        var challenge = challenges[dayOfYear % challenges.length];
+        var challenge = challenges[dayOfWeek];
 
-        return '<div class="dash-section dash-daily-challenge">'
-            + '<div class="dash-challenge-header">'
-            + '<span class="dash-challenge-icon">' + challenge.icon + '</span>'
-            + '<div class="dash-challenge-info">'
-            + '<h4 class="dash-challenge-title">D\u00E9fi du jour</h4>'
-            + '<p class="dash-challenge-text">' + challenge.text + '</p>'
+        // Pick a random subject icon for today (deterministic by date)
+        var subjects = window.StudFlow.subjects ? window.StudFlow.subjects.getAll() : [];
+        var subjectIcon = '\uD83D\uDCDA';
+        var subjectName = '';
+        if (subjects.length > 0) {
+            var dayOfYear = Math.floor((Date.now() - new Date(now.getFullYear(), 0, 0)) / 86400000);
+            var pickedSubj = subjects[dayOfYear % subjects.length];
+            subjectIcon = pickedSubj.icon || '\uD83D\uDCD8';
+            subjectName = pickedSubj.name || pickedSubj.id;
+        }
+
+        // Check completion status in localStorage
+        var dcState = window.StudFlow.storage.loadData('dailyChallenge', { date: null, completed: false });
+        var isCompleted = dcState.date === todayKey && dcState.completed;
+        var isNew = dcState.date !== todayKey;
+
+        // Countdown until midnight
+        var midnight = new Date(now);
+        midnight.setHours(24, 0, 0, 0);
+        var msLeft = midnight.getTime() - now.getTime();
+        var hrsLeft = Math.floor(msLeft / 3600000);
+        var minsLeft = Math.floor((msLeft % 3600000) / 60000);
+        var countdownText = hrsLeft > 0 ? hrsLeft + 'h ' + minsLeft + 'min' : minsLeft + 'min';
+
+        // Badge
+        var badgeHTML = '';
+        if (isCompleted) {
+            badgeHTML = '<span class="dash-challenge-badge dash-challenge-done">\u2705 Complet\u00E9</span>';
+        } else if (isNew) {
+            badgeHTML = '<span class="dash-challenge-badge dash-challenge-new">NOUVEAU</span>';
+        }
+
+        // Subject line
+        var subjLine = subjectName ? subjectIcon + ' ' + subjectName : '';
+
+        // CSS for the enhanced daily challenge
+        var challengeCSS = '<style>'
+            + '.dash-daily-challenge-v2{background:linear-gradient(135deg,#667eea22,#764ba222);border:2px solid #667eea44;border-radius:16px;padding:16px;position:relative;overflow:hidden}'
+            + '.dash-daily-challenge-v2.completed{opacity:0.7;border-color:#22c55e44;background:linear-gradient(135deg,#22c55e11,#16a34a11)}'
+            + '.dash-challenge-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}'
+            + '.dash-challenge-badge{font-size:0.7em;padding:3px 8px;border-radius:20px;font-weight:700;text-transform:uppercase}'
+            + '.dash-challenge-new{background:#667eea;color:#fff;animation:badgePop 0.6s ease}'
+            + '.dash-challenge-done{background:#22c55e22;color:#22c55e}'
+            + '.dash-challenge-countdown{font-size:0.75em;color:#888;display:flex;align-items:center;gap:4px}'
+            + '.dash-challenge-countdown-icon{font-size:0.9em}'
+            + '.dash-challenge-body{display:flex;align-items:center;gap:12px}'
+            + '.dash-challenge-icon-big{font-size:2em;flex-shrink:0}'
+            + '.dash-challenge-details{flex:1}'
+            + '.dash-challenge-title-v2{font-weight:700;font-size:1em;margin:0 0 2px}'
+            + '.dash-challenge-subj{font-size:0.8em;color:#888;margin:0 0 4px}'
+            + '.dash-challenge-desc{font-size:0.85em;color:#666;margin:0}'
+            + '.dash-challenge-reward-v2{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:700;font-size:0.75em;padding:4px 10px;border-radius:20px;white-space:nowrap}'
+            + '.dash-challenge-cta{display:block;width:100%;margin-top:12px;padding:10px;border:none;border-radius:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:700;font-size:0.95em;cursor:pointer;text-align:center}'
+            + '.dash-challenge-cta:active{transform:scale(0.98)}'
+            + '@keyframes badgePop{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}'
+            + '</style>';
+
+        var ctaParam = challenge.action === 'quiz' ? 'quiz' : (challenge.action === 'focus' ? 'focus' : 'flashcard');
+
+        return challengeCSS
+            + '<div class="dash-section dash-daily-challenge dash-daily-challenge-v2' + (isCompleted ? ' completed' : '') + '">'
+            + '<div class="dash-challenge-top">'
+            + '<h4 class="dash-challenge-title-v2">\uD83C\uDFAF D\u00E9fi du jour</h4>'
+            + badgeHTML
             + '</div>'
-            + '<span class="dash-challenge-reward">' + challenge.reward + '</span>'
+            + '<div class="dash-challenge-body">'
+            + '<span class="dash-challenge-icon-big">' + challenge.icon + '</span>'
+            + '<div class="dash-challenge-details">'
+            + (subjLine ? '<p class="dash-challenge-subj">' + subjLine + '</p>' : '')
+            + '<p class="dash-challenge-desc">' + challenge.text + '</p>'
             + '</div>'
+            + '<span class="dash-challenge-reward-v2">' + challenge.reward + '</span>'
+            + '</div>'
+            + (!isCompleted
+                ? '<div class="dash-challenge-countdown">'
+                    + '<span class="dash-challenge-countdown-icon">\u23F3</span>'
+                    + 'Expire dans ' + countdownText
+                    + '</div>'
+                    + '<button class="dash-challenge-cta" data-action="dashboard.goTo" data-param="' + ctaParam + '">'
+                    + 'Relever le d\u00E9fi \u2192'
+                    + '</button>'
+                : '')
             + '</div>';
     }
 
@@ -1487,16 +1670,23 @@
             + '</div>';
     }
 
-    // ==================== SECTION 0 — COUNTDOWN BAC ====================
+    // ==================== SECTION 0 — COUNTDOWN EXAM ====================
     function renderCountdown() {
-        // Bac dates: Philo 18 juin, Grand Oral 23 juin - 4 juillet
+        var examLevel = (window.StudFlow.subjects && window.StudFlow.subjects.getExamLevel) ? window.StudFlow.subjects.getExamLevel() : 'bac';
+        var examLabel = examLevel === 'brevet' ? 'Brevet' : 'Bac';
+
+        // Exam dates: Brevet June 26, Bac Philo June 18
         var now = new Date();
-        var bacPhilo = new Date(now.getFullYear(), 5, 18); // June 18
-        // If past this year's date, use next year
-        if (now > new Date(now.getFullYear(), 6, 5)) {
-            bacPhilo = new Date(now.getFullYear() + 1, 5, 18);
+        var examDate;
+        if (examLevel === 'brevet') {
+            examDate = new Date(now.getFullYear(), 5, 26); // June 26
+        } else {
+            examDate = new Date(now.getFullYear(), 5, 18); // June 18
         }
-        var diff = bacPhilo.getTime() - now.getTime();
+        if (now > new Date(now.getFullYear(), 6, 5)) {
+            examDate = new Date(examDate.getFullYear() + 1, examDate.getMonth(), examDate.getDate());
+        }
+        var diff = examDate.getTime() - now.getTime();
         var days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
         if (days < 0) days = 0;
@@ -1511,13 +1701,13 @@
             urgencyMsg = 'Derniere ligne droite. Chaque jour compte.';
         } else if (days <= 90) {
             urgencyClass = 'countdown-soon';
-            urgencyMsg = 'Le Bac approche. Reste regulier(e).';
+            urgencyMsg = 'Le ' + examLabel + ' approche. Reste regulier(e).';
         } else {
             urgencyClass = 'countdown-calm';
             urgencyMsg = 'Tu as le temps. Construis de bonnes habitudes.';
         }
 
-        // Global Bac Readiness
+        // Global Exam Readiness
         var avgMastery = 0;
         var topicCount = 0;
         var topicBars = '';
@@ -1544,7 +1734,7 @@
         // Estimated readiness: if avgMastery growth rate is X%/day, when will we reach 70%?
         var readinessMsg = '';
         if (avgMastery >= 70) {
-            readinessMsg = 'Tu es pret(e) pour le Bac !';
+            readinessMsg = 'Tu es pret(e) pour le ' + examLabel + ' !';
         } else if (avgMastery > 0 && days > 0) {
             var needed = 70 - avgMastery;
             var dailyRate = Math.max(0.5, avgMastery / Math.max(1, 30 - days + 30)); // rough estimate
@@ -1669,13 +1859,16 @@
 
     // ==================== SECTION 3 — TOUTES LES ACTIONS ====================
     function renderSecondaryActions() {
+        var examLevel = (window.StudFlow.subjects && window.StudFlow.subjects.getExamLevel) ? window.StudFlow.subjects.getExamLevel() : 'bac';
+        var examLabel = examLevel === 'brevet' ? 'Brevet' : 'Bac';
+
         return '<div class="dash-section">'
             + '<h3 class="dash-section-title">⚡ Toutes les actions</h3>'
             + '<div class="dash-actions-grid">'
             + '<button class="dash-quick-btn" data-action="dashboard.goTo" data-param="matieres">'
             + '<span class="dash-quick-icon">📚</span><span>Matieres</span></button>'
             + '<button class="dash-quick-btn" data-action="dashboard.goTo" data-param="annales">'
-            + '<span class="dash-quick-icon">📜</span><span>Annales Bac</span></button>'
+            + '<span class="dash-quick-icon">📜</span><span>Annales ' + examLabel + '</span></button>'
             + '<button class="dash-quick-btn" data-action="dashboard.goTo" data-param="coach">'
             + '<span class="dash-quick-icon">🧠</span><span>Coach</span></button>'
             + '<button class="dash-quick-btn" data-action="dashboard.goTo" data-param="focus">'
@@ -1683,7 +1876,7 @@
             + '<button class="dash-quick-btn" data-action="dashboard.goTo" data-param="stress">'
             + '<span class="dash-quick-icon">💆</span><span>Anti-stress</span></button>'
             + '<button class="dash-quick-btn" data-action="dashboard.goTo" data-param="planbac">'
-            + '<span class="dash-quick-icon">📅</span><span>Plan Bac</span></button>'
+            + '<span class="dash-quick-icon">📅</span><span>Plan ' + examLabel + '</span></button>'
             + '<button class="dash-quick-btn" data-action="dashboard.goTo" data-param="generators">'
             + '<span class="dash-quick-icon">⚙️</span><span>Generateurs</span></button>'
             + '<button class="dash-quick-btn" data-action="dashboard.goTo" data-param="stats">'

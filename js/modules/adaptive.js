@@ -279,12 +279,41 @@
 
     // ==================== EXPOSE ====================
     window.StudFlow = window.StudFlow || {};
+    // Compare current session % vs average of sessions 3-7 days ago on same topic.
+    function getProgressComparison(deck, currentPct, minDays, maxDays) {
+        var parsed = parseDeck(deck);
+        if (!parsed) return null;
+        var state = loadState();
+        var topic = state.topics[parsed.topicId];
+        if (!topic || !topic.history || topic.history.length < 2) return null;
+
+        var now = Date.now();
+        var min = typeof minDays === 'number' ? minDays : 3;
+        var max = typeof maxDays === 'number' ? maxDays : 7;
+        var oldCorrect = 0, oldTotal = 0;
+        for (var i = 0; i < topic.history.length; i++) {
+            var h = topic.history[i];
+            if (!h.date) continue;
+            var d = new Date(h.date).getTime();
+            var days = Math.floor((now - d) / 86400000);
+            if (days >= min && days <= max) {
+                oldCorrect += h.correct;
+                oldTotal += h.total;
+            }
+        }
+        if (!oldTotal) return null;
+        var before = Math.round((oldCorrect / oldTotal) * 100);
+        return { before: before, now: currentPct, delta: currentPct - before };
+    }
+
     window.StudFlow.adaptive = {
         renderCard: renderCard,
         init: init,
         getDueTopics: getDueTopics,
         getAllTopics: getAllTopics,
-        review: reviewTopic
+        review: reviewTopic,
+        reviewTopic: reviewTopic,
+        getProgressComparison: getProgressComparison
     };
 
 })();

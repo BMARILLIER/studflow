@@ -89,6 +89,34 @@
             <div id="betawelcome-content"></div>
         </div>
 
+        <!-- Mini-sujet Screen (sujet type DNB/Bac, lecture + auto-test) -->
+        <div class="screen" id="screen-minisujet">
+            <div id="minisujet-content"></div>
+        </div>
+
+        <!-- Admin Usage Screen (dashboard beta, gated server-side by email) -->
+        <div class="screen" id="screen-adminusage">
+            <div id="adminusage-content"></div>
+        </div>
+
+        <!-- Leaderboard Screen (weekly XP ranking) -->
+        <div class="screen" id="screen-leaderboard">
+            <div id="leaderboard-content"></div>
+        </div>
+
+        <!-- Track Picker Screen (forces bac/brevet choice on first run) -->
+        <div class="screen" id="screen-trackpicker">
+            <div style="max-width:520px;margin:0 auto;padding:2rem 1.25rem;text-align:center;">
+                <h1 style="font-family:'Fraunces',serif;font-size:1.8rem;margin-bottom:0.5rem;">Tu prepares quoi&nbsp;?</h1>
+                <p style="color:var(--text-muted);margin-bottom:2rem;">Choisis ton examen pour adapter StudFlow a ton niveau. Ce choix est definitif.</p>
+                <div style="display:flex;flex-direction:column;gap:1rem;">
+                    <button id="trackpicker-bac" class="new-course-btn" style="padding:1.25rem;font-size:1.1rem;">🎓 Bac (lycee)</button>
+                    <button id="trackpicker-brevet" class="new-course-btn secondary" style="padding:1.25rem;font-size:1.1rem;">📘 Brevet (college)</button>
+                </div>
+                <p id="trackpicker-error" role="alert" style="display:none;color:#ff6b6b;margin-top:1rem;"></p>
+            </div>
+        </div>
+
         <!-- Home / Landing Page -->
         <div class="screen active" id="screen-home">
             <div id="home-content"></div>
@@ -598,6 +626,12 @@
                 </p>
             </div>
 
+            <!-- Notifications -->
+            <div class="settings-section">
+                <h3>Notifications</h3>
+                <div id="notif-settings-content"></div>
+            </div>
+
             <!-- Sounds -->
             <div class="settings-section">
                 <h3>Sons &amp; vibrations</h3>
@@ -646,8 +680,6 @@
                 <!-- Groq key input hidden during beta -->
                 <input type="hidden" id="groq-api-input">
                 <div class="api-status" id="groq-status"></div>
-                <p style="color:var(--text-muted);font-size:0.78rem;margin-top:8px;">Votre cle est stockee localement sur cet appareil.</p>
-                <button class="breathing-btn secondary" data-action="groq:clear" style="font-size:0.82rem;margin-top:6px;padding:8px 14px;">Effacer ma cle</button>
             </div>
 
             <!-- Data management (RGPD) -->
@@ -856,14 +888,17 @@
                         <button data-action="screen:matieres">
                             <span>📚</span><span>Matieres</span>
                         </button>
-                        <button data-action="screen:bacfrancais">
+                        <button data-action="screen:bacfrancais" data-track="bac">
                             <span>🇫🇷</span><span>Bac Francais</span>
                         </button>
-                        <button data-action="screen:french-oral">
+                        <button data-action="screen:french-oral" data-track="bac">
                             <span>🎤</span><span>Oral Francais</span>
                         </button>
-                        <button data-action="screen:annales">
+                        <button data-action="screen:annales" data-track="bac">
                             <span>📜</span><span>Annales</span>
+                        </button>
+                        <button data-action="screen:minisujet">
+                            <span>📄</span><span>Mini-sujets</span>
                         </button>
                         <button data-action="screen:ds-demain">
                             <span>📝</span><span>DS demain</span>
@@ -880,6 +915,9 @@
                         <button data-action="screen:chrono">
                             <span>⏱️</span><span>Chrono</span>
                         </button>
+                        <button data-action="screen:exam">
+                            <span>📝</span><span>Examen</span>
+                        </button>
                         <button data-action="screen:challenges">
                             <span>⚔️</span><span>Defis amis</span>
                         </button>
@@ -888,6 +926,9 @@
                         </button>
                         <button data-action="screen:badges">
                             <span>🏅</span><span>Badges</span>
+                        </button>
+                        <button data-action="screen:leaderboard">
+                            <span>🏆</span><span>Classement</span>
                         </button>
                     </div>
                 </div>
@@ -898,7 +939,7 @@
                         <button data-action="screen:stress">
                             <span>💆</span><span>Anti-stress</span>
                         </button>
-                        <button data-action="screen:planbac">
+                        <button data-action="screen:planbac" data-track="bac">
                             <span>📅</span><span>Plan Bac</span>
                         </button>
                         <button data-action="screen:generators">

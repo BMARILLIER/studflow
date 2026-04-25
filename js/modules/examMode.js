@@ -4,7 +4,14 @@
 
     var QUESTION_COUNT = 15;
     var STORAGE_KEY = 'studflow_exam_history';
-    var DURATIONS = { philo: 30, francais: 25, maths: 20, histgeo: 30, ses: 25, physique: 20, svt: 25, anglais: 20 };
+    var DURATIONS = {
+        // Bac (existant)
+        philo: 30, francais: 25, maths: 20, histgeo: 30,
+        ses: 25, physique: 20, svt: 25, anglais: 20,
+        // Brevet (DNB) — 15 questions en condition reelle
+        brevet_maths: 25, brevet_francais: 30, brevet_histgeo: 25,
+        brevet_sciences: 20, brevet_emc: 15
+    };
 
     var state = {
         questions: [],
@@ -71,7 +78,9 @@
         html += '<div class="exam-prep-header">';
         html += '<div class="exam-prep-icon">\uD83C\uDFAF</div>';
         html += '<h2>Mode Examen</h2>';
-        html += '<p>Simule un vrai Bac : chrono, pas d\'aide, pas de feedback.</p>';
+        var _lvl = (window.StudFlow.subjects && window.StudFlow.subjects.getExamLevel) ? window.StudFlow.subjects.getExamLevel() : 'bac';
+        var _exLabel = _lvl === 'brevet' ? 'DNB' : 'Bac';
+        html += '<p>Simule un vrai ' + _exLabel + ' : chrono, pas d\'aide, pas de feedback.</p>';
         html += '</div>';
 
         html += '<div class="exam-subject-grid">';

@@ -18,6 +18,9 @@
         conseils: true,
         generators: true,
         badges: true,
+        leaderboard: true,
+        minisujet: true,
+        adminusage: true,
         stats: true,
         premium: true,
         missions: true,
@@ -54,6 +57,10 @@
         // Block navigation past beta gate if not unlocked
         if (window.StudFlow.betaGate && !window.StudFlow.betaGate.isUnlocked()) {
             if (screenId !== 'betagate') return;
+        }
+        // Block navigation while track picker is shown (forces the choice first)
+        if (window.StudFlow.trackPicker && window.StudFlow.trackPicker.isVisible && window.StudFlow.trackPicker.isVisible()) {
+            return;
         }
         if (screenId && ROUTABLE[screenId]) {
             var current = window.StudFlow.app.getState().currentScreen;
