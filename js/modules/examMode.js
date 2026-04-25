@@ -177,6 +177,23 @@
 
     // ==================== RENDER EXAM ====================
     function renderExam() {
+        try {
+            _renderExam();
+        } catch (e) {
+            console.error('[examMode] renderExam error:', e);
+            // Do NOT auto-finish: user would lose all answers. Show a
+            // recovery message so they can navigate manually.
+            var container = document.getElementById('exam-content');
+            if (container) {
+                container.innerHTML = '<div class="exam-error" style="padding:24px;text-align:center;">'
+                    + '<p>Probleme d\'affichage de cette question.</p>'
+                    + '<button class="exam-nav-btn" data-action="examMode.next">Question suivante →</button>'
+                    + '</div>';
+            }
+        }
+    }
+
+    function _renderExam() {
         var container = document.getElementById('exam-content');
         if (!container) return;
 

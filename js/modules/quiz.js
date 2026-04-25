@@ -180,6 +180,20 @@
     }
 
     function displayQuestion() {
+        try {
+            _displayQuestion();
+        } catch (e) {
+            console.error('[quiz] displayQuestion error:', e);
+            if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
+                window.StudFlow.gamification.showToast('Probleme avec cette question. Retour a l\'accueil.', 'xp', '⚠️');
+            }
+            if (window.StudFlow.app && window.StudFlow.app.showScreen) {
+                window.StudFlow.app.showScreen('dashboard');
+            }
+        }
+    }
+
+    function _displayQuestion() {
         var total = sessionQuestions.length;
         var q = sessionQuestions[currentIndex];
 

@@ -345,6 +345,20 @@
     }
 
     function display() {
+        try {
+            _display();
+        } catch (e) {
+            console.error('[flashcards] display error:', e);
+            if (window.StudFlow.gamification && window.StudFlow.gamification.showToast) {
+                window.StudFlow.gamification.showToast('Probleme d\'affichage. Retour a l\'accueil.', 'xp', '⚠️');
+            }
+            if (window.StudFlow.app && window.StudFlow.app.showScreen) {
+                window.StudFlow.app.showScreen('dashboard');
+            }
+        }
+    }
+
+    function _display() {
         const cards = getAllCards();
         const card = cards[currentIndex];
         if (!card) {
