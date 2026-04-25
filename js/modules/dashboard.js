@@ -218,6 +218,9 @@
         var dailyPathHTML = (window.StudFlow.dailyPath && window.StudFlow.dailyPath.renderCard)
             ? window.StudFlow.dailyPath.renderCard() : '';
 
+        var miniSujetCTAHTML = (window.StudFlow.miniSujet && window.StudFlow.miniSujet.renderDashboardCTA)
+            ? window.StudFlow.miniSujet.renderDashboardCTA() : '';
+
         var radarHTML = (window.StudFlow.radarMastery && window.StudFlow.radarMastery.renderCard)
             ? window.StudFlow.radarMastery.renderCard() : '';
 
@@ -246,6 +249,7 @@
             + searchBarHTML
             + rituelHTML                     // Bloc 0 : rituel du jour (habitude)
             + dailyPathHTML                  // Bloc 0a : parcours guide
+            + miniSujetCTAHTML               // Bloc 0a' : mini-sujets type examen
             + confidenceBtnHTML              // Bloc 0b : mode confiance (optionnel)
             + focusWeaknessHTML              // Bloc 0c : focus sur faiblesse #1 (si dispo)
             + radarHTML                      // Bloc 0d : radar de maitrise

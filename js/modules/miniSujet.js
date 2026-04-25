@@ -119,10 +119,35 @@
         root.innerHTML = html;
     }
 
+    // Compact dashboard card. Surfaces mini-sujets above the fold —
+    // until now they were only reachable via the menu drawer.
+    // Returns '' if nothing to show, so render() can concatenate freely.
+    function renderDashboardCTA() {
+        var all = (window.StudFlow.subjects && window.StudFlow.subjects.getAllMiniSujets)
+            ? window.StudFlow.subjects.getAllMiniSujets() : [];
+        if (!all.length) return '';
+
+        var count = all.length;
+        return '<div class="dash-section" style="padding:0;">'
+          + '<button data-action="screen:minisujet" '
+          +   'style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(56,189,248,0.25);background:linear-gradient(135deg,rgba(56,189,248,0.08),rgba(96,165,250,0.08));color:inherit;cursor:pointer;font:inherit;text-align:left;">'
+          +   '<span style="font-size:1.4rem;flex-shrink:0;">📄</span>'
+          +   '<span style="flex:1;min-width:0;">'
+          +     '<span style="display:block;font-weight:600;font-size:0.95rem;">Mini-sujets type examen</span>'
+          +     '<span style="display:block;color:var(--text-muted);font-size:0.78rem;margin-top:1px;">'
+          +       count + ' sujet' + (count > 1 ? 's' : '') + ' · 5-10 min chacun, conditions reelles'
+          +     '</span>'
+          +   '</span>'
+          +   '<span style="color:var(--text-muted);font-size:1.1rem;flex-shrink:0;">›</span>'
+          + '</button>'
+          + '</div>';
+    }
+
     window.StudFlow = window.StudFlow || {};
     window.StudFlow.miniSujet = {
         openForDeck: openForDeck,
         reveal: reveal,
-        renderHub: renderHub
+        renderHub: renderHub,
+        renderDashboardCTA: renderDashboardCTA
     };
 })();
