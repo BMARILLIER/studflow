@@ -441,7 +441,7 @@ header {
     transform: scale(1.05);
 }
 .scale-number { font-size: 1.3rem; font-weight: 800; }
-.scale-label { font-size: 0.6rem; color: var(--text-dim); margin-top: 0.2rem; }
+.scale-label { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem; }
 
 .diagnostic-nav {
     display: flex; justify-content: space-between; gap: 1rem;
@@ -881,7 +881,7 @@ header {
 .bac-section-content .katex-display { margin: 0.8em 0; }
 /* Confidence badge for AI-generated content */
 .confidence-badge {
-    display: inline-block; font-size: 0.65rem; font-weight: 700;
+    display: inline-block; font-size: 0.72rem; font-weight: 700;
     padding: 2px 8px; border-radius: 20px; letter-spacing: 0.5px;
     vertical-align: middle;
 }
@@ -1151,7 +1151,7 @@ body.theme-light .math-fallback {
 .fc-mode-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 .fc-mode-badge {
     position: absolute; top: 10px; right: 12px;
-    background: var(--accent); color: #fff; font-size: 0.65rem;
+    background: var(--accent); color: #fff; font-size: 0.72rem;
     padding: 2px 8px; border-radius: 20px; font-weight: 700;
 }
 .fc-mode-auto-btn {
@@ -12975,6 +12975,37 @@ body.night-mode .br-halo-core { filter: brightness(0.85); }
 .dash-see-more-btn:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ==================== CALM MODE ==================== */
+/* Reduces animation, but also makes text dys-friendly:
+ * - Lexend font (designed for reading proficiency)
+ * - +5% root font-size (everything in rem scales up)
+ * - Wider letter-spacing + line-height for easier visual tracking
+ * - Floor for the smallest UI labels (badges/sub-labels are
+ *   harder to read for dys/TSA students). */
+body.calm-mode {
+    font-family: 'Lexend', 'DM Sans', system-ui, sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.015em;
+    line-height: 1.65;
+}
+body.calm-mode p,
+body.calm-mode .fc-question, body.calm-mode .fc-answer,
+body.calm-mode .quiz-question, body.calm-mode .quiz-option,
+body.calm-mode .section-intro p {
+    font-family: 'Lexend', 'DM Sans', system-ui, sans-serif;
+    line-height: 1.7;
+}
+/* Floor tiny labels: anything below 0.78rem becomes 0.85rem in calm mode.
+ * Targets badges, counters, sub-labels that exist all over style.css. */
+body.calm-mode .stat-label,
+body.calm-mode .quiz-deck-sub, body.calm-mode .quiz-deck-count,
+body.calm-mode .scale-label,
+body.calm-mode .imported-badge,
+body.calm-mode .fc-level-badge,
+body.calm-mode .fc-mode-desc,
+body.calm-mode .dash-search-section, body.calm-mode .dash-search-badge {
+    font-size: 0.9rem !important;
+    letter-spacing: 0.02em;
+}
 body.calm-mode * {
     animation-duration: 0.8s !important;
     transition-duration: 0.15s !important;
