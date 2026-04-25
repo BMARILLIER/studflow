@@ -17,14 +17,10 @@ BEGIN
 
     IF NOT EXISTS (
         SELECT 1 FROM beta_testers
-        WHERE lower(email) = v_email AND status = 'active'
+        WHERE lower(email) = v_email
     ) THEN
         RETURN jsonb_build_object('ok', false, 'code', 'not_on_list');
     END IF;
-
-    UPDATE beta_testers
-    SET last_seen_at = now()
-    WHERE lower(email) = v_email;
 
     RETURN jsonb_build_object('ok', true);
 END;
