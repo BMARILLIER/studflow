@@ -8,11 +8,7 @@
     var _currentDeckId = null;
     var _revealed = {};
 
-    function escapeHtml(s) {
-        return String(s || '').replace(/[&<>"']/g, function(c) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-    }
+    var escapeHtml = window.StudFlow.utils.escapeHtml;
 
     function openForDeck(deckId) {
         if (!deckId) return;

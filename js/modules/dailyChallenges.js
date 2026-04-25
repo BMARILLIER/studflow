@@ -18,22 +18,8 @@
     ];
 
     // ==================== DATE / SEED ====================
-    function parisToday() {
-        var p = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
-        var y = p.getFullYear();
-        var m = String(p.getMonth() + 1).padStart(2, '0');
-        var d = String(p.getDate()).padStart(2, '0');
-        return y + '-' + m + '-' + d;
-    }
-
-    function seed(s) {
-        var h = 2166136261;
-        for (var i = 0; i < s.length; i++) {
-            h ^= s.charCodeAt(i);
-            h = Math.imul(h, 16777619);
-        }
-        return (h >>> 0);
-    }
+    var parisToday = window.StudFlow.utils.parisToday;
+    var seed = window.StudFlow.utils.seed;
 
     function pickThree(date) {
         var s = seed(date);

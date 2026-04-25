@@ -6,10 +6,7 @@
 
     var LS_KEY = 'studflow_daily_path_v1';
 
-    function parisToday() {
-        var p = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
-        return p.getFullYear() + '-' + String(p.getMonth() + 1).padStart(2, '0') + '-' + String(p.getDate()).padStart(2, '0');
-    }
+    var parisToday = window.StudFlow.utils.parisToday;
 
     function getState() {
         try {
@@ -106,11 +103,7 @@
     }
 
     // ==================== UI ====================
-    function escapeHtml(s) {
-        return String(s || '').replace(/[&<>"']/g, function(c) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-    }
+    var escapeHtml = window.StudFlow.utils.escapeHtml;
 
     function renderCard() {
         var actions = buildActions();

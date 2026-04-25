@@ -8,16 +8,8 @@
     var LS_KEY = 'studflow_rituel_v1';
 
     // ==================== DATE / SEED ====================
-    function parisToday() {
-        var p = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
-        return p.getFullYear() + '-' + String(p.getMonth() + 1).padStart(2, '0') + '-' + String(p.getDate()).padStart(2, '0');
-    }
-
-    function seed(s) {
-        var h = 2166136261;
-        for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
-        return (h >>> 0);
-    }
+    var parisToday = window.StudFlow.utils.parisToday;
+    var seed = window.StudFlow.utils.seed;
 
     function pickFromBucket(bucket, s, offset) {
         if (!bucket.length) return null;
@@ -102,11 +94,7 @@
     }
 
     // ==================== UI ====================
-    function escapeHtml(s) {
-        return String(s || '').replace(/[&<>"']/g, function(c) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-    }
+    var escapeHtml = window.StudFlow.utils.escapeHtml;
 
     function renderCard() {
         var picks = buildDailyCards();

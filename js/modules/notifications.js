@@ -13,10 +13,7 @@
     var _streakTimer = null;
 
     // ==================== DAILY CAP (1 notif max / jour Paris) ====================
-    function parisToday() {
-        var p = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
-        return p.getFullYear() + '-' + String(p.getMonth() + 1).padStart(2, '0') + '-' + String(p.getDate()).padStart(2, '0');
-    }
+    var parisToday = window.StudFlow.utils.parisToday;
     function hasNotifiedToday() {
         return localStorage.getItem(LAST_NOTIF_DAY_KEY) === parisToday();
     }

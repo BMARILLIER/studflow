@@ -185,11 +185,7 @@
         }
     }
 
-    function escapeHtml(s) {
-        return String(s || '').replace(/[&<>"']/g, function(c) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-    }
+    var escapeHtml = window.StudFlow.utils.escapeHtml;
 
     function medalFor(rank) {
         return rank === 0 ? '🥇' : rank === 1 ? '🥈' : rank === 2 ? '🥉' : (rank + 1) + '.';

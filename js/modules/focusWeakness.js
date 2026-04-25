@@ -4,11 +4,7 @@
 (function() {
     'use strict';
 
-    function escapeHtml(s) {
-        return String(s || '').replace(/[&<>"']/g, function(c) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-    }
+    var escapeHtml = window.StudFlow.utils.escapeHtml;
 
     function getWeakest() {
         try {

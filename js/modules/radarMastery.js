@@ -13,11 +13,7 @@
         return '#ef4444';                   // rouge doux — a renforcer
     }
 
-    function escapeHtml(s) {
-        return String(s || '').replace(/[&<>"']/g, function(c) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-    }
+    var escapeHtml = window.StudFlow.utils.escapeHtml;
 
     function renderCard() {
         if (!window.StudFlow.adaptive || !window.StudFlow.adaptive.getAllTopics) return '';
