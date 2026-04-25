@@ -115,11 +115,27 @@
         }).catch(function() { return ''; });
     }
 
+    // Client-side rate limit: 5 friend_add attempts per rolling 60s window.
+    // Prevents accidental loops and spares the server before it sees the call.
+    var _friendAddTimestamps = [];
+    var FRIEND_ADD_MAX = 5;
+    var FRIEND_ADD_WINDOW_MS = 60 * 1000;
+
     function addFriend(code) {
         var sb = getClient(); var email = getEmail();
         if (!sb || !email) return Promise.resolve({ ok: false, code: 'offline' });
         var norm = (code || '').trim().toUpperCase();
         if (!/^[A-Z0-9]{6}$/.test(norm)) return Promise.resolve({ ok: false, code: 'invalid_input' });
+
+        var now = Date.now();
+        _friendAddTimestamps = _friendAddTimestamps.filter(function(t) {
+            return now - t < FRIEND_ADD_WINDOW_MS;
+        });
+        if (_friendAddTimestamps.length >= FRIEND_ADD_MAX) {
+            return Promise.resolve({ ok: false, code: 'rate_limited' });
+        }
+        _friendAddTimestamps.push(now);
+
         return sb.rpc('friend_add', { p_email: email, p_code: norm }).then(function(r) {
             if (r.error) return { ok: false, code: 'network' };
             return r.data || { ok: false };
@@ -275,6 +291,7 @@
                     if (res.code === 'unknown_code')   msg = 'Code inconnu.';
                     else if (res.code === 'self')      msg = 'C\'est ton propre code 😊';
                     else if (res.code === 'invalid_input') msg = 'Le code doit faire 6 caracteres (lettres/chiffres).';
+                    else if (res.code === 'rate_limited') msg = 'Trop de tentatives. Attends une minute avant de reessayer.';
                     alert(msg);
                 }
             });
