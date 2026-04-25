@@ -44,6 +44,7 @@ import './modules/notifications.js'
 import './modules/onboarding.js'
 import './modules/dashboardData.js'
 import './modules/dashboard.js'
+import './modules/dashboardSearch.js'
 import './modules/home.js'
 import './app.js'
 import './modules/router.js'
@@ -60,8 +61,19 @@ function loadDeferred() {
     });
 }
 
+// Warm the subject-data cache once the app is idle. The SW caches each
+// import() response (stale-while-revalidate), so a future offline visit
+// can serve the matieres from cache instead of failing silently.
+function prefetchSubjectData() {
+    if (window.StudFlow && window.StudFlow.subjects && window.StudFlow.subjects.prefetchInIdle) {
+        window.StudFlow.subjects.prefetchInIdle();
+    }
+}
+
 if ('requestIdleCallback' in window) {
     requestIdleCallback(loadDeferred, { timeout: 2000 });
+    requestIdleCallback(prefetchSubjectData, { timeout: 5000 });
 } else {
     setTimeout(loadDeferred, 150);
+    setTimeout(prefetchSubjectData, 1500);
 }

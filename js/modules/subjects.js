@@ -23,30 +23,41 @@
     var _brevetLoaded = false;
     var _brevetLoading = null;
 
+    // Tracks per-track import failures so we can surface a clear offline
+    // message rather than silently rendering an empty subject grid.
+    var _loadFailures = { bac: 0, brevet: 0 };
+
+    function _wrapImport(promise, track) {
+        return promise.catch(function(err) {
+            _loadFailures[track]++;
+            console.error('[Subjects] ' + track + ' load failed:', err);
+        });
+    }
+
     function ensureBacDataLoaded() {
         if (_bacLoaded) return Promise.resolve();
         if (_bacLoading) return _bacLoading;
 
         _bacLoading = Promise.all([
-            import('./subjectData/philo.js'),
-            import('./subjectData/histgeo.js'),
-            import('./subjectData/maths.js'),
-            import('./subjectData/ses.js'),
-            import('./subjectData/physique.js'),
-            import('./subjectData/francais.js'),
-            import('./subjectData/figures.js'),
-            import('./subjectData/quizbac1.js'),
-            import('./subjectData/quizbac2.js'),
-            import('./subjectData/anglais.js'),
-            import('./subjectData/svt.js'),
-            import('./subjectData/francais2.js'),
-            import('./subjectData/espagnol.js'),
-            import('./subjectData/grandoral.js'),
-            import('./subjectData/hggsp.js'),
-            import('./subjectData/nsi.js'),
-            import('./subjectData/hlp.js'),
-            import('./subjectData/emc.js')
-        ].map(function(p) { return p.catch(function(err) { console.error('[Subjects] Bac load failed:', err); }); }))
+            _wrapImport(import('./subjectData/philo.js'), 'bac'),
+            _wrapImport(import('./subjectData/histgeo.js'), 'bac'),
+            _wrapImport(import('./subjectData/maths.js'), 'bac'),
+            _wrapImport(import('./subjectData/ses.js'), 'bac'),
+            _wrapImport(import('./subjectData/physique.js'), 'bac'),
+            _wrapImport(import('./subjectData/francais.js'), 'bac'),
+            _wrapImport(import('./subjectData/figures.js'), 'bac'),
+            _wrapImport(import('./subjectData/quizbac1.js'), 'bac'),
+            _wrapImport(import('./subjectData/quizbac2.js'), 'bac'),
+            _wrapImport(import('./subjectData/anglais.js'), 'bac'),
+            _wrapImport(import('./subjectData/svt.js'), 'bac'),
+            _wrapImport(import('./subjectData/francais2.js'), 'bac'),
+            _wrapImport(import('./subjectData/espagnol.js'), 'bac'),
+            _wrapImport(import('./subjectData/grandoral.js'), 'bac'),
+            _wrapImport(import('./subjectData/hggsp.js'), 'bac'),
+            _wrapImport(import('./subjectData/nsi.js'), 'bac'),
+            _wrapImport(import('./subjectData/hlp.js'), 'bac'),
+            _wrapImport(import('./subjectData/emc.js'), 'bac')
+        ])
         .then(function() {
             _bacLoaded = true;
             _bacLoading = null;
@@ -60,18 +71,25 @@
         if (_brevetLoading) return _brevetLoading;
 
         _brevetLoading = Promise.all([
-            import('./subjectData/brevet_francais.js'),
-            import('./subjectData/brevet_maths.js'),
-            import('./subjectData/brevet_histgeo.js'),
-            import('./subjectData/brevet_sciences.js'),
-            import('./subjectData/brevet_emc.js')
-        ].map(function(p) { return p.catch(function(err) { console.error('[Subjects] Brevet load failed:', err); }); }))
+            _wrapImport(import('./subjectData/brevet_francais.js'), 'brevet'),
+            _wrapImport(import('./subjectData/brevet_maths.js'), 'brevet'),
+            _wrapImport(import('./subjectData/brevet_histgeo.js'), 'brevet'),
+            _wrapImport(import('./subjectData/brevet_sciences.js'), 'brevet'),
+            _wrapImport(import('./subjectData/brevet_emc.js'), 'brevet')
+        ])
         .then(function() {
             _brevetLoaded = true;
             _brevetLoading = null;
         });
 
         return _brevetLoading;
+    }
+
+    // Returns true if at least one subjectData file failed to load for the
+    // current track. UI code can show an offline-friendly message.
+    function hasLoadFailures() {
+        var level = getExamLevel();
+        return level === 'brevet' ? _loadFailures.brevet > 0 : _loadFailures.bac > 0;
     }
 
     function ensureDataLoaded() {
@@ -770,9 +788,16 @@
         getProgress: getProgress,
         markVisited: markVisited,
         preload: ensureDataLoaded,
+        prefetchInIdle: function() {
+            // Warm the cache after first paint so first-offline visits work.
+            // Best effort: ignore failures; the SW will still serve what it has.
+            try { ensureDataLoaded(); } catch (e) {}
+        },
+        hasLoadFailures: hasLoadFailures,
         reloadForExamLevel: function() {
             _dataLoaded = false;
             _dataLoading = null;
+            _loadFailures = { bac: 0, brevet: 0 };
             return ensureDataLoaded();
         }
     };
