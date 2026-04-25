@@ -111,12 +111,31 @@
         return { mult: 3, label: 'MEGA BONUS x3 !!! ⚡⚡⚡', type: 'xp-big' };
     }
 
+    // Anti-spam: same action cannot fire more than once every 400ms.
+    // Stops accidental double-taps and runaway loops; legitimate flows
+    // (one flashcard every few seconds) are well above this floor.
+    var _lastActionAt = {};
+    var ACTION_COOLDOWN_MS = 400;
+
+    // Circular log of recent XP awards (debug + admin transparency).
+    // Keeps the last 30 entries; not persisted across reloads.
+    var _xpLog = [];
+
     function addXP(action) {
         const baseAmount = XP_ACTIONS[action] || 0;
         if (baseAmount === 0) return;
 
+        var nowTs = Date.now();
+        if (_lastActionAt[action] && nowTs - _lastActionAt[action] < ACTION_COOLDOWN_MS) {
+            return; // dropped: too soon after the previous fire of the same action
+        }
+        _lastActionAt[action] = nowTs;
+
         var multiplier = rollXPMultiplier();
         var amount = Math.round(baseAmount * multiplier.mult);
+
+        _xpLog.push({ at: nowTs, action: action, amount: amount, mult: multiplier.mult });
+        if (_xpLog.length > 30) _xpLog.shift();
 
         const stats = getStats();
         const oldXP = stats.xp;
@@ -459,11 +478,14 @@
     }
 
     window.StudFlow = window.StudFlow || {};
+    function getXPLog() { return _xpLog.slice(); }
+
     window.StudFlow.gamification = {
         addXP, getStats, getCurrentLevel, getNextLevel, getLevelProgress,
         updateXPDisplay, showToast, spawnConfetti, init,
         XP_ACTIONS, LEVELS,
         getStreakFreezes, useStreakFreeze, earnStreakFreeze, grantMonthlyJokerIfDue,
-        checkStreakMilestone, getStreakDangerLevel
+        checkStreakMilestone, getStreakDangerLevel,
+        getXPLog
     };
 })();
