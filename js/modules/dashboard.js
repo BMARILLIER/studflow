@@ -1288,7 +1288,8 @@
             { icon: '\uD83C\uDFAF', label: 'Focus', action: 'focus' },
             { icon: '\uD83D\uDCA8', label: 'Anti-stress', action: 'stress' },
             { icon: '\uD83D\uDCCA', label: 'Progression', action: 'stats' },
-            { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' }
+            { icon: '\uD83C\uDFC5', label: 'Badges', action: 'badges' },
+            { icon: '🏆', label: 'Amis & Classement', action: 'screen:leaderboard' }
         ];
 
         var grid = items.map(function(item) {
