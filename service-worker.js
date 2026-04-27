@@ -1,5 +1,5 @@
 // service-worker.js — StudFlow PWA offline cache + push notifications
-var CACHE_VERSION = 'studflow-v43';
+var CACHE_VERSION = 'studflow-v44';
 
 // Critical assets: install FAILS if any of these 404
 var CRITICAL_ASSETS = [
